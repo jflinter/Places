@@ -13,16 +13,16 @@
 		7E54FE6618FF9392002E2AFC /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E54FE6518FF9392002E2AFC /* Images.xcassets */; };
 		7E54FE7718FF9392002E2AFC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7E54FE7518FF9392002E2AFC /* InfoPlist.strings */; };
 		7E54FE8618FF9450002E2AFC /* Places.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7E54FE8418FF9450002E2AFC /* Places.xcdatamodeld */; };
-		7E54FE8D18FF9625002E2AFC /* PLCManagedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E54FE8C18FF9625002E2AFC /* PLCManagedObject.m */; };
 		7E54FE9118FF9854002E2AFC /* _PLCPlace.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E54FE9018FF9854002E2AFC /* _PLCPlace.m */; };
 		7E54FE9418FF985A002E2AFC /* PLCPlace.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E54FE9318FF985A002E2AFC /* PLCPlace.m */; };
-		7E54FE9718FF992F002E2AFC /* PLCDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E54FE9618FF992F002E2AFC /* PLCDatabase.m */; };
 		7E54FE9B18FF9BC8002E2AFC /* PLCMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E54FE9A18FF9BC8002E2AFC /* PLCMapViewController.m */; };
 		7E54FE9E18FF9E4C002E2AFC /* PLCDatabaseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E54FE9D18FF9E4C002E2AFC /* PLCDatabaseTests.m */; };
 		7E54FE9F18FF9FA5002E2AFC /* Places.xcdatamodeld in Resources */ = {isa = PBXBuildFile; fileRef = 7E54FE8418FF9450002E2AFC /* Places.xcdatamodeld */; };
 		7E54FEA118FFA0E7002E2AFC /* Places_phone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7E54FEA018FFA0E7002E2AFC /* Places_phone.storyboard */; };
 		7E54FEA318FFA0F3002E2AFC /* Places_pad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7E54FEA218FFA0F3002E2AFC /* Places_pad.storyboard */; };
 		7E54FEA818FFA3EE002E2AFC /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E54FEA718FFA3EE002E2AFC /* MapKit.framework */; };
+		7E54FEAF18FFA94B002E2AFC /* PLCDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E54FEAC18FFA94B002E2AFC /* PLCDatabase.m */; };
+		7E54FEB018FFA94B002E2AFC /* PLCManagedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E54FEAE18FFA94B002E2AFC /* PLCManagedObject.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,20 +48,20 @@
 		7E54FE7418FF9392002E2AFC /* PlacesTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PlacesTests-Info.plist"; sourceTree = "<group>"; };
 		7E54FE7618FF9392002E2AFC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		7E54FE8518FF9450002E2AFC /* Places.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Places.xcdatamodel; sourceTree = "<group>"; };
-		7E54FE8B18FF9625002E2AFC /* PLCManagedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCManagedObject.h; sourceTree = "<group>"; };
-		7E54FE8C18FF9625002E2AFC /* PLCManagedObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCManagedObject.m; sourceTree = "<group>"; };
 		7E54FE8F18FF9854002E2AFC /* _PLCPlace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _PLCPlace.h; sourceTree = "<group>"; };
 		7E54FE9018FF9854002E2AFC /* _PLCPlace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _PLCPlace.m; sourceTree = "<group>"; };
 		7E54FE9218FF985A002E2AFC /* PLCPlace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCPlace.h; sourceTree = "<group>"; };
 		7E54FE9318FF985A002E2AFC /* PLCPlace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCPlace.m; sourceTree = "<group>"; };
-		7E54FE9518FF992F002E2AFC /* PLCDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCDatabase.h; sourceTree = "<group>"; };
-		7E54FE9618FF992F002E2AFC /* PLCDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCDatabase.m; sourceTree = "<group>"; };
 		7E54FE9918FF9BC8002E2AFC /* PLCMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCMapViewController.h; sourceTree = "<group>"; };
 		7E54FE9A18FF9BC8002E2AFC /* PLCMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCMapViewController.m; sourceTree = "<group>"; };
 		7E54FE9D18FF9E4C002E2AFC /* PLCDatabaseTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCDatabaseTests.m; sourceTree = "<group>"; };
 		7E54FEA018FFA0E7002E2AFC /* Places_phone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Places_phone.storyboard; sourceTree = "<group>"; };
 		7E54FEA218FFA0F3002E2AFC /* Places_pad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Places_pad.storyboard; sourceTree = "<group>"; };
 		7E54FEA718FFA3EE002E2AFC /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		7E54FEAB18FFA94B002E2AFC /* PLCDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCDatabase.h; sourceTree = "<group>"; };
+		7E54FEAC18FFA94B002E2AFC /* PLCDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCDatabase.m; sourceTree = "<group>"; };
+		7E54FEAD18FFA94B002E2AFC /* PLCManagedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCManagedObject.h; sourceTree = "<group>"; };
+		7E54FEAE18FFA94B002E2AFC /* PLCManagedObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCManagedObject.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +107,7 @@
 			children = (
 				7E54FE8218FF93FE002E2AFC /* Application */,
 				7E54FE8318FF9404002E2AFC /* Model */,
+				7E54FEAA18FFA914002E2AFC /* Model Support */,
 				7E54FE9818FF9BB9002E2AFC /* View Controllers */,
 				7E54FE9C18FF9BD1002E2AFC /* Resources */,
 				7E54FE5A18FF9392002E2AFC /* Supporting Files */,
@@ -159,10 +160,6 @@
 			children = (
 				7E54FE8E18FF9854002E2AFC /* Generated */,
 				7E54FE8418FF9450002E2AFC /* Places.xcdatamodeld */,
-				7E54FE9518FF992F002E2AFC /* PLCDatabase.h */,
-				7E54FE9618FF992F002E2AFC /* PLCDatabase.m */,
-				7E54FE8B18FF9625002E2AFC /* PLCManagedObject.h */,
-				7E54FE8C18FF9625002E2AFC /* PLCManagedObject.m */,
 				7E54FE9218FF985A002E2AFC /* PLCPlace.h */,
 				7E54FE9318FF985A002E2AFC /* PLCPlace.m */,
 			);
@@ -201,6 +198,17 @@
 				7E54FEA718FFA3EE002E2AFC /* MapKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7E54FEAA18FFA914002E2AFC /* Model Support */ = {
+			isa = PBXGroup;
+			children = (
+				7E54FEAB18FFA94B002E2AFC /* PLCDatabase.h */,
+				7E54FEAC18FFA94B002E2AFC /* PLCDatabase.m */,
+				7E54FEAD18FFA94B002E2AFC /* PLCManagedObject.h */,
+				7E54FEAE18FFA94B002E2AFC /* PLCManagedObject.m */,
+			);
+			name = "Model Support";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -319,13 +327,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7E54FE8D18FF9625002E2AFC /* PLCManagedObject.m in Sources */,
+				7E54FEB018FFA94B002E2AFC /* PLCManagedObject.m in Sources */,
 				7E54FE9118FF9854002E2AFC /* _PLCPlace.m in Sources */,
 				7E54FE6418FF9392002E2AFC /* PLCAppDelegate.m in Sources */,
 				7E54FE9418FF985A002E2AFC /* PLCPlace.m in Sources */,
 				7E54FE6018FF9392002E2AFC /* main.m in Sources */,
 				7E54FE9B18FF9BC8002E2AFC /* PLCMapViewController.m in Sources */,
-				7E54FE9718FF992F002E2AFC /* PLCDatabase.m in Sources */,
+				7E54FEAF18FFA94B002E2AFC /* PLCDatabase.m in Sources */,
 				7E54FE8618FF9450002E2AFC /* Places.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -378,11 +386,16 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
@@ -395,10 +408,15 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_STRICT_SELECTOR_MATCH = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
@@ -417,21 +435,31 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_STRICT_SELECTOR_MATCH = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				SDKROOT = iphoneos;
@@ -448,6 +476,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Places/Places-Prefix.pch";
 				INFOPLIST_FILE = "Places/Places-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -461,6 +490,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Places/Places-Prefix.pch";
 				INFOPLIST_FILE = "Places/Places-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -525,6 +555,7 @@
 				7E54FE7E18FF9392002E2AFC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		7E54FE7F18FF9392002E2AFC /* Build configuration list for PBXNativeTarget "PlacesTests" */ = {
 			isa = XCConfigurationList;
@@ -533,6 +564,7 @@
 				7E54FE8118FF9392002E2AFC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
