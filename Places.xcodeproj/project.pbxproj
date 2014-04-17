@@ -7,18 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7E54FE5418FF9392002E2AFC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E54FE5318FF9392002E2AFC /* Foundation.framework */; };
-		7E54FE5618FF9392002E2AFC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E54FE5518FF9392002E2AFC /* CoreGraphics.framework */; };
-		7E54FE5818FF9392002E2AFC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E54FE5718FF9392002E2AFC /* UIKit.framework */; };
 		7E54FE5E18FF9392002E2AFC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7E54FE5C18FF9392002E2AFC /* InfoPlist.strings */; };
 		7E54FE6018FF9392002E2AFC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E54FE5F18FF9392002E2AFC /* main.m */; };
 		7E54FE6418FF9392002E2AFC /* PLCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E54FE6318FF9392002E2AFC /* PLCAppDelegate.m */; };
 		7E54FE6618FF9392002E2AFC /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E54FE6518FF9392002E2AFC /* Images.xcassets */; };
-		7E54FE6D18FF9392002E2AFC /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E54FE6C18FF9392002E2AFC /* XCTest.framework */; };
-		7E54FE6E18FF9392002E2AFC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E54FE5318FF9392002E2AFC /* Foundation.framework */; };
-		7E54FE6F18FF9392002E2AFC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E54FE5718FF9392002E2AFC /* UIKit.framework */; };
 		7E54FE7718FF9392002E2AFC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7E54FE7518FF9392002E2AFC /* InfoPlist.strings */; };
-		7E54FE7918FF9392002E2AFC /* PlacesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E54FE7818FF9392002E2AFC /* PlacesTests.m */; };
+		7E54FE8618FF9450002E2AFC /* Places.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7E54FE8418FF9450002E2AFC /* Places.xcdatamodeld */; };
+		7E54FE8D18FF9625002E2AFC /* PLCManagedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E54FE8C18FF9625002E2AFC /* PLCManagedObject.m */; };
+		7E54FE9118FF9854002E2AFC /* _PLCPlace.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E54FE9018FF9854002E2AFC /* _PLCPlace.m */; };
+		7E54FE9418FF985A002E2AFC /* PLCPlace.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E54FE9318FF985A002E2AFC /* PLCPlace.m */; };
+		7E54FE9718FF992F002E2AFC /* PLCDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E54FE9618FF992F002E2AFC /* PLCDatabase.m */; };
+		7E54FE9B18FF9BC8002E2AFC /* PLCMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E54FE9A18FF9BC8002E2AFC /* PLCMapViewController.m */; };
+		7E54FE9E18FF9E4C002E2AFC /* PLCDatabaseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E54FE9D18FF9E4C002E2AFC /* PLCDatabaseTests.m */; };
+		7E54FE9F18FF9FA5002E2AFC /* Places.xcdatamodeld in Resources */ = {isa = PBXBuildFile; fileRef = 7E54FE8418FF9450002E2AFC /* Places.xcdatamodeld */; };
+		7E54FEA118FFA0E7002E2AFC /* Places_phone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7E54FEA018FFA0E7002E2AFC /* Places_phone.storyboard */; };
+		7E54FEA318FFA0F3002E2AFC /* Places_pad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7E54FEA218FFA0F3002E2AFC /* Places_pad.storyboard */; };
+		7E54FEA818FFA3EE002E2AFC /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E54FEA718FFA3EE002E2AFC /* MapKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,9 +37,6 @@
 
 /* Begin PBXFileReference section */
 		7E54FE5018FF9392002E2AFC /* Places.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Places.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		7E54FE5318FF9392002E2AFC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		7E54FE5518FF9392002E2AFC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		7E54FE5718FF9392002E2AFC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		7E54FE5B18FF9392002E2AFC /* Places-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Places-Info.plist"; sourceTree = "<group>"; };
 		7E54FE5D18FF9392002E2AFC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		7E54FE5F18FF9392002E2AFC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -44,30 +45,38 @@
 		7E54FE6318FF9392002E2AFC /* PLCAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PLCAppDelegate.m; sourceTree = "<group>"; };
 		7E54FE6518FF9392002E2AFC /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		7E54FE6B18FF9392002E2AFC /* PlacesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlacesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		7E54FE6C18FF9392002E2AFC /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		7E54FE7418FF9392002E2AFC /* PlacesTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PlacesTests-Info.plist"; sourceTree = "<group>"; };
 		7E54FE7618FF9392002E2AFC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		7E54FE7818FF9392002E2AFC /* PlacesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlacesTests.m; sourceTree = "<group>"; };
+		7E54FE8518FF9450002E2AFC /* Places.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Places.xcdatamodel; sourceTree = "<group>"; };
+		7E54FE8B18FF9625002E2AFC /* PLCManagedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCManagedObject.h; sourceTree = "<group>"; };
+		7E54FE8C18FF9625002E2AFC /* PLCManagedObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCManagedObject.m; sourceTree = "<group>"; };
+		7E54FE8F18FF9854002E2AFC /* _PLCPlace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _PLCPlace.h; sourceTree = "<group>"; };
+		7E54FE9018FF9854002E2AFC /* _PLCPlace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _PLCPlace.m; sourceTree = "<group>"; };
+		7E54FE9218FF985A002E2AFC /* PLCPlace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCPlace.h; sourceTree = "<group>"; };
+		7E54FE9318FF985A002E2AFC /* PLCPlace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCPlace.m; sourceTree = "<group>"; };
+		7E54FE9518FF992F002E2AFC /* PLCDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCDatabase.h; sourceTree = "<group>"; };
+		7E54FE9618FF992F002E2AFC /* PLCDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCDatabase.m; sourceTree = "<group>"; };
+		7E54FE9918FF9BC8002E2AFC /* PLCMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCMapViewController.h; sourceTree = "<group>"; };
+		7E54FE9A18FF9BC8002E2AFC /* PLCMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCMapViewController.m; sourceTree = "<group>"; };
+		7E54FE9D18FF9E4C002E2AFC /* PLCDatabaseTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCDatabaseTests.m; sourceTree = "<group>"; };
+		7E54FEA018FFA0E7002E2AFC /* Places_phone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Places_phone.storyboard; sourceTree = "<group>"; };
+		7E54FEA218FFA0F3002E2AFC /* Places_pad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Places_pad.storyboard; sourceTree = "<group>"; };
+		7E54FEA718FFA3EE002E2AFC /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		7E54FE4D18FF9392002E2AFC /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				7E54FE5618FF9392002E2AFC /* CoreGraphics.framework in Frameworks */,
-				7E54FE5818FF9392002E2AFC /* UIKit.framework in Frameworks */,
-				7E54FE5418FF9392002E2AFC /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		7E54FE6818FF9392002E2AFC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7E54FE6D18FF9392002E2AFC /* XCTest.framework in Frameworks */,
-				7E54FE6F18FF9392002E2AFC /* UIKit.framework in Frameworks */,
-				7E54FE6E18FF9392002E2AFC /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7E54FEA418FFA3DB002E2AFC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7E54FEA818FFA3EE002E2AFC /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -79,7 +88,7 @@
 			children = (
 				7E54FE5918FF9392002E2AFC /* Places */,
 				7E54FE7218FF9392002E2AFC /* PlacesTests */,
-				7E54FE5218FF9392002E2AFC /* Frameworks */,
+				7E54FEA918FFA403002E2AFC /* Frameworks */,
 				7E54FE5118FF9392002E2AFC /* Products */,
 			);
 			sourceTree = "<group>";
@@ -93,23 +102,13 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		7E54FE5218FF9392002E2AFC /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				7E54FE5318FF9392002E2AFC /* Foundation.framework */,
-				7E54FE5518FF9392002E2AFC /* CoreGraphics.framework */,
-				7E54FE5718FF9392002E2AFC /* UIKit.framework */,
-				7E54FE6C18FF9392002E2AFC /* XCTest.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		7E54FE5918FF9392002E2AFC /* Places */ = {
 			isa = PBXGroup;
 			children = (
-				7E54FE6218FF9392002E2AFC /* PLCAppDelegate.h */,
-				7E54FE6318FF9392002E2AFC /* PLCAppDelegate.m */,
-				7E54FE6518FF9392002E2AFC /* Images.xcassets */,
+				7E54FE8218FF93FE002E2AFC /* Application */,
+				7E54FE8318FF9404002E2AFC /* Model */,
+				7E54FE9818FF9BB9002E2AFC /* View Controllers */,
+				7E54FE9C18FF9BD1002E2AFC /* Resources */,
 				7E54FE5A18FF9392002E2AFC /* Supporting Files */,
 			);
 			path = Places;
@@ -129,7 +128,7 @@
 		7E54FE7218FF9392002E2AFC /* PlacesTests */ = {
 			isa = PBXGroup;
 			children = (
-				7E54FE7818FF9392002E2AFC /* PlacesTests.m */,
+				7E54FE9D18FF9E4C002E2AFC /* PLCDatabaseTests.m */,
 				7E54FE7318FF9392002E2AFC /* Supporting Files */,
 			);
 			path = PlacesTests;
@@ -144,6 +143,66 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		7E54FE8218FF93FE002E2AFC /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				7E54FE6218FF9392002E2AFC /* PLCAppDelegate.h */,
+				7E54FE6318FF9392002E2AFC /* PLCAppDelegate.m */,
+				7E54FEA018FFA0E7002E2AFC /* Places_phone.storyboard */,
+				7E54FEA218FFA0F3002E2AFC /* Places_pad.storyboard */,
+			);
+			name = Application;
+			sourceTree = "<group>";
+		};
+		7E54FE8318FF9404002E2AFC /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				7E54FE8E18FF9854002E2AFC /* Generated */,
+				7E54FE8418FF9450002E2AFC /* Places.xcdatamodeld */,
+				7E54FE9518FF992F002E2AFC /* PLCDatabase.h */,
+				7E54FE9618FF992F002E2AFC /* PLCDatabase.m */,
+				7E54FE8B18FF9625002E2AFC /* PLCManagedObject.h */,
+				7E54FE8C18FF9625002E2AFC /* PLCManagedObject.m */,
+				7E54FE9218FF985A002E2AFC /* PLCPlace.h */,
+				7E54FE9318FF985A002E2AFC /* PLCPlace.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		7E54FE8E18FF9854002E2AFC /* Generated */ = {
+			isa = PBXGroup;
+			children = (
+				7E54FE8F18FF9854002E2AFC /* _PLCPlace.h */,
+				7E54FE9018FF9854002E2AFC /* _PLCPlace.m */,
+			);
+			path = Generated;
+			sourceTree = "<group>";
+		};
+		7E54FE9818FF9BB9002E2AFC /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				7E54FE9918FF9BC8002E2AFC /* PLCMapViewController.h */,
+				7E54FE9A18FF9BC8002E2AFC /* PLCMapViewController.m */,
+			);
+			name = "View Controllers";
+			sourceTree = "<group>";
+		};
+		7E54FE9C18FF9BD1002E2AFC /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				7E54FE6518FF9392002E2AFC /* Images.xcassets */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		7E54FEA918FFA403002E2AFC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7E54FEA718FFA3EE002E2AFC /* MapKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -151,8 +210,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7E54FE7C18FF9392002E2AFC /* Build configuration list for PBXNativeTarget "Places" */;
 			buildPhases = (
+				7E54FE8718FF9495002E2AFC /* ShellScript */,
 				7E54FE4C18FF9392002E2AFC /* Sources */,
-				7E54FE4D18FF9392002E2AFC /* Frameworks */,
+				7E54FEA418FFA3DB002E2AFC /* Frameworks */,
 				7E54FE4E18FF9392002E2AFC /* Resources */,
 			);
 			buildRules = (
@@ -220,8 +280,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7E54FEA318FFA0F3002E2AFC /* Places_pad.storyboard in Resources */,
 				7E54FE5E18FF9392002E2AFC /* InfoPlist.strings in Resources */,
 				7E54FE6618FF9392002E2AFC /* Images.xcassets in Resources */,
+				7E54FEA118FFA0E7002E2AFC /* Places_phone.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -229,19 +291,42 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7E54FE9F18FF9FA5002E2AFC /* Places.xcdatamodeld in Resources */,
 				7E54FE7718FF9392002E2AFC /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		7E54FE8718FF9495002E2AFC /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "sh \"${SRCROOT}/Scripts/GenerateModelClasses.sh\"";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		7E54FE4C18FF9392002E2AFC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7E54FE8D18FF9625002E2AFC /* PLCManagedObject.m in Sources */,
+				7E54FE9118FF9854002E2AFC /* _PLCPlace.m in Sources */,
 				7E54FE6418FF9392002E2AFC /* PLCAppDelegate.m in Sources */,
+				7E54FE9418FF985A002E2AFC /* PLCPlace.m in Sources */,
 				7E54FE6018FF9392002E2AFC /* main.m in Sources */,
+				7E54FE9B18FF9BC8002E2AFC /* PLCMapViewController.m in Sources */,
+				7E54FE9718FF992F002E2AFC /* PLCDatabase.m in Sources */,
+				7E54FE8618FF9450002E2AFC /* Places.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -249,7 +334,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7E54FE7918FF9392002E2AFC /* PlacesTests.m in Sources */,
+				7E54FE9E18FF9E4C002E2AFC /* PLCDatabaseTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -450,6 +535,19 @@
 			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		7E54FE8418FF9450002E2AFC /* Places.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				7E54FE8518FF9450002E2AFC /* Places.xcdatamodel */,
+			);
+			currentVersion = 7E54FE8518FF9450002E2AFC /* Places.xcdatamodel */;
+			path = Places.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 7E54FE4818FF9392002E2AFC /* Project object */;
 }

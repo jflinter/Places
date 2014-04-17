@@ -1,0 +1,66 @@
+//
+//  PLCDatabase.m
+//  Places
+//
+//  Created by Cameron Spickert on 4/17/14.
+//  Copyright (c) 2014 Places. All rights reserved.
+//
+
+#import "PLCDatabase.h"
+
+@interface PLCDatabase ()
+
+@property (nonatomic, copy) NSURL *managedObjectModelURL;
+@property (nonatomic, copy) NSURL *persistentStoreURL;
+@property (nonatomic, readonly) NSManagedObjectModel *managedObjectModel;
+@property (nonatomic, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+
+@end
+
+@implementation PLCDatabase
+
+@synthesize managedObjectModel = _managedObjectModel;
+@synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
+@synthesize mainContext = _mainContext;
+
+- (instancetype)initWithModelURL:(NSURL *)modelURL storeURL:(NSURL *)storeURL
+{
+    if ((self = [super init])) {
+        self.managedObjectModelURL = modelURL;
+        self.persistentStoreURL = storeURL;
+    }
+    return self;
+}
+
+- (NSManagedObjectModel *)managedObjectModel
+{
+    if (_managedObjectModel == nil) {
+        _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:self.managedObjectModelURL];
+    }
+    return _managedObjectModel;
+}
+
+- (NSPersistentStoreCoordinator *)persistentStoreCoordinator
+{
+    if (_persistentStoreCoordinator == nil) {
+        _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:self.managedObjectModel];
+
+        NSPersistentStore *store = nil;
+        NSError *error = nil;
+        if ((store = [_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:self.persistentStoreURL options:@{ NSMigratePersistentStoresAutomaticallyOption : @YES, NSInferMappingModelAutomaticallyOption : @YES } error:&error]) == nil) {
+            abort();
+        }
+    }
+    return _persistentStoreCoordinator;
+}
+
+- (NSManagedObjectContext *)mainContext
+{
+    if (_mainContext == nil) {
+        _mainContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+        _mainContext.persistentStoreCoordinator = self.persistentStoreCoordinator;
+    }
+    return _mainContext;
+}
+
+@end

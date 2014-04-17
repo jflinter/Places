@@ -7,43 +7,46 @@
 //
 
 #import "PLCAppDelegate.h"
+#import "PLCDatabase.h"
+#import "PLCMapViewController.h"
+
+@interface PLCAppDelegate ()
+
+@property (nonatomic, readonly) PLCDatabase *database;
+
+@end
 
 @implementation PLCAppDelegate
 
+@synthesize database = _database;
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
-    self.window.backgroundColor = [UIColor whiteColor];
-    [self.window makeKeyAndVisible];
+    PLCMapViewController *mapViewController = (PLCMapViewController *)self.window.rootViewController;
+    mapViewController.database = self.database;
+
     return YES;
 }
 
-- (void)applicationWillResignActive:(UIApplication *)application
+#pragma mark -
+#pragma mark Database methods
+
+- (PLCDatabase *)database
 {
-    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+    if (_database == nil) {
+        _database = [[PLCDatabase alloc] initWithModelURL:[self databaseModelURL] storeURL:[self databaseStoreURL]];
+    }
+    return _database;
 }
 
-- (void)applicationDidEnterBackground:(UIApplication *)application
+- (NSURL *)databaseModelURL
 {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    return [[NSBundle mainBundle] URLForResource:@"Places" withExtension:@"momd"];
 }
 
-- (void)applicationWillEnterForeground:(UIApplication *)application
+- (NSURL *)databaseStoreURL
 {
-    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-}
-
-- (void)applicationDidBecomeActive:(UIApplication *)application
-{
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-}
-
-- (void)applicationWillTerminate:(UIApplication *)application
-{
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    return [[[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:YES error:NULL] URLByAppendingPathComponent:[@"Places" stringByAppendingPathExtension:@"sqlite"]];
 }
 
 @end

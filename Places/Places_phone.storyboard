@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="OId-a2-hAa">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <scenes>
+        <!--Map View Controller-->
+        <scene sceneID="4Hk-xv-gft">
+            <objects>
+                <viewController id="OId-a2-hAa" customClass="PLCMapViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="b5m-7t-b29"/>
+                        <viewControllerLayoutGuide type="bottom" id="LaD-Hf-YxR"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="lNU-MC-GZc">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="a6V-Pg-lJh">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </mapView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="a6V-Pg-lJh" firstAttribute="top" secondItem="lNU-MC-GZc" secondAttribute="top" id="0A5-et-4EU"/>
+                            <constraint firstAttribute="trailing" secondItem="a6V-Pg-lJh" secondAttribute="trailing" id="1uU-In-0qG"/>
+                            <constraint firstItem="a6V-Pg-lJh" firstAttribute="leading" secondItem="lNU-MC-GZc" secondAttribute="leading" id="GlJ-yn-Lay"/>
+                            <constraint firstAttribute="bottom" secondItem="a6V-Pg-lJh" secondAttribute="bottom" id="zCa-cd-FDS"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="mapView" destination="a6V-Pg-lJh" id="vbR-qJ-8qZ"/>
+                        <outlet property="view" destination="lNU-MC-GZc" id="vzn-G1-QQ7"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jYb-yF-plj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-15" y="7"/>
+        </scene>
+    </scenes>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>

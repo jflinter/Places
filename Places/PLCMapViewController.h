@@ -1,5 +1,5 @@
 //
-//  PLCAppDelegate.h
+//  PLCMapViewController.h
 //  Places
 //
 //  Created by Cameron Spickert on 4/17/14.
@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PLCAppDelegate : UIResponder <UIApplicationDelegate>
+@class PLCDatabase;
 
-@property (nonatomic) UIWindow *window;
+@interface PLCMapViewController : UIViewController
+
+@property (nonatomic) PLCDatabase *database;
 
 @end
