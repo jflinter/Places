@@ -16,14 +16,24 @@
 
 @implementation PLCPlaceStore
 
+- (id) init {
+    self = [super init];
+    if (self) {
+        BOOL success = [self.fetchedResultsController performFetch:nil];
+        if (!success) {
+            abort();
+        }
+    }
+    return self;
+}
+
 - (NSArray *)allPlaces {
     return self.fetchedResultsController.fetchedObjects;
 }
 
 - (void) insertPlaceAtCoordinate:(CLLocationCoordinate2D)coordinate {
     PLCPlace *place = [PLCPlace insertInManagedObjectContext:[self managedObjectContext]];
-    place.latitude = @(coordinate.latitude);
-    place.longitude = @(coordinate.longitude);
+    place.coordinate = coordinate;
     [self save];
     [self.delegate placeStore:self didInsertPlace:place];
 }
@@ -48,10 +58,6 @@
     if (!_fetchedResultsController) {
         _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:[self fetchRequest] managedObjectContext:[self managedObjectContext] sectionNameKeyPath:nil cacheName:nil];
         _fetchedResultsController.delegate = self;
-        BOOL success = [_fetchedResultsController performFetch:nil];
-        if (!success) {
-            abort();
-        }
     }
     return _fetchedResultsController;
 }
