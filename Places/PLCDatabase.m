@@ -23,6 +23,26 @@
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 @synthesize mainContext = _mainContext;
 
++ (instancetype)sharedDatabase {
+    static PLCDatabase *sharedDatabase;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedDatabase = [[PLCDatabase alloc] initWithModelURL:[self databaseModelURL] storeURL:[self databaseStoreURL]];
+    });
+    return sharedDatabase;
+}
+
++ (NSURL *)databaseModelURL
+{
+    return [[NSBundle mainBundle] URLForResource:@"Places" withExtension:@"momd"];
+}
+
++ (NSURL *)databaseStoreURL
+{
+    return [[[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:YES error:NULL] URLByAppendingPathComponent:[@"Places" stringByAppendingPathExtension:@"sqlite"]];
+}
+
+
 - (instancetype)initWithModelURL:(NSURL *)modelURL storeURL:(NSURL *)storeURL
 {
     if ((self = [super init])) {

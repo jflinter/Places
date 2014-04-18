@@ -12,6 +12,8 @@
 
 @property (nonatomic, readonly) NSManagedObjectContext *mainContext;
 
++ (instancetype)sharedDatabase;
+
 - (instancetype)initWithModelURL:(NSURL *)modelURL storeURL:(NSURL *)storeURL;
 
 @end

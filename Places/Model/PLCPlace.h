@@ -8,6 +8,6 @@
 
 #import "_PLCPlace.h"
 
-@interface PLCPlace : _PLCPlace
+@interface PLCPlace : _PLCPlace<MKAnnotation>
 
 @end
