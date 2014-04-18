@@ -22,8 +22,7 @@
 
 - (void) insertPlaceAtCoordinate:(CLLocationCoordinate2D)coordinate {
     PLCPlace *place = [PLCPlace insertInManagedObjectContext:[self managedObjectContext]];
-    place.latitude = @(coordinate.latitude);
-    place.longitude = @(coordinate.longitude);
+    place.coordinate = coordinate;
     [self save];
     [self.delegate placeStore:self didInsertPlace:place];
 }
