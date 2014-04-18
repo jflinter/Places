@@ -23,6 +23,7 @@
 		7E54FEA818FFA3EE002E2AFC /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E54FEA718FFA3EE002E2AFC /* MapKit.framework */; };
 		7E54FEAF18FFA94B002E2AFC /* PLCDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E54FEAC18FFA94B002E2AFC /* PLCDatabase.m */; };
 		7E54FEB018FFA94B002E2AFC /* PLCManagedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E54FEAE18FFA94B002E2AFC /* PLCManagedObject.m */; };
+		A0FAFD2319008E60001A364D /* PLCPlaceStore.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FAFD2219008E60001A364D /* PLCPlaceStore.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +63,8 @@
 		7E54FEAC18FFA94B002E2AFC /* PLCDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCDatabase.m; sourceTree = "<group>"; };
 		7E54FEAD18FFA94B002E2AFC /* PLCManagedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCManagedObject.h; sourceTree = "<group>"; };
 		7E54FEAE18FFA94B002E2AFC /* PLCManagedObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCManagedObject.m; sourceTree = "<group>"; };
+		A0FAFD2119008E60001A364D /* PLCPlaceStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCPlaceStore.h; sourceTree = "<group>"; };
+		A0FAFD2219008E60001A364D /* PLCPlaceStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCPlaceStore.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -207,6 +210,8 @@
 				7E54FEAC18FFA94B002E2AFC /* PLCDatabase.m */,
 				7E54FEAD18FFA94B002E2AFC /* PLCManagedObject.h */,
 				7E54FEAE18FFA94B002E2AFC /* PLCManagedObject.m */,
+				A0FAFD2119008E60001A364D /* PLCPlaceStore.h */,
+				A0FAFD2219008E60001A364D /* PLCPlaceStore.m */,
 			);
 			name = "Model Support";
 			sourceTree = "<group>";
@@ -327,6 +332,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A0FAFD2319008E60001A364D /* PLCPlaceStore.m in Sources */,
 				7E54FEB018FFA94B002E2AFC /* PLCManagedObject.m in Sources */,
 				7E54FE9118FF9854002E2AFC /* _PLCPlace.m in Sources */,
 				7E54FE6418FF9392002E2AFC /* PLCAppDelegate.m in Sources */,

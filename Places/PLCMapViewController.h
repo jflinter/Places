@@ -8,10 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@class PLCDatabase;
-
 @interface PLCMapViewController : UIViewController
-
-@property (nonatomic) PLCDatabase *database;
 
 @end
