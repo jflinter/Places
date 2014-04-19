@@ -9,6 +9,7 @@
 #import "PLCMapViewController.h"
 #import "PLCPlace.h"
 #import "PLCPlaceStore.h"
+#import "PLCPinAnnotationView.h"
 
 static NSString * const PLCMapPinReuseIdentifier = @"PLCMapPinReuseIdentifier";
 
@@ -16,6 +17,7 @@ static NSString * const PLCMapPinReuseIdentifier = @"PLCMapPinReuseIdentifier";
 
 @property (nonatomic, weak) IBOutlet MKMapView *mapView;
 @property (nonatomic, readonly) PLCPlaceStore *placeStore;
+@property (nonatomic, weak) PLCPinAnnotationView *selectedAnnotationView;
 
 @end
 
@@ -37,10 +39,11 @@ static NSString * const PLCMapPinReuseIdentifier = @"PLCMapPinReuseIdentifier";
             viewForAnnotation:(id<MKAnnotation>)annotation {
     MKAnnotationView *annotationView = [mapView dequeueReusableAnnotationViewWithIdentifier:PLCMapPinReuseIdentifier];
     if (!annotationView) {
-        MKPinAnnotationView *pinAnnotation = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:PLCMapPinReuseIdentifier];
+        PLCPinAnnotationView *pinAnnotation = [[PLCPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:PLCMapPinReuseIdentifier];
         pinAnnotation.animatesDrop = YES;
         annotationView = pinAnnotation;
         annotationView.draggable = YES;
+        annotationView.canShowCallout = NO;
     }
     return annotationView;
 }
@@ -55,6 +58,9 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 }
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
+    if (self.selectedAnnotationView && view != self.selectedAnnotationView) {
+        [self.mapView deselectAnnotation:self.selectedAnnotationView.annotation animated:YES];
+    }
     // we want to scroll the map such that the annotation view is centered horizontally and 20px above the bottom of the screen.
     // horizontally, this is easy - we're scrolling to the same x-coordinate as the tapped annotation.
     // all that we have to do is figure out the y-coordinate we need to scroll to.
@@ -71,8 +77,16 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     MKCoordinateRegion region = MKCoordinateRegionMake(coordinate, self.mapView.region.span);
     [UIView animateWithDuration:animationDuration animations:^{
         [self.mapView setRegion:region];
+    } completion:^(BOOL finished) {
+        self.selectedAnnotationView = (PLCPinAnnotationView *)view;
     }];
+}
 
+- (void)mapView:(MKMapView *)mapView regionWillChangeAnimated:(BOOL)animated {
+    if (self.selectedAnnotationView) {
+        [self.mapView deselectAnnotation:self.selectedAnnotationView.annotation animated:YES];
+        self.selectedAnnotationView = nil;
+    }
 }
 
 #pragma mark -
@@ -80,6 +94,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 - (void)placeStore:(PLCPlaceStore *)store
     didInsertPlace:(PLCPlace *)place {
     [self.mapView addAnnotation:place];
+    [self.mapView selectAnnotation:place animated:YES];
 }
 
 - (void)placeStore:(PLCPlaceStore *)store
