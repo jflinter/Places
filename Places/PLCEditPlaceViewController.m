@@ -8,8 +8,7 @@
 
 #import "PLCEditPlaceViewController.h"
 
-@interface PLCEditPlaceViewController ()
-
+@interface PLCEditPlaceViewController ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 @end
 
 @implementation PLCEditPlaceViewController
@@ -35,15 +34,22 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
+#pragma mark -
+#pragma mark UIImagePickerController
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (IBAction)choosePhoto:(id)sender {
+    UIImagePickerController *imagePicker = [UIImagePickerController new];
+    imagePicker.delegate = self;
+    [self.view.window.rootViewController presentViewController:imagePicker animated:YES completion:nil];
+    
 }
-*/
+
+- (void)imagePickerController:(UIImagePickerController *)picker
+didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    self.imageView.image = image;
+    [picker.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
 
 @end

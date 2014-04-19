@@ -9,5 +9,5 @@
 #import "_PLCPlace.h"
 
 @interface PLCPlace : _PLCPlace<MKAnnotation>
-
+@property(nonatomic, readwrite) UIImage *image;
 @end

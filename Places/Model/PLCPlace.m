@@ -10,6 +10,8 @@
 
 @implementation PLCPlace
 
+@synthesize image = _image;
+
 #pragma mark MKAnnotation
 
 - (CLLocationCoordinate2D)coordinate {

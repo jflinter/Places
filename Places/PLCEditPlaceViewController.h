@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface PLCEditPlaceViewController : UIViewController
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
+- (IBAction)choosePhoto:(id)sender;
 
 @end

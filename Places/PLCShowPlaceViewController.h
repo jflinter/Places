@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+@class PLCPlace;
 
 @interface PLCShowPlaceViewController : UIViewController
-
-- (IBAction)unwindToShowPlace:(UIStoryboardSegue*)sender;
+@property (strong, nonatomic) PLCPlace *place;
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
 
 @end

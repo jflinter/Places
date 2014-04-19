@@ -11,9 +11,8 @@
 @class PLCCalloutView;
 
 @interface PLCCalloutViewController : UIViewController
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topSpacingConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomSpacingConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *leftSpacingConstraint;
 @property (weak, nonatomic) IBOutlet PLCCalloutView *calloutView;
+@property (weak, nonatomic) IBOutlet UIView *containerView;
 
 @end
