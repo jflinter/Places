@@ -16,7 +16,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="a6V-Pg-lJh">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="a6V-Pg-lJh" customClass="PLCMapView">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <connections>
@@ -61,15 +61,27 @@
                                     <segue destination="zKC-7G-tcT" kind="embed" id="xPL-Ng-bV8"/>
                                 </connections>
                             </containerView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OFu-4S-veR">
+                                <rect key="frame" x="10" y="0.0" width="280" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <items>
+                                    <barButtonItem title="Item" id="Qud-OK-Rgp"/>
+                                </items>
+                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="UZl-TG-aWT" firstAttribute="top" secondItem="sdp-0Z-iRs" secondAttribute="top" constant="10" id="JqL-D2-djk"/>
+                            <constraint firstAttribute="centerX" secondItem="OFu-4S-veR" secondAttribute="centerX" id="SUp-bo-9G5"/>
                             <constraint firstAttribute="centerX" secondItem="UZl-TG-aWT" secondAttribute="centerX" id="fbi-EB-J6y"/>
                             <constraint firstItem="Zzu-UK-J3O" firstAttribute="top" secondItem="UZl-TG-aWT" secondAttribute="bottom" constant="10" id="gpT-x4-JmS"/>
+                            <constraint firstAttribute="width" secondItem="OFu-4S-veR" secondAttribute="width" constant="20" id="htO-O3-tFk"/>
                             <constraint firstItem="UZl-TG-aWT" firstAttribute="leading" secondItem="sdp-0Z-iRs" secondAttribute="leading" constant="10" id="mnP-14-K5y"/>
+                            <constraint firstItem="OFu-4S-veR" firstAttribute="top" secondItem="AAF-d9-zo1" secondAttribute="bottom" id="oFQ-iq-23u"/>
                         </constraints>
                     </view>
+                    <nil key="simulatedStatusBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="300" height="400"/>
                     <connections>
@@ -94,20 +106,7 @@
                     <view key="view" contentMode="scaleToFill" id="8ZJ-Hb-MZo">
                         <rect key="frame" x="0.0" y="0.0" width="300" height="400"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0hP-fc-mEw">
-                                <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Edit">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="0hP-fc-mEw" firstAttribute="top" secondItem="tgY-Hv-xVj" secondAttribute="bottom" id="0fv-WG-ilX"/>
-                            <constraint firstItem="0hP-fc-mEw" firstAttribute="leading" secondItem="8ZJ-Hb-MZo" secondAttribute="leading" id="eE2-dV-1Ra"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="vHd-Lg-GSW"/>
                     <nil key="simulatedStatusBarMetrics"/>
@@ -129,30 +128,13 @@
                     <view key="view" contentMode="scaleToFill" id="3ad-8n-qXv">
                         <rect key="frame" x="0.0" y="0.0" width="300" height="400"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t4d-lG-3rY">
-                                <rect key="frame" x="10" y="10" width="37" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Done">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="cD9-dl-76R" kind="unwind" unwindAction="unwindToShowPlace:" id="rnC-rg-KZS"/>
-                                </connections>
-                            </button>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="t4d-lG-3rY" firstAttribute="leading" secondItem="3ad-8n-qXv" secondAttribute="leading" constant="10" id="Oka-0e-Z6k"/>
-                            <constraint firstItem="t4d-lG-3rY" firstAttribute="top" secondItem="qSO-lK-uz7" secondAttribute="bottom" constant="10" id="zBy-kr-Eqw"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="peL-ha-VJi"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="300" height="400"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pPr-yb-o2f" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="cD9-dl-76R" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="1198" y="91"/>
         </scene>

@@ -10,14 +10,14 @@
 #import "PLCPlace.h"
 #import "PLCPlaceStore.h"
 #import "PLCPinAnnotationView.h"
+#import "PLCMapView.h"
 
 static NSString * const PLCMapPinReuseIdentifier = @"PLCMapPinReuseIdentifier";
 
 @interface PLCMapViewController () <MKMapViewDelegate, PLCPlaceStoreDelegate>
 
-@property (nonatomic, weak) IBOutlet MKMapView *mapView;
+@property (nonatomic, weak) IBOutlet PLCMapView *mapView;
 @property (nonatomic, readonly) PLCPlaceStore *placeStore;
-@property (nonatomic, weak) PLCPinAnnotationView *selectedAnnotationView;
 
 @end
 
@@ -57,9 +57,9 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     }
 }
 
-- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
-    if (self.selectedAnnotationView && view != self.selectedAnnotationView) {
-        [self.mapView deselectAnnotation:self.selectedAnnotationView.annotation animated:YES];
+- (void)mapView:(PLCMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
+    if (mapView.activeAnnotationView && view != mapView.activeAnnotationView) {
+        [self.mapView deselectAnnotation:mapView.activeAnnotationView.annotation animated:YES];
     }
     // we want to scroll the map such that the annotation view is centered horizontally and 20px above the bottom of the screen.
     // horizontally, this is easy - we're scrolling to the same x-coordinate as the tapped annotation.
@@ -78,14 +78,14 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     [UIView animateWithDuration:animationDuration animations:^{
         [self.mapView setRegion:region];
     } completion:^(BOOL finished) {
-        self.selectedAnnotationView = (PLCPinAnnotationView *)view;
+        self.mapView.activeAnnotationView = view;
     }];
 }
 
-- (void)mapView:(MKMapView *)mapView regionWillChangeAnimated:(BOOL)animated {
-    if (self.selectedAnnotationView) {
-        [self.mapView deselectAnnotation:self.selectedAnnotationView.annotation animated:YES];
-        self.selectedAnnotationView = nil;
+- (void)mapView:(PLCMapView *)mapView regionWillChangeAnimated:(BOOL)animated {
+    if (mapView.activeAnnotationView) {
+        [self.mapView deselectAnnotation:mapView.activeAnnotationView.annotation animated:YES];
+        mapView.activeAnnotationView = nil;
     }
 }
 
@@ -115,6 +115,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 
 - (UIGestureRecognizer *)addPlaceGestureRecognizer {
     UILongPressGestureRecognizer *recognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressed:)];
+    recognizer.delegate = self.mapView;
     return recognizer;
 }
 
