@@ -41,33 +41,72 @@
             </objects>
             <point key="canvasLocation" x="-15" y="7"/>
         </scene>
-        <!--Show Place Callout View Controller-->
+        <!--Callout View Controller-->
+        <scene sceneID="vaZ-rl-Ee0">
+            <objects>
+                <viewController storyboardIdentifier="PLCCalloutViewController" id="1NL-xg-0xe" customClass="PLCCalloutViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="AAF-d9-zo1"/>
+                        <viewControllerLayoutGuide type="bottom" id="Zzu-UK-J3O"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="sdp-0Z-iRs" customClass="PLCCalloutView">
+                        <rect key="frame" x="0.0" y="0.0" width="300" height="400"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <containerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UZl-TG-aWT">
+                                <rect key="frame" x="10" y="10" width="280" height="380"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="zKC-7G-tcT" kind="embed" id="xPL-Ng-bV8"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="UZl-TG-aWT" firstAttribute="top" secondItem="sdp-0Z-iRs" secondAttribute="top" constant="10" id="JqL-D2-djk"/>
+                            <constraint firstAttribute="centerX" secondItem="UZl-TG-aWT" secondAttribute="centerX" id="fbi-EB-J6y"/>
+                            <constraint firstItem="Zzu-UK-J3O" firstAttribute="top" secondItem="UZl-TG-aWT" secondAttribute="bottom" constant="10" id="gpT-x4-JmS"/>
+                            <constraint firstItem="UZl-TG-aWT" firstAttribute="leading" secondItem="sdp-0Z-iRs" secondAttribute="leading" constant="10" id="mnP-14-K5y"/>
+                        </constraints>
+                    </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="300" height="400"/>
+                    <connections>
+                        <outlet property="bottomSpacingConstraint" destination="gpT-x4-JmS" id="mFu-SQ-Xoh"/>
+                        <outlet property="calloutView" destination="sdp-0Z-iRs" id="fBU-5t-hs5"/>
+                        <outlet property="leftSpacingConstraint" destination="fbi-EB-J6y" id="lNQ-vi-osJ"/>
+                        <outlet property="topSpacingConstraint" destination="JqL-D2-djk" id="EdG-fb-Iq7"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PwR-vm-YkE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="390" y="91"/>
+        </scene>
+        <!--Show Place View Controller-->
         <scene sceneID="zGZ-ZV-YYE">
             <objects>
-                <viewController storyboardIdentifier="PLCShowPlaceCalloutViewController" modalTransitionStyle="flipHorizontal" id="zKC-7G-tcT" customClass="PLCShowPlaceCalloutViewController" sceneMemberID="viewController">
+                <viewController modalTransitionStyle="flipHorizontal" id="zKC-7G-tcT" customClass="PLCShowPlaceViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="tgY-Hv-xVj"/>
                         <viewControllerLayoutGuide type="bottom" id="SHY-93-RV6"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="8ZJ-Hb-MZo" customClass="PLCCalloutView">
+                    <view key="view" contentMode="scaleToFill" id="8ZJ-Hb-MZo">
                         <rect key="frame" x="0.0" y="0.0" width="300" height="400"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0hP-fc-mEw">
-                                <rect key="frame" x="10" y="10" width="30" height="30"/>
+                                <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Edit">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <connections>
-                                    <segue destination="0QO-bi-maP" kind="push" id="BhR-g7-lyJ"/>
-                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="0hP-fc-mEw" firstAttribute="top" secondItem="tgY-Hv-xVj" secondAttribute="bottom" constant="10" id="0fv-WG-ilX"/>
-                            <constraint firstItem="0hP-fc-mEw" firstAttribute="leading" secondItem="8ZJ-Hb-MZo" secondAttribute="leading" constant="10" id="eE2-dV-1Ra"/>
+                            <constraint firstItem="0hP-fc-mEw" firstAttribute="top" secondItem="tgY-Hv-xVj" secondAttribute="bottom" id="0fv-WG-ilX"/>
+                            <constraint firstItem="0hP-fc-mEw" firstAttribute="leading" secondItem="8ZJ-Hb-MZo" secondAttribute="leading" id="eE2-dV-1Ra"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="vHd-Lg-GSW"/>
@@ -79,21 +118,6 @@
             </objects>
             <point key="canvasLocation" x="801" y="91"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="Qxf-eT-bj4">
-            <objects>
-                <navigationController storyboardIdentifier="PLCPlaceCalloutNavigationController" definesPresentationContext="YES" navigationBarHidden="YES" id="BmN-Nz-0Fm" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="4HD-jS-6H6">
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="zKC-7G-tcT" kind="relationship" relationship="rootViewController" id="uZi-4s-5dL"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="vDh-nG-qAe" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="365" y="7"/>
-        </scene>
         <!--Edit Place View Controller-->
         <scene sceneID="u9e-gE-ezy">
             <objects>
@@ -102,7 +126,7 @@
                         <viewControllerLayoutGuide type="top" id="qSO-lK-uz7"/>
                         <viewControllerLayoutGuide type="bottom" id="P4y-VR-eps"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="3ad-8n-qXv" customClass="PLCCalloutView">
+                    <view key="view" contentMode="scaleToFill" id="3ad-8n-qXv">
                         <rect key="frame" x="0.0" y="0.0" width="300" height="400"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>

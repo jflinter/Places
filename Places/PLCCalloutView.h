@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface PLCCalloutView : UIView
-
+@property(nonatomic, readonly) CGFloat cornerRadius;
+@property(nonatomic, readonly) CGFloat arrowHeight;
 @end

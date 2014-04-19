@@ -23,9 +23,10 @@
 		7E54FEA818FFA3EE002E2AFC /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E54FEA718FFA3EE002E2AFC /* MapKit.framework */; };
 		7E54FEAF18FFA94B002E2AFC /* PLCDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E54FEAC18FFA94B002E2AFC /* PLCDatabase.m */; };
 		7E54FEB018FFA94B002E2AFC /* PLCManagedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E54FEAE18FFA94B002E2AFC /* PLCManagedObject.m */; };
+		A0F0531E19025E6300BD610C /* PLCCalloutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0F0531D19025E6300BD610C /* PLCCalloutViewController.m */; };
 		A0FAFD2319008E60001A364D /* PLCPlaceStore.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FAFD2219008E60001A364D /* PLCPlaceStore.m */; };
 		A0FAFD261901EEDC001A364D /* PLCPinAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FAFD251901EEDC001A364D /* PLCPinAnnotationView.m */; };
-		A0FAFD2A190236DD001A364D /* PLCShowPlaceCalloutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FAFD29190236DD001A364D /* PLCShowPlaceCalloutViewController.m */; };
+		A0FAFD2A190236DD001A364D /* PLCShowPlaceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FAFD29190236DD001A364D /* PLCShowPlaceViewController.m */; };
 		A0FAFD2D1902404D001A364D /* PLCCalloutView.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FAFD2C1902404D001A364D /* PLCCalloutView.m */; };
 		A0FAFD3019025820001A364D /* PLCEditPlaceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FAFD2F19025820001A364D /* PLCEditPlaceViewController.m */; };
 /* End PBXBuildFile section */
@@ -67,12 +68,14 @@
 		7E54FEAC18FFA94B002E2AFC /* PLCDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCDatabase.m; sourceTree = "<group>"; };
 		7E54FEAD18FFA94B002E2AFC /* PLCManagedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCManagedObject.h; sourceTree = "<group>"; };
 		7E54FEAE18FFA94B002E2AFC /* PLCManagedObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCManagedObject.m; sourceTree = "<group>"; };
+		A0F0531C19025E6300BD610C /* PLCCalloutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCCalloutViewController.h; sourceTree = "<group>"; };
+		A0F0531D19025E6300BD610C /* PLCCalloutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCCalloutViewController.m; sourceTree = "<group>"; };
 		A0FAFD2119008E60001A364D /* PLCPlaceStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCPlaceStore.h; sourceTree = "<group>"; };
 		A0FAFD2219008E60001A364D /* PLCPlaceStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCPlaceStore.m; sourceTree = "<group>"; };
 		A0FAFD241901EEDC001A364D /* PLCPinAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCPinAnnotationView.h; sourceTree = "<group>"; };
 		A0FAFD251901EEDC001A364D /* PLCPinAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCPinAnnotationView.m; sourceTree = "<group>"; };
-		A0FAFD28190236DD001A364D /* PLCShowPlaceCalloutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCShowPlaceCalloutViewController.h; sourceTree = "<group>"; };
-		A0FAFD29190236DD001A364D /* PLCShowPlaceCalloutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCShowPlaceCalloutViewController.m; sourceTree = "<group>"; };
+		A0FAFD28190236DD001A364D /* PLCShowPlaceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCShowPlaceViewController.h; sourceTree = "<group>"; };
+		A0FAFD29190236DD001A364D /* PLCShowPlaceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCShowPlaceViewController.m; sourceTree = "<group>"; };
 		A0FAFD2B1902404D001A364D /* PLCCalloutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCCalloutView.h; sourceTree = "<group>"; };
 		A0FAFD2C1902404D001A364D /* PLCCalloutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCCalloutView.m; sourceTree = "<group>"; };
 		A0FAFD2E19025820001A364D /* PLCEditPlaceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCEditPlaceViewController.h; sourceTree = "<group>"; };
@@ -196,10 +199,12 @@
 			children = (
 				7E54FE9918FF9BC8002E2AFC /* PLCMapViewController.h */,
 				7E54FE9A18FF9BC8002E2AFC /* PLCMapViewController.m */,
-				A0FAFD28190236DD001A364D /* PLCShowPlaceCalloutViewController.h */,
-				A0FAFD29190236DD001A364D /* PLCShowPlaceCalloutViewController.m */,
+				A0FAFD28190236DD001A364D /* PLCShowPlaceViewController.h */,
+				A0FAFD29190236DD001A364D /* PLCShowPlaceViewController.m */,
 				A0FAFD2E19025820001A364D /* PLCEditPlaceViewController.h */,
 				A0FAFD2F19025820001A364D /* PLCEditPlaceViewController.m */,
+				A0F0531C19025E6300BD610C /* PLCCalloutViewController.h */,
+				A0F0531D19025E6300BD610C /* PLCCalloutViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -360,11 +365,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A0FAFD2A190236DD001A364D /* PLCShowPlaceCalloutViewController.m in Sources */,
+				A0FAFD2A190236DD001A364D /* PLCShowPlaceViewController.m in Sources */,
 				A0FAFD2319008E60001A364D /* PLCPlaceStore.m in Sources */,
 				7E54FEB018FFA94B002E2AFC /* PLCManagedObject.m in Sources */,
 				7E54FE9118FF9854002E2AFC /* _PLCPlace.m in Sources */,
 				7E54FE6418FF9392002E2AFC /* PLCAppDelegate.m in Sources */,
+				A0F0531E19025E6300BD610C /* PLCCalloutViewController.m in Sources */,
 				7E54FE9418FF985A002E2AFC /* PLCPlace.m in Sources */,
 				7E54FE6018FF9392002E2AFC /* main.m in Sources */,
 				A0FAFD3019025820001A364D /* PLCEditPlaceViewController.m in Sources */,

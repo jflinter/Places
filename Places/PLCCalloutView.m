@@ -35,12 +35,11 @@
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect
 {
-    CGFloat arrowHeight = 15.0f;
-    CGFloat arrowEdge = arrowHeight * (float)M_SQRT2;
+    CGFloat arrowEdge = self.arrowHeight * (float)M_SQRT2;
     UIColor *color = [UIColor whiteColor];
-    CGRect backgroundRect = CGRectInset(self.bounds, 0, arrowHeight/2);
+    CGRect backgroundRect = CGRectInset(self.bounds, 0, self.arrowHeight/2);
     backgroundRect.origin.y = 0;
-    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:backgroundRect cornerRadius:10];
+    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:backgroundRect cornerRadius:self.cornerRadius];
     CGRect arrowRect = CGRectMake(-arrowEdge / 2, -arrowEdge / 2, arrowEdge, arrowEdge);
     UIBezierPath *arrowPath = [UIBezierPath bezierPathWithRoundedRect:arrowRect byRoundingCorners:UIRectCornerBottomLeft cornerRadii:CGSizeMake(2, 2)];
     [arrowPath applyTransform:CGAffineTransformMakeRotation((float)-M_PI_4)];
@@ -54,5 +53,12 @@
     [super drawRect:rect];
 }
 
+- (CGFloat)arrowHeight {
+    return 15.0f;
+}
+
+- (CGFloat) cornerRadius {
+    return 10.0f;
+}
 
 @end

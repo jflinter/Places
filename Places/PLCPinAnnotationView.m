@@ -7,10 +7,10 @@
 //
 
 #import "PLCPinAnnotationView.h"
-#import "PLCShowPlaceCalloutViewController.h"
+#import "PLCCalloutViewController.h"
 
 @interface PLCPinAnnotationView()
-@property(nonatomic, readonly) UINavigationController *calloutViewController;
+@property(nonatomic, readonly) PLCCalloutViewController *calloutViewController;
 @end
 
 @implementation PLCPinAnnotationView
@@ -70,10 +70,10 @@
     }
 }
 
-- (UINavigationController *) calloutViewController {
+- (PLCCalloutViewController *) calloutViewController {
     if (!_calloutViewController) {
         UIStoryboard *storyboard = [[self.window rootViewController] storyboard];
-        _calloutViewController = [storyboard instantiateViewControllerWithIdentifier:@"PLCPlaceCalloutNavigationController"];
+        _calloutViewController = [storyboard instantiateViewControllerWithIdentifier:@"PLCCalloutViewController"];
     }
     return _calloutViewController;
 }

@@ -1,18 +1,18 @@
 //
-//  PLCShowPlaceCalloutViewController.m
+//  PLCShowPlaceViewController.m
 //  Places
 //
 //  Created by Jack Flintermann on 4/19/14.
 //  Copyright (c) 2014 Places. All rights reserved.
 //
 
-#import "PLCShowPlaceCalloutViewController.h"
+#import "PLCShowPlaceViewController.h"
 
-@interface PLCShowPlaceCalloutViewController ()
+@interface PLCShowPlaceViewController ()
 
 @end
 
-@implementation PLCShowPlaceCalloutViewController
+@implementation PLCShowPlaceViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {

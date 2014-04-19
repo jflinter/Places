@@ -1,5 +1,5 @@
 //
-//  PLCShowPlaceCalloutViewController.h
+//  PLCShowPlaceViewController.h
 //  Places
 //
 //  Created by Jack Flintermann on 4/19/14.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PLCShowPlaceCalloutViewController : UIViewController
+@interface PLCShowPlaceViewController : UIViewController
 
 - (IBAction)unwindToShowPlace:(UIStoryboardSegue*)sender;
 
