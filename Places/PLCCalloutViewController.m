@@ -20,10 +20,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    PLCCalloutView *calloutView = (PLCCalloutView *)self.view;
-    self.containerView.layer.cornerRadius = calloutView.cornerRadius;
+    self.containerView.layer.cornerRadius = self.calloutView.cornerRadius;
     self.containerView.layer.masksToBounds = YES;
-    self.bottomSpacingConstraint.constant = calloutView.arrowHeight;
+    self.bottomSpacingConstraint.constant = self.calloutView.arrowHeight;
 
 }
 
@@ -35,7 +34,9 @@
     return [self.storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([PLCEditPlaceViewController class])];
 }
 
-
+- (PLCCalloutView *)calloutView {
+    return (PLCCalloutView *)self.view;
+}
 
 
 @end

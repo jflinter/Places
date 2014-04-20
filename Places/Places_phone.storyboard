@@ -75,7 +75,6 @@
                     <size key="freeformSize" width="300" height="400"/>
                     <connections>
                         <outlet property="bottomSpacingConstraint" destination="Xv2-Xr-NmJ" id="QZh-bv-JB3"/>
-                        <outlet property="calloutView" destination="sdp-0Z-iRs" id="fBU-5t-hs5"/>
                         <outlet property="containerView" destination="UZl-TG-aWT" id="iYC-Dl-dbh"/>
                     </connections>
                 </viewController>

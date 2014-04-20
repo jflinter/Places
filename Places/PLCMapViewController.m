@@ -11,6 +11,8 @@
 #import "PLCPlaceStore.h"
 #import "PLCPinAnnotationView.h"
 #import "PLCMapView.h"
+#import "PLCCalloutViewController.h"
+#import "PLCCalloutView.h"
 
 static NSString * const PLCMapPinReuseIdentifier = @"PLCMapPinReuseIdentifier";
 
@@ -18,6 +20,7 @@ static NSString * const PLCMapPinReuseIdentifier = @"PLCMapPinReuseIdentifier";
 
 @property (nonatomic, weak) IBOutlet PLCMapView *mapView;
 @property (nonatomic, readonly) PLCPlaceStore *placeStore;
+@property (nonatomic, weak) PLCCalloutViewController *calloutViewController;
 
 @end
 
@@ -41,9 +44,9 @@ static NSString * const PLCMapPinReuseIdentifier = @"PLCMapPinReuseIdentifier";
     if (!annotationView) {
         PLCPinAnnotationView *pinAnnotation = [[PLCPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:PLCMapPinReuseIdentifier];
         pinAnnotation.animatesDrop = YES;
+        pinAnnotation.draggable = YES;
+        pinAnnotation.canShowCallout = NO;
         annotationView = pinAnnotation;
-        annotationView.draggable = YES;
-        annotationView.canShowCallout = NO;
     }
     return annotationView;
 }
@@ -80,6 +83,14 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     } completion:^(BOOL finished) {
         self.mapView.activeAnnotationView = view;
     }];
+    [self addChildViewController:self.calloutViewController];
+    [[self calloutViewController].calloutView showInView:view];
+}
+
+- (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
+    [self.calloutViewController.calloutView hide];
+    [self.calloutViewController removeFromParentViewController];
+    self.calloutViewController = nil;
 }
 
 - (void)mapView:(PLCMapView *)mapView regionWillChangeAnimated:(BOOL)animated {
@@ -127,5 +138,13 @@ didChangeDragState:(MKAnnotationViewDragState)newState
         [self.placeStore insertPlaceAtCoordinate:touchCoordinate];
     }
 }
+
+- (PLCCalloutViewController *) calloutViewController {
+    if (!_calloutViewController) {
+        _calloutViewController = [[self storyboard] instantiateViewControllerWithIdentifier:@"PLCCalloutViewController"];
+    }
+    return _calloutViewController;
+}
+
 
 @end
