@@ -16,7 +16,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="a6V-Pg-lJh">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="a6V-Pg-lJh" customClass="PLCMapView">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <connections>
@@ -40,6 +40,157 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jYb-yF-plj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-15" y="7"/>
+        </scene>
+        <!--Callout View Controller-->
+        <scene sceneID="vaZ-rl-Ee0">
+            <objects>
+                <viewController storyboardIdentifier="PLCCalloutViewController" id="1NL-xg-0xe" customClass="PLCCalloutViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="AAF-d9-zo1"/>
+                        <viewControllerLayoutGuide type="bottom" id="Zzu-UK-J3O"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="sdp-0Z-iRs" customClass="PLCCalloutView">
+                        <rect key="frame" x="0.0" y="0.0" width="300" height="400"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <containerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UZl-TG-aWT">
+                                <rect key="frame" x="0.0" y="0.0" width="300" height="400"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="hed-mK-tuo" kind="embed" identifier="PLCCalloutNavigationEmbedSegue" id="Uww-Ud-Y33"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="UZl-TG-aWT" firstAttribute="leading" secondItem="sdp-0Z-iRs" secondAttribute="leading" id="A5k-TT-A9E"/>
+                            <constraint firstItem="Zzu-UK-J3O" firstAttribute="top" secondItem="UZl-TG-aWT" secondAttribute="bottom" id="Xv2-Xr-NmJ"/>
+                            <constraint firstItem="UZl-TG-aWT" firstAttribute="top" secondItem="AAF-d9-zo1" secondAttribute="bottom" id="bsf-Sy-erF"/>
+                            <constraint firstAttribute="trailing" secondItem="UZl-TG-aWT" secondAttribute="trailing" id="tVC-u0-HQA"/>
+                        </constraints>
+                    </view>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="300" height="400"/>
+                    <connections>
+                        <outlet property="bottomSpacingConstraint" destination="Xv2-Xr-NmJ" id="QZh-bv-JB3"/>
+                        <outlet property="containerView" destination="UZl-TG-aWT" id="iYC-Dl-dbh"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PwR-vm-YkE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="390" y="91"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="BDj-Oa-3vJ">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="hed-mK-tuo" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="RQe-Qu-I5b">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        </textAttributes>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="zKC-7G-tcT" kind="relationship" relationship="rootViewController" id="Mkg-TR-fOk"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9LX-6D-O6X" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="774" y="118"/>
+        </scene>
+        <!--Show Place View Controller-->
+        <scene sceneID="zGZ-ZV-YYE">
+            <objects>
+                <viewController storyboardIdentifier="PLCShowPlaceViewController" modalTransitionStyle="flipHorizontal" id="zKC-7G-tcT" customClass="PLCShowPlaceViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="tgY-Hv-xVj"/>
+                        <viewControllerLayoutGuide type="bottom" id="SHY-93-RV6"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8ZJ-Hb-MZo">
+                        <rect key="frame" x="0.0" y="0.0" width="300" height="400"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xL1-bD-AZx">
+                                <rect key="frame" x="0.0" y="0.0" width="300" height="400"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="vHd-Lg-GSW">
+                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="Yha-o7-mZ1" userLabel="Bar Button Item - Item"/>
+                        <connections>
+                            <outlet property="rightBarButtonItem" destination="Yha-o7-mZ1" id="4Ov-fG-BO4"/>
+                        </connections>
+                    </navigationItem>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="300" height="400"/>
+                    <connections>
+                        <outlet property="imageView" destination="xL1-bD-AZx" id="1b0-10-8nn"/>
+                        <segue destination="0QO-bi-maP" kind="push" identifier="PLCEditPlaceViewControllerPushSegue" id="4OZ-ar-6Kr"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0gd-AD-BrM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1139" y="91"/>
+        </scene>
+        <!--Edit Place View Controller-->
+        <scene sceneID="u9e-gE-ezy">
+            <objects>
+                <viewController storyboardIdentifier="PLCEditPlaceViewController" id="0QO-bi-maP" customClass="PLCEditPlaceViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="qSO-lK-uz7"/>
+                        <viewControllerLayoutGuide type="bottom" id="P4y-VR-eps"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="3ad-8n-qXv">
+                        <rect key="frame" x="0.0" y="0.0" width="300" height="400"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vwn-sd-qic">
+                                <rect key="frame" x="0.0" y="0.0" width="300" height="400"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pbH-AR-nMh">
+                                <rect key="frame" x="83" y="123" width="134" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Choose a Photo">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="choosePhoto:" destination="0QO-bi-maP" eventType="touchUpInside" id="SC3-V9-wL4"/>
+                                </connections>
+                            </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NOb-te-YNl">
+                                <rect key="frame" x="0.0" y="297" width="300" height="103"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="peL-ha-VJi">
+                        <barButtonItem key="rightBarButtonItem" systemItem="trash" id="WTN-Vf-Twb"/>
+                        <connections>
+                            <outlet property="rightBarButtonItem" destination="WTN-Vf-Twb" id="wPq-CF-jG7"/>
+                        </connections>
+                    </navigationItem>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="300" height="400"/>
+                    <connections>
+                        <outlet property="imageView" destination="vwn-sd-qic" id="Efo-YJ-OPI"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pPr-yb-o2f" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1516" y="91"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

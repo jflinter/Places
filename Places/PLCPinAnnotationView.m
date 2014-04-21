@@ -1,0 +1,27 @@
+//
+//  PLCPinAnnotationView.m
+//  Places
+//
+//  Created by Jack Flintermann on 4/18/14.
+//  Copyright (c) 2014 Places. All rights reserved.
+//
+
+#import "PLCPinAnnotationView.h"
+
+@implementation PLCPinAnnotationView
+
+- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent*)event
+{
+    BOOL pointInside = CGRectContainsPoint(self.bounds, point);
+    for (UIView *subview in self.subviews) {
+        pointInside = pointInside || CGRectContainsPoint(subview.frame, point);
+    }
+    return pointInside;
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+    self.pinColor = selected ? MKPinAnnotationColorGreen : MKPinAnnotationColorRed;
+}
+
+@end

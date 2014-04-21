@@ -13,6 +13,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    UIImage *transparentImage = [UIImage imageNamed:@"Transparent"];
+    [[UINavigationBar appearance] setBackgroundImage:transparentImage forBarMetrics:UIBarMetricsDefault];
+    [[UINavigationBar appearance] setShadowImage:transparentImage];
     return YES;
 }
 
