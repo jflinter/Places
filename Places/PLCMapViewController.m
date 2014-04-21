@@ -80,10 +80,13 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     calloutController.place = view.annotation;
     self.calloutViewController = calloutController;
     [self addChildViewController:calloutController];
+    mapView.activeCalloutView = calloutController.calloutView;
     [calloutController.calloutView showInView:view];
 }
 
-- (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
+- (void)mapView:(PLCMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
+    mapView.activeAnnotationView = nil;
+    mapView.activeCalloutView = nil;
     [self.calloutViewController.calloutView hide];
     [self.calloutViewController removeFromParentViewController];
     self.calloutViewController = nil;
@@ -92,7 +95,6 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 - (void)mapView:(PLCMapView *)mapView regionWillChangeAnimated:(BOOL)animated {
     if (mapView.activeAnnotationView) {
         [self.mapView deselectAnnotation:mapView.activeAnnotationView.annotation animated:YES];
-        mapView.activeAnnotationView = nil;
     }
 }
 

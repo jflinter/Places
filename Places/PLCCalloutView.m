@@ -98,11 +98,12 @@
                          self.transform = CGAffineTransformMakeScale(0.001f, 0.001f);
                      }
                      completion:^(BOOL finished) {
-                         if (finished) {
-                             self.alpha = 1.0f;
-                             self.transform = CGAffineTransformIdentity;
-                             [self removeFromSuperview];
+                         if (!finished) {
+                             abort();
                          }
+                         self.alpha = 1.0f;
+                         self.transform = CGAffineTransformIdentity;
+                         [self removeFromSuperview];
                      }];
 }
 
