@@ -61,25 +61,18 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 }
 
 - (void)mapView:(PLCMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
+    // we want to scroll the map such that the annotation view is centered horizontally and 50px above the bottom of the screen.
     if (mapView.activeAnnotationView && view != mapView.activeAnnotationView) {
         [self.mapView deselectAnnotation:mapView.activeAnnotationView.annotation animated:YES];
     }
-    // we want to scroll the map such that the annotation view is centered horizontally and 20px above the bottom of the screen.
-    // horizontally, this is easy - we're scrolling to the same x-coordinate as the tapped annotation.
-    // all that we have to do is figure out the y-coordinate we need to scroll to.
-    // step 1 is to figure out the CGPoint that has been tapped
     CGFloat bottomPadding = 50;
+    CGFloat mapHeight = CGRectGetHeight(mapView.frame);
+    CGFloat paddingRatio = 0.5f - bottomPadding / mapHeight;
     CGFloat animationDuration = 0.1f;
-    CGPoint annotationPoint = [self.mapView convertCoordinate:view.annotation.coordinate toPointToView:self.mapView];
-    // next, we want to find a point that is (height / 2) - bottomPadding pixels above this point.
-    CGFloat deltaY = floorf(CGRectGetHeight(self.mapView.frame)) / 2 - bottomPadding;
-    CGPoint destinationPoint = CGPointMake(annotationPoint.x, annotationPoint.y - deltaY);
-    // next, convert this point back to map coordinates to get the center of the MKCoordinateRegion we wnat to scroll the map to.
-    CLLocationCoordinate2D coordinate = [self.mapView convertPoint:destinationPoint toCoordinateFromView:self.mapView];
-    // finally, build an MKCoordinateRegion based off of this coordinate and scroll to it.
-    MKCoordinateRegion region = MKCoordinateRegionMake(coordinate, self.mapView.region.span);
+    CLLocationCoordinate2D center = view.annotation.coordinate;
+    center.latitude += self.mapView.region.span.latitudeDelta * paddingRatio;
     [UIView animateWithDuration:animationDuration animations:^{
-        [self.mapView setRegion:region];
+        [self.mapView setCenterCoordinate:center animated:YES];
     } completion:^(BOOL finished) {
         self.mapView.activeAnnotationView = view;
     }];
