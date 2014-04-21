@@ -6,13 +6,14 @@
 //  Copyright (c) 2014 Places. All rights reserved.
 //
 
-#import "PLCCalloutViewController.h"
+#import "PLCPlace.h"
 #import "PLCCalloutView.h"
+#import "PLCCalloutViewController.h"
 #import "PLCShowPlaceViewController.h"
 #import "PLCEditPlaceViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface PLCCalloutViewController()
+@interface PLCCalloutViewController()<UINavigationControllerDelegate>
 @end
 
 @implementation PLCCalloutViewController
@@ -26,17 +27,21 @@
 
 }
 
-- (UIViewController *)showPlaceViewController {
-    return [self.storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([PLCShowPlaceViewController class])];
-}
-
-- (UIViewController *)editPlaceViewController {
-    return [self.storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([PLCEditPlaceViewController class])];
-}
-
 - (PLCCalloutView *)calloutView {
     return (PLCCalloutView *)self.view;
 }
 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"PLCCalloutNavigationEmbedSegue"]) {
+        UINavigationController *navController = segue.destinationViewController;
+        navController.delegate = self;
+    }
+    [super prepareForSegue:segue sender:sender];
+}
+
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    PLCShowPlaceViewController *controller = (PLCShowPlaceViewController *)viewController;
+    controller.place = self.place;
+}
 
 @end

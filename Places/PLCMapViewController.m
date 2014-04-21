@@ -83,8 +83,11 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     } completion:^(BOOL finished) {
         self.mapView.activeAnnotationView = view;
     }];
-    [self addChildViewController:self.calloutViewController];
-    [[self calloutViewController].calloutView showInView:view];
+    PLCCalloutViewController *calloutController = [self instantiateCalloutController];
+    calloutController.place = view.annotation;
+    self.calloutViewController = calloutController;
+    [self addChildViewController:calloutController];
+    [calloutController.calloutView showInView:view];
 }
 
 - (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
@@ -139,11 +142,8 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     }
 }
 
-- (PLCCalloutViewController *) calloutViewController {
-    if (!_calloutViewController) {
-        _calloutViewController = [[self storyboard] instantiateViewControllerWithIdentifier:@"PLCCalloutViewController"];
-    }
-    return _calloutViewController;
+- (PLCCalloutViewController *) instantiateCalloutController {
+    return [[self storyboard] instantiateViewControllerWithIdentifier:@"PLCCalloutViewController"];
 }
 
 

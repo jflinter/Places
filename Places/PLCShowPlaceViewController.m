@@ -16,6 +16,16 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editPlace:)];
 }
 
+- (void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.imageView.image = self.place.image;
+}
+
+- (void)setPlace:(PLCPlace *)place {
+    _place = place;
+    self.imageView.image = place.image;
+}
+
 - (void) editPlace:(id)sender {
     [self performSegueWithIdentifier:@"PLCEditPlaceViewControllerPushSegue" sender:sender];
 }

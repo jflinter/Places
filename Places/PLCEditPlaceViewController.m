@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Places. All rights reserved.
 //
 
+#import "PLCPlace.h"
 #import "PLCEditPlaceViewController.h"
 
 @interface PLCEditPlaceViewController ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate>
@@ -13,25 +14,14 @@
 
 @implementation PLCEditPlaceViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
+- (void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.imageView.image = self.place.image;
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)setPlace:(PLCPlace *)place {
+    _place = place;
+    self.imageView.image = place.image;
 }
 
 #pragma mark -
@@ -48,6 +38,7 @@
 didFinishPickingMediaWithInfo:(NSDictionary *)info {
     UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
     self.imageView.image = image;
+    self.place.image = image;
     [picker.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 

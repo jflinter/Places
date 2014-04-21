@@ -14,5 +14,6 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomSpacingConstraint;
 @property (weak, nonatomic, readonly) PLCCalloutView *calloutView;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
+@property (nonatomic) PLCPlace *place;
 
 @end
