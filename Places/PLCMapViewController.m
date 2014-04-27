@@ -13,6 +13,7 @@
 #import "PLCMapView.h"
 #import "PLCCalloutViewController.h"
 #import "PLCCalloutTransitionAnimator.h"
+#import "PLCCalloutTransitionContext.h"
 
 static NSString * const PLCMapPinReuseIdentifier = @"PLCMapPinReuseIdentifier";
 
@@ -21,6 +22,7 @@ static NSString * const PLCMapPinReuseIdentifier = @"PLCMapPinReuseIdentifier";
 @property (nonatomic, weak) IBOutlet PLCMapView *mapView;
 @property (nonatomic, readonly) PLCPlaceStore *placeStore;
 @property (nonatomic) CLLocation *savedLocation;
+@property (nonatomic, readonly) NSArray *calloutViewControllers;
 
 @end
 
@@ -39,6 +41,7 @@ static NSString * const PLCMapPinReuseIdentifier = @"PLCMapPinReuseIdentifier";
 
 #pragma mark -
 #pragma mark Map view delegate
+
 - (MKAnnotationView *)mapView:(MKMapView *)mapView
             viewForAnnotation:(id<MKAnnotation>)annotation {
     MKAnnotationView *annotationView = [mapView dequeueReusableAnnotationViewWithIdentifier:PLCMapPinReuseIdentifier];
@@ -63,9 +66,10 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 
 - (void)mapView:(PLCMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 {
-    if (self.presentedViewController == nil) {
+    if ([self.calloutViewControllers count] == 0) {
         self.savedLocation = [[CLLocation alloc] initWithLatitude:mapView.centerCoordinate.latitude longitude:mapView.centerCoordinate.longitude];
     }
+    [self dismissAllCalloutViewControllers];
 
     [UIView animateWithDuration:0.3 animations:^{
         // we want to scroll the map such that the annotation view is centered horizontally and 50px above the bottom of the screen.
@@ -80,25 +84,25 @@ didChangeDragState:(MKAnnotationViewDragState)newState
         [self.mapView setCenterCoordinate:center animated:NO];
     }];
 
-    [self presentViewController:[self instantiateCalloutControllerForAnnotationView:view] animated:YES completion:nil];
+    PLCCalloutViewController *calloutViewController = [self instantiateCalloutControllerForAnnotation:view.annotation];
+    [self presentCalloutViewController:calloutViewController fromAnnotationView:view];
 }
 
 - (void)mapView:(PLCMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view
 {
-    [self dismissViewControllerAnimated:YES completion:^{
-//        if (self.presentedViewController == nil && self.savedLocation) {
-//            [mapView setCenterCoordinate:self.savedLocation.coordinate animated:YES];
-//        }
-    }];
+    PLCCalloutViewController *calloutViewController = [self existingCalloutViewControllerForAnnotationView:view];
+    if (calloutViewController) {
+        [self dismissCalloutViewController:calloutViewController];
+    }
 }
 
 - (void)mapView:(PLCMapView *)mapView regionWillChangeAnimated:(BOOL)animated
 {
-    [self dismissViewControllerAnimated:YES completion:^{
-        for (id<MKAnnotation> annotation in mapView.selectedAnnotations) {
+    if (!animated) {
+        for (id<MKAnnotation> annotation in [mapView.selectedAnnotations copy]) {
             [mapView deselectAnnotation:annotation animated:YES];
         }
-    }];
+    }
 }
 
 #pragma mark -
@@ -144,35 +148,21 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     }
 }
 
-- (PLCCalloutViewController *)instantiateCalloutControllerForAnnotationView:(MKAnnotationView *)annotationView
+- (NSArray *)calloutViewControllers
+{
+    return [self.childViewControllers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"class = %@", [PLCCalloutViewController class]]];
+}
+
+- (PLCCalloutViewController *)existingCalloutViewControllerForAnnotationView:(MKAnnotationView *)annotationView
+{
+    return [[self.calloutViewControllers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"view.superview = %@", annotationView]] firstObject];
+}
+
+- (PLCCalloutViewController *)instantiateCalloutControllerForAnnotation:(id<MKAnnotation>)annotation
 {
     PLCCalloutViewController *calloutController = [self.storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([PLCCalloutViewController class])];
-
-    calloutController.annotationView = annotationView;
-    calloutController.place = annotationView.annotation;
-    calloutController.modalPresentationStyle = UIModalPresentationCustom;
-    calloutController.transitioningDelegate = self;
-
+    calloutController.place = annotation;
     return calloutController;
-}
-
-#pragma mark -
-#pragma mark UIViewControllerTransitioningDelegate methods
-
-- (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source
-{
-    if ([presented isKindOfClass:[PLCCalloutViewController class]]) {
-        return [[PLCCalloutTransitionAnimator alloc] init];
-    }
-    return nil;
-}
-
-- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
-{
-    if ([dismissed isKindOfClass:[PLCCalloutViewController class]]) {
-        return [[PLCCalloutTransitionAnimator alloc] init];
-    }
-    return nil;
 }
 
 #pragma mark -
@@ -187,6 +177,43 @@ didChangeDragState:(MKAnnotationViewDragState)newState
         }
     }
     return YES;
+}
+
+#pragma mark -
+#pragma mark Callout presentation methods
+
+- (void)presentCalloutViewController:(PLCCalloutViewController *)calloutViewController fromAnnotationView:(MKAnnotationView *)annotationView
+{
+    [self addChildViewController:calloutViewController];
+
+    PLCCalloutTransitionContext *transitionContext = [[PLCCalloutTransitionContext alloc] initWithOperation:PLCCalloutTransitionContextOperationPresent];
+    transitionContext.mapViewController = self;
+    transitionContext.calloutViewController = calloutViewController;
+    transitionContext.containerView = annotationView;
+
+    PLCCalloutTransitionAnimator *animator = [[PLCCalloutTransitionAnimator alloc] init];
+
+    [animator animateTransition:transitionContext];
+}
+
+- (void)dismissCalloutViewController:(PLCCalloutViewController *)calloutViewController
+{
+    [calloutViewController removeFromParentViewController];
+
+    PLCCalloutTransitionContext *transitionContext = [[PLCCalloutTransitionContext alloc] initWithOperation:PLCCalloutTransitionContextOperationDismiss];
+    transitionContext.mapViewController = self;
+    transitionContext.calloutViewController = calloutViewController;
+    transitionContext.containerView = [[calloutViewController view] superview];
+
+    PLCCalloutTransitionAnimator *animator = [[PLCCalloutTransitionAnimator alloc] init];
+    [animator animateTransition:transitionContext];
+}
+
+- (void)dismissAllCalloutViewControllers
+{
+    for (PLCCalloutViewController *calloutViewController in [self.calloutViewControllers copy]) {
+        [self dismissCalloutViewController:calloutViewController];
+    }
 }
 
 @end

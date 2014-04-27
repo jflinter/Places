@@ -8,7 +8,6 @@
 
 #import "PLCCalloutTransitionAnimator.h"
 #import "PLCCalloutViewController.h"
-#import "PLCCalloutView.h"
 
 @implementation PLCCalloutTransitionAnimator
 
@@ -19,6 +18,9 @@
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext
 {
+    MKAnnotationView *const annotationView = (MKAnnotationView *)[transitionContext containerView];
+    NSParameterAssert([annotationView isKindOfClass:[MKAnnotationView class]]);
+
     UIViewController *srcViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     UIViewController *dstViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
 
@@ -37,14 +39,14 @@
         NSAssert1(NO, @"Expected instance of %@", NSStringFromClass([PLCCalloutViewController class]));
     }
 
-    PLCCalloutView *calloutView = (PLCCalloutView *)calloutViewController.view;
+    UIView *const calloutView = calloutViewController.view;
+
+    CGSize const calloutViewSize = CGSizeMake(300.0f, 300.0f);
+    CGPoint const calloutPresentationOrigin = CGPointMake(CGRectGetMidX(annotationView.bounds) + annotationView.calloutOffset.x, CGRectGetMinY(annotationView.bounds));
+
+    calloutView.frame = CGRectMake(calloutPresentationOrigin.x - calloutViewSize.width / 2.0f, calloutPresentationOrigin.y - calloutViewSize.height, calloutViewSize.width, calloutViewSize.height);
 
     if (isPresenting) {
-        CGSize const calloutViewSize = CGSizeMake(300.0f, 300.0f);
-
-        MKAnnotationView *const annotationView = calloutViewController.annotationView;
-
-        calloutView.frame = CGRectMake(CGRectGetMidX(annotationView.bounds) + annotationView.calloutOffset.x - calloutViewSize.width / 2.0f, -calloutViewSize.height, calloutViewSize.width, calloutViewSize.height);
         calloutView.transform = CGAffineTransformMakeScale(0.001f, 0.001f);
         calloutView.alpha = 0.0f;
 
@@ -70,7 +72,7 @@
                             options:UIViewAnimationOptionAllowUserInteraction
                          animations:^{
                              calloutView.alpha = 0.0f;
-                             calloutView.transform = CGAffineTransformMakeScale(0.001f, 0.001f);
+                             calloutView.transform = CGAffineTransformMakeScale(0.1f, 0.1f);
                          }
                          completion:^(BOOL finished) {
                              [transitionContext completeTransition:finished];

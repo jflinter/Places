@@ -13,7 +13,6 @@
 @interface PLCCalloutViewController : UIViewController
 
 @property (nonatomic) PLCPlace *place;
-@property (nonatomic, weak) MKAnnotationView *annotationView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomSpacingConstraint;
 
 @end
