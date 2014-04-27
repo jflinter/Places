@@ -22,4 +22,14 @@
     return YES;
 }
 
+- (void)removeAnnotation:(id<MKAnnotation>)annotation {
+    MKAnnotationView *view = [self viewForAnnotation:annotation];
+    [UIView animateWithDuration:0.3f animations:^{
+        view.alpha = 0.0f;
+    } completion:^(BOOL finished) {
+        [super removeAnnotation:annotation];
+        view.alpha = 1.0f;
+    }];
+}
+
 @end
