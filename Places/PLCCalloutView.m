@@ -33,6 +33,7 @@
 - (void)sharedInit
 {
     self.backgroundColor = [UIColor clearColor];
+    self.layer.anchorPoint = CGPointMake(0.5, 1.0);
 }
 
 - (void)drawRect:(CGRect)rect
