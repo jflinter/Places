@@ -11,11 +11,13 @@ extern const struct PLCPlaceAttributes {
 } PLCPlaceAttributes;
 
 extern const struct PLCPlaceRelationships {
+	__unsafe_unretained NSString *photos;
 } PLCPlaceRelationships;
 
 extern const struct PLCPlaceFetchedProperties {
 } PLCPlaceFetchedProperties;
 
+@class PLCPhoto;
 
 
 
@@ -72,10 +74,22 @@ extern const struct PLCPlaceFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSSet *photos;
+
+- (NSMutableSet*)photosSet;
+
+
+
+
 
 @end
 
 @interface _PLCPlace (CoreDataGeneratedAccessors)
+
+- (void)addPhotos:(NSSet*)value_;
+- (void)removePhotos:(NSSet*)value_;
+- (void)addPhotosObject:(PLCPhoto*)value_;
+- (void)removePhotosObject:(PLCPhoto*)value_;
 
 @end
 
@@ -104,6 +118,11 @@ extern const struct PLCPlaceFetchedProperties {
 - (void)setPrimitiveLongitudeValue:(double)value_;
 
 
+
+
+
+- (NSMutableSet*)primitivePhotos;
+- (void)setPrimitivePhotos:(NSMutableSet*)value;
 
 
 @end
