@@ -8,7 +8,24 @@
 
 #import "PLCPinAnnotationView.h"
 
+const CGFloat PLCPinAnnotationViewDropDuration = 0.385945f;
+
+@interface PLCPinAnnotationView()
+@property(nonatomic, readwrite, assign, getter = isAnimating) BOOL animating;
+@end
+
 @implementation PLCPinAnnotationView
+
+@synthesize animating = _animating;
+
+- (id)initWithAnnotation:(id<MKAnnotation>)annotation
+         reuseIdentifier:(NSString *)reuseIdentifier {
+    self = [super initWithAnnotation:annotation reuseIdentifier:reuseIdentifier];
+    if (self) {
+        _animating = YES;
+    }
+    return self;
+}
 
 - (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent*)event
 {
@@ -22,6 +39,12 @@
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
     self.pinColor = selected ? MKPinAnnotationColorGreen : MKPinAnnotationColorRed;
+}
+
+- (void)animationDidStop:(CAAnimation *)anim
+                finished:(BOOL)flag {
+    [super animationDidStop:anim finished:flag];
+    self.animating = NO;
 }
 
 @end

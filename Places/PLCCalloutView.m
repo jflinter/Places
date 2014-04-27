@@ -86,8 +86,9 @@
 
 }
 
-- (void)hide {
-    CGFloat animationDuration = 0.5f;
+- (void) hideAnimated:(BOOL)animated
+           completion:(void (^)(BOOL finished))completion {
+    CGFloat animationDuration = 0.5f * animated;
     [UIView animateWithDuration:animationDuration
                           delay:0
          usingSpringWithDamping:1.0f
@@ -101,6 +102,9 @@
                          self.alpha = 1.0f;
                          self.transform = CGAffineTransformIdentity;
                          [self removeFromSuperview];
+                         if (completion) {
+                             completion(finished);
+                         }
                      }];
 }
 

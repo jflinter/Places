@@ -13,6 +13,7 @@
 @property(nonatomic, readonly) CGFloat arrowHeight;
 
 - (void) showInView:(UIView *)view;
-- (void) hide;
+- (void) hideAnimated:(BOOL)animated
+           completion:(void (^)(BOOL finished))completion;
 
 @end

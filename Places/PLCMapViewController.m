@@ -60,7 +60,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     }
 }
 
-- (void)mapView:(PLCMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
+- (void)mapView:(PLCMapView *)mapView didSelectAnnotationView:(PLCPinAnnotationView *)view {
     // we want to scroll the map such that the annotation view is centered horizontally and 50px above the bottom of the screen.
     if (mapView.activeAnnotationView && view != mapView.activeAnnotationView) {
         [self.mapView deselectAnnotation:mapView.activeAnnotationView.annotation animated:YES];
@@ -68,34 +68,52 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     CGFloat bottomPadding = 50;
     CGFloat mapHeight = CGRectGetHeight(mapView.frame);
     CGFloat paddingRatio = 0.5f - bottomPadding / mapHeight;
-    CGFloat animationDuration = 0.1f;
     CLLocationCoordinate2D center = view.annotation.coordinate;
     center.latitude += self.mapView.region.span.latitudeDelta * paddingRatio;
-    [UIView animateWithDuration:animationDuration animations:^{
-        [self.mapView setCenterCoordinate:center animated:YES];
-    } completion:^(BOOL finished) {
-        self.mapView.activeAnnotationView = view;
-    }];
+    
     PLCCalloutViewController *calloutController = [self instantiateCalloutController];
     calloutController.place = view.annotation;
     self.calloutViewController = calloutController;
     [self addChildViewController:calloutController];
     mapView.activeCalloutView = calloutController.calloutView;
-    [calloutController.calloutView showInView:view];
+    
+    BOOL showImmediately = !view.isAnimating;
+    if (showImmediately) {
+        [calloutController.calloutView showInView:view];        
+    }
+    
+    [UIView animateWithDuration:PLCPinAnnotationViewDropDuration animations:^{
+        [self.mapView setCenterCoordinate:center animated:NO];
+    } completion:^(BOOL finished) {
+        self.mapView.activeAnnotationView = view;
+        if (!showImmediately) {
+            [calloutController.calloutView showInView:view];
+        }
+    }];
 }
 
 - (void)mapView:(PLCMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
-    mapView.activeAnnotationView = nil;
-    mapView.activeCalloutView = nil;
-    [self.calloutViewController.calloutView hide];
-    [self.calloutViewController removeFromParentViewController];
-    self.calloutViewController = nil;
+    [self hideCalloutAnimated:YES completion:nil];
 }
 
 - (void)mapView:(PLCMapView *)mapView regionWillChangeAnimated:(BOOL)animated {
     if (mapView.activeAnnotationView) {
         [self.mapView deselectAnnotation:mapView.activeAnnotationView.annotation animated:YES];
     }
+}
+
+- (void) hideCalloutAnimated:(BOOL)animated
+                  completion:(void (^)(BOOL finished))completion {
+    self.mapView.activeAnnotationView = nil;
+    self.mapView.activeCalloutView = nil;
+    [self.calloutViewController.calloutView hideAnimated:animated
+                                              completion:^(BOOL finished) {
+                                                  if (completion) {
+                                                      completion(finished);
+                                                  }
+    }];
+    [self.calloutViewController removeFromParentViewController];
+    self.calloutViewController = nil;
 }
 
 #pragma mark -
@@ -108,7 +126,9 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 
 - (void)placeStore:(PLCPlaceStore *)store
     didRemovePlace:(PLCPlace *)place {
-    [self.mapView removeAnnotation:place];
+    [self hideCalloutAnimated:YES completion:^(BOOL finished) {
+        [self.mapView removeAnnotation:place];        
+    }];
 }
 
 #pragma mark -
