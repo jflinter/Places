@@ -12,15 +12,15 @@
 #import "PLCPinAnnotationView.h"
 #import "PLCMapView.h"
 #import "PLCCalloutViewController.h"
-#import "PLCCalloutView.h"
+#import "PLCCalloutTransitionAnimator.h"
 
 static NSString * const PLCMapPinReuseIdentifier = @"PLCMapPinReuseIdentifier";
 
-@interface PLCMapViewController () <MKMapViewDelegate, PLCPlaceStoreDelegate>
+@interface PLCMapViewController () <MKMapViewDelegate, PLCPlaceStoreDelegate, UIViewControllerTransitioningDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, weak) IBOutlet PLCMapView *mapView;
 @property (nonatomic, readonly) PLCPlaceStore *placeStore;
-@property (nonatomic, weak) PLCCalloutViewController *calloutViewController;
+@property (nonatomic) CLLocation *savedLocation;
 
 @end
 
@@ -31,6 +31,7 @@ static NSString * const PLCMapPinReuseIdentifier = @"PLCMapPinReuseIdentifier";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
     [self.mapView showAnnotations:self.placeStore.allPlaces animated:NO];
     [self.mapView addAnnotations:self.placeStore.allPlaces];
     [self.mapView addGestureRecognizer:[self addPlaceGestureRecognizer]];
@@ -60,64 +61,65 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     }
 }
 
-- (void)mapView:(PLCMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
-    // we want to scroll the map such that the annotation view is centered horizontally and 50px above the bottom of the screen.
-    if (mapView.activeAnnotationView && view != mapView.activeAnnotationView) {
-        [self.mapView deselectAnnotation:mapView.activeAnnotationView.annotation animated:YES];
+- (void)mapView:(PLCMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
+{
+    if (self.presentedViewController == nil) {
+        self.savedLocation = [[CLLocation alloc] initWithLatitude:mapView.centerCoordinate.latitude longitude:mapView.centerCoordinate.longitude];
     }
-    
-    PLCCalloutViewController *calloutController = [self instantiateCalloutController];
-    calloutController.place = view.annotation;
-    self.calloutViewController = calloutController;
-    [self addChildViewController:calloutController];
-    mapView.activeCalloutView = calloutController.calloutView;
-    [calloutController.calloutView showInView:view];
-    
-    CGFloat topPadding = 20; // the padding between the top of the map view and the desired top of the callout view
-    CGFloat mapHeight = CGRectGetHeight(mapView.frame);
-    CGFloat paddingRatio = 0.5f - ((topPadding + calloutController.calloutView.frame.size.height + CGRectGetHeight(view.frame)) / mapHeight);
-    CLLocationCoordinate2D center = view.annotation.coordinate;
-    center.latitude -= self.mapView.region.span.latitudeDelta * paddingRatio;
-    
-    CGFloat animationDuration = 0.3f;
-    [UIView animateWithDuration:animationDuration animations:^{
+
+    [UIView animateWithDuration:0.3 animations:^{
+        // we want to scroll the map such that the annotation view is centered horizontally and 50px above the bottom of the screen.
+
+        CGFloat topPadding = 20; // the padding between the top of the map view and the desired top of the callout view
+        CGFloat mapHeight = CGRectGetHeight(self.mapView.bounds);
+        CGFloat paddingRatio = 0.5f - ((topPadding + calloutController.calloutView.frame.size.height + CGRectGetHeight(view.frame)) / mapHeight);
+
+        CLLocationCoordinate2D center = view.annotation.coordinate;
+        center.latitude -= self.mapView.region.span.latitudeDelta * paddingRatio;
+
         [self.mapView setCenterCoordinate:center animated:NO];
-    } completion:^(BOOL finished) {
-        self.mapView.activeAnnotationView = view;
+    }];
+
+    [self presentViewController:[self instantiateCalloutControllerForAnnotationView:view] animated:YES completion:nil];
+}
+
+- (void)mapView:(PLCMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view
+{
+    [self dismissViewControllerAnimated:YES completion:^{
+//        if (self.presentedViewController == nil && self.savedLocation) {
+//            [mapView setCenterCoordinate:self.savedLocation.coordinate animated:YES];
+//        }
     }];
 }
 
-- (void)mapView:(PLCMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
-    mapView.activeAnnotationView = nil;
-    mapView.activeCalloutView = nil;
-    [self.calloutViewController.calloutView hide];
-    [self.calloutViewController removeFromParentViewController];
-    self.calloutViewController = nil;
-}
-
-- (void)mapView:(PLCMapView *)mapView regionWillChangeAnimated:(BOOL)animated {
-    if (mapView.activeAnnotationView) {
-        [self.mapView deselectAnnotation:mapView.activeAnnotationView.annotation animated:YES];
-    }
+- (void)mapView:(PLCMapView *)mapView regionWillChangeAnimated:(BOOL)animated
+{
+    [self dismissViewControllerAnimated:YES completion:^{
+        for (id<MKAnnotation> annotation in mapView.selectedAnnotations) {
+            [mapView deselectAnnotation:annotation animated:YES];
+        }
+    }];
 }
 
 #pragma mark -
 #pragma mark Place Store Delegate
-- (void)placeStore:(PLCPlaceStore *)store
-    didInsertPlace:(PLCPlace *)place {
+
+- (void)placeStore:(PLCPlaceStore *)store didInsertPlace:(PLCPlace *)place
+{
     [self.mapView addAnnotation:place];
     [self.mapView selectAnnotation:place animated:YES];
 }
 
-- (void)placeStore:(PLCPlaceStore *)store
-    didRemovePlace:(PLCPlace *)place {
+- (void)placeStore:(PLCPlaceStore *)store didRemovePlace:(PLCPlace *)place
+{
     [self.mapView removeAnnotation:place];
 }
 
 #pragma mark -
 #pragma mark Helpers
 
-- (PLCPlaceStore *)placeStore {
+- (PLCPlaceStore *)placeStore
+{
     if (!_placeStore) {
         _placeStore = [[PLCPlaceStore alloc] init];
         _placeStore.delegate = self;
@@ -125,13 +127,15 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     return _placeStore;
 }
 
-- (UIGestureRecognizer *)addPlaceGestureRecognizer {
+- (UIGestureRecognizer *)addPlaceGestureRecognizer
+{
     UILongPressGestureRecognizer *recognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressed:)];
-    recognizer.delegate = self.mapView;
+    recognizer.delegate = self;
     return recognizer;
 }
 
-- (void)longPressed:(UIGestureRecognizer *)sender {
+- (void)longPressed:(UIGestureRecognizer *)sender
+{
     if (sender.state == UIGestureRecognizerStateBegan) {
         CGPoint mapViewLocation = [sender locationInView:self.mapView];
         CLLocationCoordinate2D touchCoordinate = [self.mapView convertPoint:mapViewLocation
@@ -140,9 +144,49 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     }
 }
 
-- (PLCCalloutViewController *) instantiateCalloutController {
-    return [[self storyboard] instantiateViewControllerWithIdentifier:@"PLCCalloutViewController"];
+- (PLCCalloutViewController *)instantiateCalloutControllerForAnnotationView:(MKAnnotationView *)annotationView
+{
+    PLCCalloutViewController *calloutController = [self.storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([PLCCalloutViewController class])];
+
+    calloutController.annotationView = annotationView;
+    calloutController.place = annotationView.annotation;
+    calloutController.modalPresentationStyle = UIModalPresentationCustom;
+    calloutController.transitioningDelegate = self;
+
+    return calloutController;
 }
 
+#pragma mark -
+#pragma mark UIViewControllerTransitioningDelegate methods
+
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source
+{
+    if ([presented isKindOfClass:[PLCCalloutViewController class]]) {
+        return [[PLCCalloutTransitionAnimator alloc] init];
+    }
+    return nil;
+}
+
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
+{
+    if ([dismissed isKindOfClass:[PLCCalloutViewController class]]) {
+        return [[PLCCalloutTransitionAnimator alloc] init];
+    }
+    return nil;
+}
+
+#pragma mark -
+#pragma mark UIGestureRecognizerDelegate
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    if (self.presentedViewController) {
+        CGPoint point = [touch locationInView:self.presentedViewController.view];
+        if ([self.presentedViewController.view pointInside:point withEvent:nil]) {
+            return NO;
+        }
+    }
+    return YES;
+}
 
 @end

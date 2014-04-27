@@ -8,9 +8,6 @@
 
 #import <MapKit/MapKit.h>
 
-@class PLCCalloutView;
+@interface PLCMapView : MKMapView
 
-@interface PLCMapView : MKMapView<UIGestureRecognizerDelegate>
-@property(nonatomic, readwrite, weak)MKAnnotationView *activeAnnotationView;
-@property(nonatomic, readwrite, weak)PLCCalloutView *activeCalloutView;
 @end

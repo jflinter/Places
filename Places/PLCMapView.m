@@ -7,19 +7,7 @@
 //
 
 #import "PLCMapView.h"
-#import "PLCCalloutView.h"
 
 @implementation PLCMapView
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer
-       shouldReceiveTouch:(UITouch *)touch {
-    if (self.activeCalloutView) {
-        CGPoint point = [touch locationInView:self.activeCalloutView];
-        if ([self.activeCalloutView pointInside:point withEvent:nil]) {
-            return NO;
-        }
-    }
-    return YES;
-}
 
 @end

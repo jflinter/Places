@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7E42B24C190C6A6C00F9A21E /* PLCCalloutTransitionAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E42B24B190C6A6C00F9A21E /* PLCCalloutTransitionAnimator.m */; };
 		7E54FE5E18FF9392002E2AFC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7E54FE5C18FF9392002E2AFC /* InfoPlist.strings */; };
 		7E54FE6018FF9392002E2AFC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E54FE5F18FF9392002E2AFC /* main.m */; };
 		7E54FE6418FF9392002E2AFC /* PLCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E54FE6318FF9392002E2AFC /* PLCAppDelegate.m */; };
@@ -43,6 +44,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7E42B24A190C6A6C00F9A21E /* PLCCalloutTransitionAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCCalloutTransitionAnimator.h; sourceTree = "<group>"; };
+		7E42B24B190C6A6C00F9A21E /* PLCCalloutTransitionAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCCalloutTransitionAnimator.m; sourceTree = "<group>"; };
 		7E54FE5018FF9392002E2AFC /* Places.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Places.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E54FE5B18FF9392002E2AFC /* Places-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Places-Info.plist"; sourceTree = "<group>"; };
 		7E54FE5D18FF9392002E2AFC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -202,6 +205,8 @@
 			children = (
 				7E54FE9918FF9BC8002E2AFC /* PLCMapViewController.h */,
 				7E54FE9A18FF9BC8002E2AFC /* PLCMapViewController.m */,
+				7E42B24A190C6A6C00F9A21E /* PLCCalloutTransitionAnimator.h */,
+				7E42B24B190C6A6C00F9A21E /* PLCCalloutTransitionAnimator.m */,
 				A0FAFD28190236DD001A364D /* PLCShowPlaceViewController.h */,
 				A0FAFD29190236DD001A364D /* PLCShowPlaceViewController.m */,
 				A0FAFD2E19025820001A364D /* PLCEditPlaceViewController.h */,
@@ -372,6 +377,7 @@
 			files = (
 				A0FAFD2A190236DD001A364D /* PLCShowPlaceViewController.m in Sources */,
 				A0FAFD2319008E60001A364D /* PLCPlaceStore.m in Sources */,
+				7E42B24C190C6A6C00F9A21E /* PLCCalloutTransitionAnimator.m in Sources */,
 				7E54FEB018FFA94B002E2AFC /* PLCManagedObject.m in Sources */,
 				A0F053211903085800BD610C /* PLCMapView.m in Sources */,
 				7E54FE9118FF9854002E2AFC /* _PLCPlace.m in Sources */,

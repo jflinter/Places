@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+
 @class PLCPlace;
 
 @interface PLCShowPlaceViewController : UIViewController
-@property (strong, nonatomic) PLCPlace *place;
-@property (weak, nonatomic) IBOutlet UIImageView *imageView;
+
+@property (nonatomic) PLCPlace *place;
+@property (nonatomic, weak) IBOutlet UIImageView *imageView;
 
 @end

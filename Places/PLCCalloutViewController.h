@@ -8,12 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@class PLCCalloutView;
+@class PLCPlace;
 
 @interface PLCCalloutViewController : UIViewController
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomSpacingConstraint;
-@property (weak, nonatomic, readonly) PLCCalloutView *calloutView;
-@property (weak, nonatomic) IBOutlet UIView *containerView;
+
 @property (nonatomic) PLCPlace *place;
+@property (nonatomic, weak) MKAnnotationView *annotationView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomSpacingConstraint;
 
 @end
