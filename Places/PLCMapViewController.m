@@ -65,23 +65,26 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     if (mapView.activeAnnotationView && view != mapView.activeAnnotationView) {
         [self.mapView deselectAnnotation:mapView.activeAnnotationView.annotation animated:YES];
     }
-    CGFloat bottomPadding = 50;
-    CGFloat mapHeight = CGRectGetHeight(mapView.frame);
-    CGFloat paddingRatio = 0.5f - bottomPadding / mapHeight;
-    CGFloat animationDuration = 0.1f;
-    CLLocationCoordinate2D center = view.annotation.coordinate;
-    center.latitude += self.mapView.region.span.latitudeDelta * paddingRatio;
-    [UIView animateWithDuration:animationDuration animations:^{
-        [self.mapView setCenterCoordinate:center animated:YES];
-    } completion:^(BOOL finished) {
-        self.mapView.activeAnnotationView = view;
-    }];
+    
     PLCCalloutViewController *calloutController = [self instantiateCalloutController];
     calloutController.place = view.annotation;
     self.calloutViewController = calloutController;
     [self addChildViewController:calloutController];
     mapView.activeCalloutView = calloutController.calloutView;
     [calloutController.calloutView showInView:view];
+    
+    CGFloat topPadding = 20; // the padding between the top of the map view and the desired top of the callout view
+    CGFloat mapHeight = CGRectGetHeight(mapView.frame);
+    CGFloat paddingRatio = 0.5f - ((topPadding + calloutController.calloutView.frame.size.height + CGRectGetHeight(view.frame)) / mapHeight);
+    CLLocationCoordinate2D center = view.annotation.coordinate;
+    center.latitude -= self.mapView.region.span.latitudeDelta * paddingRatio;
+    
+    CGFloat animationDuration = 0.3f;
+    [UIView animateWithDuration:animationDuration animations:^{
+        [self.mapView setCenterCoordinate:center animated:NO];
+    } completion:^(BOOL finished) {
+        self.mapView.activeAnnotationView = view;
+    }];
 }
 
 - (void)mapView:(PLCMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
