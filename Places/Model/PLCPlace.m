@@ -10,9 +10,11 @@
 
 @implementation PLCPlace
 
-@synthesize image = _image;
-
 #pragma mark MKAnnotation
+
+- (UIImage *)image {
+    return [[self.photos anyObject] image];
+}
 
 - (CLLocationCoordinate2D)coordinate {
     return CLLocationCoordinate2DMake(self.latitude.doubleValue, self.longitude.doubleValue);
