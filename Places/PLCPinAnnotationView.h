@@ -9,4 +9,5 @@
 #import <MapKit/MapKit.h>
 
 @interface PLCPinAnnotationView : MKPinAnnotationView
+
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "PLCPinAnnotationView.h"
+#import "PLCCalloutView.h"
 
 @implementation PLCPinAnnotationView
 
@@ -19,7 +20,8 @@
     return pointInside;
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
     [super setSelected:selected animated:animated];
     self.pinColor = selected ? MKPinAnnotationColorGreen : MKPinAnnotationColorRed;
 }

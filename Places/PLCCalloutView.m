@@ -8,32 +8,34 @@
 
 #import "PLCCalloutView.h"
 
+@interface PLCCalloutView ()
+
+@end
+
 @implementation PLCCalloutView
 
 - (id)initWithFrame:(CGRect)frame
 {
-    self = [super initWithFrame:frame];
-    if (self) {
+    if ((self = [super initWithFrame:frame])) {
         [self sharedInit];
     }
     return self;
 }
 
-- (id) initWithCoder:(NSCoder *)aDecoder {
-    self = [super initWithCoder:aDecoder];
-    if (self) {
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    if ((self = [super initWithCoder:aDecoder])) {
         [self sharedInit];
     }
     return self;
 }
 
-- (void) sharedInit {
+- (void)sharedInit
+{
     self.backgroundColor = [UIColor clearColor];
-    self.layer.anchorPoint = CGPointMake(0.5, 1.0);
+    self.layer.anchorPoint = CGPointMake(0.5f, 1.0f);
 }
 
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect
 {
     CGFloat arrowEdge = self.arrowHeight * (float)M_SQRT2;
@@ -54,57 +56,14 @@
     [super drawRect:rect];
 }
 
-- (CGFloat)arrowHeight {
+- (CGFloat)arrowHeight
+{
     return 15.0f;
 }
 
-- (CGFloat) cornerRadius {
+- (CGFloat)cornerRadius
+{
     return 10.0f;
-}
-
-- (void) showInView:(UIView *)view {
-    // Center the callout view above the annotation view.
-    CGFloat animationDuration = 0.5f;
-    CGRect calloutViewFrame = self.frame;
-    calloutViewFrame.size = CGSizeMake(300, 300);
-    calloutViewFrame.origin.x = ((CGRectGetWidth(view.frame)/2) - CGRectGetWidth(calloutViewFrame)) / 2;
-    calloutViewFrame.origin.y = - CGRectGetHeight(calloutViewFrame);
-    self.frame = calloutViewFrame;
-    self.transform = CGAffineTransformMakeScale(0.001f, 0.001f);
-    self.alpha = 0.0f;
-    [view addSubview:self];
-    [UIView animateWithDuration:animationDuration
-                          delay:0
-         usingSpringWithDamping:0.8f
-          initialSpringVelocity:0.0f
-                        options:0
-                     animations:^{
-                         self.alpha = 1.0f;
-                         self.transform = CGAffineTransformIdentity;
-                     }
-                     completion:nil];
-
-}
-
-- (void)hide {
-    CGFloat animationDuration = 0.5f;
-    [UIView animateWithDuration:animationDuration
-                          delay:0
-         usingSpringWithDamping:1.0f
-          initialSpringVelocity:0.0f
-                        options:UIViewAnimationOptionAllowUserInteraction
-                     animations:^{
-                         self.alpha = 0.0f;
-                         self.transform = CGAffineTransformMakeScale(0.001f, 0.001f);
-                     }
-                     completion:^(BOOL finished) {
-                         if (!finished) {
-                             abort();
-                         }
-                         self.alpha = 1.0f;
-                         self.transform = CGAffineTransformIdentity;
-                         [self removeFromSuperview];
-                     }];
 }
 
 @end

@@ -13,25 +13,38 @@
 #import "PLCEditPlaceViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface PLCCalloutViewController()<UINavigationControllerDelegate>
+@interface PLCCalloutViewController() <UINavigationControllerDelegate>
+
+@property (nonatomic, weak) IBOutlet UIView *containerView;
+@property (nonatomic, weak, readonly) PLCCalloutView *calloutView;
+
 @end
 
 @implementation PLCCalloutViewController
 
+@dynamic calloutView;
+
++ (CGSize)calloutSize
+{
+    return CGSizeMake(300.0f, 300.0f);
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
     self.containerView.layer.cornerRadius = self.calloutView.cornerRadius;
     self.containerView.layer.masksToBounds = YES;
     self.bottomSpacingConstraint.constant = self.calloutView.arrowHeight;
-
 }
 
-- (PLCCalloutView *)calloutView {
+- (PLCCalloutView *)calloutView
+{
     return (PLCCalloutView *)self.view;
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
     if ([segue.identifier isEqualToString:@"PLCCalloutNavigationEmbedSegue"]) {
         UINavigationController *navController = segue.destinationViewController;
         navController.delegate = self;
@@ -39,7 +52,8 @@
     [super prepareForSegue:segue sender:sender];
 }
 
-- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
     PLCShowPlaceViewController *controller = (PLCShowPlaceViewController *)viewController;
     controller.place = self.place;
 }
