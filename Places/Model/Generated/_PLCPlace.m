@@ -10,6 +10,7 @@ const struct PLCPlaceAttributes PLCPlaceAttributes = {
 };
 
 const struct PLCPlaceRelationships PLCPlaceRelationships = {
+	.photos = @"photos",
 };
 
 const struct PLCPlaceFetchedProperties PLCPlaceFetchedProperties = {
@@ -116,6 +117,19 @@ const struct PLCPlaceFetchedProperties PLCPlaceFetchedProperties = {
 
 
 
+
+@dynamic photos;
+
+	
+- (NSMutableSet*)photosSet {
+	[self willAccessValueForKey:@"photos"];
+  
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"photos"];
+  
+	[self didAccessValueForKey:@"photos"];
+	return result;
+}
+	
 
 
 

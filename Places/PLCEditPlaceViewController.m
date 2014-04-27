@@ -8,6 +8,7 @@
 
 #import "PLCPlace.h"
 #import "PLCEditPlaceViewController.h"
+#import "PLCPhotoStore.h"
 
 @interface PLCEditPlaceViewController ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 @end
@@ -38,7 +39,7 @@
 didFinishPickingMediaWithInfo:(NSDictionary *)info {
     UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
     self.imageView.image = image;
-    self.place.image = image;
+    [[PLCPhotoStore new] addPhotoWithImage:image toPlace:self.place];
     [picker.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
