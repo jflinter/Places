@@ -25,6 +25,4 @@
 - (void) insertPlaceAtCoordinate:(CLLocationCoordinate2D)coordinate;
 - (void) removePlace:(PLCPlace *)place;
 
-
-
 @end
