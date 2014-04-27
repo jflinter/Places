@@ -5,6 +5,7 @@
 
 const struct PLCPlaceAttributes PLCPlaceAttributes = {
 	.caption = @"caption",
+	.deletedAt = @"deletedAt",
 	.latitude = @"latitude",
 	.longitude = @"longitude",
 };
@@ -60,6 +61,13 @@ const struct PLCPlaceFetchedProperties PLCPlaceFetchedProperties = {
 
 
 @dynamic caption;
+
+
+
+
+
+
+@dynamic deletedAt;
 
 
 
