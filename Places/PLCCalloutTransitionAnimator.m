@@ -41,7 +41,7 @@
 
     UIView *const calloutView = calloutViewController.view;
 
-    CGSize const calloutViewSize = CGSizeMake(300.0f, 300.0f);
+    CGSize const calloutViewSize = [PLCCalloutViewController calloutSize];
     CGPoint const calloutPresentationOrigin = CGPointMake(CGRectGetMidX(annotationView.bounds) + annotationView.calloutOffset.x, CGRectGetMinY(annotationView.bounds));
 
     calloutView.frame = CGRectMake(calloutPresentationOrigin.x - calloutViewSize.width / 2.0f, calloutPresentationOrigin.y - calloutViewSize.height, calloutViewSize.width, calloutViewSize.height);

@@ -76,7 +76,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 
         CGFloat topPadding = 20; // the padding between the top of the map view and the desired top of the callout view
         CGFloat mapHeight = CGRectGetHeight(self.mapView.bounds);
-        CGFloat paddingRatio = 0.5f - ((topPadding + calloutController.calloutView.frame.size.height + CGRectGetHeight(view.frame)) / mapHeight);
+        CGFloat paddingRatio = 0.5f - ((topPadding + [PLCCalloutViewController calloutSize].height + CGRectGetHeight(view.frame)) / mapHeight);
 
         CLLocationCoordinate2D center = view.annotation.coordinate;
         center.latitude -= self.mapView.region.span.latitudeDelta * paddingRatio;

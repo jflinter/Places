@@ -15,4 +15,6 @@
 @property (nonatomic) PLCPlace *place;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomSpacingConstraint;
 
++ (CGSize)calloutSize;
+
 @end

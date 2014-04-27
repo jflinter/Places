@@ -24,6 +24,11 @@
 
 @dynamic calloutView;
 
++ (CGSize)calloutSize
+{
+    return CGSizeMake(300.0f, 300.0f);
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
