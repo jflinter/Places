@@ -127,7 +127,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 - (void)placeStore:(PLCPlaceStore *)store
     didRemovePlace:(PLCPlace *)place {
     [self hideCalloutAnimated:YES completion:^(BOOL finished) {
-        [self.mapView removeAnnotation:place];        
+        [self.mapView removeAnnotation:place animated:YES];
     }];
 }
 

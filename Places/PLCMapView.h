@@ -13,4 +13,6 @@
 @interface PLCMapView : MKMapView<UIGestureRecognizerDelegate>
 @property(nonatomic, readwrite, weak)MKAnnotationView *activeAnnotationView;
 @property(nonatomic, readwrite, weak)PLCCalloutView *activeCalloutView;
+- (void)removeAnnotation:(id<MKAnnotation>)annotation
+                animated:(BOOL)animated;
 @end
