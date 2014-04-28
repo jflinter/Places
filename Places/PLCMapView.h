@@ -8,6 +8,17 @@
 
 #import <MapKit/MapKit.h>
 
-@interface PLCMapView : MKMapView
+@class PLCMapView;
+
+@protocol PLCMapViewDelegate <MKMapViewDelegate>
+@required
+
+- (NSArray *)presentedCalloutViewControllersForMapView:(PLCMapView *)mapView;
+
+@end
+
+@interface PLCMapView : MKMapView <UIGestureRecognizerDelegate>
+
+@property (nonatomic, assign) id<PLCMapViewDelegate> delegate;
 
 @end

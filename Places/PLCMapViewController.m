@@ -17,7 +17,7 @@
 
 static NSString * const PLCMapPinReuseIdentifier = @"PLCMapPinReuseIdentifier";
 
-@interface PLCMapViewController () <MKMapViewDelegate, PLCPlaceStoreDelegate, UIViewControllerTransitioningDelegate, UIGestureRecognizerDelegate>
+@interface PLCMapViewController () <PLCMapViewDelegate, PLCPlaceStoreDelegate, UIViewControllerTransitioningDelegate>
 
 @property (nonatomic, weak) IBOutlet PLCMapView *mapView;
 @property (nonatomic, readonly) PLCPlaceStore *placeStore;
@@ -105,6 +105,11 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     }
 }
 
+- (NSArray *)presentedCalloutViewControllersForMapView:(PLCMapView *)mapView
+{
+    return self.calloutViewControllers;
+}
+
 #pragma mark -
 #pragma mark Place Store Delegate
 
@@ -134,7 +139,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 - (UIGestureRecognizer *)addPlaceGestureRecognizer
 {
     UILongPressGestureRecognizer *recognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressed:)];
-    recognizer.delegate = self;
+    recognizer.delegate = self.mapView;
     return recognizer;
 }
 
@@ -163,20 +168,6 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     PLCCalloutViewController *calloutController = [self.storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([PLCCalloutViewController class])];
     calloutController.place = annotation;
     return calloutController;
-}
-
-#pragma mark -
-#pragma mark UIGestureRecognizerDelegate
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
-{
-    if (self.presentedViewController) {
-        CGPoint point = [touch locationInView:self.presentedViewController.view];
-        if ([self.presentedViewController.view pointInside:point withEvent:nil]) {
-            return NO;
-        }
-    }
-    return YES;
 }
 
 #pragma mark -
