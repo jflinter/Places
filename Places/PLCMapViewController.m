@@ -194,7 +194,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     PLCCalloutTransitionContext *transitionContext = [[PLCCalloutTransitionContext alloc] initWithOperation:PLCCalloutTransitionContextOperationDismiss];
     transitionContext.mapViewController = self;
     transitionContext.calloutViewController = calloutViewController;
-    transitionContext.containerView = [[calloutViewController view] superview];
+    transitionContext.containerView = calloutViewController.view.superview;
 
     PLCCalloutTransitionAnimator *animator = [[PLCCalloutTransitionAnimator alloc] init];
     [animator animateTransition:transitionContext];

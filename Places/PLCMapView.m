@@ -10,10 +10,10 @@
 
 @implementation PLCMapView
 
+@dynamic delegate;
+
 #pragma mark -
 #pragma mark UIGestureRecognizerDelegate
-
-@dynamic delegate;
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
