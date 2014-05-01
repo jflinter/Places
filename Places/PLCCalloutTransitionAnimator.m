@@ -18,15 +18,20 @@
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext
 {
+    [self animateTransition:transitionContext completion:nil];
+}
+
+- (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext
+               completion:(void (^)())completion {
     MKAnnotationView *const annotationView = (MKAnnotationView *)[transitionContext containerView];
     NSParameterAssert([annotationView isKindOfClass:[MKAnnotationView class]]);
-
+    
     UIViewController *srcViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     UIViewController *dstViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
-
+    
     BOOL isPresenting;
     PLCCalloutViewController *calloutViewController;
-
+    
     if ([dstViewController isKindOfClass:[PLCCalloutViewController class]]) {
         isPresenting = YES;
         calloutViewController = (PLCCalloutViewController *)dstViewController;
@@ -38,20 +43,20 @@
         calloutViewController = nil;
         NSAssert1(NO, @"Expected instance of %@", NSStringFromClass([PLCCalloutViewController class]));
     }
-
+    
     UIView *const calloutView = calloutViewController.view;
-
+    
     CGSize const calloutViewSize = [PLCCalloutViewController calloutSize];
     CGPoint const calloutPresentationOrigin = CGPointMake(CGRectGetMidX(annotationView.bounds) + annotationView.calloutOffset.x, CGRectGetMinY(annotationView.bounds));
-
+    
     calloutView.frame = CGRectMake(calloutPresentationOrigin.x - calloutViewSize.width / 2.0f, calloutPresentationOrigin.y - calloutViewSize.height, calloutViewSize.width, calloutViewSize.height);
-
+    
     if (isPresenting) {
         calloutView.transform = CGAffineTransformMakeScale(0.001f, 0.001f);
         calloutView.alpha = 0.0f;
-
+        
         [annotationView addSubview:calloutView];
-
+        
         [UIView animateWithDuration:[self transitionDuration:transitionContext]
                               delay:0
              usingSpringWithDamping:0.8f
@@ -63,6 +68,9 @@
                          }
                          completion:^(BOOL finished) {
                              [transitionContext completeTransition:finished];
+                             if (completion) {
+                                 completion();
+                             }
                          }];
     } else {
         [UIView animateWithDuration:[self transitionDuration:transitionContext]
@@ -76,6 +84,9 @@
                          }
                          completion:^(BOOL finished) {
                              [transitionContext completeTransition:finished];
+                             if (completion) {
+                                 completion();
+                             }
                          }];
     }
 }
