@@ -21,4 +21,6 @@
 
 @property (nonatomic, assign) id<PLCMapViewDelegate> delegate;
 
+- (void) resetScale;
+
 @end
