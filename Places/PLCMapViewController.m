@@ -14,15 +14,18 @@
 #import "PLCCalloutViewController.h"
 #import "PLCCalloutTransitionAnimator.h"
 #import "PLCCalloutTransitionContext.h"
+#import <BDDROneFingerZoomGestureRecognizer/BDDROneFingerZoomGestureRecognizer.h>
 
 static NSString * const PLCMapPinReuseIdentifier = @"PLCMapPinReuseIdentifier";
 
-@interface PLCMapViewController () <PLCMapViewDelegate, PLCPlaceStoreDelegate, UIViewControllerTransitioningDelegate>
+@interface PLCMapViewController () <PLCMapViewDelegate, PLCPlaceStoreDelegate, UIViewControllerTransitioningDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, weak) IBOutlet PLCMapView *mapView;
 @property (nonatomic, readonly) PLCPlaceStore *placeStore;
 @property (nonatomic) CLLocation *savedLocation;
 @property (nonatomic, readonly) NSArray *calloutViewControllers;
+@property(nonatomic) MKCoordinateRegion lastRegion;
+@property(nonatomic) BDDROneFingerZoomGestureRecognizer *oneFingerZoomRecognizer;
 
 @end
 
@@ -37,6 +40,30 @@ static NSString * const PLCMapPinReuseIdentifier = @"PLCMapPinReuseIdentifier";
     [self.mapView showAnnotations:self.placeStore.allPlaces animated:NO];
     [self.mapView addAnnotations:self.placeStore.allPlaces];
     [self.mapView addGestureRecognizer:[self addPlaceGestureRecognizer]];
+    self.oneFingerZoomRecognizer = [[BDDROneFingerZoomGestureRecognizer alloc] initWithTarget:self action:@selector(oneFingerZoomed:)];
+    self.oneFingerZoomRecognizer.scaleFactor = 5.0f;
+    self.oneFingerZoomRecognizer.delegate = self;
+    [self resetScale];
+    [self.mapView addGestureRecognizer:self.oneFingerZoomRecognizer];
+}
+
+- (void) resetScale {
+    self.oneFingerZoomRecognizer.scale = 1.0f;
+    self.lastRegion = self.mapView.region;
+}
+
+- (void) oneFingerZoomed:(BDDROneFingerZoomGestureRecognizer *)recognizer {
+    MKCoordinateSpan span = MKCoordinateSpanMake(self.lastRegion.span.latitudeDelta * recognizer.scale, self.lastRegion.span.longitudeDelta * recognizer.scale);
+    self.mapView.region = MKCoordinateRegionMake(self.lastRegion.center, span);
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    return YES;
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer
+       shouldReceiveTouch:(UITouch *)touch {
+    return [self.mapView gestureRecognizer:gestureRecognizer shouldReceiveTouch:touch];
 }
 
 #pragma mark -
@@ -102,6 +129,13 @@ didChangeDragState:(MKAnnotationViewDragState)newState
         for (id<MKAnnotation> annotation in [mapView.selectedAnnotations copy]) {
             [mapView deselectAnnotation:annotation animated:YES];
         }
+    }
+}
+
+- (void) mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
+    UIGestureRecognizerState state = self.oneFingerZoomRecognizer.state;
+    if (state != UIGestureRecognizerStateBegan && state != UIGestureRecognizerStateChanged && state != UIGestureRecognizerStateEnded) {
+        [self resetScale];
     }
 }
 

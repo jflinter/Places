@@ -29,4 +29,21 @@
     return YES;
 }
 
+- (void) setRegion:(MKCoordinateRegion)region {
+    if ([self regionIsValid:region]) {
+        [super setRegion:region];
+    }
+}
+
+- (BOOL)regionIsValid:(MKCoordinateRegion)region {
+    return !(region.span.latitudeDelta <= 0.0f ||
+             region.span.longitudeDelta <= 0.0f ||
+             region.span.latitudeDelta >= 180.0f ||
+             region.span.longitudeDelta >= 180.0f ||
+             region.center.latitude > 90.0f ||
+             region.center.latitude < -90.0f ||
+             region.center.longitude > 360.0f ||
+             region.center.longitude < -180.0f);
+}
+
 @end
