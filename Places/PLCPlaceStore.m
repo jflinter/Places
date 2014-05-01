@@ -39,10 +39,8 @@
 }
 
 - (void) removePlace:(PLCPlace *)place {
-    [place removeObserver:self forKeyPath:@"coordinate"];
-    [[self managedObjectContext] deleteObject:place];
+    place.deletedAt = [NSDate date];
     [self save];
-    [self.delegate placeStore:self didRemovePlace:place];
 }
 
 - (void) save {
@@ -50,6 +48,16 @@
     [[self managedObjectContext] save:&error];
     if (error) {
         abort();
+    }
+}
+
+- (void)controller:(NSFetchedResultsController *)controller
+   didChangeObject:(PLCPlace *)anObject
+       atIndexPath:(NSIndexPath *)indexPath
+     forChangeType:(NSFetchedResultsChangeType)type
+      newIndexPath:(NSIndexPath *)newIndexPath {
+    if (type == NSFetchedResultsChangeDelete) {
+        [self.delegate placeStore:self didRemovePlace:anObject];
     }
 }
 
@@ -66,6 +74,10 @@
 {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[PLCPlace entityName]];
     fetchRequest.sortDescriptors = @[ [NSSortDescriptor sortDescriptorWithKey:PLCPlaceAttributes.latitude ascending:YES], [NSSortDescriptor sortDescriptorWithKey:PLCPlaceAttributes.longitude ascending:YES] ];
+    NSExpression *nilExpression = [NSExpression expressionForConstantValue:[NSNull null]];
+    NSExpression *deletedAtExpression = [NSExpression expressionForKeyPath:PLCPlaceAttributes.deletedAt];
+    NSPredicate *predicate = [NSComparisonPredicate predicateWithLeftExpression:deletedAtExpression rightExpression:nilExpression modifier:NSDirectPredicateModifier type:NSEqualToPredicateOperatorType options:0];
+    fetchRequest.predicate = predicate;
     return fetchRequest;
 }
 

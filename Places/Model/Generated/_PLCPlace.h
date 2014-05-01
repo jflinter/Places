@@ -6,6 +6,7 @@
 
 extern const struct PLCPlaceAttributes {
 	__unsafe_unretained NSString *caption;
+	__unsafe_unretained NSString *deletedAt;
 	__unsafe_unretained NSString *latitude;
 	__unsafe_unretained NSString *longitude;
 } PLCPlaceAttributes;
@@ -18,6 +19,7 @@ extern const struct PLCPlaceFetchedProperties {
 } PLCPlaceFetchedProperties;
 
 @class PLCPhoto;
+
 
 
 
@@ -41,6 +43,16 @@ extern const struct PLCPlaceFetchedProperties {
 
 
 //- (BOOL)validateCaption:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSDate* deletedAt;
+
+
+
+//- (BOOL)validateDeletedAt:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -98,6 +110,12 @@ extern const struct PLCPlaceFetchedProperties {
 
 - (NSString*)primitiveCaption;
 - (void)setPrimitiveCaption:(NSString*)value;
+
+
+
+
+- (NSDate*)primitiveDeletedAt;
+- (void)setPrimitiveDeletedAt:(NSDate*)value;
 
 
 
