@@ -9,7 +9,10 @@
 #import "PLCMapView.h"
 #import <BDDROneFingerZoomGestureRecognizer/BDDROneFingerZoomGestureRecognizer.h>
 
-
+/*
+ This object acts as the delegate for our one-finger zoom gesture recognizer.
+ Normally the PLCMapView would handle this, but it already has to manage its private internal gesture recognizers, which causes issues. So this class acts as a "delegate proxy" of sorts to provide different behavior while remaining somewhat internal to the PLCMapView.
+ */
 @interface PLCMapViewInternalOneFingerGestureRecognizerDelegate : NSObject<UIGestureRecognizerDelegate>
 @property(nonatomic, readwrite, weak)PLCMapView *mapView;
 @end
@@ -29,7 +32,7 @@
 
 
 @interface PLCMapView()
-@property(nonatomic) MKCoordinateRegion lastRegion;
+@property(nonatomic, assign) CGFloat currentScale;
 @property(nonatomic) BDDROneFingerZoomGestureRecognizer *oneFingerZoomRecognizer;
 @property(nonatomic) PLCMapViewInternalOneFingerGestureRecognizerDelegate *oneFingerGestureRecognizerDelegate;
 @end
@@ -55,18 +58,32 @@
 }
 
 - (void) sharedInit {
+    self.currentScale = 1.0f;
     self.oneFingerZoomRecognizer = [[BDDROneFingerZoomGestureRecognizer alloc] initWithTarget:self action:@selector(oneFingerZoomed:)];
     self.oneFingerZoomRecognizer.scaleFactor = 5.0f;
     self.oneFingerGestureRecognizerDelegate = [PLCMapViewInternalOneFingerGestureRecognizerDelegate new];
     self.oneFingerGestureRecognizerDelegate.mapView = self;
     self.oneFingerZoomRecognizer.delegate = self.oneFingerGestureRecognizerDelegate;
-    [self resetScale];
     [self addGestureRecognizer:self.oneFingerZoomRecognizer];
 }
 
 - (void) oneFingerZoomed:(BDDROneFingerZoomGestureRecognizer *)recognizer {
-    MKCoordinateSpan span = MKCoordinateSpanMake(self.lastRegion.span.latitudeDelta * recognizer.scale, self.lastRegion.span.longitudeDelta * recognizer.scale);
-    self.region = MKCoordinateRegionMake(self.lastRegion.center, span);
+    switch (recognizer.state) {
+        case UIGestureRecognizerStateBegan:
+        case UIGestureRecognizerStateChanged:
+        case UIGestureRecognizerStateEnded: {
+            CGFloat scaleRatio = recognizer.scale / self.currentScale;
+            MKCoordinateSpan span = MKCoordinateSpanMake(self.region.span.latitudeDelta * scaleRatio, self.region.span.longitudeDelta * scaleRatio);
+            self.region = MKCoordinateRegionMake(self.region.center, span);
+            self.currentScale = recognizer.scale;
+            break;
+        }
+        case UIGestureRecognizerStateCancelled:
+        case UIGestureRecognizerStateFailed:
+        case UIGestureRecognizerStatePossible:
+            self.currentScale = 1.0f;
+            break;
+    }
 }
 
 #pragma mark -
@@ -101,15 +118,6 @@
              region.center.latitude < -90.0f ||
              region.center.longitude > 360.0f ||
              region.center.longitude < -180.0f);
-}
-
-
-- (void) resetScale {
-    UIGestureRecognizerState state = self.oneFingerZoomRecognizer.state;
-    if (state != UIGestureRecognizerStateBegan && state != UIGestureRecognizerStateChanged && state != UIGestureRecognizerStateEnded) {
-        self.oneFingerZoomRecognizer.scale = 1.0f;
-        self.lastRegion = self.region;
-    }
 }
 
 @end

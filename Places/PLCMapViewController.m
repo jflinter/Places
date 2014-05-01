@@ -105,10 +105,6 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     }
 }
 
-- (void) mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
-    [self.mapView resetScale];
-}
-
 - (NSArray *)presentedCalloutViewControllersForMapView:(PLCMapView *)mapView
 {
     return self.calloutViewControllers;
