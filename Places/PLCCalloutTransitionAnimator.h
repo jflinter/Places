@@ -10,4 +10,7 @@
 
 @interface PLCCalloutTransitionAnimator : NSObject <UIViewControllerAnimatedTransitioning>
 
+- (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext
+               completion:(void (^)())completion;
+
 @end

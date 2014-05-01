@@ -92,7 +92,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 {
     PLCCalloutViewController *calloutViewController = [self existingCalloutViewControllerForAnnotationView:view];
     if (calloutViewController) {
-        [self dismissCalloutViewController:calloutViewController];
+        [self dismissCalloutViewController:calloutViewController completion:nil];
     }
 }
 
@@ -121,7 +121,16 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 
 - (void)placeStore:(PLCPlaceStore *)store didRemovePlace:(PLCPlace *)place
 {
-    [self.mapView removeAnnotation:place];
+    MKAnnotationView *view = [self.mapView viewForAnnotation:place];
+    PLCCalloutViewController *calloutViewController = [self existingCalloutViewControllerForAnnotationView:view];
+    if (calloutViewController) {
+        [self dismissCalloutViewController:calloutViewController completion:^{
+            [self.mapView removeAnnotation:place];
+        }];
+    }
+    else {
+        [self.mapView removeAnnotation:place];
+    }
 }
 
 #pragma mark -
@@ -188,6 +197,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 }
 
 - (void)dismissCalloutViewController:(PLCCalloutViewController *)calloutViewController
+                          completion:(void (^)())completion
 {
     [calloutViewController removeFromParentViewController];
 
@@ -197,13 +207,13 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     transitionContext.containerView = calloutViewController.view.superview;
 
     PLCCalloutTransitionAnimator *animator = [[PLCCalloutTransitionAnimator alloc] init];
-    [animator animateTransition:transitionContext];
+    [animator animateTransition:transitionContext completion:completion];
 }
 
 - (void)dismissAllCalloutViewControllers
 {
     for (PLCCalloutViewController *calloutViewController in [self.calloutViewControllers copy]) {
-        [self dismissCalloutViewController:calloutViewController];
+        [self dismissCalloutViewController:calloutViewController completion:nil];
     }
 }
 

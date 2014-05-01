@@ -12,5 +12,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (nonatomic) PLCPlace *place;
 - (IBAction)choosePhoto:(id)sender;
+- (IBAction)deletePlace:(id)sender;
 
 @end
