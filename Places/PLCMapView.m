@@ -14,6 +14,12 @@
  Normally the PLCMapView would handle this, but it already has to manage its private internal gesture recognizers, which causes issues. So this class acts as a "delegate proxy" of sorts to provide different behavior while remaining somewhat internal to the PLCMapView.
  */
 @interface PLCMapViewInternalOneFingerGestureRecognizerDelegate : NSObject<UIGestureRecognizerDelegate>
+
+// We want to hang on to the map view so that we can use its callout-avoiding logic.
+// it's a weak reference to avoid retain cycles (note that the ownership pattern is the reverse
+// of what is normally done here: the map view has a strong reference to its delegate, and the
+// delegate has a weak reference back to it. It's odd, but the only way I could think to make
+// it work.
 @property(nonatomic, readwrite, weak)PLCMapView *mapView;
 @end
 
