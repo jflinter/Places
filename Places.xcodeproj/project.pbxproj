@@ -28,6 +28,7 @@
 		7EFFFB27190D64A900007FAF /* PLCCalloutTransitionContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EFFFB26190D64A900007FAF /* PLCCalloutTransitionContext.m */; };
 		A062BA0E19122FD9002F0C2E /* Glyphish.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A062BA0D19122FD9002F0C2E /* Glyphish.xcassets */; };
 		A062BA12191230B2002F0C2E /* PLCTemplateImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = A062BA11191230B2002F0C2E /* PLCTemplateImageView.m */; };
+		A062BA15191233A1002F0C2E /* PLCTemplateButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A062BA14191233A1002F0C2E /* PLCTemplateButton.m */; };
 		A0AEC2E5190CC482006D20DE /* _PLCPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = A0AEC2E4190CC482006D20DE /* _PLCPhoto.m */; };
 		A0AEC2E8190CC48D006D20DE /* PLCPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = A0AEC2E7190CC48D006D20DE /* PLCPhoto.m */; };
 		A0AEC2EB190CC4CE006D20DE /* PLCPhotoStore.m in Sources */ = {isa = PBXBuildFile; fileRef = A0AEC2EA190CC4CE006D20DE /* PLCPhotoStore.m */; };
@@ -85,6 +86,8 @@
 		A062BA0D19122FD9002F0C2E /* Glyphish.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Glyphish.xcassets; sourceTree = "<group>"; };
 		A062BA10191230B2002F0C2E /* PLCTemplateImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCTemplateImageView.h; sourceTree = "<group>"; };
 		A062BA11191230B2002F0C2E /* PLCTemplateImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCTemplateImageView.m; sourceTree = "<group>"; };
+		A062BA13191233A1002F0C2E /* PLCTemplateButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCTemplateButton.h; sourceTree = "<group>"; };
+		A062BA14191233A1002F0C2E /* PLCTemplateButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCTemplateButton.m; sourceTree = "<group>"; };
 		A0AEC2E3190CC482006D20DE /* _PLCPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _PLCPhoto.h; sourceTree = "<group>"; };
 		A0AEC2E4190CC482006D20DE /* _PLCPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _PLCPhoto.m; sourceTree = "<group>"; };
 		A0AEC2E6190CC48D006D20DE /* PLCPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCPhoto.h; sourceTree = "<group>"; };
@@ -284,6 +287,8 @@
 			children = (
 				A062BA10191230B2002F0C2E /* PLCTemplateImageView.h */,
 				A062BA11191230B2002F0C2E /* PLCTemplateImageView.m */,
+				A062BA13191233A1002F0C2E /* PLCTemplateButton.h */,
+				A062BA14191233A1002F0C2E /* PLCTemplateButton.m */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -453,6 +458,7 @@
 				A0FAFD2A190236DD001A364D /* PLCShowPlaceViewController.m in Sources */,
 				A0FAFD2319008E60001A364D /* PLCPlaceStore.m in Sources */,
 				7E42B24C190C6A6C00F9A21E /* PLCCalloutTransitionAnimator.m in Sources */,
+				A062BA15191233A1002F0C2E /* PLCTemplateButton.m in Sources */,
 				7E54FEB018FFA94B002E2AFC /* PLCManagedObject.m in Sources */,
 				A0AEC2E8190CC48D006D20DE /* PLCPhoto.m in Sources */,
 				A0F053211903085800BD610C /* PLCMapView.m in Sources */,

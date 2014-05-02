@@ -16,23 +16,43 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="a6V-Pg-lJh" customClass="PLCMapView">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="a6V-Pg-lJh" customClass="PLCMapView">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <connections>
                                     <outlet property="delegate" destination="OId-a2-hAa" id="HYd-MJ-UV2"/>
                                 </connections>
                             </mapView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J32-Ix-3xi" customClass="PLCTemplateButton">
+                                <rect key="frame" x="252" y="500" width="48" height="48"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="48" id="7l8-wu-ePe"/>
+                                    <constraint firstAttribute="height" constant="48" id="B0g-Cd-ReU"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                                <state key="normal" image="701-location">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="selected" image="701-location-selected-selected"/>
+                                <state key="highlighted" image="701-location-selected-selected"/>
+                                <connections>
+                                    <action selector="locationButtonTapped:" destination="OId-a2-hAa" eventType="touchUpInside" id="LJl-mo-M89"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="a6V-Pg-lJh" firstAttribute="top" secondItem="lNU-MC-GZc" secondAttribute="top" id="0A5-et-4EU"/>
                             <constraint firstAttribute="trailing" secondItem="a6V-Pg-lJh" secondAttribute="trailing" id="1uU-In-0qG"/>
                             <constraint firstItem="a6V-Pg-lJh" firstAttribute="leading" secondItem="lNU-MC-GZc" secondAttribute="leading" id="GlJ-yn-Lay"/>
+                            <constraint firstAttribute="trailing" secondItem="J32-Ix-3xi" secondAttribute="trailing" constant="20" id="T1f-pZ-oSt"/>
+                            <constraint firstItem="LaD-Hf-YxR" firstAttribute="top" secondItem="J32-Ix-3xi" secondAttribute="bottom" constant="20" id="jKO-K7-faQ"/>
                             <constraint firstAttribute="bottom" secondItem="a6V-Pg-lJh" secondAttribute="bottom" id="zCa-cd-FDS"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="locationButton" destination="J32-Ix-3xi" id="04M-hZ-aqj"/>
                         <outlet property="mapView" destination="a6V-Pg-lJh" id="vbR-qJ-8qZ"/>
                         <outlet property="view" destination="lNU-MC-GZc" id="vzn-G1-QQ7"/>
                     </connections>
@@ -197,6 +217,10 @@
             <point key="canvasLocation" x="1516" y="91"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="701-location" width="28" height="28"/>
+        <image name="701-location-selected-selected" width="28" height="28"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
