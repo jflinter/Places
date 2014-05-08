@@ -11,6 +11,7 @@ const struct PLCPlaceAttributes PLCPlaceAttributes = {
 };
 
 const struct PLCPlaceRelationships PLCPlaceRelationships = {
+	.map = @"map",
 	.photos = @"photos",
 };
 
@@ -125,6 +126,10 @@ const struct PLCPlaceFetchedProperties PLCPlaceFetchedProperties = {
 
 
 
+
+@dynamic map;
+
+	
 
 @dynamic photos;
 

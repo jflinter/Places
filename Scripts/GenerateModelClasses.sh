@@ -6,4 +6,4 @@ then
     exit 0
 fi
 
-/usr/local/bin/mogenerator --template-var arc=true --model "${SRCROOT}/Places/Model/Places.xcdatamodeld/Places.xcdatamodel" --base-class "PLCManagedObject" --machine-dir "${SRCROOT}/Places/Model/Generated" --human-dir "${SRCROOT}/Places/Model"
+/usr/local/bin/mogenerator --template-var arc=true --model "${SRCROOT}/Places/Model/Places.xcdatamodeld" --base-class "PLCManagedObject" --machine-dir "${SRCROOT}/Places/Model/Generated" --human-dir "${SRCROOT}/Places/Model"
