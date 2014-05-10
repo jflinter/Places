@@ -189,7 +189,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 - (PLCCalloutViewController *)instantiateCalloutControllerForAnnotation:(id<MKAnnotation>)annotation
 {
     PLCCalloutViewController *calloutController = [self.storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([PLCCalloutViewController class])];
-    calloutController.place = annotation;
+    calloutController.place = (PLCPlace *)annotation;
     return calloutController;
 }
 

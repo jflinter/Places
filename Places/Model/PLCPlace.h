@@ -8,8 +8,7 @@
 
 #import "_PLCPlace.h"
 
-@interface PLCPlace : _PLCPlace <MKAnnotation>
-
+@interface PLCPlace : _PLCPlace<MKAnnotation, UIActivityItemSource>
 - (UIImage *)image;
 
 @end

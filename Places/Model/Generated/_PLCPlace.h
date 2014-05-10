@@ -7,6 +7,7 @@
 extern const struct PLCPlaceAttributes {
 	__unsafe_unretained NSString *caption;
 	__unsafe_unretained NSString *deletedAt;
+	__unsafe_unretained NSString *geocodedAddress;
 	__unsafe_unretained NSString *latitude;
 	__unsafe_unretained NSString *longitude;
 } PLCPlaceAttributes;
@@ -24,6 +25,7 @@ extern const struct PLCPlaceFetchedProperties {
 
 
 
+@class NSObject;
 
 
 
@@ -55,6 +57,16 @@ extern const struct PLCPlaceFetchedProperties {
 
 
 //- (BOOL)validateDeletedAt:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) id geocodedAddress;
+
+
+
+//- (BOOL)validateGeocodedAddress:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -125,6 +137,12 @@ extern const struct PLCPlaceFetchedProperties {
 
 - (NSDate*)primitiveDeletedAt;
 - (void)setPrimitiveDeletedAt:(NSDate*)value;
+
+
+
+
+- (id)primitiveGeocodedAddress;
+- (void)setPrimitiveGeocodedAddress:(id)value;
 
 
 
