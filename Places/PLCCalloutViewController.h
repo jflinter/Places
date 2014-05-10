@@ -22,5 +22,6 @@
 
 - (IBAction)deletePlace:(id)sender;
 - (IBAction)choosePhoto:(id)sender;
+- (IBAction)sharePlace:(id)sender;
 
 @end
