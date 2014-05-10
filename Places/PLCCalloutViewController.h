@@ -10,11 +10,17 @@
 
 @class PLCPlace;
 
-@interface PLCCalloutViewController : UIViewController
+@interface PLCCalloutViewController : UIViewController<UITextViewDelegate>
 
-@property (nonatomic) PLCPlace *place;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomSpacingConstraint;
+@property (weak, nonatomic) IBOutlet UIImageView *placeImageView;
+@property (weak, nonatomic) IBOutlet UITextView *captionTextView;
+@property (weak, nonatomic) IBOutlet UIToolbar *bottomToolbar;
+@property (nonatomic) PLCPlace *place;
 
 + (CGSize)calloutSize;
+
+- (IBAction)deletePlace:(id)sender;
+- (IBAction)choosePhoto:(id)sender;
 
 @end
