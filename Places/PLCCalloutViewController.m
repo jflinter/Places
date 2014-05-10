@@ -41,12 +41,8 @@
     self.captionTextView.text = self.place.caption;
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    if (self.place.wasJustAdded) {
-        self.place.wasJustAdded = NO;
-        [self.captionTextView becomeFirstResponder];
-    }
+- (void)editCaption {
+    [self.captionTextView becomeFirstResponder];
 }
 
 // TODO: viewWillDisappear et. al. are not being called correctly; I think they should be used here instead.

@@ -23,4 +23,6 @@
 - (IBAction)deletePlace:(id)sender;
 - (IBAction)choosePhoto:(id)sender;
 
+- (void)editCaption;
+
 @end

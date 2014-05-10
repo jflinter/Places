@@ -12,7 +12,4 @@
 
 - (UIImage *)image;
 
-// this will default to no, so it doesn't need to be synced or anything, it's just so we can immediately begin editing newly added places.
-@property(nonatomic, readwrite) BOOL wasJustAdded;
-
 @end

@@ -22,9 +22,7 @@
 
 - (void) save;
 
-- (void) insertPlaceAtCoordinate:(CLLocationCoordinate2D)coordinate;
+- (PLCPlace *) insertPlaceAtCoordinate:(CLLocationCoordinate2D)coordinate;
 - (void) removePlace:(PLCPlace *)place;
-
-
 
 @end

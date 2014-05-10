@@ -68,6 +68,8 @@
         NSPersistentStore *store = nil;
         NSError *error = nil;
         if ((store = [_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:self.persistentStoreURL options:@{ NSMigratePersistentStoresAutomaticallyOption : @YES, NSInferMappingModelAutomaticallyOption : @YES } error:&error]) == nil) {
+            // this is a tiny thing that makes it easy to just build twice in a row on your device/simulator if there is a migration error the first time. Should be cleaned up eventually.
+            [[NSFileManager defaultManager] removeItemAtURL:self.persistentStoreURL error:nil];
             abort();
         }
     }

@@ -23,6 +23,7 @@ static NSString * const PLCMapPinReuseIdentifier = @"PLCMapPinReuseIdentifier";
 @property (nonatomic, readonly) PLCPlaceStore *placeStore;
 @property (nonatomic) CLLocation *savedLocation;
 @property (nonatomic, readonly) NSArray *calloutViewControllers;
+@property (nonatomic, readwrite, weak) PLCPlace *justAddedPlace;
 
 @end
 
@@ -115,7 +116,6 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 
 - (void)placeStore:(PLCPlaceStore *)store didInsertPlace:(PLCPlace *)place
 {
-    place.wasJustAdded = YES;
     [self.mapView addAnnotation:place];
     [self.mapView selectAnnotation:place animated:YES];
 }
@@ -159,7 +159,8 @@ didChangeDragState:(MKAnnotationViewDragState)newState
         CGPoint mapViewLocation = [sender locationInView:self.mapView];
         CLLocationCoordinate2D touchCoordinate = [self.mapView convertPoint:mapViewLocation
                                                        toCoordinateFromView:self.mapView];
-        [self.placeStore insertPlaceAtCoordinate:touchCoordinate];
+        PLCPlace *place = [self.placeStore insertPlaceAtCoordinate:touchCoordinate];
+        self.justAddedPlace = place;
     }
 }
 
@@ -194,7 +195,11 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 
     PLCCalloutTransitionAnimator *animator = [[PLCCalloutTransitionAnimator alloc] init];
 
-    [animator animateTransition:transitionContext];
+    [animator animateTransition:transitionContext completion:^{
+        if (self.justAddedPlace == calloutViewController.place) {
+            [calloutViewController editCaption];
+        }
+    }];
 }
 
 - (void)dismissCalloutViewController:(PLCCalloutViewController *)calloutViewController
