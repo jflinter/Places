@@ -12,12 +12,14 @@ extern const struct PLCPlaceAttributes {
 } PLCPlaceAttributes;
 
 extern const struct PLCPlaceRelationships {
+	__unsafe_unretained NSString *map;
 	__unsafe_unretained NSString *photos;
 } PLCPlaceRelationships;
 
 extern const struct PLCPlaceFetchedProperties {
 } PLCPlaceFetchedProperties;
 
+@class PLCMap;
 @class PLCPhoto;
 
 
@@ -86,6 +88,13 @@ extern const struct PLCPlaceFetchedProperties {
 
 
 
+@property (nonatomic, strong) PLCMap *map;
+
+//- (BOOL)validateMap:(id*)value_ error:(NSError**)error_;
+
+
+
+
 @property (nonatomic, strong) NSSet *photos;
 
 - (NSMutableSet*)photosSet;
@@ -136,6 +145,11 @@ extern const struct PLCPlaceFetchedProperties {
 - (void)setPrimitiveLongitudeValue:(double)value_;
 
 
+
+
+
+- (PLCMap*)primitiveMap;
+- (void)setPrimitiveMap:(PLCMap*)value;
 
 
 

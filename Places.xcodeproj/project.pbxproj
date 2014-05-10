@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		679241F87CA4405E83424918 /* libPods-Places.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B14D2510F5C344D19157C783 /* libPods-Places.a */; };
+		7E166E01191B4A53001EF46B /* _PLCMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E166E00191B4A53001EF46B /* _PLCMap.m */; };
+		7E166E04191B4A5E001EF46B /* PLCMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E166E03191B4A5E001EF46B /* PLCMap.m */; };
 		7E42B24C190C6A6C00F9A21E /* PLCCalloutTransitionAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E42B24B190C6A6C00F9A21E /* PLCCalloutTransitionAnimator.m */; };
 		7E54FE5E18FF9392002E2AFC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7E54FE5C18FF9392002E2AFC /* InfoPlist.strings */; };
 		7E54FE6018FF9392002E2AFC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E54FE5F18FF9392002E2AFC /* main.m */; };
@@ -38,6 +39,7 @@
 		A0FAFD2A190236DD001A364D /* PLCShowPlaceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FAFD29190236DD001A364D /* PLCShowPlaceViewController.m */; };
 		A0FAFD2D1902404D001A364D /* PLCCalloutView.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FAFD2C1902404D001A364D /* PLCCalloutView.m */; };
 		A0FAFD3019025820001A364D /* PLCEditPlaceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FAFD2F19025820001A364D /* PLCEditPlaceViewController.m */; };
+		D0FE6C18C7A34A49A217A9F8 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A94B8A9C60F403FB1A724A5 /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,8 +53,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3BED1FCB5856409087BA0323 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		4A94B8A9C60F403FB1A724A5 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		7E166DFF191B4A53001EF46B /* _PLCMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _PLCMap.h; sourceTree = "<group>"; };
+		7E166E00191B4A53001EF46B /* _PLCMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _PLCMap.m; sourceTree = "<group>"; };
+		7E166E02191B4A5E001EF46B /* PLCMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCMap.h; sourceTree = "<group>"; };
+		7E166E03191B4A5E001EF46B /* PLCMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCMap.m; sourceTree = "<group>"; };
+		7E166E05191B4F7C001EF46B /* Places.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Places.entitlements; sourceTree = "<group>"; };
 		7E42B24A190C6A6C00F9A21E /* PLCCalloutTransitionAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCCalloutTransitionAnimator.h; sourceTree = "<group>"; };
 		7E42B24B190C6A6C00F9A21E /* PLCCalloutTransitionAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCCalloutTransitionAnimator.m; sourceTree = "<group>"; };
+		7E500851191B46C4003634DF /* Places 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Places 2.xcdatamodel"; sourceTree = "<group>"; };
 		7E54FE5018FF9392002E2AFC /* Places.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Places.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E54FE5B18FF9392002E2AFC /* Places-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Places-Info.plist"; sourceTree = "<group>"; };
 		7E54FE5D18FF9392002E2AFC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -81,7 +91,6 @@
 		7E54FEAE18FFA94B002E2AFC /* PLCManagedObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCManagedObject.m; sourceTree = "<group>"; };
 		7EFFFB25190D64A900007FAF /* PLCCalloutTransitionContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCCalloutTransitionContext.h; sourceTree = "<group>"; };
 		7EFFFB26190D64A900007FAF /* PLCCalloutTransitionContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCCalloutTransitionContext.m; sourceTree = "<group>"; };
-		845C02C4563B433E8903DF09 /* Pods-Places.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Places.xcconfig"; path = "Pods/Pods-Places.xcconfig"; sourceTree = "<group>"; };
 		A062BA0D19122FD9002F0C2E /* Glyphish.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Glyphish.xcassets; sourceTree = "<group>"; };
 		A062BA10191230B2002F0C2E /* PLCTemplateImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCTemplateImageView.h; sourceTree = "<group>"; };
 		A062BA11191230B2002F0C2E /* PLCTemplateImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCTemplateImageView.m; sourceTree = "<group>"; };
@@ -121,13 +130,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				7E54FEA818FFA3EE002E2AFC /* MapKit.framework in Frameworks */,
-				679241F87CA4405E83424918 /* libPods-Places.a in Frameworks */,
+				D0FE6C18C7A34A49A217A9F8 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7E50084C191B41D7003634DF /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				3BED1FCB5856409087BA0323 /* Pods.xcconfig */,
+			);
+			name = Configuration;
+			path = ..;
+			sourceTree = "<group>";
+		};
 		7E54FE4718FF9392002E2AFC = {
 			isa = PBXGroup;
 			children = (
@@ -135,7 +153,6 @@
 				7E54FE7218FF9392002E2AFC /* PlacesTests */,
 				7E54FEA918FFA403002E2AFC /* Frameworks */,
 				7E54FE5118FF9392002E2AFC /* Products */,
-				845C02C4563B433E8903DF09 /* Pods-Places.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -151,14 +168,16 @@
 		7E54FE5918FF9392002E2AFC /* Places */ = {
 			isa = PBXGroup;
 			children = (
+				7E166E05191B4F7C001EF46B /* Places.entitlements */,
 				7E54FE8218FF93FE002E2AFC /* Application */,
 				7E54FE8318FF9404002E2AFC /* Model */,
 				7E54FEAA18FFA914002E2AFC /* Model Support */,
+				7E54FE5A18FF9392002E2AFC /* Supporting Files */,
+				A062BA0F19123047002F0C2E /* Utilities */,
 				7E54FE9818FF9BB9002E2AFC /* View Controllers */,
 				A0FAFD27190236A2001A364D /* Views */,
-				A062BA0F19123047002F0C2E /* Utilities */,
+				7E50084C191B41D7003634DF /* Configuration */,
 				7E54FE9C18FF9BD1002E2AFC /* Resources */,
-				7E54FE5A18FF9392002E2AFC /* Supporting Files */,
 			);
 			path = Places;
 			sourceTree = "<group>";
@@ -208,10 +227,12 @@
 			children = (
 				7E54FE8E18FF9854002E2AFC /* Generated */,
 				7E54FE8418FF9450002E2AFC /* Places.xcdatamodeld */,
-				7E54FE9218FF985A002E2AFC /* PLCPlace.h */,
-				7E54FE9318FF985A002E2AFC /* PLCPlace.m */,
+				7E166E02191B4A5E001EF46B /* PLCMap.h */,
+				7E166E03191B4A5E001EF46B /* PLCMap.m */,
 				A0AEC2E6190CC48D006D20DE /* PLCPhoto.h */,
 				A0AEC2E7190CC48D006D20DE /* PLCPhoto.m */,
+				7E54FE9218FF985A002E2AFC /* PLCPlace.h */,
+				7E54FE9318FF985A002E2AFC /* PLCPlace.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -219,6 +240,8 @@
 		7E54FE8E18FF9854002E2AFC /* Generated */ = {
 			isa = PBXGroup;
 			children = (
+				7E166DFF191B4A53001EF46B /* _PLCMap.h */,
+				7E166E00191B4A53001EF46B /* _PLCMap.m */,
 				A0AEC2E3190CC482006D20DE /* _PLCPhoto.h */,
 				A0AEC2E4190CC482006D20DE /* _PLCPhoto.m */,
 				7E54FE8F18FF9854002E2AFC /* _PLCPlace.h */,
@@ -260,6 +283,7 @@
 			children = (
 				7E54FEA718FFA3EE002E2AFC /* MapKit.framework */,
 				B14D2510F5C344D19157C783 /* libPods-Places.a */,
+				4A94B8A9C60F403FB1A724A5 /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -352,6 +376,14 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = Places;
 				TargetAttributes = {
+					7E54FE4F18FF9392002E2AFC = {
+						DevelopmentTeam = 9W229C2355;
+						SystemCapabilities = {
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
+					};
 					7E54FE6A18FF9392002E2AFC = {
 						TestTargetID = 7E54FE4F18FF9392002E2AFC;
 					};
@@ -412,7 +444,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-Places-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		7E54FE8718FF9495002E2AFC /* ShellScript */ = {
@@ -461,6 +493,7 @@
 				A0F0531E19025E6300BD610C /* PLCCalloutViewController.m in Sources */,
 				7E54FE9418FF985A002E2AFC /* PLCPlace.m in Sources */,
 				7E54FE6018FF9392002E2AFC /* main.m in Sources */,
+				7E166E04191B4A5E001EF46B /* PLCMap.m in Sources */,
 				A062BA12191230B2002F0C2E /* PLCTemplateImageView.m in Sources */,
 				A0FAFD3019025820001A364D /* PLCEditPlaceViewController.m in Sources */,
 				7E54FE9B18FF9BC8002E2AFC /* PLCMapViewController.m in Sources */,
@@ -468,6 +501,7 @@
 				A0FAFD261901EEDC001A364D /* PLCPinAnnotationView.m in Sources */,
 				A0FAFD2D1902404D001A364D /* PLCCalloutView.m in Sources */,
 				7E54FEAF18FFA94B002E2AFC /* PLCDatabase.m in Sources */,
+				7E166E01191B4A53001EF46B /* _PLCMap.m in Sources */,
 				A0AEC2E5190CC482006D20DE /* _PLCPhoto.m in Sources */,
 				7EFFFB27190D64A900007FAF /* PLCCalloutTransitionContext.m in Sources */,
 				7E54FE8618FF9450002E2AFC /* Places.xcdatamodeld in Sources */,
@@ -554,7 +588,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -597,7 +631,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -606,30 +640,38 @@
 		};
 		7E54FE7D18FF9392002E2AFC /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 845C02C4563B433E8903DF09 /* Pods-Places.xcconfig */;
+			baseConfigurationReference = 3BED1FCB5856409087BA0323 /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = Places/Places.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Places/Places-Prefix.pch";
 				INFOPLIST_FILE = "Places/Places-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
 		};
 		7E54FE7E18FF9392002E2AFC /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 845C02C4563B433E8903DF09 /* Pods-Places.xcconfig */;
+			baseConfigurationReference = 3BED1FCB5856409087BA0323 /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = Places/Places.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Places/Places-Prefix.pch";
 				INFOPLIST_FILE = "Places/Places-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -710,9 +752,10 @@
 		7E54FE8418FF9450002E2AFC /* Places.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				7E500851191B46C4003634DF /* Places 2.xcdatamodel */,
 				7E54FE8518FF9450002E2AFC /* Places.xcdatamodel */,
 			);
-			currentVersion = 7E54FE8518FF9450002E2AFC /* Places.xcdatamodel */;
+			currentVersion = 7E500851191B46C4003634DF /* Places 2.xcdatamodel */;
 			path = Places.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
