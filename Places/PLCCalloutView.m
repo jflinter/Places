@@ -58,7 +58,7 @@
 
 - (CGFloat)arrowHeight
 {
-    return 15.0f;
+    return 10.0f;
 }
 
 - (CGFloat)cornerRadius

@@ -9,20 +9,20 @@
 #import "PLCPlace.h"
 #import "PLCCalloutView.h"
 #import "PLCCalloutViewController.h"
-#import "PLCShowPlaceViewController.h"
-#import "PLCEditPlaceViewController.h"
+#import "PLCPhotoStore.h"
+#import "PLCPlaceStore.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface PLCCalloutViewController() <UINavigationControllerDelegate>
+@interface PLCCalloutViewController() <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate>
 
-@property (nonatomic, weak) IBOutlet UIView *containerView;
-@property (nonatomic, weak, readonly) PLCCalloutView *calloutView;
+@property (nonatomic, weak) IBOutlet UIView *contentView;
+@property (nonatomic, readonly) PLCPlaceStore *placeStore;
 
 @end
 
 @implementation PLCCalloutViewController
 
-@dynamic calloutView;
+@synthesize placeStore = _placeStore;
 
 + (CGSize)calloutSize
 {
@@ -33,9 +33,26 @@
 {
     [super viewDidLoad];
 
-    self.containerView.layer.cornerRadius = self.calloutView.cornerRadius;
-    self.containerView.layer.masksToBounds = YES;
+    self.contentView.layer.cornerRadius = self.calloutView.cornerRadius;
+    self.contentView.layer.masksToBounds = YES;
     self.bottomSpacingConstraint.constant = self.calloutView.arrowHeight;
+    self.placeImageView.image = self.place.image;
+    self.bottomToolbar.clipsToBounds = YES;
+    self.captionTextView.text = self.place.caption;
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    if (self.place.wasJustAdded) {
+        self.place.wasJustAdded = NO;
+        [self.captionTextView becomeFirstResponder];
+    }
+}
+
+// TODO: viewWillDisappear et. al. are not being called correctly; I think they should be used here instead.
+- (void)removeFromParentViewController {
+    [super removeFromParentViewController];
+    [self.captionTextView resignFirstResponder];
 }
 
 - (PLCCalloutView *)calloutView
@@ -43,19 +60,87 @@
     return (PLCCalloutView *)self.view;
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([segue.identifier isEqualToString:@"PLCCalloutNavigationEmbedSegue"]) {
-        UINavigationController *navController = segue.destinationViewController;
-        navController.delegate = self;
-    }
-    [super prepareForSegue:segue sender:sender];
+- (IBAction)deletePlace:(id)sender {
+    [self.placeStore removePlace:self.place];
 }
 
-- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
-{
-    PLCShowPlaceViewController *controller = (PLCShowPlaceViewController *)viewController;
-    controller.place = self.place;
+- (PLCPlaceStore *)placeStore {
+    if (!_placeStore) {
+        _placeStore = [PLCPlaceStore new];
+    }
+    return _placeStore;
+}
+
+- (void) imageSelected:(UIImage *)image {
+    [[PLCPhotoStore new] addPhotoWithImage:image toPlace:self.place];
+    self.placeImageView.image = image;
+}
+
+#pragma mark -
+#pragma mark UIActionSheetDelegate
+
+- (IBAction)choosePhoto:(id)sender {
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] init];
+    if (self.place.image) {
+        actionSheet.destructiveButtonIndex = [actionSheet addButtonWithTitle:NSLocalizedString(@"Remove Photo", nil)];
+    }
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        [actionSheet addButtonWithTitle:NSLocalizedString(@"Take Photo", nil)];
+    }
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+        [actionSheet addButtonWithTitle:NSLocalizedString(@"Choose From Library", nil)];
+    }
+    actionSheet.cancelButtonIndex = [actionSheet addButtonWithTitle:NSLocalizedString(@"Cancel", nil)];
+    [actionSheet showInView:self.view.window];
+    actionSheet.delegate = self;
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet
+clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == actionSheet.cancelButtonIndex) {
+        return;
+    }
+    if (buttonIndex == actionSheet.destructiveButtonIndex) {
+        [self imageSelected:nil];
+        return;
+    }
+    UIImagePickerControllerSourceType sourceType;
+    if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:NSLocalizedString(@"Take Photo", nil)]) {
+        sourceType = UIImagePickerControllerSourceTypeCamera;
+    }
+    else {
+        sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    }
+    UIImagePickerController *imagePicker = [UIImagePickerController new];
+    imagePicker.delegate = self;
+    imagePicker.sourceType = sourceType;
+    [self.view.window.rootViewController presentViewController:imagePicker animated:YES completion:nil];
+}
+
+#pragma mark -
+#pragma mark UIImagePickerControllerDelegate
+
+- (void)imagePickerController:(UIImagePickerController *)picker
+didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    [self imageSelected:image];
+    [picker.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark -
+#pragma mark UITextViewDelegate
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    if ([text isEqualToString:@"\n"]) {
+        [textView resignFirstResponder];
+        return NO;
+    }
+    return YES;
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView {
+    self.place.caption = textView.text;
+    [[self placeStore] save];
 }
 
 @end

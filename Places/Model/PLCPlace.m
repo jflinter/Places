@@ -10,6 +10,8 @@
 
 @implementation PLCPlace
 
+@synthesize wasJustAdded;
+
 #pragma mark MKAnnotation
 
 - (UIImage *)image {

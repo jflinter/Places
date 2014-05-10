@@ -17,12 +17,15 @@
     for (PLCPhoto *photo in place.photos) {
         [place.managedObjectContext deleteObject:photo];
     }
-    PLCPhoto *photo = [PLCPhoto insertInManagedObjectContext:place.managedObjectContext];
-    photo.image = image;
-    photo.place = place;
-    BOOL success = [place.managedObjectContext save:nil];
-    if (!success) {
-        abort();
+    if (image) {
+        PLCPhoto *photo = [PLCPhoto insertInManagedObjectContext:place.managedObjectContext];
+        photo.image = image;
+        photo.place = place;
+        BOOL success = [place.managedObjectContext save:nil];
+        if (!success) {
+            abort();
+        }
+
     }
 }
 

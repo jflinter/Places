@@ -36,9 +36,7 @@
 		A0F053211903085800BD610C /* PLCMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = A0F053201903085800BD610C /* PLCMapView.m */; };
 		A0FAFD2319008E60001A364D /* PLCPlaceStore.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FAFD2219008E60001A364D /* PLCPlaceStore.m */; };
 		A0FAFD261901EEDC001A364D /* PLCPinAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FAFD251901EEDC001A364D /* PLCPinAnnotationView.m */; };
-		A0FAFD2A190236DD001A364D /* PLCShowPlaceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FAFD29190236DD001A364D /* PLCShowPlaceViewController.m */; };
 		A0FAFD2D1902404D001A364D /* PLCCalloutView.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FAFD2C1902404D001A364D /* PLCCalloutView.m */; };
-		A0FAFD3019025820001A364D /* PLCEditPlaceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FAFD2F19025820001A364D /* PLCEditPlaceViewController.m */; };
 		D0FE6C18C7A34A49A217A9F8 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A94B8A9C60F403FB1A724A5 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -108,12 +106,8 @@
 		A0FAFD2219008E60001A364D /* PLCPlaceStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCPlaceStore.m; sourceTree = "<group>"; };
 		A0FAFD241901EEDC001A364D /* PLCPinAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCPinAnnotationView.h; sourceTree = "<group>"; };
 		A0FAFD251901EEDC001A364D /* PLCPinAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCPinAnnotationView.m; sourceTree = "<group>"; };
-		A0FAFD28190236DD001A364D /* PLCShowPlaceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCShowPlaceViewController.h; sourceTree = "<group>"; };
-		A0FAFD29190236DD001A364D /* PLCShowPlaceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCShowPlaceViewController.m; sourceTree = "<group>"; };
 		A0FAFD2B1902404D001A364D /* PLCCalloutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCCalloutView.h; sourceTree = "<group>"; };
 		A0FAFD2C1902404D001A364D /* PLCCalloutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCCalloutView.m; sourceTree = "<group>"; };
-		A0FAFD2E19025820001A364D /* PLCEditPlaceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCEditPlaceViewController.h; sourceTree = "<group>"; };
-		A0FAFD2F19025820001A364D /* PLCEditPlaceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCEditPlaceViewController.m; sourceTree = "<group>"; };
 		B14D2510F5C344D19157C783 /* libPods-Places.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Places.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -259,10 +253,6 @@
 				7E42B24B190C6A6C00F9A21E /* PLCCalloutTransitionAnimator.m */,
 				7EFFFB25190D64A900007FAF /* PLCCalloutTransitionContext.h */,
 				7EFFFB26190D64A900007FAF /* PLCCalloutTransitionContext.m */,
-				A0FAFD28190236DD001A364D /* PLCShowPlaceViewController.h */,
-				A0FAFD29190236DD001A364D /* PLCShowPlaceViewController.m */,
-				A0FAFD2E19025820001A364D /* PLCEditPlaceViewController.h */,
-				A0FAFD2F19025820001A364D /* PLCEditPlaceViewController.m */,
 				A0F0531C19025E6300BD610C /* PLCCalloutViewController.h */,
 				A0F0531D19025E6300BD610C /* PLCCalloutViewController.m */,
 			);
@@ -482,7 +472,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A0FAFD2A190236DD001A364D /* PLCShowPlaceViewController.m in Sources */,
 				A0FAFD2319008E60001A364D /* PLCPlaceStore.m in Sources */,
 				7E42B24C190C6A6C00F9A21E /* PLCCalloutTransitionAnimator.m in Sources */,
 				7E54FEB018FFA94B002E2AFC /* PLCManagedObject.m in Sources */,
@@ -495,7 +484,6 @@
 				7E54FE6018FF9392002E2AFC /* main.m in Sources */,
 				7E166E04191B4A5E001EF46B /* PLCMap.m in Sources */,
 				A062BA12191230B2002F0C2E /* PLCTemplateImageView.m in Sources */,
-				A0FAFD3019025820001A364D /* PLCEditPlaceViewController.m in Sources */,
 				7E54FE9B18FF9BC8002E2AFC /* PLCMapViewController.m in Sources */,
 				A0AEC2EB190CC4CE006D20DE /* PLCPhotoStore.m in Sources */,
 				A0FAFD261901EEDC001A364D /* PLCPinAnnotationView.m in Sources */,

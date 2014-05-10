@@ -74,7 +74,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     [UIView animateWithDuration:0.3 animations:^{
         // we want to scroll the map such that the annotation view is centered horizontally and 50px above the bottom of the screen.
 
-        CGFloat topPadding = 20; // the padding between the top of the map view and the desired top of the callout view
+        CGFloat topPadding = 10; // the padding between the top of the map view and the desired top of the callout view
         CGFloat mapHeight = CGRectGetHeight(self.mapView.bounds);
         CGFloat paddingRatio = 0.5f - ((topPadding + [PLCCalloutViewController calloutSize].height + CGRectGetHeight(view.frame)) / mapHeight);
 
@@ -115,6 +115,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 
 - (void)placeStore:(PLCPlaceStore *)store didInsertPlace:(PLCPlace *)place
 {
+    place.wasJustAdded = YES;
     [self.mapView addAnnotation:place];
     [self.mapView selectAnnotation:place animated:YES];
 }
