@@ -99,10 +99,12 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 
 - (void)mapView:(PLCMapView *)mapView regionWillChangeAnimated:(BOOL)animated
 {
-    if (!animated) {
-        for (id<MKAnnotation> annotation in [mapView.selectedAnnotations copy]) {
-            [mapView deselectAnnotation:annotation animated:YES];
-        }
+    // fixes a weird bug where the region changes when presenting an image picker
+    if ([self.presentedViewController isKindOfClass:[UIImagePickerController class]]) {
+        return;
+    }
+    for (id<MKAnnotation> annotation in [mapView.selectedAnnotations copy]) {
+        [mapView deselectAnnotation:annotation animated:YES];
     }
 }
 

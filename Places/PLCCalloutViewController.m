@@ -110,7 +110,8 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     UIImagePickerController *imagePicker = [UIImagePickerController new];
     imagePicker.delegate = self;
     imagePicker.sourceType = sourceType;
-    [self.view.window.rootViewController presentViewController:imagePicker animated:YES completion:nil];
+    imagePicker.allowsEditing = YES;
+    [self.parentViewController presentViewController:imagePicker animated:YES completion:nil];
 }
 
 #pragma mark -
