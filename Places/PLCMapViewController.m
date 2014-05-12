@@ -24,8 +24,6 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 @property (nonatomic, weak) IBOutlet PLCMapView *mapView;
 @property (nonatomic, readonly) PLCPlaceStore *placeStore;
 @property (nonatomic, readonly) NSArray *calloutViewControllers;
-@property (nonatomic, readwrite, strong) CLLocationManager *locationManager;
-@property (nonatomic) BOOL initiallyAuthorized;
 @property (nonatomic) BOOL determiningInitialLocation;
 
 @end
@@ -37,11 +35,9 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    [self.mapView showAnnotations:self.placeStore.allPlaces animated:NO];
+    [self setupLocationServices];
     [self.mapView addAnnotations:self.placeStore.allPlaces];
     [self.mapView addGestureRecognizer:[self addPlaceGestureRecognizer]];
-    [self setupLocationServices];
 }
 
 #pragma mark -
@@ -249,15 +245,19 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 }
 
 - (void)setupLocationServices {
-    self.initiallyAuthorized = [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized;
-    self.mapView.showsUserLocation = self.initiallyAuthorized;
-    self.locationManager = [CLLocationManager new];
-    self.locationManager.delegate = self;
+    if (self.placeStore.allPlaces.count) {
+        [self.mapView showAnnotations:self.placeStore.allPlaces animated:NO];
+    }
+    else {
+        self.determiningInitialLocation = YES;
+    }
+    self.mapView.showsUserLocation = YES;
     UILongPressGestureRecognizer *longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(locationButtonLongPressed:)];
     [self.locationButton addGestureRecognizer:longPressGestureRecognizer];
 }
 
 - (void) determineLocation:(void (^)(void))completion {
+    [self dismissAllCalloutViewControllers];
     switch ([CLLocationManager authorizationStatus]) {
         case kCLAuthorizationStatusAuthorized: {
             if (completion) {
@@ -266,7 +266,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
         }
             break;
         case kCLAuthorizationStatusNotDetermined:
-            [self.locationManager startUpdatingLocation];
+            self.mapView.showsUserLocation = YES;
             break;
         case kCLAuthorizationStatusDenied:
         case kCLAuthorizationStatusRestricted: {
@@ -279,7 +279,6 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 }
 
 - (IBAction)showLocation:(id)sender {
-    [self dismissAllCalloutViewControllers];
     [self determineLocation:^{
         [UIView animateWithDuration:PLCMapPanAnimationDuration animations:^{
             [self.mapView setCenterCoordinate:self.mapView.userLocation.coordinate
@@ -293,6 +292,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
         [self determineLocation:^{
             PLCPlace *place = [self.placeStore insertPlaceAtCoordinate:self.mapView.userLocation.coordinate];
             [[INTULocationManager sharedInstance] requestLocationWithDesiredAccuracy:INTULocationAccuracyHouse timeout:180 block:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
+                // in case the current location's accuracy isn't very good, we want to add the place immediately but then asynchronously try and improve it.
                 if (status == INTULocationStatusSuccess) {
                     if (place.coordinate.latitude != currentLocation.coordinate.latitude || place.coordinate.longitude != currentLocation.coordinate.longitude) {
                         place.coordinate = currentLocation.coordinate;
@@ -304,19 +304,10 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     }
 }
 
-- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
-    if (self.initiallyAuthorized) {
-        return;
-    }
-    if (status == kCLAuthorizationStatusAuthorized) {
-        [self.locationManager stopUpdatingLocation];
-        self.mapView.showsUserLocation = YES;
-        self.determiningInitialLocation = YES;
-    }
-}
-
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
     [mapView viewForAnnotation:userLocation].enabled = NO;
+    
+    // This is just for initial map load, when we want to show the user's location in the absence of any places on the map.
     if (self.determiningInitialLocation) {
         [self dismissAllCalloutViewControllers];
         MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(userLocation.coordinate, 1600, 1600);
