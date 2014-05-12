@@ -26,4 +26,9 @@
     self.pinColor = selected ? MKPinAnnotationColorGreen : MKPinAnnotationColorRed;
 }
 
+// measured by subclassing animationDidStart:
++ (NSTimeInterval)pinDropAnimationDuration {
+    return 0.42322476003637666f;
+}
+
 @end

@@ -21,9 +21,7 @@ static NSString * const PLCMapPinReuseIdentifier = @"PLCMapPinReuseIdentifier";
 
 @property (nonatomic, weak) IBOutlet PLCMapView *mapView;
 @property (nonatomic, readonly) PLCPlaceStore *placeStore;
-@property (nonatomic) CLLocation *savedLocation;
 @property (nonatomic, readonly) NSArray *calloutViewControllers;
-@property (nonatomic, readwrite, weak) PLCPlace *justAddedPlace;
 
 @end
 
@@ -67,12 +65,17 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 
 - (void)mapView:(PLCMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 {
-    if ([self.calloutViewControllers count] == 0) {
-        self.savedLocation = [[CLLocation alloc] initWithLatitude:mapView.centerCoordinate.latitude longitude:mapView.centerCoordinate.longitude];
-    }
     [self dismissAllCalloutViewControllers];
-
-    [UIView animateWithDuration:0.3 animations:^{
+    
+    void (^afterCallout)() = ^{
+        PLCCalloutViewController *calloutViewController = [self instantiateCalloutControllerForAnnotation:view.annotation];
+        [self presentCalloutViewController:calloutViewController fromAnnotationView:view];
+    };
+    
+    BOOL waitToShow = view.annotation == self.placeStore.justAddedPlace;
+    NSTimeInterval animationDuration = waitToShow ? [PLCPinAnnotationView pinDropAnimationDuration] : 0.3f;
+    
+    [UIView animateWithDuration:animationDuration animations:^{
         // we want to scroll the map such that the annotation view is centered horizontally and 50px above the bottom of the screen.
 
         CGFloat topPadding = 10; // the padding between the top of the map view and the desired top of the callout view
@@ -83,10 +86,16 @@ didChangeDragState:(MKAnnotationViewDragState)newState
         center.latitude -= self.mapView.region.span.latitudeDelta * paddingRatio;
 
         [self.mapView setCenterCoordinate:center animated:NO];
+    } completion:^(BOOL finished) {
+        if (finished && waitToShow) {
+            afterCallout();
+        }
     }];
 
-    PLCCalloutViewController *calloutViewController = [self instantiateCalloutControllerForAnnotation:view.annotation];
-    [self presentCalloutViewController:calloutViewController fromAnnotationView:view];
+    if (!waitToShow) {
+        PLCCalloutViewController *calloutViewController = [self instantiateCalloutControllerForAnnotation:view.annotation];
+        [self presentCalloutViewController:calloutViewController fromAnnotationView:view];
+    }
 }
 
 - (void)mapView:(PLCMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view
@@ -163,8 +172,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
         CGPoint mapViewLocation = [sender locationInView:self.mapView];
         CLLocationCoordinate2D touchCoordinate = [self.mapView convertPoint:mapViewLocation
                                                        toCoordinateFromView:self.mapView];
-        PLCPlace *place = [self.placeStore insertPlaceAtCoordinate:touchCoordinate];
-        self.justAddedPlace = place;
+        [self.placeStore insertPlaceAtCoordinate:touchCoordinate];
     }
 }
 
@@ -200,7 +208,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     PLCCalloutTransitionAnimator *animator = [[PLCCalloutTransitionAnimator alloc] init];
 
     [animator animateTransition:transitionContext completion:^{
-        if (self.justAddedPlace == calloutViewController.place) {
+        if (self.placeStore.justAddedPlace == calloutViewController.place) {
             [calloutViewController editCaption];
         }
     }];
