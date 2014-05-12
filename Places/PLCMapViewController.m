@@ -103,8 +103,10 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     if ([self.presentedViewController isKindOfClass:[UIImagePickerController class]]) {
         return;
     }
-    for (id<MKAnnotation> annotation in [mapView.selectedAnnotations copy]) {
-        [mapView deselectAnnotation:annotation animated:YES];
+    if (!animated) {
+        for (id<MKAnnotation> annotation in [mapView.selectedAnnotations copy]) {
+            [mapView deselectAnnotation:annotation animated:YES];
+        }
     }
 }
 
