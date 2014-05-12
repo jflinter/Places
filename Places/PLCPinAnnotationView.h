@@ -10,4 +10,6 @@
 
 @interface PLCPinAnnotationView : MKPinAnnotationView
 
++ (NSTimeInterval)pinDropAnimationDuration;
+
 @end
