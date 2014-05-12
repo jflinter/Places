@@ -14,8 +14,10 @@
 #import "PLCCalloutViewController.h"
 #import "PLCCalloutTransitionAnimator.h"
 #import "PLCCalloutTransitionContext.h"
+#import <INTULocationManager/INTULocationManager.h>
 
 static NSString * const PLCMapPinReuseIdentifier = @"PLCMapPinReuseIdentifier";
+static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 
 @interface PLCMapViewController () <PLCMapViewDelegate, PLCPlaceStoreDelegate, UIViewControllerTransitioningDelegate, CLLocationManagerDelegate>
 
@@ -39,10 +41,7 @@ static NSString * const PLCMapPinReuseIdentifier = @"PLCMapPinReuseIdentifier";
     [self.mapView showAnnotations:self.placeStore.allPlaces animated:NO];
     [self.mapView addAnnotations:self.placeStore.allPlaces];
     [self.mapView addGestureRecognizer:[self addPlaceGestureRecognizer]];
-    self.initiallyAuthorized = [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized;
-    self.mapView.showsUserLocation = self.initiallyAuthorized;
-    self.locationManager = [CLLocationManager new];
-    self.locationManager.delegate = self;
+    [self setupLocationServices];
 }
 
 #pragma mark -
@@ -87,7 +86,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     };
     
     BOOL waitToShow = view.annotation == self.placeStore.justAddedPlace;
-    NSTimeInterval animationDuration = waitToShow ? [PLCPinAnnotationView pinDropAnimationDuration] : 0.3f;
+    NSTimeInterval animationDuration = waitToShow ? [PLCPinAnnotationView pinDropAnimationDuration] : PLCMapPanAnimationDuration;
     
     [UIView animateWithDuration:animationDuration animations:^{
         // we want to scroll the map such that the annotation view is centered horizontally and 50px above the bottom of the screen.
@@ -222,7 +221,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     PLCCalloutTransitionAnimator *animator = [[PLCCalloutTransitionAnimator alloc] init];
 
     [animator animateTransition:transitionContext completion:^{
-        if (self.placeStore.justAddedPlace == calloutViewController.place) {
+        if (!calloutViewController.place.caption) {
             [calloutViewController editCaption];
         }
     }];
@@ -249,11 +248,22 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     }
 }
 
-- (IBAction)showLocation:(id)sender {
+- (void)setupLocationServices {
+    self.initiallyAuthorized = [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized;
+    self.mapView.showsUserLocation = self.initiallyAuthorized;
+    self.locationManager = [CLLocationManager new];
+    self.locationManager.delegate = self;
+    UILongPressGestureRecognizer *longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(locationButtonLongPressed:)];
+    [self.locationButton addGestureRecognizer:longPressGestureRecognizer];
+}
+
+- (void) determineLocation:(void (^)(void))completion {
     switch ([CLLocationManager authorizationStatus]) {
-        case kCLAuthorizationStatusAuthorized:
-            [self.mapView setCenterCoordinate:self.mapView.userLocation.coordinate
-                                     animated:YES];
+        case kCLAuthorizationStatusAuthorized: {
+            if (completion) {
+                completion();
+            }
+        }
             break;
         case kCLAuthorizationStatusNotDetermined:
             [self.locationManager startUpdatingLocation];
@@ -265,6 +275,32 @@ didChangeDragState:(MKAnnotationViewDragState)newState
             [[[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
         }
             break;
+    }
+}
+
+- (IBAction)showLocation:(id)sender {
+    [self dismissAllCalloutViewControllers];
+    [self determineLocation:^{
+        [UIView animateWithDuration:PLCMapPanAnimationDuration animations:^{
+            [self.mapView setCenterCoordinate:self.mapView.userLocation.coordinate
+                                     animated:NO];
+        }];
+    }];
+}
+
+- (void)locationButtonLongPressed:(UILongPressGestureRecognizer *)recognizer {
+    if (recognizer.state == UIGestureRecognizerStateBegan) {
+        [self determineLocation:^{
+            PLCPlace *place = [self.placeStore insertPlaceAtCoordinate:self.mapView.userLocation.coordinate];
+            [[INTULocationManager sharedInstance] requestLocationWithDesiredAccuracy:INTULocationAccuracyHouse timeout:180 block:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
+                if (status == INTULocationStatusSuccess) {
+                    if (place.coordinate.latitude != currentLocation.coordinate.latitude || place.coordinate.longitude != currentLocation.coordinate.longitude) {
+                        place.coordinate = currentLocation.coordinate;
+                        [self.placeStore save];
+                    }
+                }
+            }];
+        }];
     }
 }
 
@@ -280,11 +316,14 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 }
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
+    [mapView viewForAnnotation:userLocation].enabled = NO;
     if (self.determiningInitialLocation) {
-        [self.mapView setCenterCoordinate:userLocation.coordinate
-                                 animated:YES];
+        [self dismissAllCalloutViewControllers];
+        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(userLocation.coordinate, 1600, 1600);
+        [self.mapView setRegion:region animated:YES];
         self.determiningInitialLocation = NO;
     }
 }
+
 
 @end

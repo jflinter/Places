@@ -31,13 +31,14 @@
     return self.fetchedResultsController.fetchedObjects;
 }
 
-- (void) insertPlaceAtCoordinate:(CLLocationCoordinate2D)coordinate {
+- (PLCPlace *) insertPlaceAtCoordinate:(CLLocationCoordinate2D)coordinate {
     PLCPlace *place = [PLCPlace insertInManagedObjectContext:[self managedObjectContext]];
     place.coordinate = coordinate;
     [self save];
     self.justAddedPlace = place;
     [self.delegate placeStore:self didInsertPlace:place];
     self.justAddedPlace = nil;
+    return place;
 }
 
 - (void) removePlace:(PLCPlace *)place {

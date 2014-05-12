@@ -66,7 +66,7 @@
 - (void) sharedInit {
     self.currentScale = 1.0f;
     self.oneFingerZoomRecognizer = [[BDDROneFingerZoomGestureRecognizer alloc] initWithTarget:self action:@selector(oneFingerZoomed:)];
-    self.oneFingerZoomRecognizer.scaleFactor = 5.0f;
+    self.oneFingerZoomRecognizer.scaleFactor = 8.0f;
     self.oneFingerGestureRecognizerDelegate = [PLCMapViewInternalOneFingerGestureRecognizerDelegate new];
     self.oneFingerGestureRecognizerDelegate.mapView = self;
     self.oneFingerZoomRecognizer.delegate = self.oneFingerGestureRecognizerDelegate;
