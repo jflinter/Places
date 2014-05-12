@@ -17,13 +17,16 @@
 
 static NSString * const PLCMapPinReuseIdentifier = @"PLCMapPinReuseIdentifier";
 
-@interface PLCMapViewController () <PLCMapViewDelegate, PLCPlaceStoreDelegate, UIViewControllerTransitioningDelegate>
+@interface PLCMapViewController () <PLCMapViewDelegate, PLCPlaceStoreDelegate, UIViewControllerTransitioningDelegate, CLLocationManagerDelegate>
 
 @property (nonatomic, weak) IBOutlet PLCMapView *mapView;
 @property (nonatomic, readonly) PLCPlaceStore *placeStore;
 @property (nonatomic) CLLocation *savedLocation;
 @property (nonatomic, readonly) NSArray *calloutViewControllers;
 @property (nonatomic, readwrite, weak) PLCPlace *justAddedPlace;
+@property (nonatomic, readwrite, strong) CLLocationManager *locationManager;
+@property (nonatomic) BOOL initiallyAuthorized;
+@property (nonatomic) BOOL determiningInitialLocation;
 
 @end
 
@@ -38,6 +41,10 @@ static NSString * const PLCMapPinReuseIdentifier = @"PLCMapPinReuseIdentifier";
     [self.mapView showAnnotations:self.placeStore.allPlaces animated:NO];
     [self.mapView addAnnotations:self.placeStore.allPlaces];
     [self.mapView addGestureRecognizer:[self addPlaceGestureRecognizer]];
+    self.initiallyAuthorized = [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized;
+    self.mapView.showsUserLocation = self.initiallyAuthorized;
+    self.locationManager = [CLLocationManager new];
+    self.locationManager.delegate = self;
 }
 
 #pragma mark -
@@ -45,6 +52,9 @@ static NSString * const PLCMapPinReuseIdentifier = @"PLCMapPinReuseIdentifier";
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView
             viewForAnnotation:(id<MKAnnotation>)annotation {
+    if (annotation == mapView.userLocation) {
+        return nil; // this makes the blue dot
+    }
     MKAnnotationView *annotationView = [mapView dequeueReusableAnnotationViewWithIdentifier:PLCMapPinReuseIdentifier];
     if (!annotationView) {
         PLCPinAnnotationView *pinAnnotation = [[PLCPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:PLCMapPinReuseIdentifier];
@@ -67,6 +77,9 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 
 - (void)mapView:(PLCMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 {
+    if (view.annotation == mapView.userLocation) {
+        return;
+    }
     if ([self.calloutViewControllers count] == 0) {
         self.savedLocation = [[CLLocation alloc] initWithLatitude:mapView.centerCoordinate.latitude longitude:mapView.centerCoordinate.longitude];
     }
@@ -224,6 +237,44 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 {
     for (PLCCalloutViewController *calloutViewController in [self.calloutViewControllers copy]) {
         [self dismissCalloutViewController:calloutViewController completion:nil];
+    }
+}
+
+- (IBAction)showLocation:(id)sender {
+    switch ([CLLocationManager authorizationStatus]) {
+        case kCLAuthorizationStatusAuthorized:
+            [self.mapView setCenterCoordinate:self.mapView.userLocation.coordinate
+                                     animated:YES];
+            break;
+        case kCLAuthorizationStatusNotDetermined:
+            [self.locationManager startUpdatingLocation];
+            break;
+        case kCLAuthorizationStatusDenied:
+        case kCLAuthorizationStatusRestricted: {
+            NSString *title = NSLocalizedString(@"Location Services Required", nil);
+            NSString *message = NSLocalizedString(@"To show your location, open the Settings app, go to Privacy -> Location Services, and turn Places to \"on\".", nil);
+            [[[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+        }
+            break;
+    }
+}
+
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
+    if (self.initiallyAuthorized) {
+        return;
+    }
+    if (status == kCLAuthorizationStatusAuthorized) {
+        [self.locationManager stopUpdatingLocation];
+        self.mapView.showsUserLocation = YES;
+        self.determiningInitialLocation = YES;
+    }
+}
+
+- (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
+    if (self.determiningInitialLocation) {
+        [self.mapView setCenterCoordinate:userLocation.coordinate
+                                 animated:YES];
+        self.determiningInitialLocation = NO;
     }
 }
 
