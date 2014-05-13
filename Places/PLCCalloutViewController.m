@@ -11,7 +11,6 @@
 #import "PLCCalloutViewController.h"
 #import "PLCPhotoStore.h"
 #import "PLCPlaceStore.h"
-#import "PLCAppDelegate.h"
 
 @interface PLCCalloutViewController() <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate>
 
@@ -66,7 +65,6 @@
 
 - (IBAction)sharePlace:(id)sender {
     [self.captionTextView resignFirstResponder];
-    PLCAppDelegate *delegate = (PLCAppDelegate *)[UIApplication sharedApplication].delegate;
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[self.place] applicationActivities:nil];
     //exclude the airdrop action because it's incredibly fucking slow and noone uses it
     NSMutableArray *excludedTypes = [@[UIActivityTypePrint,
@@ -78,7 +76,7 @@
         [excludedTypes addObject:UIActivityTypeAssignToContact];
     }
     activityViewController.excludedActivityTypes = [excludedTypes copy];
-    [delegate.window.rootViewController presentViewController:activityViewController animated:YES completion:nil];
+    [self presentViewController:activityViewController animated:YES completion:nil];
 }
 
 - (PLCPlaceStore *)placeStore {
