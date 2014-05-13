@@ -13,9 +13,9 @@
 
 @implementation MKPlacemark (LocationSharing)
 
-- (NSURL *)temporaryFileURLForLocationSharing:(NSError**)error {
-    ABRecordRef people[1];
+- (NSURL *)temporaryFileURLForLocationSharing:(NSError *__autoreleasing *)error {
     ABRecordRef person = ABPersonCreate();
+    ABRecordRef people[1] = { person };
     CFErrorRef errorRef = NULL;
     
     NSString *address = ABCreateStringWithAddressDictionary(self.addressDictionary, NO);
@@ -25,34 +25,34 @@
     ABMutableMultiValueRef multiHome = ABMultiValueCreateMutable(kABMultiDictionaryPropertyType);
     ABMultiValueAddValueAndLabel(multiHome, (__bridge CFTypeRef)(self.addressDictionary), kABHomeLabel, NULL);
     ABRecordSetValue(person, kABPersonAddressProperty, multiHome, &errorRef);
+    CFRelease(multiHome), multiHome = NULL;
     
     ABMutableMultiValueRef multiURL = ABMultiValueCreateMutable(kABMultiStringPropertyType);
     NSURL *mapsUrl = [self appleMapsURL];
     NSString *urlDesc = [mapsUrl description];
     ABMultiValueAddValueAndLabel(multiURL, (__bridge CFTypeRef)urlDesc, CFSTR("map url"), NULL);
     ABRecordSetValue(person, kABPersonURLProperty, multiURL, &errorRef);
+    CFRelease(multiURL), multiURL = NULL;
     
     if (errorRef) {
-        *error = CFBridgingRelease(errorRef);
+        if (error) {
+            *error = CFBridgingRelease(errorRef);
+        }
+        CFRelease(person), person = NULL;
         return nil;
     }
-    
-    people[0] = person;
+
     CFArrayRef peopleArray = CFArrayCreate(NULL, (void *)people, 1, &kCFTypeArrayCallBacks);
-    CFDataRef dataRef = ABPersonCreateVCardRepresentationWithPeople(peopleArray);
-    NSData *data = (__bridge_transfer NSData*)dataRef;
+    NSData *data = (__bridge_transfer NSData *)ABPersonCreateVCardRepresentationWithPeople(peopleArray);
+
     NSURL *url = [self generateTemporaryURL];
-    NSError *fileError;
-    [data writeToURL:url options:NSDataWritingFileProtectionNone | NSDataWritingAtomic error:&fileError];
-    
-    CFRelease(peopleArray);
-    CFRelease(person);
-    
-    if (fileError) {
-        *error = fileError;
-        return nil;
+    if (![data writeToURL:url options:NSDataWritingFileProtectionNone | NSDataWritingAtomic error:error]) {
+        url = nil;
     }
     
+    CFRelease(peopleArray), peopleArray = NULL;
+    CFRelease(person), person = NULL;
+
     return url;
 }
 
