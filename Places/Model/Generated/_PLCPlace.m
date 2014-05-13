@@ -6,6 +6,7 @@
 const struct PLCPlaceAttributes PLCPlaceAttributes = {
 	.caption = @"caption",
 	.deletedAt = @"deletedAt",
+	.geocodedAddress = @"geocodedAddress",
 	.latitude = @"latitude",
 	.longitude = @"longitude",
 };
@@ -69,6 +70,13 @@ const struct PLCPlaceFetchedProperties PLCPlaceFetchedProperties = {
 
 
 @dynamic deletedAt;
+
+
+
+
+
+
+@dynamic geocodedAddress;
 
 
 

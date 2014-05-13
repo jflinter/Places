@@ -11,7 +11,6 @@
 #import "PLCCalloutViewController.h"
 #import "PLCPhotoStore.h"
 #import "PLCPlaceStore.h"
-#import <QuartzCore/QuartzCore.h>
 
 @interface PLCCalloutViewController() <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate>
 
@@ -58,6 +57,22 @@
 
 - (IBAction)deletePlace:(id)sender {
     [self.placeStore removePlace:self.place];
+}
+
+- (IBAction)sharePlace:(id)sender {
+    [self.captionTextView resignFirstResponder];
+    UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[self.place] applicationActivities:nil];
+    //exclude the airdrop action because it's incredibly fucking slow and noone uses it
+    NSMutableArray *excludedTypes = [@[UIActivityTypePrint,
+                                       UIActivityTypeAirDrop] mutableCopy];
+    if (!self.place.geocodedAddress) {
+        [excludedTypes addObject:UIActivityTypeMessage];
+    }
+    if (!self.place.image) {
+        [excludedTypes addObject:UIActivityTypeAssignToContact];
+    }
+    activityViewController.excludedActivityTypes = [excludedTypes copy];
+    [self presentViewController:activityViewController animated:YES completion:nil];
 }
 
 - (PLCPlaceStore *)placeStore {
