@@ -13,6 +13,9 @@
 @interface PLCCalloutViewController : UIViewController<UITextViewDelegate>
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomSpacingConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewLeadingConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewWidthConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet UIImageView *placeImageView;
 @property (weak, nonatomic) IBOutlet UITextView *captionTextView;
 @property (weak, nonatomic) IBOutlet UIToolbar *bottomToolbar;
