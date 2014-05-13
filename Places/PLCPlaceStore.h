@@ -20,12 +20,9 @@
 @property(readonly, nonatomic) NSArray *allPlaces;
 @property(weak, nonatomic) id<PLCPlaceStoreDelegate> delegate;
 
-// this property will only be set during the placeStore:didInsertPlace: delegate callback.
-@property(weak, nonatomic) PLCPlace *justAddedPlace;
-
 - (void) save;
 
-- (void) insertPlaceAtCoordinate:(CLLocationCoordinate2D)coordinate;
+- (PLCPlace *) insertPlaceAtCoordinate:(CLLocationCoordinate2D)coordinate;
 - (void) removePlace:(PLCPlace *)place;
 
 @end

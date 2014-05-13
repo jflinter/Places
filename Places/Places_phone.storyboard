@@ -23,16 +23,35 @@
                                     <outlet property="delegate" destination="OId-a2-hAa" id="HYd-MJ-UV2"/>
                                 </connections>
                             </mapView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IVL-ya-PT0" customClass="PLCTemplateButton">
+                                <rect key="frame" x="250" y="498" width="50" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="XbZ-KP-J4Y"/>
+                                    <constraint firstAttribute="width" constant="50" id="hOD-u3-sp5"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="11" minY="11" maxX="11" maxY="11"/>
+                                <state key="normal" image="701-location">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted" image="701-location-selected-selected"/>
+                                <connections>
+                                    <action selector="showLocation:" destination="OId-a2-hAa" eventType="touchUpInside" id="ec4-VN-XXn"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="a6V-Pg-lJh" firstAttribute="top" secondItem="lNU-MC-GZc" secondAttribute="top" id="0A5-et-4EU"/>
                             <constraint firstAttribute="trailing" secondItem="a6V-Pg-lJh" secondAttribute="trailing" id="1uU-In-0qG"/>
                             <constraint firstItem="a6V-Pg-lJh" firstAttribute="leading" secondItem="lNU-MC-GZc" secondAttribute="leading" id="GlJ-yn-Lay"/>
+                            <constraint firstAttribute="trailing" secondItem="IVL-ya-PT0" secondAttribute="trailing" constant="20" id="Gto-pQ-nK7"/>
+                            <constraint firstItem="LaD-Hf-YxR" firstAttribute="top" secondItem="IVL-ya-PT0" secondAttribute="bottom" constant="20" id="Yiv-w1-JBk"/>
                             <constraint firstAttribute="bottom" secondItem="a6V-Pg-lJh" secondAttribute="bottom" id="zCa-cd-FDS"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="locationButton" destination="IVL-ya-PT0" id="C10-fb-ePG"/>
                         <outlet property="mapView" destination="a6V-Pg-lJh" id="vbR-qJ-8qZ"/>
                         <outlet property="view" destination="lNU-MC-GZc" id="vzn-G1-QQ7"/>
                     </connections>
@@ -145,6 +164,10 @@
             <point key="canvasLocation" x="390" y="91"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="701-location" width="28" height="28"/>
+        <image name="701-location-selected-selected" width="28" height="28"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

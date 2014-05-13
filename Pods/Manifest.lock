@@ -1,10 +1,13 @@
 PODS:
   - BDDROneFingerZoomGestureRecognizer (1.0.2)
+  - INTULocationManager (1.1.0)
 
 DEPENDENCIES:
   - BDDROneFingerZoomGestureRecognizer (~> 1.0)
+  - INTULocationManager
 
 SPEC CHECKSUMS:
   BDDROneFingerZoomGestureRecognizer: f9233809a97b836486615fa23ca4ba4e4300d0a5
+  INTULocationManager: 4174c35a29722dbcdd9887733aa59a20b765b061
 
 COCOAPODS: 0.32.1

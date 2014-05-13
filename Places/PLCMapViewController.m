@@ -14,14 +14,18 @@
 #import "PLCCalloutViewController.h"
 #import "PLCCalloutTransitionAnimator.h"
 #import "PLCCalloutTransitionContext.h"
+#import <INTULocationManager/INTULocationManager.h>
 
 static NSString * const PLCMapPinReuseIdentifier = @"PLCMapPinReuseIdentifier";
+static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 
-@interface PLCMapViewController () <PLCMapViewDelegate, PLCPlaceStoreDelegate, UIViewControllerTransitioningDelegate>
+@interface PLCMapViewController () <PLCMapViewDelegate, PLCPlaceStoreDelegate, UIViewControllerTransitioningDelegate, CLLocationManagerDelegate>
 
 @property (nonatomic, weak) IBOutlet PLCMapView *mapView;
 @property (nonatomic, readonly) PLCPlaceStore *placeStore;
 @property (nonatomic, readonly) NSArray *calloutViewControllers;
+@property (nonatomic) BOOL determiningInitialLocation;
+@property (nonatomic, getter=isAddingPlace) BOOL addingPlace;
 
 @end
 
@@ -32,8 +36,7 @@ static NSString * const PLCMapPinReuseIdentifier = @"PLCMapPinReuseIdentifier";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    [self.mapView showAnnotations:self.placeStore.allPlaces animated:NO];
+    [self setupLocationServices];
     [self.mapView addAnnotations:self.placeStore.allPlaces];
     [self.mapView addGestureRecognizer:[self addPlaceGestureRecognizer]];
 }
@@ -43,6 +46,9 @@ static NSString * const PLCMapPinReuseIdentifier = @"PLCMapPinReuseIdentifier";
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView
             viewForAnnotation:(id<MKAnnotation>)annotation {
+    if (annotation == mapView.userLocation) {
+        return nil; // this makes the blue dot
+    }
     MKAnnotationView *annotationView = [mapView dequeueReusableAnnotationViewWithIdentifier:PLCMapPinReuseIdentifier];
     if (!annotationView) {
         PLCPinAnnotationView *pinAnnotation = [[PLCPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:PLCMapPinReuseIdentifier];
@@ -65,15 +71,19 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 
 - (void)mapView:(PLCMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 {
+    if (view.annotation == mapView.userLocation) {
+        return;
+    }
+
     [self dismissAllCalloutViewControllers];
     
     void (^afterCallout)() = ^{
         PLCCalloutViewController *calloutViewController = [self instantiateCalloutControllerForAnnotation:view.annotation];
         [self presentCalloutViewController:calloutViewController fromAnnotationView:view];
     };
-    
-    BOOL waitToShow = view.annotation == self.placeStore.justAddedPlace;
-    NSTimeInterval animationDuration = waitToShow ? [PLCPinAnnotationView pinDropAnimationDuration] : 0.3f;
+
+    BOOL const waitToShow = self.isAddingPlace;
+    NSTimeInterval animationDuration = waitToShow ? [PLCPinAnnotationView pinDropAnimationDuration] : PLCMapPanAnimationDuration;
     
     [UIView animateWithDuration:animationDuration animations:^{
         // we want to scroll the map such that the annotation view is centered horizontally and 50px above the bottom of the screen.
@@ -129,8 +139,12 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 
 - (void)placeStore:(PLCPlaceStore *)store didInsertPlace:(PLCPlace *)place
 {
+    self.addingPlace = YES;
+
     [self.mapView addAnnotation:place];
     [self.mapView selectAnnotation:place animated:YES];
+
+    self.addingPlace = NO;
 }
 
 - (void)placeStore:(PLCPlaceStore *)store didRemovePlace:(PLCPlace *)place
@@ -208,7 +222,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     PLCCalloutTransitionAnimator *animator = [[PLCCalloutTransitionAnimator alloc] init];
 
     [animator animateTransition:transitionContext completion:^{
-        if (self.placeStore.justAddedPlace == calloutViewController.place) {
+        if (!calloutViewController.place.caption) {
             [calloutViewController editCaption];
         }
     }];
@@ -234,5 +248,78 @@ didChangeDragState:(MKAnnotationViewDragState)newState
         [self dismissCalloutViewController:calloutViewController completion:nil];
     }
 }
+
+- (void)setupLocationServices {
+    if (self.placeStore.allPlaces.count) {
+        [self.mapView showAnnotations:self.placeStore.allPlaces animated:NO];
+    }
+    else {
+        self.determiningInitialLocation = YES;
+    }
+    self.mapView.showsUserLocation = YES;
+    UILongPressGestureRecognizer *longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(locationButtonLongPressed:)];
+    [self.locationButton addGestureRecognizer:longPressGestureRecognizer];
+}
+
+- (void) determineLocation:(void (^)(void))completion {
+    [self dismissAllCalloutViewControllers];
+    switch ([CLLocationManager authorizationStatus]) {
+        case kCLAuthorizationStatusAuthorized: {
+            if (completion) {
+                completion();
+            }
+        }
+            break;
+        case kCLAuthorizationStatusNotDetermined:
+            self.mapView.showsUserLocation = YES;
+            break;
+        case kCLAuthorizationStatusDenied:
+        case kCLAuthorizationStatusRestricted: {
+            NSString *title = NSLocalizedString(@"Location Services Required", nil);
+            NSString *message = NSLocalizedString(@"To show your location, open the Settings app, go to Privacy -> Location Services, and turn Places to \"on\".", nil);
+            [[[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+        }
+            break;
+    }
+}
+
+- (IBAction)showLocation:(id)sender {
+    [self determineLocation:^{
+        [UIView animateWithDuration:PLCMapPanAnimationDuration animations:^{
+            [self.mapView setCenterCoordinate:self.mapView.userLocation.coordinate
+                                     animated:NO];
+        }];
+    }];
+}
+
+- (void)locationButtonLongPressed:(UILongPressGestureRecognizer *)recognizer {
+    if (recognizer.state == UIGestureRecognizerStateBegan) {
+        [self determineLocation:^{
+            PLCPlace *place = [self.placeStore insertPlaceAtCoordinate:self.mapView.userLocation.coordinate];
+            [[INTULocationManager sharedInstance] requestLocationWithDesiredAccuracy:INTULocationAccuracyHouse timeout:180 block:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
+                // in case the current location's accuracy isn't very good, we want to add the place immediately but then asynchronously try and improve it.
+                if (status == INTULocationStatusSuccess) {
+                    if (place.coordinate.latitude != currentLocation.coordinate.latitude || place.coordinate.longitude != currentLocation.coordinate.longitude) {
+                        place.coordinate = currentLocation.coordinate;
+                        [self.placeStore save];
+                    }
+                }
+            }];
+        }];
+    }
+}
+
+- (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
+    [mapView viewForAnnotation:userLocation].enabled = NO;
+    
+    // This is just for initial map load, when we want to show the user's location in the absence of any places on the map.
+    if (self.determiningInitialLocation) {
+        [self dismissAllCalloutViewControllers];
+        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(userLocation.coordinate, 1600, 1600);
+        [self.mapView setRegion:region animated:YES];
+        self.determiningInitialLocation = NO;
+    }
+}
+
 
 @end

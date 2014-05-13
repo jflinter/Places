@@ -31,6 +31,7 @@
 		A062BA12191230B2002F0C2E /* PLCTemplateImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = A062BA11191230B2002F0C2E /* PLCTemplateImageView.m */; };
 		A0938F97191DD7CC0021CF7D /* NSURLComponents+QueryDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = A0938F96191DD7CC0021CF7D /* NSURLComponents+QueryDictionary.m */; };
 		A0938F9A191DD7F90021CF7D /* MKPlacemark+LocationSharing.m in Sources */ = {isa = PBXBuildFile; fileRef = A0938F99191DD7F90021CF7D /* MKPlacemark+LocationSharing.m */; };
+		A0938F9E19213C660021CF7D /* PLCTemplateButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A0938F9D19213C660021CF7D /* PLCTemplateButton.m */; };
 		A0AEC2E5190CC482006D20DE /* _PLCPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = A0AEC2E4190CC482006D20DE /* _PLCPhoto.m */; };
 		A0AEC2E8190CC48D006D20DE /* PLCPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = A0AEC2E7190CC48D006D20DE /* PLCPhoto.m */; };
 		A0AEC2EB190CC4CE006D20DE /* PLCPhotoStore.m in Sources */ = {isa = PBXBuildFile; fileRef = A0AEC2EA190CC4CE006D20DE /* PLCPhotoStore.m */; };
@@ -98,6 +99,8 @@
 		A0938F96191DD7CC0021CF7D /* NSURLComponents+QueryDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURLComponents+QueryDictionary.m"; sourceTree = "<group>"; };
 		A0938F98191DD7F90021CF7D /* MKPlacemark+LocationSharing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKPlacemark+LocationSharing.h"; sourceTree = "<group>"; };
 		A0938F99191DD7F90021CF7D /* MKPlacemark+LocationSharing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKPlacemark+LocationSharing.m"; sourceTree = "<group>"; };
+		A0938F9C19213C660021CF7D /* PLCTemplateButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCTemplateButton.h; sourceTree = "<group>"; };
+		A0938F9D19213C660021CF7D /* PLCTemplateButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCTemplateButton.m; sourceTree = "<group>"; };
 		A0AEC2E3190CC482006D20DE /* _PLCPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _PLCPhoto.h; sourceTree = "<group>"; };
 		A0AEC2E4190CC482006D20DE /* _PLCPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _PLCPhoto.m; sourceTree = "<group>"; };
 		A0AEC2E6190CC48D006D20DE /* PLCPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCPhoto.h; sourceTree = "<group>"; };
@@ -304,6 +307,8 @@
 			children = (
 				A0938F95191DD7CC0021CF7D /* NSURLComponents+QueryDictionary.h */,
 				A0938F96191DD7CC0021CF7D /* NSURLComponents+QueryDictionary.m */,
+				A0938F9C19213C660021CF7D /* PLCTemplateButton.h */,
+				A0938F9D19213C660021CF7D /* PLCTemplateButton.m */,
 				A062BA10191230B2002F0C2E /* PLCTemplateImageView.h */,
 				A062BA11191230B2002F0C2E /* PLCTemplateImageView.m */,
 				A0938F98191DD7F90021CF7D /* MKPlacemark+LocationSharing.h */,
@@ -486,6 +491,7 @@
 				A0938F9A191DD7F90021CF7D /* MKPlacemark+LocationSharing.m in Sources */,
 				7E42B24C190C6A6C00F9A21E /* PLCCalloutTransitionAnimator.m in Sources */,
 				7E54FEB018FFA94B002E2AFC /* PLCManagedObject.m in Sources */,
+				A0938F9E19213C660021CF7D /* PLCTemplateButton.m in Sources */,
 				A0AEC2E8190CC48D006D20DE /* PLCPhoto.m in Sources */,
 				A0F053211903085800BD610C /* PLCMapView.m in Sources */,
 				7E54FE9118FF9854002E2AFC /* _PLCPlace.m in Sources */,
