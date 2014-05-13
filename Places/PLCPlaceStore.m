@@ -35,9 +35,7 @@
     PLCPlace *place = [PLCPlace insertInManagedObjectContext:[self managedObjectContext]];
     place.coordinate = coordinate;
     [self save];
-    self.justAddedPlace = place;
     [self.delegate placeStore:self didInsertPlace:place];
-    self.justAddedPlace = nil;
     return place;
 }
 

@@ -25,6 +25,7 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 @property (nonatomic, readonly) PLCPlaceStore *placeStore;
 @property (nonatomic, readonly) NSArray *calloutViewControllers;
 @property (nonatomic) BOOL determiningInitialLocation;
+@property (nonatomic, getter=isAddingPlace) BOOL addingPlace;
 
 @end
 
@@ -80,8 +81,8 @@ didChangeDragState:(MKAnnotationViewDragState)newState
         PLCCalloutViewController *calloutViewController = [self instantiateCalloutControllerForAnnotation:view.annotation];
         [self presentCalloutViewController:calloutViewController fromAnnotationView:view];
     };
-    
-    BOOL waitToShow = view.annotation == self.placeStore.justAddedPlace;
+
+    BOOL const waitToShow = self.isAddingPlace;
     NSTimeInterval animationDuration = waitToShow ? [PLCPinAnnotationView pinDropAnimationDuration] : PLCMapPanAnimationDuration;
     
     [UIView animateWithDuration:animationDuration animations:^{
@@ -138,8 +139,12 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 
 - (void)placeStore:(PLCPlaceStore *)store didInsertPlace:(PLCPlace *)place
 {
+    self.addingPlace = YES;
+
     [self.mapView addAnnotation:place];
     [self.mapView selectAnnotation:place animated:YES];
+
+    self.addingPlace = NO;
 }
 
 - (void)placeStore:(PLCPlaceStore *)store didRemovePlace:(PLCPlace *)place
