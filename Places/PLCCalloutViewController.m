@@ -16,7 +16,6 @@
 
 @property (nonatomic, weak) IBOutlet UIView *contentView;
 @property (nonatomic, readonly) PLCPlaceStore *placeStore;
-
 @end
 
 @implementation PLCCalloutViewController
@@ -37,7 +36,14 @@
     self.bottomSpacingConstraint.constant = self.calloutView.arrowHeight;
     self.placeImageView.image = self.place.image;
     self.bottomToolbar.clipsToBounds = YES;
+    self.captionTextView.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.75f];
+    self.captionTextView.layer.cornerRadius = 5.0f;
     self.captionTextView.text = self.place.caption;
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [self resizeTextView:self.captionTextView];
 }
 
 - (void)editCaption {
@@ -153,6 +159,26 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 - (void)textViewDidEndEditing:(UITextView *)textView {
     self.place.caption = textView.text;
     [[self placeStore] save];
+}
+
+-(void)textViewDidChange:(UITextView *)textView {
+    [self resizeTextView:textView];
+}
+
+- (void) resizeTextView:(UITextView *)textView {
+    if ([textView.text isEqualToString:@""]) {
+        self.textViewWidthConstraint.constant = 50.0f;
+    }
+    else {
+        CGSize inset = CGSizeMake(14, 20);
+        CGSize insetSize = CGSizeMake(CGRectGetWidth(textView.superview.frame) - inset.width, CGFLOAT_MAX);
+        CGSize size = [textView.attributedText boundingRectWithSize:insetSize options:NSStringDrawingUsesLineFragmentOrigin context:NULL].size;
+        self.textViewHeightConstraint.constant = size.height + inset.height;
+        self.textViewWidthConstraint.constant = MAX(size.width + inset.width, 50.0f);
+    }
+    self.textViewLeadingConstraint.constant = (textView.superview.frame.size.width - self.textViewWidthConstraint.constant) / 2;
+    [self.contentView setNeedsLayout];
+    textView.contentOffset = CGPointZero;
 }
 
 @end
