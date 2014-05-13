@@ -15,10 +15,6 @@ static NSString *const PLCPlacesDeviceIdentifiersKey = @"PLCPlacesDeviceIdentifi
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    UIImage *transparentImage = [UIImage imageNamed:@"Transparent"];
-    [[UINavigationBar appearance] setBackgroundImage:transparentImage forBarMetrics:UIBarMetricsDefault];
-    [[UINavigationBar appearance] setShadowImage:transparentImage];
-
     [[NSUbiquitousKeyValueStore defaultStore] synchronize];
 
     [self updateUbiquitousDeviceIdentifiers];
