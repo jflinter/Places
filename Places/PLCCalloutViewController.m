@@ -108,6 +108,9 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet
 clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if ([self.captionTextView isFirstResponder]) {
+        [self.captionTextView resignFirstResponder];        
+    }
     if (buttonIndex == actionSheet.cancelButtonIndex) {
         return;
     }

@@ -39,6 +39,7 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     [self setupLocationServices];
     [self.mapView addAnnotations:self.placeStore.allPlaces];
     [self.mapView addGestureRecognizer:[self addPlaceGestureRecognizer]];
+    self.mapView.rotateEnabled = NO;
 }
 
 #pragma mark -
