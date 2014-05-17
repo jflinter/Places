@@ -1,13 +1,16 @@
 PODS:
   - BDDROneFingerZoomGestureRecognizer (1.0.2)
   - INTULocationManager (1.1.0)
+  - Reveal-iOS-SDK (1.0.4)
 
 DEPENDENCIES:
   - BDDROneFingerZoomGestureRecognizer (~> 1.0)
   - INTULocationManager
+  - Reveal-iOS-SDK
 
 SPEC CHECKSUMS:
   BDDROneFingerZoomGestureRecognizer: f9233809a97b836486615fa23ca4ba4e4300d0a5
   INTULocationManager: 4174c35a29722dbcdd9887733aa59a20b765b061
+  Reveal-iOS-SDK: 9de027a2cb0812e9ae220d9047161f3a0ac2db74
 
 COCOAPODS: 0.32.1

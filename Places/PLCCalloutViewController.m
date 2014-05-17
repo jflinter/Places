@@ -14,7 +14,7 @@
 
 @interface PLCCalloutViewController() <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate>
 
-@property (nonatomic, weak) IBOutlet UIView *contentView;
+@property (nonatomic, weak) IBOutlet UIScrollView *contentView;
 @property (nonatomic, readonly) PLCPlaceStore *placeStore;
 @end
 
@@ -43,6 +43,7 @@
 
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
+    self.contentView.contentSize = self.contentView.frame.size;
     [self resizeTextView:self.captionTextView];
 }
 
@@ -173,15 +174,18 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
         self.textViewWidthConstraint.constant = 50.0f;
     }
     else {
-        CGSize inset = CGSizeMake(14, 20);
+        CGSize inset = CGSizeMake(14, 16);
         CGSize insetSize = CGSizeMake(CGRectGetWidth(textView.superview.frame) - inset.width, CGFLOAT_MAX);
         CGSize size = [textView.attributedText boundingRectWithSize:insetSize options:NSStringDrawingUsesLineFragmentOrigin context:NULL].size;
         self.textViewHeightConstraint.constant = size.height + inset.height;
         self.textViewWidthConstraint.constant = MAX(size.width + inset.width, 50.0f);
     }
-    self.textViewLeadingConstraint.constant = (textView.superview.frame.size.width - self.textViewWidthConstraint.constant) / 2;
     [self.contentView setNeedsLayout];
     textView.contentOffset = CGPointZero;
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    scrollView.contentOffset = CGPointZero;
 }
 
 @end
