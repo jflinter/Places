@@ -27,6 +27,14 @@
 		7E54FEAF18FFA94B002E2AFC /* PLCDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E54FEAC18FFA94B002E2AFC /* PLCDatabase.m */; };
 		7E54FEB018FFA94B002E2AFC /* PLCManagedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E54FEAE18FFA94B002E2AFC /* PLCManagedObject.m */; };
 		7EFFFB27190D64A900007FAF /* PLCCalloutTransitionContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EFFFB26190D64A900007FAF /* PLCCalloutTransitionContext.m */; };
+		A03F5582192EF5060015C1D1 /* PLCMapStore.m in Sources */ = {isa = PBXBuildFile; fileRef = A03F5581192EF5060015C1D1 /* PLCMapStore.m */; };
+		A03F5585192F074C0015C1D1 /* PLCDismissSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = A03F5584192F074C0015C1D1 /* PLCDismissSegue.m */; };
+		A03F5588192F08080015C1D1 /* PLCMapPresentationSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = A03F5587192F08080015C1D1 /* PLCMapPresentationSegue.m */; };
+		A03F558B192F08DE0015C1D1 /* PLCMapSelectionTransitionAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = A03F558A192F08DE0015C1D1 /* PLCMapSelectionTransitionAnimator.m */; };
+		A03F5591192F124B0015C1D1 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = A03F5590192F124B0015C1D1 /* UIImage+ImageEffects.m */; };
+		A03F5594192F125F0015C1D1 /* UIView+SnapshotImage.m in Sources */ = {isa = PBXBuildFile; fileRef = A03F5593192F125F0015C1D1 /* UIView+SnapshotImage.m */; };
+		A03F5597192F1B4E0015C1D1 /* PLCMapSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A03F5596192F1B4E0015C1D1 /* PLCMapSelectionViewController.m */; };
+		A03F559A192F1C330015C1D1 /* PLCMapSelectionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A03F5599192F1C330015C1D1 /* PLCMapSelectionTableViewController.m */; };
 		A062BA0E19122FD9002F0C2E /* Glyphish.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A062BA0D19122FD9002F0C2E /* Glyphish.xcassets */; };
 		A062BA12191230B2002F0C2E /* PLCTemplateImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = A062BA11191230B2002F0C2E /* PLCTemplateImageView.m */; };
 		A0938F97191DD7CC0021CF7D /* NSURLComponents+QueryDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = A0938F96191DD7CC0021CF7D /* NSURLComponents+QueryDictionary.m */; };
@@ -92,6 +100,22 @@
 		7E54FEAE18FFA94B002E2AFC /* PLCManagedObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCManagedObject.m; sourceTree = "<group>"; };
 		7EFFFB25190D64A900007FAF /* PLCCalloutTransitionContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCCalloutTransitionContext.h; sourceTree = "<group>"; };
 		7EFFFB26190D64A900007FAF /* PLCCalloutTransitionContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCCalloutTransitionContext.m; sourceTree = "<group>"; };
+		A03F5580192EF5060015C1D1 /* PLCMapStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCMapStore.h; sourceTree = "<group>"; };
+		A03F5581192EF5060015C1D1 /* PLCMapStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCMapStore.m; sourceTree = "<group>"; };
+		A03F5583192F074C0015C1D1 /* PLCDismissSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCDismissSegue.h; sourceTree = "<group>"; };
+		A03F5584192F074C0015C1D1 /* PLCDismissSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCDismissSegue.m; sourceTree = "<group>"; };
+		A03F5586192F08080015C1D1 /* PLCMapPresentationSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCMapPresentationSegue.h; sourceTree = "<group>"; };
+		A03F5587192F08080015C1D1 /* PLCMapPresentationSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCMapPresentationSegue.m; sourceTree = "<group>"; };
+		A03F5589192F08DE0015C1D1 /* PLCMapSelectionTransitionAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCMapSelectionTransitionAnimator.h; sourceTree = "<group>"; };
+		A03F558A192F08DE0015C1D1 /* PLCMapSelectionTransitionAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCMapSelectionTransitionAnimator.m; sourceTree = "<group>"; };
+		A03F558F192F124B0015C1D1 /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
+		A03F5590192F124B0015C1D1 /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
+		A03F5592192F125F0015C1D1 /* UIView+SnapshotImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SnapshotImage.h"; sourceTree = "<group>"; };
+		A03F5593192F125F0015C1D1 /* UIView+SnapshotImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SnapshotImage.m"; sourceTree = "<group>"; };
+		A03F5595192F1B4E0015C1D1 /* PLCMapSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCMapSelectionViewController.h; sourceTree = "<group>"; };
+		A03F5596192F1B4E0015C1D1 /* PLCMapSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCMapSelectionViewController.m; sourceTree = "<group>"; };
+		A03F5598192F1C330015C1D1 /* PLCMapSelectionTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCMapSelectionTableViewController.h; sourceTree = "<group>"; };
+		A03F5599192F1C330015C1D1 /* PLCMapSelectionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCMapSelectionTableViewController.m; sourceTree = "<group>"; };
 		A062BA0D19122FD9002F0C2E /* Glyphish.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Glyphish.xcassets; sourceTree = "<group>"; };
 		A062BA10191230B2002F0C2E /* PLCTemplateImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCTemplateImageView.h; sourceTree = "<group>"; };
 		A062BA11191230B2002F0C2E /* PLCTemplateImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCTemplateImageView.m; sourceTree = "<group>"; };
@@ -258,12 +282,18 @@
 			children = (
 				7E54FE9918FF9BC8002E2AFC /* PLCMapViewController.h */,
 				7E54FE9A18FF9BC8002E2AFC /* PLCMapViewController.m */,
+				A03F5589192F08DE0015C1D1 /* PLCMapSelectionTransitionAnimator.h */,
+				A03F558A192F08DE0015C1D1 /* PLCMapSelectionTransitionAnimator.m */,
 				7E42B24A190C6A6C00F9A21E /* PLCCalloutTransitionAnimator.h */,
 				7E42B24B190C6A6C00F9A21E /* PLCCalloutTransitionAnimator.m */,
 				7EFFFB25190D64A900007FAF /* PLCCalloutTransitionContext.h */,
 				7EFFFB26190D64A900007FAF /* PLCCalloutTransitionContext.m */,
 				A0F0531C19025E6300BD610C /* PLCCalloutViewController.h */,
 				A0F0531D19025E6300BD610C /* PLCCalloutViewController.m */,
+				A03F5595192F1B4E0015C1D1 /* PLCMapSelectionViewController.h */,
+				A03F5596192F1B4E0015C1D1 /* PLCMapSelectionViewController.m */,
+				A03F5598192F1C330015C1D1 /* PLCMapSelectionTableViewController.h */,
+				A03F5599192F1C330015C1D1 /* PLCMapSelectionTableViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -298,6 +328,8 @@
 				A0FAFD2219008E60001A364D /* PLCPlaceStore.m */,
 				A0AEC2E9190CC4CE006D20DE /* PLCPhotoStore.h */,
 				A0AEC2EA190CC4CE006D20DE /* PLCPhotoStore.m */,
+				A03F5580192EF5060015C1D1 /* PLCMapStore.h */,
+				A03F5581192EF5060015C1D1 /* PLCMapStore.m */,
 			);
 			name = "Model Support";
 			sourceTree = "<group>";
@@ -313,6 +345,14 @@
 				A062BA11191230B2002F0C2E /* PLCTemplateImageView.m */,
 				A0938F98191DD7F90021CF7D /* MKPlacemark+LocationSharing.h */,
 				A0938F99191DD7F90021CF7D /* MKPlacemark+LocationSharing.m */,
+				A03F5583192F074C0015C1D1 /* PLCDismissSegue.h */,
+				A03F5584192F074C0015C1D1 /* PLCDismissSegue.m */,
+				A03F5586192F08080015C1D1 /* PLCMapPresentationSegue.h */,
+				A03F5587192F08080015C1D1 /* PLCMapPresentationSegue.m */,
+				A03F5592192F125F0015C1D1 /* UIView+SnapshotImage.h */,
+				A03F5593192F125F0015C1D1 /* UIView+SnapshotImage.m */,
+				A03F558F192F124B0015C1D1 /* UIImage+ImageEffects.h */,
+				A03F5590192F124B0015C1D1 /* UIImage+ImageEffects.m */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -490,24 +530,32 @@
 				A0FAFD2319008E60001A364D /* PLCPlaceStore.m in Sources */,
 				A0938F9A191DD7F90021CF7D /* MKPlacemark+LocationSharing.m in Sources */,
 				7E42B24C190C6A6C00F9A21E /* PLCCalloutTransitionAnimator.m in Sources */,
+				A03F558B192F08DE0015C1D1 /* PLCMapSelectionTransitionAnimator.m in Sources */,
+				A03F5582192EF5060015C1D1 /* PLCMapStore.m in Sources */,
 				7E54FEB018FFA94B002E2AFC /* PLCManagedObject.m in Sources */,
 				A0938F9E19213C660021CF7D /* PLCTemplateButton.m in Sources */,
 				A0AEC2E8190CC48D006D20DE /* PLCPhoto.m in Sources */,
+				A03F5588192F08080015C1D1 /* PLCMapPresentationSegue.m in Sources */,
 				A0F053211903085800BD610C /* PLCMapView.m in Sources */,
 				7E54FE9118FF9854002E2AFC /* _PLCPlace.m in Sources */,
+				A03F5597192F1B4E0015C1D1 /* PLCMapSelectionViewController.m in Sources */,
 				A0938F97191DD7CC0021CF7D /* NSURLComponents+QueryDictionary.m in Sources */,
 				7E54FE6418FF9392002E2AFC /* PLCAppDelegate.m in Sources */,
 				A0F0531E19025E6300BD610C /* PLCCalloutViewController.m in Sources */,
+				A03F5591192F124B0015C1D1 /* UIImage+ImageEffects.m in Sources */,
 				7E54FE9418FF985A002E2AFC /* PLCPlace.m in Sources */,
 				7E54FE6018FF9392002E2AFC /* main.m in Sources */,
 				7E166E04191B4A5E001EF46B /* PLCMap.m in Sources */,
 				A062BA12191230B2002F0C2E /* PLCTemplateImageView.m in Sources */,
 				7E54FE9B18FF9BC8002E2AFC /* PLCMapViewController.m in Sources */,
+				A03F5594192F125F0015C1D1 /* UIView+SnapshotImage.m in Sources */,
 				A0AEC2EB190CC4CE006D20DE /* PLCPhotoStore.m in Sources */,
 				A0FAFD261901EEDC001A364D /* PLCPinAnnotationView.m in Sources */,
 				A0FAFD2D1902404D001A364D /* PLCCalloutView.m in Sources */,
+				A03F559A192F1C330015C1D1 /* PLCMapSelectionTableViewController.m in Sources */,
 				7E54FEAF18FFA94B002E2AFC /* PLCDatabase.m in Sources */,
 				7E166E01191B4A53001EF46B /* _PLCMap.m in Sources */,
+				A03F5585192F074C0015C1D1 /* PLCDismissSegue.m in Sources */,
 				A0AEC2E5190CC482006D20DE /* _PLCPhoto.m in Sources */,
 				7EFFFB27190D64A900007FAF /* PLCCalloutTransitionContext.m in Sources */,
 				7E54FE8618FF9450002E2AFC /* Places.xcdatamodeld in Sources */,

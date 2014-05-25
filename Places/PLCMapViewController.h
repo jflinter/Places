@@ -8,7 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PLCMapViewController : UIViewController
+
+@class PLCMapView;
+@interface PLCMapViewController : UIViewController;
+@property (nonatomic, weak, readonly) IBOutlet PLCMapView *mapView;
 @property (weak, nonatomic) IBOutlet UIButton *locationButton;
 - (IBAction)showLocation:(id)sender;
 

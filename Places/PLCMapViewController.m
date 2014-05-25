@@ -14,19 +14,22 @@
 #import "PLCCalloutViewController.h"
 #import "PLCCalloutTransitionAnimator.h"
 #import "PLCCalloutTransitionContext.h"
+#import "PLCMapSelectionTransitionAnimator.h"
+#import "PLCMapSelectionTableViewController.h"
+#import "PLCMapSelectionViewController.h"
 #import <INTULocationManager/INTULocationManager.h>
 
 static NSString * const PLCMapPinReuseIdentifier = @"PLCMapPinReuseIdentifier";
 static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 
-@interface PLCMapViewController () <PLCMapViewDelegate, PLCPlaceStoreDelegate, UIViewControllerTransitioningDelegate, CLLocationManagerDelegate>
+@interface PLCMapViewController () <PLCMapViewDelegate, PLCPlaceStoreDelegate, CLLocationManagerDelegate>
 
-@property (nonatomic, weak) IBOutlet PLCMapView *mapView;
+@property (nonatomic, weak, readwrite) IBOutlet PLCMapView *mapView;
 @property (nonatomic, readonly) PLCPlaceStore *placeStore;
 @property (nonatomic, readonly) NSArray *calloutViewControllers;
 @property (nonatomic) BOOL determiningInitialLocation;
 @property (nonatomic, getter=isAddingPlace) BOOL addingPlace;
-
+@property (nonatomic) PLCMapSelectionTransitionAnimator *animator;
 @end
 
 @implementation PLCMapViewController
@@ -322,5 +325,16 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     }
 }
 
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    [super prepareForSegue:segue sender:sender];
+    if ([segue.destinationViewController isKindOfClass:[PLCMapSelectionViewController class]]) {
+        PLCMapSelectionViewController *controller = (PLCMapSelectionViewController *)segue.destinationViewController;
+        self.animator = [[PLCMapSelectionTransitionAnimator alloc] initWithParentViewController:controller];
+        self.animator.presenting = YES;
+        controller.transitioningDelegate = self.animator;
+        controller.modalPresentationStyle = UIModalPresentationCustom;
+    }
+}
 
 @end

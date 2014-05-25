@@ -8,7 +8,9 @@
 
 #import "PLCPlace.h"
 #import "PLCPlaceStore.h"
+#import "PLCMapStore.h"
 #import "PLCDatabase.h"
+#import "PLCMap.h"
 
 @interface PLCPlaceStore()<NSFetchedResultsControllerDelegate>
 @property(strong, nonatomic)NSFetchedResultsController *fetchedResultsController;
@@ -23,8 +25,14 @@
         if (!success) {
             abort();
         }
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currentMapChanged:) name:PLCCurrentMapDidChangeNotification object:nil];
     }
     return self;
+}
+
+- (void)currentMapChanged:(NSNotification *)notification {
+    self.fetchedResultsController.fetchRequest.predicate = [self placePredicate];
+    [self.fetchedResultsController performFetch:nil];
 }
 
 - (NSArray *)allPlaces {
@@ -34,8 +42,8 @@
 - (PLCPlace *) insertPlaceAtCoordinate:(CLLocationCoordinate2D)coordinate {
     PLCPlace *place = [PLCPlace insertInManagedObjectContext:[self managedObjectContext]];
     place.coordinate = coordinate;
+    place.map = [[PLCMapStore sharedInstance] selectedMap];
     [self save];
-    [self.delegate placeStore:self didInsertPlace:place];
     return place;
 }
 
@@ -57,6 +65,9 @@
        atIndexPath:(NSIndexPath *)indexPath
      forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath {
+    if (type == NSFetchedResultsChangeInsert) {
+        [self.delegate placeStore:self didInsertPlace:anObject];
+    }
     if (type == NSFetchedResultsChangeDelete) {
         [self.delegate placeStore:self didRemovePlace:anObject];
     }
@@ -75,11 +86,16 @@
 {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[PLCPlace entityName]];
     fetchRequest.sortDescriptors = @[ [NSSortDescriptor sortDescriptorWithKey:PLCPlaceAttributes.latitude ascending:YES], [NSSortDescriptor sortDescriptorWithKey:PLCPlaceAttributes.longitude ascending:YES] ];
+    fetchRequest.predicate = [self placePredicate];
+    return fetchRequest;
+}
+
+- (NSPredicate *)placePredicate {
     NSExpression *nilExpression = [NSExpression expressionForConstantValue:[NSNull null]];
     NSExpression *deletedAtExpression = [NSExpression expressionForKeyPath:PLCPlaceAttributes.deletedAt];
-    NSPredicate *predicate = [NSComparisonPredicate predicateWithLeftExpression:deletedAtExpression rightExpression:nilExpression modifier:NSDirectPredicateModifier type:NSEqualToPredicateOperatorType options:0];
-    fetchRequest.predicate = predicate;
-    return fetchRequest;
+    NSPredicate *notDeletedPredicate = [NSComparisonPredicate predicateWithLeftExpression:deletedAtExpression rightExpression:nilExpression modifier:NSDirectPredicateModifier type:NSEqualToPredicateOperatorType options:0];
+    NSPredicate *mapPredicate = [NSPredicate predicateWithFormat:@"map.name == %@", [PLCMapStore sharedInstance].selectedMap.name];
+    return [[NSCompoundPredicate alloc] initWithType:NSAndPredicateType subpredicates:@[notDeletedPredicate, mapPredicate]];
 }
 
 - (NSManagedObjectContext *)managedObjectContext {
