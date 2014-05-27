@@ -8,6 +8,7 @@
 
 #import "PLCCalloutTransitionAnimator.h"
 #import "PLCCalloutViewController.h"
+#import "PLCCalloutTransitionContext.h"
 
 @implementation PLCCalloutTransitionAnimator
 
@@ -50,6 +51,10 @@
     CGPoint const calloutPresentationOrigin = CGPointMake(CGRectGetMidX(annotationView.bounds) + annotationView.calloutOffset.x, CGRectGetMinY(annotationView.bounds));
     
     calloutView.frame = CGRectMake(calloutPresentationOrigin.x - calloutViewSize.width / 2.0f, calloutPresentationOrigin.y - calloutViewSize.height, calloutViewSize.width, calloutViewSize.height);
+    UIView *menuControl;
+    if ([transitionContext isKindOfClass:[PLCCalloutTransitionContext class]]) {
+        menuControl = ((PLCCalloutTransitionContext *)transitionContext).menuControl;
+    }
     
     if (isPresenting) {
         calloutView.transform = CGAffineTransformMakeScale(0.001f, 0.001f);
@@ -63,22 +68,26 @@
               initialSpringVelocity:0.0f
                             options:0
                          animations:^{
+                             menuControl.alpha = 0;
                              calloutView.alpha = 1.0f;
                              calloutView.transform = CGAffineTransformIdentity;
                          }
                          completion:^(BOOL finished) {
+                             menuControl.hidden = YES;
                              [transitionContext completeTransition:finished];
                              if (completion) {
                                  completion();
                              }
                          }];
     } else {
+        menuControl.hidden = NO;
         [UIView animateWithDuration:[self transitionDuration:transitionContext]
                               delay:0
              usingSpringWithDamping:1.0f
               initialSpringVelocity:0.0f
                             options:UIViewAnimationOptionAllowUserInteraction
                          animations:^{
+                             menuControl.alpha = 1.0f;
                              calloutView.alpha = 0.0f;
                              calloutView.transform = CGAffineTransformMakeScale(0.1f, 0.1f);
                          }

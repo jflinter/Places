@@ -40,10 +40,7 @@
     if ([self.transitioningDelegate isKindOfClass:[PLCMapSelectionTransitionAnimator class]]) {
         PLCMapSelectionTransitionAnimator *animator = (PLCMapSelectionTransitionAnimator *)self.transitioningDelegate;
         UIPanGestureRecognizer *recognizer = [[UIPanGestureRecognizer alloc] initWithTarget:animator action:@selector(panned:)];
-        PLCMapSelectionTableViewController *controller = [self.childViewControllers firstObject];
-        if ([controller isKindOfClass:[PLCMapSelectionTableViewController class]]) {
-            recognizer.delegate = controller;
-        }
+        recognizer.delegate = [self tableViewController];
         self.gestureRecognizer = recognizer;
         [self.view addGestureRecognizer:recognizer];
     }
@@ -51,10 +48,16 @@
 
 - (void)setScrollEnabled:(BOOL)scrollEnabled {
     _scrollEnabled = scrollEnabled;
-    PLCMapSelectionTableViewController *controller = [self.childViewControllers firstObject];
+    [self tableViewController].tableView.scrollEnabled = scrollEnabled;
+}
+
+- (PLCMapSelectionTableViewController *) tableViewController {
+    UINavigationController *navController = [self.childViewControllers firstObject];
+    PLCMapSelectionTableViewController *controller = [navController.viewControllers firstObject];
     if ([controller isKindOfClass:[PLCMapSelectionTableViewController class]]) {
-        controller.tableView.scrollEnabled = scrollEnabled;
+        return controller;
     }
+    return nil;
 }
 
 @end

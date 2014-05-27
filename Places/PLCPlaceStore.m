@@ -30,6 +30,10 @@
     return self;
 }
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)currentMapChanged:(NSNotification *)notification {
     self.fetchedResultsController.fetchRequest.predicate = [self placePredicate];
     [self.fetchedResultsController performFetch:nil];

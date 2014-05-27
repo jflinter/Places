@@ -30,6 +30,14 @@ static NSString * const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidC
     return sharedInstance;
 }
 
+- (id)init {
+    self = [super init];
+    if (self) {
+        self.selectedMap = [self savedSelectedMap] ?: [self defaultMap];
+    }
+    return self;
+}
+
 - (NSArray *)allMaps {
     return self.fetchedResultsController.fetchedObjects;
 }
@@ -59,32 +67,34 @@ static NSString * const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidC
     return self.allMaps[index];
 }
 
-- (void)setSelectedMap:(PLCMap *)selectedMap {
-    if (selectedMap == _selectedMap) {
-        return;
+- (PLCMap *)savedSelectedMap {
+    NSURL *objectURI = [[NSUserDefaults standardUserDefaults] URLForKey:PLCCurrentMapSaveKey];
+    if (objectURI) {
+        NSManagedObjectID *objectId = [[[self managedObjectContext] persistentStoreCoordinator] managedObjectIDForURIRepresentation:objectURI];
+        NSError *error;
+        return (PLCMap *)[[self managedObjectContext] existingObjectWithID:objectId error:&error];
     }
+    return nil;
+}
+
+- (PLCMap *)defaultMap {
+    return [self insertMapWithName:NSLocalizedString(@"Default Map", nil)];
+}
+
+- (void)setSelectedMap:(PLCMap *)selectedMap {
     _selectedMap = selectedMap;
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSURL *url = [_selectedMap.objectID URIRepresentation];
-    [defaults setObject:url forKey:PLCCurrentMapSaveKey];
+    [defaults setURL:url forKey:PLCCurrentMapSaveKey];
     [defaults synchronize];
     [[NSNotificationCenter defaultCenter] postNotificationName:PLCCurrentMapDidChangeNotification object:self];
 }
 
-- (PLCMap *)selectedMap {
-    if (!_selectedMap) {
-        if (!self.allMaps.count) {
-            _selectedMap = [PLCMap insertInManagedObjectContext:[self managedObjectContext]];
-            [[self managedObjectContext] save:nil];
-            self.selectedMap = _selectedMap;
-        }
-        else {
-            NSURL *objectURI = [[NSUserDefaults standardUserDefaults] URLForKey:PLCCurrentMapSaveKey];
-            NSManagedObjectID *objectId = [[[self managedObjectContext] persistentStoreCoordinator] managedObjectIDForURIRepresentation:objectURI];
-            _selectedMap = (PLCMap *)[[self managedObjectContext] existingObjectWithID:objectId error:nil];
-        }
-    }
-    return _selectedMap;
+- (PLCMap *)insertMapWithName:(NSString *)name {
+    PLCMap *map = [PLCMap insertInManagedObjectContext:[self managedObjectContext]];
+    map.name = name;
+    [[self managedObjectContext] save:nil];
+    return map;
 }
 
 @end

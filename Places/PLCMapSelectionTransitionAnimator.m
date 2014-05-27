@@ -90,6 +90,9 @@
 - (void)panned:(UIPanGestureRecognizer *)recognizer {
     CGPoint location = [recognizer locationInView:recognizer.view];
     CGPoint velocity = [recognizer velocityInView:recognizer.view];
+    // Determine our ratio between the left edge and the right edge. This means our dismissal will go from 1...0.
+    CGFloat difference = location.y - self.originalDismissalPoint.y;
+    CGFloat ratio = difference / CGRectGetHeight(self.parentViewController.view.bounds);
     
     if (recognizer.state == UIGestureRecognizerStateBegan) {
         // We're being invoked via a gesture recognizer – we are necessarily interactive
@@ -98,14 +101,11 @@
         self.originalDismissalPoint = location;
     }
     else if (recognizer.state == UIGestureRecognizerStateChanged) {
-        // Determine our ratio between the left edge and the right edge. This means our dismissal will go from 1...0.
-        CGFloat difference = location.y - self.originalDismissalPoint.y;
-        CGFloat ratio = difference / CGRectGetHeight(self.parentViewController.view.bounds);
         [self updateInteractiveTransition:ratio];
     }
     else if (recognizer.state == UIGestureRecognizerStateEnded) {
         // Depending on our state and the velocity, determine whether to cancel or complete the transition.
-        if (velocity.y > 0) {
+        if (velocity.y > 0 && ratio > 0.3) {
             [self finishInteractiveTransition];
         }
         else {

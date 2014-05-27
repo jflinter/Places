@@ -14,31 +14,54 @@
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = YES;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == 0) {
-        return 1;
-    }
-    return (NSInteger)[[[PLCMapStore sharedInstance] allMaps] count];
+    return (NSInteger)[[[PLCMapStore sharedInstance] allMaps] count] + 1;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 25.0f;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UILabel *label = [UILabel new];
+    NSMutableParagraphStyle *style = [NSMutableParagraphStyle new];
+    style.firstLineHeadIndent = 15.0f;
+    NSDictionary *attributes = @{
+                                 NSFontAttributeName: [UIFont fontWithName:@"AvenirNext-DemiBold" size:14.0f],
+                                 NSParagraphStyleAttributeName: style,
+                                 };
+    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:NSLocalizedString(@"Your Maps", nil) attributes:attributes];
+    label.attributedText = string;
+    label.backgroundColor = [UIColor colorWithWhite:0.95f alpha:1.0f];
+    return label;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0) {
+    if (indexPath.row == 0) {
         return [tableView dequeueReusableCellWithIdentifier:@"PLCMapSelectionEditableCellReuseIdentifier" forIndexPath:indexPath];
     }
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PLCMapSelectionTableCellReuseIdentifier" forIndexPath:indexPath];
-    [self configureCell:cell forRowAtIndexPath:indexPath];
+    NSIndexPath *modifiedIndexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PLCMapSelectionTableCellReuseIdentifier" forIndexPath:modifiedIndexPath];
+    [self configureCell:cell forRowAtIndexPath:modifiedIndexPath];
     return cell;
 }
 
 - (void)configureCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     PLCMap *map = [[PLCMapStore sharedInstance] mapAtIndex:(NSUInteger)indexPath.row];
     cell.textLabel.text = map.name;
+    if (map == [[PLCMapStore sharedInstance] selectedMap]) {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    }
+    else {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -55,7 +78,6 @@
     NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
     mapStore.selectedMap = [mapStore mapAtIndex:(NSUInteger)indexPath.row];
 }
-
 
 #pragma mark - UIGestureRecognizerDelegate
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {

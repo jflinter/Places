@@ -222,6 +222,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     transitionContext.mapViewController = self;
     transitionContext.calloutViewController = calloutViewController;
     transitionContext.containerView = annotationView;
+    transitionContext.menuControl = self.menuButton;
 
     PLCCalloutTransitionAnimator *animator = [[PLCCalloutTransitionAnimator alloc] init];
 
@@ -241,6 +242,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     transitionContext.mapViewController = self;
     transitionContext.calloutViewController = calloutViewController;
     transitionContext.containerView = calloutViewController.view.superview;
+    transitionContext.menuControl = self.menuButton;
 
     PLCCalloutTransitionAnimator *animator = [[PLCCalloutTransitionAnimator alloc] init];
     [animator animateTransition:transitionContext completion:completion];
@@ -329,6 +331,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     [super prepareForSegue:segue sender:sender];
     if ([segue.destinationViewController isKindOfClass:[PLCMapSelectionViewController class]]) {
+        [self dismissAllCalloutViewControllers];
         PLCMapSelectionViewController *controller = (PLCMapSelectionViewController *)segue.destinationViewController;
         self.animator = [[PLCMapSelectionTransitionAnimator alloc] initWithParentViewController:controller];
         self.animator.presenting = YES;

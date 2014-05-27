@@ -17,6 +17,7 @@ static NSString * const PLCCurrentMapDidChangeNotification;
 + (instancetype)sharedInstance;
 - (NSArray *)allMaps;
 - (PLCMap *)mapAtIndex:(NSUInteger)index;
+- (PLCMap *)insertMapWithName:(NSString *)name;
 @property(nonatomic, strong)PLCMap *selectedMap;
 
 @end
