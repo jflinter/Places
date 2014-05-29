@@ -141,12 +141,14 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 #pragma mark -
 #pragma mark Place Store Delegate
 
-- (void)placeStore:(PLCPlaceStore *)store didInsertPlace:(PLCPlace *)place
+- (void)placeStore:(PLCPlaceStore *)store didInsertPlace:(PLCPlace *)place new:(BOOL)isNew
 {
     self.addingPlace = YES;
 
     [self.mapView addAnnotation:place];
-    [self.mapView selectAnnotation:place animated:YES];
+    if (isNew) {
+        [self.mapView selectAnnotation:place animated:YES];
+    }
 
     self.addingPlace = NO;
 }
@@ -171,7 +173,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 - (PLCPlaceStore *)placeStore
 {
     if (!_placeStore) {
-        _placeStore = [[PLCPlaceStore alloc] init];
+        _placeStore = [PLCPlaceStore sharedInstance];
         _placeStore.delegate = self;
     }
     return _placeStore;

@@ -18,14 +18,24 @@
 
 @implementation PLCPlaceStore
 
++(instancetype)sharedInstance {
+    static id sharedInstance;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedInstance = [self new];
+    });
+    return sharedInstance;
+}
+
 - (id) init {
     self = [super init];
     if (self) {
+        self.fetchedResultsController.fetchRequest.predicate = [self placePredicate];
         BOOL success = [self.fetchedResultsController performFetch:nil];
         if (!success) {
             abort();
         }
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currentMapChanged:) name:PLCCurrentMapDidChangeNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currentMapChanged:) name:PLCCurrentMapDidChangeNotification object:[PLCMapStore sharedInstance]];
     }
     return self;
 }
@@ -35,8 +45,16 @@
 }
 
 - (void)currentMapChanged:(NSNotification *)notification {
-    self.fetchedResultsController.fetchRequest.predicate = [self placePredicate];
-    [self.fetchedResultsController performFetch:nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        for (PLCPlace *place in self.fetchedResultsController.fetchedObjects) {
+            [self.delegate placeStore:self didRemovePlace:place];
+        }
+        self.fetchedResultsController.fetchRequest.predicate = [self placePredicate];
+        [self.fetchedResultsController performFetch:nil];
+        for (PLCPlace *place in self.fetchedResultsController.fetchedObjects) {
+            [self.delegate placeStore:self didInsertPlace:place new:NO];
+        }
+    });
 }
 
 - (NSArray *)allPlaces {
@@ -48,12 +66,14 @@
     place.coordinate = coordinate;
     place.map = [[PLCMapStore sharedInstance] selectedMap];
     [self save];
+    [self.delegate placeStore:self didInsertPlace:place new:YES];
     return place;
 }
 
 - (void) removePlace:(PLCPlace *)place {
     place.deletedAt = [NSDate date];
     [self save];
+    [self.delegate placeStore:self didRemovePlace:place];
 }
 
 - (void) save {
@@ -61,19 +81,6 @@
     [[self managedObjectContext] save:&error];
     if (error) {
         abort();
-    }
-}
-
-- (void)controller:(NSFetchedResultsController *)controller
-   didChangeObject:(PLCPlace *)anObject
-       atIndexPath:(NSIndexPath *)indexPath
-     forChangeType:(NSFetchedResultsChangeType)type
-      newIndexPath:(NSIndexPath *)newIndexPath {
-    if (type == NSFetchedResultsChangeInsert) {
-        [self.delegate placeStore:self didInsertPlace:anObject];
-    }
-    if (type == NSFetchedResultsChangeDelete) {
-        [self.delegate placeStore:self didRemovePlace:anObject];
     }
 }
 
@@ -98,7 +105,9 @@
     NSExpression *nilExpression = [NSExpression expressionForConstantValue:[NSNull null]];
     NSExpression *deletedAtExpression = [NSExpression expressionForKeyPath:PLCPlaceAttributes.deletedAt];
     NSPredicate *notDeletedPredicate = [NSComparisonPredicate predicateWithLeftExpression:deletedAtExpression rightExpression:nilExpression modifier:NSDirectPredicateModifier type:NSEqualToPredicateOperatorType options:0];
-    NSPredicate *mapPredicate = [NSPredicate predicateWithFormat:@"map.name == %@", [PLCMapStore sharedInstance].selectedMap.name];
+    NSExpression *selectedExpression = [NSExpression expressionForKeyPath:@"map.selected"];
+    NSExpression *yesExpression = [NSExpression expressionForConstantValue:@YES];
+    NSPredicate *mapPredicate = [NSComparisonPredicate predicateWithLeftExpression:selectedExpression rightExpression:yesExpression modifier:0 type:NSEqualToPredicateOperatorType options:0];
     return [[NSCompoundPredicate alloc] initWithType:NSAndPredicateType subpredicates:@[notDeletedPredicate, mapPredicate]];
 }
 

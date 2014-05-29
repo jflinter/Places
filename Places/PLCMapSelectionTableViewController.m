@@ -7,8 +7,8 @@
 //
 
 #import "PLCMapSelectionTableViewController.h"
-#import "PLCMapStore.h"
 #import "PLCMap.h"
+#import "PLCMapStore.h"
 
 @implementation PLCMapSelectionTableViewController
 
@@ -70,13 +70,15 @@
 
 #pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(UITableViewCell *)sender
 {
     [super prepareForSegue:segue sender:sender];
-    PLCMapStore *mapStore = [PLCMapStore sharedInstance];
     NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
-    mapStore.selectedMap = [mapStore mapAtIndex:(NSUInteger)indexPath.row];
+    if (indexPath.row == 0) {
+        return;
+    }
+    PLCMapStore *mapStore = [PLCMapStore sharedInstance];
+    mapStore.selectedMap = [mapStore mapAtIndex:(NSUInteger)indexPath.row - 1];
 }
 
 #pragma mark - UIGestureRecognizerDelegate

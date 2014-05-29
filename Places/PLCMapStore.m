@@ -14,12 +14,9 @@ static NSString * const PLCCurrentMapSaveKey = @"PLCCurrentMapSaveKey";
 static NSString * const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidChangeNotification";
 
 @interface PLCMapStore()<NSFetchedResultsControllerDelegate>
-@property(nonatomic, readwrite, strong)NSFetchedResultsController *fetchedResultsController;
 @end
 
 @implementation PLCMapStore
-
-@synthesize selectedMap = _selectedMap;
 
 + (instancetype)sharedInstance {
     static PLCMapStore *sharedInstance;
@@ -33,23 +30,13 @@ static NSString * const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidC
 - (id)init {
     self = [super init];
     if (self) {
-        self.selectedMap = [self savedSelectedMap] ?: [self defaultMap];
+        self.selectedMap = [self selectedMap] ?: [self defaultMap];
     }
     return self;
 }
 
 - (NSArray *)allMaps {
-    return self.fetchedResultsController.fetchedObjects;
-}
-
-- (NSFetchedResultsController *)fetchedResultsController
-{
-    if (!_fetchedResultsController) {
-        _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:[self fetchRequest] managedObjectContext:[self managedObjectContext] sectionNameKeyPath:nil cacheName:nil];
-        _fetchedResultsController.delegate = self;
-        [_fetchedResultsController performFetch:nil];
-    }
-    return _fetchedResultsController;
+    return [[self managedObjectContext] executeFetchRequest:[self fetchRequest] error:nil];
 }
 
 - (NSFetchRequest *)fetchRequest
@@ -67,26 +54,28 @@ static NSString * const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidC
     return self.allMaps[index];
 }
 
-- (PLCMap *)savedSelectedMap {
-    NSURL *objectURI = [[NSUserDefaults standardUserDefaults] URLForKey:PLCCurrentMapSaveKey];
-    if (objectURI) {
-        NSManagedObjectID *objectId = [[[self managedObjectContext] persistentStoreCoordinator] managedObjectIDForURIRepresentation:objectURI];
-        NSError *error;
-        return (PLCMap *)[[self managedObjectContext] existingObjectWithID:objectId error:&error];
-    }
-    return nil;
+- (PLCMap *)defaultMap {
+    return [self insertMapWithName:NSLocalizedString(@"My Neighborhood", nil)];
 }
 
-- (PLCMap *)defaultMap {
-    return [self insertMapWithName:NSLocalizedString(@"Default Map", nil)];
+- (PLCMap *)selectedMap {
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[PLCMap entityName]];
+    fetchRequest.fetchLimit = 1;
+    NSExpression *selectedExpression = [NSExpression expressionForKeyPath:PLCMapAttributes.selected];
+    NSExpression *yesExpression = [NSExpression expressionForConstantValue:@YES];
+    fetchRequest.predicate = [NSComparisonPredicate predicateWithLeftExpression:selectedExpression rightExpression:yesExpression modifier:0 type:NSEqualToPredicateOperatorType options:0];
+    return [[[self managedObjectContext] executeFetchRequest:fetchRequest error:nil] firstObject];
 }
 
 - (void)setSelectedMap:(PLCMap *)selectedMap {
-    _selectedMap = selectedMap;
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSURL *url = [_selectedMap.objectID URIRepresentation];
-    [defaults setURL:url forKey:PLCCurrentMapSaveKey];
-    [defaults synchronize];
+    if (selectedMap == [self selectedMap]) {
+        return;
+    }
+    for (PLCMap *map in [self allMaps]) {
+        map.selectedValue = NO;
+    }
+    selectedMap.selectedValue = YES;
+    [[self managedObjectContext] save:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:PLCCurrentMapDidChangeNotification object:self];
 }
 

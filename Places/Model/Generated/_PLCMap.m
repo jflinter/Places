@@ -5,6 +5,7 @@
 
 const struct PLCMapAttributes PLCMapAttributes = {
 	.name = @"name",
+	.selected = @"selected",
 };
 
 const struct PLCMapRelationships PLCMapRelationships = {
@@ -40,6 +41,11 @@ const struct PLCMapFetchedProperties PLCMapFetchedProperties = {
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
+	if ([key isEqualToString:@"selectedValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"selected"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 
 	return keyPaths;
 }
@@ -49,6 +55,32 @@ const struct PLCMapFetchedProperties PLCMapFetchedProperties = {
 
 @dynamic name;
 
+
+
+
+
+
+@dynamic selected;
+
+
+
+- (BOOL)selectedValue {
+	NSNumber *result = [self selected];
+	return [result boolValue];
+}
+
+- (void)setSelectedValue:(BOOL)value_ {
+	[self setSelected:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveSelectedValue {
+	NSNumber *result = [self primitiveSelected];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveSelectedValue:(BOOL)value_ {
+	[self setPrimitiveSelected:[NSNumber numberWithBool:value_]];
+}
 
 
 
