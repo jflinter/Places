@@ -6,6 +6,7 @@
 
 extern const struct PLCMapAttributes {
 	__unsafe_unretained NSString *name;
+	__unsafe_unretained NSString *selected;
 } PLCMapAttributes;
 
 extern const struct PLCMapRelationships {
@@ -16,6 +17,7 @@ extern const struct PLCMapFetchedProperties {
 } PLCMapFetchedProperties;
 
 @class PLCPlace;
+
 
 
 
@@ -37,6 +39,20 @@ extern const struct PLCMapFetchedProperties {
 
 
 //- (BOOL)validateName:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* selected;
+
+
+
+@property BOOL selectedValue;
+- (BOOL)selectedValue;
+- (void)setSelectedValue:(BOOL)value_;
+
+//- (BOOL)validateSelected:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -66,6 +82,15 @@ extern const struct PLCMapFetchedProperties {
 
 - (NSString*)primitiveName;
 - (void)setPrimitiveName:(NSString*)value;
+
+
+
+
+- (NSNumber*)primitiveSelected;
+- (void)setPrimitiveSelected:(NSNumber*)value;
+
+- (BOOL)primitiveSelectedValue;
+- (void)setPrimitiveSelectedValue:(BOOL)value_;
 
 
 

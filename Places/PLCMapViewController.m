@@ -14,19 +14,22 @@
 #import "PLCCalloutViewController.h"
 #import "PLCCalloutTransitionAnimator.h"
 #import "PLCCalloutTransitionContext.h"
+#import "PLCMapSelectionTransitionAnimator.h"
+#import "PLCMapSelectionTableViewController.h"
+#import "PLCMapSelectionViewController.h"
 #import <INTULocationManager/INTULocationManager.h>
 
 static NSString * const PLCMapPinReuseIdentifier = @"PLCMapPinReuseIdentifier";
 static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 
-@interface PLCMapViewController () <PLCMapViewDelegate, PLCPlaceStoreDelegate, UIViewControllerTransitioningDelegate, CLLocationManagerDelegate>
+@interface PLCMapViewController () <PLCMapViewDelegate, PLCPlaceStoreDelegate, CLLocationManagerDelegate>
 
-@property (nonatomic, weak) IBOutlet PLCMapView *mapView;
+@property (nonatomic, weak, readwrite) IBOutlet PLCMapView *mapView;
 @property (nonatomic, readonly) PLCPlaceStore *placeStore;
 @property (nonatomic, readonly) NSArray *calloutViewControllers;
 @property (nonatomic) BOOL determiningInitialLocation;
 @property (nonatomic, getter=isAddingPlace) BOOL addingPlace;
-
+@property (nonatomic) PLCMapSelectionTransitionAnimator *animator;
 @end
 
 @implementation PLCMapViewController
@@ -138,12 +141,14 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 #pragma mark -
 #pragma mark Place Store Delegate
 
-- (void)placeStore:(PLCPlaceStore *)store didInsertPlace:(PLCPlace *)place
+- (void)placeStore:(PLCPlaceStore *)store didInsertPlace:(PLCPlace *)place new:(BOOL)isNew
 {
     self.addingPlace = YES;
 
     [self.mapView addAnnotation:place];
-    [self.mapView selectAnnotation:place animated:YES];
+    if (isNew) {
+        [self.mapView selectAnnotation:place animated:YES];
+    }
 
     self.addingPlace = NO;
 }
@@ -168,7 +173,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 - (PLCPlaceStore *)placeStore
 {
     if (!_placeStore) {
-        _placeStore = [[PLCPlaceStore alloc] init];
+        _placeStore = [PLCPlaceStore sharedInstance];
         _placeStore.delegate = self;
     }
     return _placeStore;
@@ -219,6 +224,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     transitionContext.mapViewController = self;
     transitionContext.calloutViewController = calloutViewController;
     transitionContext.containerView = annotationView;
+    transitionContext.menuControl = self.menuButton;
 
     PLCCalloutTransitionAnimator *animator = [[PLCCalloutTransitionAnimator alloc] init];
 
@@ -238,6 +244,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     transitionContext.mapViewController = self;
     transitionContext.calloutViewController = calloutViewController;
     transitionContext.containerView = calloutViewController.view.superview;
+    transitionContext.menuControl = self.menuButton;
 
     PLCCalloutTransitionAnimator *animator = [[PLCCalloutTransitionAnimator alloc] init];
     [animator animateTransition:transitionContext completion:completion];
@@ -322,5 +329,17 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     }
 }
 
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    [super prepareForSegue:segue sender:sender];
+    if ([segue.destinationViewController isKindOfClass:[PLCMapSelectionViewController class]]) {
+        [self dismissAllCalloutViewControllers];
+        PLCMapSelectionViewController *controller = (PLCMapSelectionViewController *)segue.destinationViewController;
+        self.animator = [[PLCMapSelectionTransitionAnimator alloc] initWithParentViewController:controller];
+        self.animator.presenting = YES;
+        controller.transitioningDelegate = self.animator;
+        controller.modalPresentationStyle = UIModalPresentationCustom;
+    }
+}
 
 @end

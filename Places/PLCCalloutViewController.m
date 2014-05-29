@@ -15,12 +15,9 @@
 @interface PLCCalloutViewController() <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, weak) IBOutlet UIScrollView *contentView;
-@property (nonatomic, readonly) PLCPlaceStore *placeStore;
 @end
 
 @implementation PLCCalloutViewController
-
-@synthesize placeStore = _placeStore;
 
 + (CGSize)calloutSize
 {
@@ -63,7 +60,7 @@
 }
 
 - (IBAction)deletePlace:(id)sender {
-    [self.placeStore removePlace:self.place];
+    [[PLCPlaceStore sharedInstance] removePlace:self.place];
 }
 
 - (IBAction)sharePlace:(id)sender {
@@ -80,13 +77,6 @@
     }
     activityViewController.excludedActivityTypes = [excludedTypes copy];
     [self presentViewController:activityViewController animated:YES completion:nil];
-}
-
-- (PLCPlaceStore *)placeStore {
-    if (!_placeStore) {
-        _placeStore = [PLCPlaceStore new];
-    }
-    return _placeStore;
 }
 
 - (void) imageSelected:(UIImage *)image {
@@ -162,7 +152,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
     self.place.caption = textView.text;
-    [[self placeStore] save];
+    [[PLCPlaceStore sharedInstance] save];
 }
 
 -(void)textViewDidChange:(UITextView *)textView {

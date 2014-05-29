@@ -11,7 +11,7 @@
 @class PLCPlace, PLCPlaceStore;
 
 @protocol PLCPlaceStoreDelegate <NSObject>
-- (void)placeStore:(PLCPlaceStore *)store didInsertPlace:(PLCPlace *)place;
+- (void)placeStore:(PLCPlaceStore *)store didInsertPlace:(PLCPlace *)place new:(BOOL)isNew;
 - (void)placeStore:(PLCPlaceStore *)store didRemovePlace:(PLCPlace *)place;
 @end
 
@@ -19,6 +19,8 @@
 
 @property(readonly, nonatomic) NSArray *allPlaces;
 @property(weak, nonatomic) id<PLCPlaceStoreDelegate> delegate;
+
++(instancetype)sharedInstance;
 
 - (void) save;
 
