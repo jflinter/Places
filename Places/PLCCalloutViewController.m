@@ -36,6 +36,9 @@
     self.captionTextView.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.75f];
     self.captionTextView.layer.cornerRadius = 5.0f;
     self.captionTextView.text = self.place.caption;
+    if ((!self.place.caption || [self.place.caption isEqualToString:@""]) && self.place.geocodedAddress) {
+        self.captionTextView.text = [[self.place.geocodedAddress objectForKey:@"Street"] description];
+    }
 }
 
 - (void)viewDidLayoutSubviews {

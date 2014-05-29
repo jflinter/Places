@@ -12,7 +12,11 @@
     <entity name="Place" representedClassName="PLCPlace" syncable="YES">
         <attribute name="caption" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="deletedAt" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="geocodedAddress" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="geocodedAddress" optional="YES" attributeType="Transformable" syncable="YES">
+            <userInfo>
+                <entry key="attributeValueClassName" value="NSMutableDictionary"/>
+            </userInfo>
+        </attribute>
         <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <relationship name="map" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Map" inverseName="places" inverseEntity="Map" syncable="YES"/>
@@ -21,6 +25,6 @@
     <elements>
         <element name="Map" positionX="-9" positionY="-9" width="128" height="90"/>
         <element name="Photo" positionX="88" positionY="-18" width="128" height="73"/>
-        <element name="Place" positionX="-110" positionY="-54" width="128" height="30"/>
+        <element name="Place" positionX="-110" positionY="-54" width="128" height="150"/>
     </elements>
 </model>

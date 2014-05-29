@@ -25,7 +25,7 @@ extern const struct PLCPlaceFetchedProperties {
 
 
 
-@class NSObject;
+@class NSMutableDictionary;
 
 
 
@@ -62,7 +62,7 @@ extern const struct PLCPlaceFetchedProperties {
 
 
 
-@property (nonatomic, strong) id geocodedAddress;
+@property (nonatomic, strong) NSMutableDictionary* geocodedAddress;
 
 
 
@@ -141,8 +141,8 @@ extern const struct PLCPlaceFetchedProperties {
 
 
 
-- (id)primitiveGeocodedAddress;
-- (void)setPrimitiveGeocodedAddress:(id)value;
+- (NSMutableDictionary*)primitiveGeocodedAddress;
+- (void)setPrimitiveGeocodedAddress:(NSMutableDictionary*)value;
 
 
 

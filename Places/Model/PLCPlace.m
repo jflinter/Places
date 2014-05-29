@@ -20,7 +20,7 @@
     [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
         if (!error) {
             CLPlacemark *placemark = [placemarks firstObject];
-            self.geocodedAddress = placemark.addressDictionary;
+            self.geocodedAddress = [placemark.addressDictionary mutableCopy];
             [self.managedObjectContext save:nil];
         }
     }];
