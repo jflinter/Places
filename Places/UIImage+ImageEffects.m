@@ -102,35 +102,35 @@
 
 - (UIImage *)applySubtleEffect
 {
-    UIColor *tintColor = [UIColor colorWithWhite:1.0 alpha:0.3];
-    return [self applyBlurWithRadius:5 tintColor:tintColor saturationDeltaFactor:1.8 maskImage:nil];
+    UIColor *tintColor = [UIColor colorWithWhite:1.0 alpha:0.3f];
+    return [self applyBlurWithRadius:5 tintColor:tintColor saturationDeltaFactor:1.8f maskImage:nil];
 }
 
 
 - (UIImage *)applyLightEffect
 {
-    UIColor *tintColor = [UIColor colorWithWhite:1.0 alpha:0.3];
-    return [self applyBlurWithRadius:30 tintColor:tintColor saturationDeltaFactor:1.8 maskImage:nil];
+    UIColor *tintColor = [UIColor colorWithWhite:1.0 alpha:0.3f];
+    return [self applyBlurWithRadius:30 tintColor:tintColor saturationDeltaFactor:1.8f maskImage:nil];
 }
 
 
 - (UIImage *)applyExtraLightEffect
 {
-    UIColor *tintColor = [UIColor colorWithWhite:0.97 alpha:0.82];
-    return [self applyBlurWithRadius:20 tintColor:tintColor saturationDeltaFactor:1.8 maskImage:nil];
+    UIColor *tintColor = [UIColor colorWithWhite:0.97f alpha:0.82f];
+    return [self applyBlurWithRadius:20 tintColor:tintColor saturationDeltaFactor:1.8f maskImage:nil];
 }
 
 
 - (UIImage *)applyDarkEffect
 {
-    UIColor *tintColor = [UIColor colorWithWhite:0.11 alpha:0.73];
-    return [self applyBlurWithRadius:20 tintColor:tintColor saturationDeltaFactor:1.8 maskImage:nil];
+    UIColor *tintColor = [UIColor colorWithWhite:0.11f alpha:0.73f];
+    return [self applyBlurWithRadius:20 tintColor:tintColor saturationDeltaFactor:1.8f maskImage:nil];
 }
 
 
 - (UIImage *)applyTintEffectWithColor:(UIColor *)tintColor
 {
-    const CGFloat EffectColorAlpha = 0.6;
+    const CGFloat EffectColorAlpha = 0.6f;
     UIColor *effectColor = tintColor;
     size_t componentCount = CGColorGetNumberOfComponents(tintColor.CGColor);
     if (componentCount == 2) {
@@ -217,9 +217,9 @@
         if (hasSaturationChange) {
             CGFloat s = saturationDeltaFactor;
             CGFloat floatingPointSaturationMatrix[] = {
-                0.0722 + 0.9278 * s,  0.0722 - 0.0722 * s,  0.0722 - 0.0722 * s,  0,
-                0.7152 - 0.7152 * s,  0.7152 + 0.2848 * s,  0.7152 - 0.7152 * s,  0,
-                0.2126 - 0.2126 * s,  0.2126 - 0.2126 * s,  0.2126 + 0.7873 * s,  0,
+                0.0722f + 0.9278f * s,  0.0722f - 0.0722f * s,  0.0722f - 0.0722f * s,  0,
+                0.7152f - 0.7152f * s,  0.7152f + 0.2848f * s,  0.7152f - 0.7152f * s,  0,
+                0.2126f - 0.2126f * s,  0.2126f - 0.2126f * s,  0.2126f + 0.7873f * s,  0,
                                   0,                    0,                    0,  1,
             };
             const int32_t divisor = 256;
