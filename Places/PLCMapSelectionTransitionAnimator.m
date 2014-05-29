@@ -51,8 +51,11 @@
             rect;
         });
         id viewToBlur = fromViewController.view;
-        if ([fromViewController isKindOfClass:[PLCMapViewController class]]) {
-            viewToBlur = [((PLCMapViewController *)fromViewController) mapView];
+        if ([fromViewController isKindOfClass:[UINavigationController class]]) {
+            UIViewController *viewController = [[(UINavigationController *)fromViewController viewControllers] lastObject];
+            if ([viewController isKindOfClass:[PLCMapViewController class]]) {
+                viewToBlur = [(PLCMapViewController *)viewController mapView];
+            }
         }
         UIImage *blurredSnapshot = [[viewToBlur snapshotImage] applySubtleEffect];
         controller.backgroundImageView.alpha = 0;

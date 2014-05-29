@@ -29,7 +29,9 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 @property (nonatomic, readonly) NSArray *calloutViewControllers;
 @property (nonatomic) BOOL determiningInitialLocation;
 @property (nonatomic, getter=isAddingPlace) BOOL addingPlace;
+@property (nonatomic, getter=isAnimatingToPlace) BOOL animatingToPlace;
 @property (nonatomic) PLCMapSelectionTransitionAnimator *animator;
+@property (nonatomic) BOOL chromeHidden;
 @end
 
 @implementation PLCMapViewController
@@ -78,7 +80,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     if (view.annotation == mapView.userLocation) {
         return;
     }
-
+    self.chromeHidden = YES;
     [self dismissAllCalloutViewControllers];
     
     void (^afterCallout)() = ^{
@@ -89,10 +91,11 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     BOOL const waitToShow = self.isAddingPlace;
     NSTimeInterval animationDuration = waitToShow ? [PLCPinAnnotationView pinDropAnimationDuration] : PLCMapPanAnimationDuration;
     
+    self.animatingToPlace = YES;
     [UIView animateWithDuration:animationDuration animations:^{
         // we want to scroll the map such that the annotation view is centered horizontally and 50px above the bottom of the screen.
 
-        CGFloat topPadding = 10; // the padding between the top of the map view and the desired top of the callout view
+        CGFloat topPadding = 14; // the padding between the top of the map view and the desired top of the callout view
         CGFloat mapHeight = CGRectGetHeight(self.mapView.bounds);
         CGFloat paddingRatio = 0.5f - ((topPadding + [PLCCalloutViewController calloutSize].height + CGRectGetHeight(view.frame)) / mapHeight);
 
@@ -101,23 +104,28 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 
         [self.mapView setCenterCoordinate:center animated:NO];
     } completion:^(BOOL finished) {
+        self.animatingToPlace = NO;
         if (finished && waitToShow) {
             afterCallout();
         }
     }];
 
     if (!waitToShow) {
-        PLCCalloutViewController *calloutViewController = [self instantiateCalloutControllerForAnnotation:view.annotation];
-        [self presentCalloutViewController:calloutViewController fromAnnotationView:view];
+        afterCallout();
     }
 }
 
 - (void)mapView:(PLCMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view
 {
-    PLCCalloutViewController *calloutViewController = [self existingCalloutViewControllerForAnnotationView:view];
-    if (calloutViewController) {
-        [self dismissCalloutViewController:calloutViewController completion:nil];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        PLCCalloutViewController *calloutViewController = [self existingCalloutViewControllerForAnnotationView:view];
+        if (calloutViewController) {
+            [self dismissCalloutViewController:calloutViewController completion:nil];
+        }
+        if (!self.mapView.selectedAnnotations.count) {
+            self.chromeHidden = NO;
+        }
+    });
 }
 
 - (void)mapView:(PLCMapView *)mapView regionWillChangeAnimated:(BOOL)animated
@@ -126,7 +134,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     if ([self.presentedViewController isKindOfClass:[UIImagePickerController class]]) {
         return;
     }
-    if (!animated) {
+    if (!self.animatingToPlace) {
         for (id<MKAnnotation> annotation in [mapView.selectedAnnotations copy]) {
             [mapView deselectAnnotation:annotation animated:YES];
         }
@@ -224,7 +232,6 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     transitionContext.mapViewController = self;
     transitionContext.calloutViewController = calloutViewController;
     transitionContext.containerView = annotationView;
-    transitionContext.menuControl = self.menuButton;
 
     PLCCalloutTransitionAnimator *animator = [[PLCCalloutTransitionAnimator alloc] init];
 
@@ -244,7 +251,6 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     transitionContext.mapViewController = self;
     transitionContext.calloutViewController = calloutViewController;
     transitionContext.containerView = calloutViewController.view.superview;
-    transitionContext.menuControl = self.menuButton;
 
     PLCCalloutTransitionAnimator *animator = [[PLCCalloutTransitionAnimator alloc] init];
     [animator animateTransition:transitionContext completion:completion];
@@ -265,8 +271,6 @@ didChangeDragState:(MKAnnotationViewDragState)newState
         self.determiningInitialLocation = YES;
     }
     self.mapView.showsUserLocation = YES;
-    UILongPressGestureRecognizer *longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(locationButtonLongPressed:)];
-    [self.locationButton addGestureRecognizer:longPressGestureRecognizer];
 }
 
 - (void) determineLocation:(void (^)(void))completion {
@@ -300,21 +304,19 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     }];
 }
 
-- (void)locationButtonLongPressed:(UILongPressGestureRecognizer *)recognizer {
-    if (recognizer.state == UIGestureRecognizerStateBegan) {
-        [self determineLocation:^{
-            PLCPlace *place = [self.placeStore insertPlaceAtCoordinate:self.mapView.userLocation.coordinate];
-            [[INTULocationManager sharedInstance] requestLocationWithDesiredAccuracy:INTULocationAccuracyHouse timeout:180 block:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
-                // in case the current location's accuracy isn't very good, we want to add the place immediately but then asynchronously try and improve it.
-                if (status == INTULocationStatusSuccess) {
-                    if (place.coordinate.latitude != currentLocation.coordinate.latitude || place.coordinate.longitude != currentLocation.coordinate.longitude) {
-                        place.coordinate = currentLocation.coordinate;
-                        [self.placeStore save];
-                    }
+- (IBAction)dropPin:(id)sender {
+    [self determineLocation:^{
+        PLCPlace *place = [self.placeStore insertPlaceAtCoordinate:self.mapView.userLocation.coordinate];
+        [[INTULocationManager sharedInstance] requestLocationWithDesiredAccuracy:INTULocationAccuracyHouse timeout:180 block:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
+            // in case the current location's accuracy isn't very good, we want to add the place immediately but then asynchronously try and improve it.
+            if (status == INTULocationStatusSuccess) {
+                if (place.coordinate.latitude != currentLocation.coordinate.latitude || place.coordinate.longitude != currentLocation.coordinate.longitude) {
+                    place.coordinate = currentLocation.coordinate;
+                    [self.placeStore save];
                 }
-            }];
+            }
         }];
-    }
+    }];
 }
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
@@ -329,7 +331,6 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     }
 }
 
-
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     [super prepareForSegue:segue sender:sender];
     if ([segue.destinationViewController isKindOfClass:[PLCMapSelectionViewController class]]) {
@@ -339,6 +340,14 @@ didChangeDragState:(MKAnnotationViewDragState)newState
         self.animator.presenting = YES;
         controller.transitioningDelegate = self.animator;
         controller.modalPresentationStyle = UIModalPresentationCustom;
+    }
+}
+
+- (void)setChromeHidden:(BOOL)chromeHidden {
+    if (_chromeHidden != chromeHidden) {
+        _chromeHidden = chromeHidden;
+        [self.navigationController setToolbarHidden:chromeHidden animated:YES];
+        [[UIApplication sharedApplication] setStatusBarHidden:chromeHidden withAnimation:UIStatusBarAnimationSlide];
     }
 }
 

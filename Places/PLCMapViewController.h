@@ -12,8 +12,7 @@
 @class PLCMapView;
 @interface PLCMapViewController : UIViewController;
 @property (nonatomic, weak, readonly) IBOutlet PLCMapView *mapView;
-@property (weak, nonatomic) IBOutlet UIButton *locationButton;
 - (IBAction)showLocation:(id)sender;
-@property (weak, nonatomic) IBOutlet UIButton *menuButton;
+- (IBAction)dropPin:(id)sender;
 
 @end

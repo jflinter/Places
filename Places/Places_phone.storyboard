@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="OId-a2-hAa">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="beW-Pz-9Xk">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -193,6 +193,25 @@
             </objects>
             <point key="canvasLocation" x="809" y="-647"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Qb1-C7-ZrN">
+            <objects>
+                <navigationController definesPresentationContext="YES" navigationBarHidden="YES" toolbarHidden="NO" id="beW-Pz-9Xk" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="5Kv-9G-255">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="DNq-HF-v0l">
+                        <rect key="frame" x="0.0" y="524" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
+                    <connections>
+                        <segue destination="OId-a2-hAa" kind="relationship" relationship="rootViewController" id="kHL-Im-C1w"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bia-OV-bYp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-423" y="2"/>
+        </scene>
         <!--Map View Controller-->
         <scene sceneID="4Hk-xv-gft">
             <objects>
@@ -212,49 +231,37 @@
                                     <outlet property="delegate" destination="OId-a2-hAa" id="HYd-MJ-UV2"/>
                                 </connections>
                             </mapView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IVL-ya-PT0" customClass="PLCTemplateButton">
-                                <rect key="frame" x="250" y="498" width="50" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="XbZ-KP-J4Y"/>
-                                    <constraint firstAttribute="width" constant="50" id="hOD-u3-sp5"/>
-                                </constraints>
-                                <inset key="imageEdgeInsets" minX="11" minY="11" maxX="11" maxY="11"/>
-                                <state key="normal" image="701-location">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <state key="highlighted" image="701-location-selected-selected"/>
-                                <connections>
-                                    <action selector="showLocation:" destination="OId-a2-hAa" eventType="touchUpInside" id="ec4-VN-XXn"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qr6-ZI-6NS" customClass="PLCTemplateButton">
-                                <rect key="frame" x="15" y="20" width="50" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <inset key="imageEdgeInsets" minX="11" minY="11" maxX="11" maxY="11"/>
-                                <state key="normal" image="753-signpost">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <state key="highlighted" image="753-signpost-selected"/>
-                                <connections>
-                                    <segue destination="wN9-sT-jBC" kind="custom" customClass="PLCMapPresentationSegue" id="1Zi-bp-Ycc"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="a6V-Pg-lJh" firstAttribute="top" secondItem="lNU-MC-GZc" secondAttribute="top" id="0A5-et-4EU"/>
                             <constraint firstAttribute="trailing" secondItem="a6V-Pg-lJh" secondAttribute="trailing" id="1uU-In-0qG"/>
                             <constraint firstItem="a6V-Pg-lJh" firstAttribute="leading" secondItem="lNU-MC-GZc" secondAttribute="leading" id="GlJ-yn-Lay"/>
-                            <constraint firstAttribute="trailing" secondItem="IVL-ya-PT0" secondAttribute="trailing" constant="20" id="Gto-pQ-nK7"/>
-                            <constraint firstItem="LaD-Hf-YxR" firstAttribute="top" secondItem="IVL-ya-PT0" secondAttribute="bottom" constant="20" id="Yiv-w1-JBk"/>
                             <constraint firstAttribute="bottom" secondItem="a6V-Pg-lJh" secondAttribute="bottom" id="zCa-cd-FDS"/>
                         </constraints>
                     </view>
+                    <toolbarItems>
+                        <barButtonItem image="753-signpost" id="CtE-Dj-rlY">
+                            <connections>
+                                <segue destination="wN9-sT-jBC" kind="custom" customClass="PLCMapPresentationSegue" id="oTJ-78-Rzp"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Uyg-Id-hGR"/>
+                        <barButtonItem image="722-location-pin" id="Sof-A0-rxF">
+                            <connections>
+                                <action selector="dropPin:" destination="OId-a2-hAa" id="Kgw-p8-5rc"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="37x-vm-QHz"/>
+                        <barButtonItem image="723-location-arrow" id="VzM-jp-IJN">
+                            <connections>
+                                <action selector="showLocation:" destination="OId-a2-hAa" id="Xdw-DI-uNv"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
+                    <navigationItem key="navigationItem" id="njY-NJ-ckP"/>
                     <connections>
-                        <outlet property="locationButton" destination="IVL-ya-PT0" id="C10-fb-ePG"/>
                         <outlet property="mapView" destination="a6V-Pg-lJh" id="vbR-qJ-8qZ"/>
-                        <outlet property="menuButton" destination="qr6-ZI-6NS" id="Acd-fW-SQv"/>
                         <outlet property="view" destination="lNU-MC-GZc" id="vzn-G1-QQ7"/>
                     </connections>
                 </viewController>
@@ -271,33 +278,39 @@
                         <viewControllerLayoutGuide type="bottom" id="Zzu-UK-J3O"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="sdp-0Z-iRs" customClass="PLCCalloutView">
-                        <rect key="frame" x="0.0" y="0.0" width="300" height="290"/>
+                        <rect key="frame" x="0.0" y="0.0" width="310" height="300"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mTy-D0-Tan">
-                                <rect key="frame" x="0.0" y="0.0" width="300" height="290"/>
+                                <rect key="frame" x="0.0" y="0.0" width="310" height="300"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iVb-fx-mhr">
-                                        <rect key="frame" x="0.0" y="0.0" width="300" height="290"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="310" height="300"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="300" id="CF2-61-dOf"/>
-                                            <constraint firstAttribute="height" constant="290" id="jbm-XO-n2H"/>
+                                            <constraint firstAttribute="width" constant="310" id="CF2-61-dOf"/>
+                                            <constraint firstAttribute="height" constant="300" id="jbm-XO-n2H"/>
                                         </constraints>
                                     </view>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3fH-VU-hHL">
-                                        <rect key="frame" x="0.0" y="0.0" width="300" height="290"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="310" height="300"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
-                                    <toolbar opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9W8-bM-dSZ">
-                                        <rect key="frame" x="0.0" y="0.0" width="300" height="44"/>
+                                    <toolbar opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8l8-Tq-XPd">
+                                        <rect key="frame" x="0.0" y="256" width="310" height="44"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                         <items>
                                             <barButtonItem systemItem="trash" id="uRz-q4-40x">
                                                 <connections>
                                                     <action selector="deletePlace:" destination="1NL-xg-0xe" id="Otz-jh-3iq"/>
+                                                </connections>
+                                            </barButtonItem>
+                                            <barButtonItem style="plain" systemItem="flexibleSpace" id="IKJ-69-LYR"/>
+                                            <barButtonItem systemItem="camera" id="MPf-hn-Nz2">
+                                                <connections>
+                                                    <action selector="choosePhoto:" destination="1NL-xg-0xe" id="HEf-Nj-bxJ"/>
                                                 </connections>
                                             </barButtonItem>
                                             <barButtonItem style="plain" systemItem="flexibleSpace" id="gQa-Nw-1xW"/>
@@ -309,25 +322,13 @@
                                         </items>
                                         <color key="barTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </toolbar>
-                                    <toolbar opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8l8-Tq-XPd">
-                                        <rect key="frame" x="0.0" y="246" width="300" height="44"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                        <items>
-                                            <barButtonItem systemItem="camera" id="MPf-hn-Nz2">
-                                                <connections>
-                                                    <action selector="choosePhoto:" destination="1NL-xg-0xe" id="HEf-Nj-bxJ"/>
-                                                </connections>
-                                            </barButtonItem>
-                                        </items>
-                                        <color key="barTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    </toolbar>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="I like to eat sandwiches here." textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="1Fi-jR-Vew">
-                                        <rect key="frame" x="5" y="68" width="290" height="44"/>
+                                        <rect key="frame" x="5" y="0.0" width="300" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="290" id="e9b-mt-sz6"/>
-                                            <constraint firstAttribute="height" constant="44" id="yQG-r8-ndf"/>
+                                            <constraint firstAttribute="width" constant="300" id="Bjp-K5-sFf"/>
+                                            <constraint firstAttribute="height" constant="44" id="Skk-9X-d2c"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="18"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
@@ -338,21 +339,18 @@
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="iVb-fx-mhr" secondAttribute="bottom" id="0eF-r5-BZE"/>
-                                    <constraint firstItem="1Fi-jR-Vew" firstAttribute="top" secondItem="9W8-bM-dSZ" secondAttribute="bottom" constant="24" id="3e3-IE-ITY"/>
+                                    <constraint firstItem="3fH-VU-hHL" firstAttribute="leading" secondItem="mTy-D0-Tan" secondAttribute="leading" id="80J-oe-s78"/>
+                                    <constraint firstAttribute="bottom" secondItem="3fH-VU-hHL" secondAttribute="bottom" id="BNt-wI-ciy"/>
                                     <constraint firstItem="iVb-fx-mhr" firstAttribute="leading" secondItem="mTy-D0-Tan" secondAttribute="leading" id="Czf-Ak-jUj"/>
-                                    <constraint firstItem="3fH-VU-hHL" firstAttribute="top" secondItem="mTy-D0-Tan" secondAttribute="top" id="ERC-QJ-yXz"/>
-                                    <constraint firstAttribute="bottom" secondItem="3fH-VU-hHL" secondAttribute="bottom" id="FRC-e6-ufG"/>
-                                    <constraint firstAttribute="centerX" secondItem="1Fi-jR-Vew" secondAttribute="centerX" id="IBB-Iv-3Vt"/>
-                                    <constraint firstAttribute="trailing" secondItem="8l8-Tq-XPd" secondAttribute="trailing" id="JKU-3b-hOh"/>
-                                    <constraint firstAttribute="trailing" secondItem="9W8-bM-dSZ" secondAttribute="trailing" id="L3K-yd-AO1"/>
+                                    <constraint firstItem="8l8-Tq-XPd" firstAttribute="leading" secondItem="mTy-D0-Tan" secondAttribute="leading" id="Gxo-3D-5Sf"/>
                                     <constraint firstItem="iVb-fx-mhr" firstAttribute="top" secondItem="mTy-D0-Tan" secondAttribute="top" id="QOy-jh-6uL"/>
-                                    <constraint firstItem="9W8-bM-dSZ" firstAttribute="leading" secondItem="mTy-D0-Tan" secondAttribute="leading" id="WMM-cy-4a9"/>
-                                    <constraint firstItem="8l8-Tq-XPd" firstAttribute="leading" secondItem="mTy-D0-Tan" secondAttribute="leading" id="YXX-RM-gpi"/>
-                                    <constraint firstItem="9W8-bM-dSZ" firstAttribute="top" secondItem="mTy-D0-Tan" secondAttribute="top" id="qEz-qP-rBd"/>
-                                    <constraint firstAttribute="bottom" secondItem="8l8-Tq-XPd" secondAttribute="bottom" id="swX-fr-hkZ"/>
+                                    <constraint firstItem="1Fi-jR-Vew" firstAttribute="top" secondItem="mTy-D0-Tan" secondAttribute="top" id="b2b-Lk-l41"/>
+                                    <constraint firstItem="3fH-VU-hHL" firstAttribute="top" secondItem="mTy-D0-Tan" secondAttribute="top" id="fIK-zD-cDd"/>
+                                    <constraint firstAttribute="trailing" secondItem="3fH-VU-hHL" secondAttribute="trailing" id="fdR-ek-wuf"/>
+                                    <constraint firstAttribute="trailing" secondItem="8l8-Tq-XPd" secondAttribute="trailing" id="k1N-Qh-OzI"/>
+                                    <constraint firstAttribute="centerX" secondItem="1Fi-jR-Vew" secondAttribute="centerX" id="oHL-5c-ihW"/>
+                                    <constraint firstAttribute="bottom" secondItem="8l8-Tq-XPd" secondAttribute="bottom" id="qhj-Me-mJp"/>
                                     <constraint firstAttribute="trailing" secondItem="iVb-fx-mhr" secondAttribute="trailing" id="wE6-Mb-T15"/>
-                                    <constraint firstItem="3fH-VU-hHL" firstAttribute="leading" secondItem="mTy-D0-Tan" secondAttribute="leading" id="xCu-5F-TE1"/>
-                                    <constraint firstAttribute="trailing" secondItem="3fH-VU-hHL" secondAttribute="trailing" id="yMS-ud-9Tc"/>
                                 </constraints>
                                 <connections>
                                     <outlet property="delegate" destination="1NL-xg-0xe" id="Ads-yf-1lF"/>
@@ -369,15 +367,15 @@
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="300" height="290"/>
+                    <size key="freeformSize" width="310" height="300"/>
                     <connections>
                         <outlet property="bottomSpacingConstraint" destination="TMK-i0-w4J" id="kh1-m5-RqE"/>
                         <outlet property="bottomToolbar" destination="8l8-Tq-XPd" id="IB6-eB-2fd"/>
                         <outlet property="captionTextView" destination="1Fi-jR-Vew" id="429-Bx-evO"/>
                         <outlet property="contentView" destination="mTy-D0-Tan" id="XmU-CM-efb"/>
                         <outlet property="placeImageView" destination="3fH-VU-hHL" id="P86-7R-Rc5"/>
-                        <outlet property="textViewHeightConstraint" destination="yQG-r8-ndf" id="fXi-Uw-G33"/>
-                        <outlet property="textViewWidthConstraint" destination="e9b-mt-sz6" id="yrN-va-nKu"/>
+                        <outlet property="textViewHeightConstraint" destination="Skk-9X-d2c" id="wUi-HG-glY"/>
+                        <outlet property="textViewWidthConstraint" destination="Bjp-K5-sFf" id="rBx-32-6sP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PwR-vm-YkE" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -386,10 +384,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="701-location" width="28" height="28"/>
-        <image name="701-location-selected-selected" width="28" height="28"/>
+        <image name="722-location-pin" width="19" height="28"/>
+        <image name="723-location-arrow" width="28" height="28"/>
         <image name="753-signpost" width="28" height="28"/>
-        <image name="753-signpost-selected" width="28" height="28"/>
         <image name="765-arrow-left" width="14" height="28"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
@@ -398,7 +395,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="1Zi-bp-Ycc"/>
+        <segue reference="oTJ-78-Rzp"/>
         <segue reference="bgf-Ac-FaI"/>
     </inferredMetricsTieBreakers>
 </document>

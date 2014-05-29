@@ -25,6 +25,5 @@ typedef NS_ENUM(NSInteger, PLCCalloutTransitionContextOperation) {
 @property (nonatomic) PLCMapViewController *mapViewController;
 @property (nonatomic) PLCCalloutViewController *calloutViewController;
 @property (nonatomic) UIView *containerView;
-@property (nonatomic) UIView *menuControl;
 
 @end

@@ -21,7 +21,7 @@
 
 + (CGSize)calloutSize
 {
-    return CGSizeMake(300.0f, 300.0f);
+    return CGSizeMake(310.0f, 310.0f);
 }
 
 - (void)viewDidLoad
