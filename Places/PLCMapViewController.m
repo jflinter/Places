@@ -90,19 +90,16 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 
     BOOL const waitToShow = self.isAddingPlace;
     NSTimeInterval animationDuration = waitToShow ? [PLCPinAnnotationView pinDropAnimationDuration] : PLCMapPanAnimationDuration;
-    
     self.animatingToPlace = YES;
+    
+    CGSize size = [PLCCalloutViewController calloutSize];
+    CGFloat topPadding = (CGRectGetWidth(mapView.frame) - size.width) / 2;
+    CGFloat difference = CGRectGetHeight(mapView.frame) / 2 - (size.height + topPadding);
+    CGPoint point = CGPointMake(8, difference);
+    CLLocationCoordinate2D coord = [self.mapView convertPoint:point toCoordinateFromView:view];
+
     [UIView animateWithDuration:animationDuration animations:^{
-        // we want to scroll the map such that the annotation view is centered horizontally and 50px above the bottom of the screen.
-
-        CGFloat topPadding = 14; // the padding between the top of the map view and the desired top of the callout view
-        CGFloat mapHeight = CGRectGetHeight(self.mapView.bounds);
-        CGFloat paddingRatio = 0.5f - ((topPadding + [PLCCalloutViewController calloutSize].height + CGRectGetHeight(view.frame)) / mapHeight);
-
-        CLLocationCoordinate2D center = view.annotation.coordinate;
-        center.latitude -= self.mapView.region.span.latitudeDelta * paddingRatio;
-
-        [self.mapView setCenterCoordinate:center animated:NO];
+        [self.mapView setCenterCoordinate:coord animated:NO];
     } completion:^(BOOL finished) {
         self.animatingToPlace = NO;
         if (finished && waitToShow) {
