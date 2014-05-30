@@ -7,6 +7,7 @@
 //
 
 #import <MapKit/MapKit.h>
+#import <MBXMapKit/MBXMapKit.h>
 
 @class PLCMapView;
 
@@ -17,7 +18,7 @@
 
 @end
 
-@interface PLCMapView : MKMapView <UIGestureRecognizerDelegate>
+@interface PLCMapView : MBXMapView <UIGestureRecognizerDelegate>
 
 @property (nonatomic, assign) id<PLCMapViewDelegate> delegate;
 

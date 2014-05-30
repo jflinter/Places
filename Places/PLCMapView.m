@@ -56,7 +56,7 @@
 }
 
 - (id) initWithFrame:(CGRect)frame {
-    self = [super initWithFrame:frame];
+    self = [super initWithFrame:frame mapID:@""];
     if (self) {
         [self sharedInit];
     }
@@ -64,6 +64,7 @@
 }
 
 - (void) sharedInit {
+    self.mapID = @"jflinter.icfgg4f5";
     self.currentScale = 1.0f;
     self.oneFingerZoomRecognizer = [[BDDROneFingerZoomGestureRecognizer alloc] initWithTarget:self action:@selector(oneFingerZoomed:)];
     self.oneFingerZoomRecognizer.scaleFactor = 8.0f;
