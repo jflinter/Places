@@ -9,6 +9,7 @@ const struct PLCPlaceAttributes PLCPlaceAttributes = {
 	.geocodedAddress = @"geocodedAddress",
 	.latitude = @"latitude",
 	.longitude = @"longitude",
+	.uuid = @"uuid",
 };
 
 const struct PLCPlaceRelationships PLCPlaceRelationships = {
@@ -130,6 +131,13 @@ const struct PLCPlaceFetchedProperties PLCPlaceFetchedProperties = {
 - (void)setPrimitiveLongitudeValue:(double)value_ {
 	[self setPrimitiveLongitude:[NSNumber numberWithDouble:value_]];
 }
+
+
+
+
+
+@dynamic uuid;
+
 
 
 

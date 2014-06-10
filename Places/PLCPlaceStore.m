@@ -11,6 +11,8 @@
 #import "PLCMapStore.h"
 #import "PLCDatabase.h"
 #import "PLCMap.h"
+#import <Firebase/Firebase.h>
+#import "Firebase+Places.h"
 
 @interface PLCPlaceStore()<NSFetchedResultsControllerDelegate>
 @property(strong, nonatomic)NSFetchedResultsController *fetchedResultsController;
@@ -78,6 +80,21 @@
 
 - (void) save {
     NSError *error;
+    for (PLCPlace *place in [[self managedObjectContext] insertedObjects]) {
+        if ([place isKindOfClass:[PLCPlace class]]) {
+            [[Firebase placeClientForPlace:place] setValue:[place firebaseObject]];
+        }
+    }
+    for (PLCPlace *place in [[self managedObjectContext] updatedObjects]) {
+        if ([place isKindOfClass:[PLCPlace class]]) {
+            [[Firebase placeClientForPlace:place] setValue:[place firebaseObject]];
+        }
+    }
+    for (PLCPlace *place in [[self managedObjectContext] deletedObjects]) {
+        if ([place isKindOfClass:[PLCPlace class]]) {
+            [[Firebase placeClientForPlace:place] removeValue];
+        }
+    }
     [[self managedObjectContext] save:&error];
     if (error) {
         abort();

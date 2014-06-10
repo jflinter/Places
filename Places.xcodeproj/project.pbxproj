@@ -43,6 +43,9 @@
 		A0AEC2E5190CC482006D20DE /* _PLCPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = A0AEC2E4190CC482006D20DE /* _PLCPhoto.m */; };
 		A0AEC2E8190CC48D006D20DE /* PLCPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = A0AEC2E7190CC48D006D20DE /* PLCPhoto.m */; };
 		A0AEC2EB190CC4CE006D20DE /* PLCPhotoStore.m in Sources */ = {isa = PBXBuildFile; fileRef = A0AEC2EA190CC4CE006D20DE /* PLCPhotoStore.m */; };
+		A0C0421E19395DB70003630E /* Firebase+Places.m in Sources */ = {isa = PBXBuildFile; fileRef = A0C0421D19395DB70003630E /* Firebase+Places.m */; };
+		A0C0422419395EAF0003630E /* PLCUserStore.m in Sources */ = {isa = PBXBuildFile; fileRef = A0C0422319395EAF0003630E /* PLCUserStore.m */; };
+		A0C0422B1939B94B0003630E /* NSMutableDictionary+NilSafe.m in Sources */ = {isa = PBXBuildFile; fileRef = A0C0422A1939B94B0003630E /* NSMutableDictionary+NilSafe.m */; };
 		A0D1077D1933B918004DB04A /* PLCNewMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0D1077C1933B918004DB04A /* PLCNewMapViewController.m */; };
 		A0D1078019340A46004DB04A /* UIImage+Color.m in Sources */ = {isa = PBXBuildFile; fileRef = A0D1077F19340A46004DB04A /* UIImage+Color.m */; };
 		A0F0531E19025E6300BD610C /* PLCCalloutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0F0531D19025E6300BD610C /* PLCCalloutViewController.m */; };
@@ -133,6 +136,13 @@
 		A0AEC2E7190CC48D006D20DE /* PLCPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCPhoto.m; sourceTree = "<group>"; };
 		A0AEC2E9190CC4CE006D20DE /* PLCPhotoStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCPhotoStore.h; sourceTree = "<group>"; };
 		A0AEC2EA190CC4CE006D20DE /* PLCPhotoStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCPhotoStore.m; sourceTree = "<group>"; };
+		A0C0421C19395DB70003630E /* Firebase+Places.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Firebase+Places.h"; sourceTree = "<group>"; };
+		A0C0421D19395DB70003630E /* Firebase+Places.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Firebase+Places.m"; sourceTree = "<group>"; };
+		A0C0422219395EAF0003630E /* PLCUserStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCUserStore.h; sourceTree = "<group>"; };
+		A0C0422319395EAF0003630E /* PLCUserStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCUserStore.m; sourceTree = "<group>"; };
+		A0C042251939B0950003630E /* PLCFirebaseCoding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PLCFirebaseCoding.h; sourceTree = "<group>"; };
+		A0C042291939B94B0003630E /* NSMutableDictionary+NilSafe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableDictionary+NilSafe.h"; sourceTree = "<group>"; };
+		A0C0422A1939B94B0003630E /* NSMutableDictionary+NilSafe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableDictionary+NilSafe.m"; sourceTree = "<group>"; };
 		A0D1077B1933B918004DB04A /* PLCNewMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCNewMapViewController.h; sourceTree = "<group>"; };
 		A0D1077C1933B918004DB04A /* PLCNewMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCNewMapViewController.m; sourceTree = "<group>"; };
 		A0D1077E19340A46004DB04A /* UIImage+Color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Color.h"; sourceTree = "<group>"; };
@@ -266,6 +276,7 @@
 				A0AEC2E7190CC48D006D20DE /* PLCPhoto.m */,
 				7E54FE9218FF985A002E2AFC /* PLCPlace.h */,
 				7E54FE9318FF985A002E2AFC /* PLCPlace.m */,
+				A0C042251939B0950003630E /* PLCFirebaseCoding.h */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -338,6 +349,10 @@
 				A0AEC2EA190CC4CE006D20DE /* PLCPhotoStore.m */,
 				A03F5580192EF5060015C1D1 /* PLCMapStore.h */,
 				A03F5581192EF5060015C1D1 /* PLCMapStore.m */,
+				A0C0422219395EAF0003630E /* PLCUserStore.h */,
+				A0C0422319395EAF0003630E /* PLCUserStore.m */,
+				A0C0421C19395DB70003630E /* Firebase+Places.h */,
+				A0C0421D19395DB70003630E /* Firebase+Places.m */,
 			);
 			name = "Model Support";
 			sourceTree = "<group>";
@@ -363,6 +378,8 @@
 				A03F5590192F124B0015C1D1 /* UIImage+ImageEffects.m */,
 				A0D1077E19340A46004DB04A /* UIImage+Color.h */,
 				A0D1077F19340A46004DB04A /* UIImage+Color.m */,
+				A0C042291939B94B0003630E /* NSMutableDictionary+NilSafe.h */,
+				A0C0422A1939B94B0003630E /* NSMutableDictionary+NilSafe.m */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -537,7 +554,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A0C0422419395EAF0003630E /* PLCUserStore.m in Sources */,
 				A0FAFD2319008E60001A364D /* PLCPlaceStore.m in Sources */,
+				A0C0422B1939B94B0003630E /* NSMutableDictionary+NilSafe.m in Sources */,
 				A0938F9A191DD7F90021CF7D /* MKPlacemark+LocationSharing.m in Sources */,
 				7E42B24C190C6A6C00F9A21E /* PLCCalloutTransitionAnimator.m in Sources */,
 				A0D1078019340A46004DB04A /* UIImage+Color.m in Sources */,
@@ -565,6 +584,7 @@
 				A0FAFD261901EEDC001A364D /* PLCPinAnnotationView.m in Sources */,
 				A0FAFD2D1902404D001A364D /* PLCCalloutView.m in Sources */,
 				A03F559A192F1C330015C1D1 /* PLCMapSelectionTableViewController.m in Sources */,
+				A0C0421E19395DB70003630E /* Firebase+Places.m in Sources */,
 				7E54FEAF18FFA94B002E2AFC /* PLCDatabase.m in Sources */,
 				7E166E01191B4A53001EF46B /* _PLCMap.m in Sources */,
 				A03F5585192F074C0015C1D1 /* PLCDismissSegue.m in Sources */,

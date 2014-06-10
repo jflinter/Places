@@ -10,4 +10,15 @@
 
 @implementation PLCMap
 
+- (void)awakeFromInsert {
+    [super awakeFromInsert];
+    if (!self.uuid) {
+        self.uuid = [[NSUUID UUID] UUIDString];
+    }
+}
+
+- (NSDictionary *)firebaseObject {
+    return @{PLCMapAttributes.name: self.name};
+}
+
 @end

@@ -7,6 +7,7 @@
 extern const struct PLCMapAttributes {
 	__unsafe_unretained NSString *name;
 	__unsafe_unretained NSString *selected;
+	__unsafe_unretained NSString *uuid;
 } PLCMapAttributes;
 
 extern const struct PLCMapRelationships {
@@ -17,6 +18,7 @@ extern const struct PLCMapFetchedProperties {
 } PLCMapFetchedProperties;
 
 @class PLCPlace;
+
 
 
 
@@ -58,6 +60,16 @@ extern const struct PLCMapFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSString* uuid;
+
+
+
+//- (BOOL)validateUuid:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
 @property (nonatomic, strong) NSSet *places;
 
 - (NSMutableSet*)placesSet;
@@ -91,6 +103,12 @@ extern const struct PLCMapFetchedProperties {
 
 - (BOOL)primitiveSelectedValue;
 - (void)setPrimitiveSelectedValue:(BOOL)value_;
+
+
+
+
+- (NSString*)primitiveUuid;
+- (void)setPrimitiveUuid:(NSString*)value;
 
 
 

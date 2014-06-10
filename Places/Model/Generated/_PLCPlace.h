@@ -10,6 +10,7 @@ extern const struct PLCPlaceAttributes {
 	__unsafe_unretained NSString *geocodedAddress;
 	__unsafe_unretained NSString *latitude;
 	__unsafe_unretained NSString *longitude;
+	__unsafe_unretained NSString *uuid;
 } PLCPlaceAttributes;
 
 extern const struct PLCPlaceRelationships {
@@ -26,6 +27,7 @@ extern const struct PLCPlaceFetchedProperties {
 
 
 @class NSMutableDictionary;
+
 
 
 
@@ -100,6 +102,16 @@ extern const struct PLCPlaceFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSString* uuid;
+
+
+
+//- (BOOL)validateUuid:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
 @property (nonatomic, strong) PLCMap *map;
 
 //- (BOOL)validateMap:(id*)value_ error:(NSError**)error_;
@@ -161,6 +173,12 @@ extern const struct PLCPlaceFetchedProperties {
 
 - (double)primitiveLongitudeValue;
 - (void)setPrimitiveLongitudeValue:(double)value_;
+
+
+
+
+- (NSString*)primitiveUuid;
+- (void)setPrimitiveUuid:(NSString*)value;
 
 
 

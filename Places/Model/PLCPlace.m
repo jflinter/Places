@@ -8,8 +8,16 @@
 
 #import "PLCPlace.h"
 #import "MKPlacemark+LocationSharing.h"
+#import "NSMutableDictionary+NilSafe.h"
 
 @implementation PLCPlace
+
+- (void)awakeFromInsert {
+    [super awakeFromInsert];
+    if (!self.uuid) {
+        self.uuid = [[NSUUID UUID] UUIDString];
+    }
+}
 
 #pragma mark -
 #pragma mark Geocoding
@@ -80,6 +88,17 @@
     else {
         return self.caption;
     }
+}
+
+#pragma mark - PLCFirebaseCoding
+
+- (NSDictionary *)firebaseObject {
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+    [dictionary setValueNilSafe:self.caption forKey:PLCPlaceAttributes.caption];
+    [dictionary setValueNilSafe:self.latitude forKey:PLCPlaceAttributes.latitude];
+    [dictionary setValueNilSafe:self.longitude forKey:PLCPlaceAttributes.longitude];
+    [dictionary setValueNilSafe:self.geocodedAddress forKey:PLCPlaceAttributes.geocodedAddress];
+    return [dictionary copy];
 }
 
 @end

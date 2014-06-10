@@ -5,6 +5,7 @@
 
 const struct PLCPhotoAttributes PLCPhotoAttributes = {
 	.image = @"image",
+	.uuid = @"uuid",
 };
 
 const struct PLCPhotoRelationships PLCPhotoRelationships = {
@@ -48,6 +49,13 @@ const struct PLCPhotoFetchedProperties PLCPhotoFetchedProperties = {
 
 
 @dynamic image;
+
+
+
+
+
+
+@dynamic uuid;
 
 
 
