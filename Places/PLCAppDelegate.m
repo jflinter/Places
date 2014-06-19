@@ -8,14 +8,35 @@
 
 #import "PLCAppDelegate.h"
 #import "PLCMapViewController.h"
-#import "PLCUserStore.h"
+
+static NSString *const PLCPlacesDeviceIdentifiersKey = @"PLCPlacesDeviceIdentifiers";
 
 @implementation PLCAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [[PLCUserStore sharedInstance] beginICloudMonitoring];
+    [[NSUbiquitousKeyValueStore defaultStore] synchronize];
+
+    [self updateUbiquitousDeviceIdentifiers];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUbiquitousDeviceIdentifiers:) name:NSUbiquitousKeyValueStoreDidChangeExternallyNotification object:[NSUbiquitousKeyValueStore defaultStore]];
+
     return YES;
+}
+
+- (void)updateUbiquitousDeviceIdentifiers
+{
+    [self updateUbiquitousDeviceIdentifiers:nil];
+}
+
+- (void)updateUbiquitousDeviceIdentifiers:(NSNotification *)notification
+{
+    NSString *identifier = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+
+    NSMutableOrderedSet *allIdentifiers = [NSMutableOrderedSet orderedSetWithArray:[[NSUbiquitousKeyValueStore defaultStore] arrayForKey:PLCPlacesDeviceIdentifiersKey] ?: @[]];
+    [allIdentifiers addObject:identifier];
+
+    [[NSUbiquitousKeyValueStore defaultStore] setArray:[allIdentifiers array] forKey:PLCPlacesDeviceIdentifiersKey];
 }
 
 @end

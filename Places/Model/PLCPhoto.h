@@ -7,7 +7,7 @@
 //
 
 #import "_PLCPhoto.h"
-#import "PLCFirebaseCoding.h"
 
-@interface PLCPhoto : _PLCPhoto<PLCFirebaseCoding>
+@interface PLCPhoto : _PLCPhoto
+
 @end

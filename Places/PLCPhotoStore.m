@@ -9,8 +9,6 @@
 #import "PLCPhotoStore.h"
 #import "PLCPhoto.h"
 #import "PLCPlace.h"
-#import <Firebase/Firebase.h>
-#import "Firebase+Places.h"
 
 @implementation PLCPhotoStore
 
@@ -18,13 +16,11 @@
                    toPlace:(PLCPlace *)place {
     for (PLCPhoto *photo in place.photos) {
         [place.managedObjectContext deleteObject:photo];
-        [[Firebase photoClientForPhoto:photo] removeValue];
     }
     if (image) {
         PLCPhoto *photo = [PLCPhoto insertInManagedObjectContext:place.managedObjectContext];
         photo.image = image;
         photo.place = place;
-        [[Firebase photoClientForPhoto:photo] setValue:[photo firebaseObject]];
         BOOL success = [place.managedObjectContext save:nil];
         if (!success) {
             abort();

@@ -10,17 +10,4 @@
 
 @implementation PLCPhoto
 
-- (void)awakeFromInsert {
-    [super awakeFromInsert];
-    if (!self.uuid) {
-        self.uuid = [[NSUUID UUID] UUIDString];
-    }
-}
-
-- (NSDictionary *)firebaseObject {
-    NSData *data = UIImageJPEGRepresentation(self.image, 1.0);
-    NSString *base64 = [data base64EncodedStringWithOptions:0];
-    return @{PLCPhotoAttributes.image: base64};
-}
-
 @end

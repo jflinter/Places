@@ -6,7 +6,6 @@
 
 extern const struct PLCPhotoAttributes {
 	__unsafe_unretained NSString *image;
-	__unsafe_unretained NSString *uuid;
 } PLCPhotoAttributes;
 
 extern const struct PLCPhotoRelationships {
@@ -19,7 +18,6 @@ extern const struct PLCPhotoFetchedProperties {
 @class PLCPlace;
 
 @class NSObject;
-
 
 @interface PLCPhotoID : NSManagedObjectID {}
 @end
@@ -44,16 +42,6 @@ extern const struct PLCPhotoFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSString* uuid;
-
-
-
-//- (BOOL)validateUuid:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
 @property (nonatomic, strong) PLCPlace *place;
 
 //- (BOOL)validatePlace:(id*)value_ error:(NSError**)error_;
@@ -73,12 +61,6 @@ extern const struct PLCPhotoFetchedProperties {
 
 - (id)primitiveImage;
 - (void)setPrimitiveImage:(id)value;
-
-
-
-
-- (NSString*)primitiveUuid;
-- (void)setPrimitiveUuid:(NSString*)value;
 
 
 

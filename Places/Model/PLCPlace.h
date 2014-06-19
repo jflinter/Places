@@ -7,8 +7,8 @@
 //
 
 #import "_PLCPlace.h"
-#import "PLCFirebaseCoding.h"
 
-@interface PLCPlace : _PLCPlace<MKAnnotation, UIActivityItemSource, PLCFirebaseCoding>
+@interface PLCPlace : _PLCPlace<MKAnnotation, UIActivityItemSource>
 - (UIImage *)image;
+
 @end

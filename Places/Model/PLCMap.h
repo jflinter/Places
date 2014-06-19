@@ -7,7 +7,7 @@
 //
 
 #import "_PLCMap.h"
-#import "PLCFirebaseCoding.h"
 
-@interface PLCMap : _PLCMap<PLCFirebaseCoding>
+@interface PLCMap : _PLCMap
+
 @end

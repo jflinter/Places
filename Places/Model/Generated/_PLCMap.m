@@ -6,7 +6,6 @@
 const struct PLCMapAttributes PLCMapAttributes = {
 	.name = @"name",
 	.selected = @"selected",
-	.uuid = @"uuid",
 };
 
 const struct PLCMapRelationships PLCMapRelationships = {
@@ -82,13 +81,6 @@ const struct PLCMapFetchedProperties PLCMapFetchedProperties = {
 - (void)setPrimitiveSelectedValue:(BOOL)value_ {
 	[self setPrimitiveSelected:[NSNumber numberWithBool:value_]];
 }
-
-
-
-
-
-@dynamic uuid;
-
 
 
 
