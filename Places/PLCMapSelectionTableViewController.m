@@ -57,10 +57,10 @@
     PLCMap *map = [[PLCMapStore sharedInstance] mapAtIndex:(NSUInteger)indexPath.row];
     cell.textLabel.text = map.name;
     if (map == [[PLCMapStore sharedInstance] selectedMap]) {
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        cell.textLabel.font = [UIFont fontWithName:@"AvenirNext-DemiBold" size:18.0f];
     }
     else {
-        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.textLabel.font = [UIFont fontWithName:@"AvenirNext-Regular" size:18.0f];
     }
 }
 
