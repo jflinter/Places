@@ -77,7 +77,7 @@
         controller.backgroundImageView.image = blurredSnapshot;
         [transitionContext.containerView addSubview:fromViewController.view];
         [transitionContext.containerView addSubview:toViewController.view];
-        [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 usingSpringWithDamping:0.8f initialSpringVelocity:0.5f options:0 animations:^{
+        [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 usingSpringWithDamping:0.8f initialSpringVelocity:0.5f options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState animations:^{
             controller.containerView.frame = ({
                 CGRect rect = controller.containerView.frame;
                 rect.origin.y = 0;
@@ -91,7 +91,7 @@
     }
     else {
         PLCMapSelectionViewController *controller = (PLCMapSelectionViewController *)fromViewController;
-        [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 usingSpringWithDamping:1.0f initialSpringVelocity:-5.0f options:0 animations:^{
+        [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 usingSpringWithDamping:1.0f initialSpringVelocity:-5.0f options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction animations:^{
             controller.backgroundImageView.alpha = 0;
             fromViewController.view.frame = ({
                 CGRect rect = fromViewController.view.frame;
@@ -182,12 +182,14 @@
     
     CGRect frame = self.originalDismissalRect;
     frame.origin.y = CGRectGetHeight(self.originalDismissalRect);
-    [UIView animateWithDuration:0.2f delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+    [UIView animateWithDuration:0.2f delay:0 options:UIViewAnimationOptionCurveEaseIn | UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState animations:^{
         fromViewController.containerView.frame = frame;
         fromViewController.backgroundImageView.alpha = 0;
     } completion:^(BOOL finished) {
-        toViewController.view.userInteractionEnabled = YES;
-        [transitionContext completeTransition:YES];
+        if (finished) {
+            toViewController.view.userInteractionEnabled = YES;
+            [transitionContext completeTransition:YES];
+        }
     }];
 }
 
@@ -196,12 +198,14 @@
     
     PLCMapSelectionViewController *fromViewController = (PLCMapSelectionViewController *)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     
-    [UIView animateWithDuration:1.0f delay:0 usingSpringWithDamping:0.5f initialSpringVelocity:0.2f options:0 animations:^{
+    [transitionContext completeTransition:NO];
+    [UIView animateWithDuration:1.0f delay:0 usingSpringWithDamping:0.5f initialSpringVelocity:0.2f options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState animations:^{
         fromViewController.containerView.frame = self.originalDismissalRect;
         fromViewController.backgroundImageView.alpha = 1.0f;
     } completion:^(BOOL finished) {
-        fromViewController.scrollEnabled = YES;
-        [transitionContext completeTransition:NO];
+        if (finished) {
+            fromViewController.scrollEnabled = YES;
+        }
     }];
 }
 
