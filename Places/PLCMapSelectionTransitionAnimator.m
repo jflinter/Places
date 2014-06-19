@@ -201,6 +201,7 @@
 }
 
 - (void)cancelInteractiveTransition {
+    self.interactive = NO;
     id<UIViewControllerContextTransitioning> transitionContext = self.transitionContext;
     
     PLCMapSelectionViewController *fromViewController = (PLCMapSelectionViewController *)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
