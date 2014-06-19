@@ -21,6 +21,21 @@
 
 @implementation PLCMapSelectionTransitionAnimator
 
++ (NSHashTable *)dismissingViewControllers
+{
+    static dispatch_once_t onceToken;
+    static NSHashTable *_dismissingViewControllers = nil;
+    dispatch_once(&onceToken, ^{
+        _dismissingViewControllers = [[NSHashTable alloc] initWithOptions:NSPointerFunctionsWeakMemory capacity:0];
+    });
+    return _dismissingViewControllers;
+}
+
+- (NSHashTable *)dismissingViewControllers
+{
+    return [[self class] dismissingViewControllers];
+}
+
 - (id)initWithParentViewController:(UIViewController *)parentViewController {
     self = [super init];
     if (self) {
@@ -98,10 +113,7 @@
     CGFloat ratio = difference / CGRectGetHeight(self.parentViewController.view.bounds);
     
     if (recognizer.state == UIGestureRecognizerStateBegan) {
-        // We're being invoked via a gesture recognizer – we are necessarily interactive
-        self.interactive = YES;
-        [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
-        self.originalDismissalPoint = location;
+        [self beginDismissingFromPoint:location];
     }
     else if (recognizer.state == UIGestureRecognizerStateChanged) {
         [self updateInteractiveTransition:ratio];
@@ -115,6 +127,25 @@
             [self cancelInteractiveTransition];
         }
     }
+}
+
+- (void)beginDismissingFromPoint:(CGPoint)location
+{
+    UIViewController *__weak dismissingController = self.parentViewController;
+    if ([self.dismissingViewControllers containsObject:dismissingController]) {
+        return;
+    }
+    [self.dismissingViewControllers addObject:dismissingController];
+
+    // We're being invoked via a gesture recognizer – we are necessarily interactive
+    self.interactive = YES;
+
+    PLCMapSelectionTransitionAnimator *__weak weakSelf = self;
+    [self.parentViewController dismissViewControllerAnimated:YES completion:^{
+        [weakSelf.dismissingViewControllers removeObject:dismissingController];
+    }];
+
+    self.originalDismissalPoint = location;
 }
 
 -(void)startInteractiveTransition:(id<UIViewControllerContextTransitioning>)transitionContext {
@@ -193,6 +224,14 @@
 
 - (id <UIViewControllerInteractiveTransitioning>)interactionControllerForDismissal:(id <UIViewControllerAnimatedTransitioning>)animator {
     return self.interactive ? self : nil;
+}
+
+- (void)animationEnded:(BOOL)transitionCompleted
+{
+    UIViewController *dismissingController = self.parentViewController;
+    if (dismissingController) {
+        [self.dismissingViewControllers removeObject:dismissingController];
+    }
 }
 
 @end
