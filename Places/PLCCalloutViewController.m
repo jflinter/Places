@@ -137,7 +137,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 
 - (void)imagePickerController:(UIImagePickerController *)picker
 didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
     [self imageSelected:image];
     [picker.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
