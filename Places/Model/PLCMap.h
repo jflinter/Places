@@ -10,4 +10,7 @@
 #import "PLCFirebaseCoding.h"
 
 @interface PLCMap : _PLCMap<PLCFirebaseCoding>
+
+- (NSURL *)shareURL;
+
 @end

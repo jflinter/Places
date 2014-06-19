@@ -21,4 +21,9 @@
     return @{PLCMapAttributes.name: self.name};
 }
 
+- (NSURL *)shareURL {
+    NSString *string = [NSString stringWithFormat:@"https://shareplaces.firebaseapp.com/#/maps/%@", self.uuid];
+    return [NSURL URLWithString:string];
+}
+
 @end

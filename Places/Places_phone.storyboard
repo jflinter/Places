@@ -108,7 +108,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SlJ-b9-tUt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1616" y="-647"/>
+            <point key="canvasLocation" x="1716" y="-1027"/>
         </scene>
         <!--Map Selection Table View Controller-->
         <scene sceneID="b7B-FO-12E">
@@ -136,7 +136,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="mng-MZ-e1O" kind="push" id="BS6-4O-6Bp"/>
+                                    <segue destination="mng-MZ-e1O" kind="push" identifier="PLCSelectedNewMapSegue" id="BS6-4O-6Bp"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PLCMapSelectionTableCellReuseIdentifier" textLabel="ydO-yp-EA5" style="IBUITableViewCellStyleDefault" id="uJZ-EN-xBd">
@@ -156,7 +156,8 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="4pf-k5-Kzc" kind="custom" customClass="PLCDismissSegue" id="qgu-HN-iDZ"/>
+                                    <segue destination="4pf-k5-Kzc" kind="custom" identifier="PLCDidSelectMapSegue" customClass="PLCDismissSegue" id="qgu-HN-iDZ"/>
+                                    <segue destination="31i-KB-Aiu" kind="push" trigger="accessoryAction" id="5ne-4t-qPU"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -172,6 +173,38 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yZQ-Bh-Y50" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1208" y="-647"/>
+        </scene>
+        <!--Map Detail View Controller-->
+        <scene sceneID="90A-h1-FHx">
+            <objects>
+                <viewController id="31i-KB-Aiu" customClass="PLCMapDetailViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Lcj-S6-nju"/>
+                        <viewControllerLayoutGuide type="bottom" id="WST-4q-XVu"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="x2G-f1-S8z">
+                        <rect key="frame" x="0.0" y="0.0" width="290" height="530"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jwA-LU-ItW">
+                                <rect key="frame" x="20" y="181" width="250" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="18"/>
+                                <state key="normal" title="Share this map">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="shareMap:" destination="31i-KB-Aiu" eventType="touchUpInside" id="HJY-yZ-kwO"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="qAl-zq-EmH"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2XF-1p-7ig" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1716" y="-354"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Nb8-oY-Tcu">

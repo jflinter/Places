@@ -7,6 +7,7 @@
 //
 
 #import "PLCMapSelectionTableViewController.h"
+#import "PLCMapDetailViewController.h"
 #import "PLCMap.h"
 #import "PLCMapStore.h"
 
@@ -75,10 +76,19 @@
     [super prepareForSegue:segue sender:sender];
     NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
     if (indexPath.row == 0) {
+        self.navigationItem.backBarButtonItem.title = NSLocalizedString(@"Cancel", @"Cancel new map back button item text");
         return;
     }
-    PLCMapStore *mapStore = [PLCMapStore sharedInstance];
-    mapStore.selectedMap = [mapStore mapAtIndex:(NSUInteger)indexPath.row - 1];
+    if ([segue.identifier isEqualToString:@"PLCDidSelectMapSegue"]) {
+        PLCMapStore *mapStore = [PLCMapStore sharedInstance];
+        mapStore.selectedMap = [mapStore mapAtIndex:(NSUInteger)indexPath.row - 1];
+    }
+    else {
+        PLCMapStore *mapStore = [PLCMapStore sharedInstance];
+        PLCMapDetailViewController *controller = (PLCMapDetailViewController *)segue.destinationViewController;
+        controller.map = [mapStore mapAtIndex:(NSUInteger)indexPath.row - 1];;
+        self.navigationItem.backBarButtonItem.title = NSLocalizedString(@"Maps", @"Cancel map detail back button item text");
+    }
 }
 
 #pragma mark - UIGestureRecognizerDelegate

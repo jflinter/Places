@@ -27,6 +27,7 @@
 		7E54FEAF18FFA94B002E2AFC /* PLCDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E54FEAC18FFA94B002E2AFC /* PLCDatabase.m */; };
 		7E54FEB018FFA94B002E2AFC /* PLCManagedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E54FEAE18FFA94B002E2AFC /* PLCManagedObject.m */; };
 		7EFFFB27190D64A900007FAF /* PLCCalloutTransitionContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EFFFB26190D64A900007FAF /* PLCCalloutTransitionContext.m */; };
+		A0347B411952C3D10009828D /* PLCMapDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0347B401952C3D10009828D /* PLCMapDetailViewController.m */; };
 		A03F5582192EF5060015C1D1 /* PLCMapStore.m in Sources */ = {isa = PBXBuildFile; fileRef = A03F5581192EF5060015C1D1 /* PLCMapStore.m */; };
 		A03F5585192F074C0015C1D1 /* PLCDismissSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = A03F5584192F074C0015C1D1 /* PLCDismissSegue.m */; };
 		A03F5588192F08080015C1D1 /* PLCMapPresentationSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = A03F5587192F08080015C1D1 /* PLCMapPresentationSegue.m */; };
@@ -105,6 +106,8 @@
 		7E54FEAE18FFA94B002E2AFC /* PLCManagedObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCManagedObject.m; sourceTree = "<group>"; };
 		7EFFFB25190D64A900007FAF /* PLCCalloutTransitionContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCCalloutTransitionContext.h; sourceTree = "<group>"; };
 		7EFFFB26190D64A900007FAF /* PLCCalloutTransitionContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCCalloutTransitionContext.m; sourceTree = "<group>"; };
+		A0347B3F1952C3D00009828D /* PLCMapDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCMapDetailViewController.h; sourceTree = "<group>"; };
+		A0347B401952C3D10009828D /* PLCMapDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCMapDetailViewController.m; sourceTree = "<group>"; };
 		A03F5580192EF5060015C1D1 /* PLCMapStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCMapStore.h; sourceTree = "<group>"; };
 		A03F5581192EF5060015C1D1 /* PLCMapStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCMapStore.m; sourceTree = "<group>"; };
 		A03F5583192F074C0015C1D1 /* PLCDismissSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCDismissSegue.h; sourceTree = "<group>"; };
@@ -313,6 +316,8 @@
 				A03F5599192F1C330015C1D1 /* PLCMapSelectionTableViewController.m */,
 				A0D1077B1933B918004DB04A /* PLCNewMapViewController.h */,
 				A0D1077C1933B918004DB04A /* PLCNewMapViewController.m */,
+				A0347B3F1952C3D00009828D /* PLCMapDetailViewController.h */,
+				A0347B401952C3D10009828D /* PLCMapDetailViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -584,6 +589,7 @@
 				A0FAFD261901EEDC001A364D /* PLCPinAnnotationView.m in Sources */,
 				A0FAFD2D1902404D001A364D /* PLCCalloutView.m in Sources */,
 				A03F559A192F1C330015C1D1 /* PLCMapSelectionTableViewController.m in Sources */,
+				A0347B411952C3D10009828D /* PLCMapDetailViewController.m in Sources */,
 				A0C0421E19395DB70003630E /* Firebase+Places.m in Sources */,
 				7E54FEAF18FFA94B002E2AFC /* PLCDatabase.m in Sources */,
 				7E166E01191B4A53001EF46B /* _PLCMap.m in Sources */,
