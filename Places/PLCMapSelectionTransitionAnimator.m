@@ -149,7 +149,6 @@
 }
 
 -(void)startInteractiveTransition:(id<UIViewControllerContextTransitioning>)transitionContext {
-    
     self.transitionContext = transitionContext;
     
     PLCMapSelectionViewController *fromViewController = (PLCMapSelectionViewController *)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
@@ -178,12 +177,6 @@
 - (void)finishInteractiveTransition {
     id<UIViewControllerContextTransitioning> transitionContext = self.transitionContext;
     
-    UIViewController *__weak dismissingController = self.parentViewController;
-    if (![self.dismissingViewControllers containsObject:dismissingController]) {
-        return;
-    }
-    [self.dismissingViewControllers removeObject:dismissingController];
-    
     PLCMapSelectionViewController *fromViewController = (PLCMapSelectionViewController *)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     
@@ -205,10 +198,7 @@
     
     PLCMapSelectionViewController *fromViewController = (PLCMapSelectionViewController *)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     
-    UIViewController *__weak dismissingController = self.parentViewController;
-    if ([self.dismissingViewControllers containsObject:dismissingController]) {
-        [transitionContext completeTransition:NO];
-    }
+    [transitionContext completeTransition:NO];
     [UIView animateWithDuration:1.0f delay:0 usingSpringWithDamping:0.5f initialSpringVelocity:0.2f options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState animations:^{
         fromViewController.containerView.frame = self.originalDismissalRect;
         fromViewController.backgroundImageView.alpha = 1.0f;
