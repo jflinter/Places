@@ -9,6 +9,9 @@
 #import "PLCMapStore.h"
 #import "PLCDatabase.h"
 #import "PLCMap.h"
+#import "PLCUserStore.h"
+#import <Firebase/Firebase.h>
+#import "Firebase+Places.h"
 
 static NSString * const PLCCurrentMapSaveKey = @"PLCCurrentMapSaveKey";
 static NSString * const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidChangeNotification";
@@ -83,6 +86,7 @@ static NSString * const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidC
     PLCMap *map = [PLCMap insertInManagedObjectContext:[self managedObjectContext]];
     map.name = name;
     [[self managedObjectContext] save:nil];
+    [[[Firebase mapClient] childByAppendingPath:map.uuid] setValue:[map firebaseObject] andPriority:[[PLCUserStore sharedInstance] currentUserId]];
     return map;
 }
 
