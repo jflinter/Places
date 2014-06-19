@@ -4,7 +4,7 @@
 #import "_PLCPhoto.h"
 
 const struct PLCPhotoAttributes PLCPhotoAttributes = {
-	.image = @"image",
+	.imageData = @"imageData",
 	.uuid = @"uuid",
 };
 
@@ -48,7 +48,7 @@ const struct PLCPhotoFetchedProperties PLCPhotoFetchedProperties = {
 
 
 
-@dynamic image;
+@dynamic imageData;
 
 
 

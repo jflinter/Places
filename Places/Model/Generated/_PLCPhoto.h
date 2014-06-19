@@ -5,7 +5,7 @@
 #import "PLCManagedObject.h"
 
 extern const struct PLCPhotoAttributes {
-	__unsafe_unretained NSString *image;
+	__unsafe_unretained NSString *imageData;
 	__unsafe_unretained NSString *uuid;
 } PLCPhotoAttributes;
 
@@ -18,7 +18,7 @@ extern const struct PLCPhotoFetchedProperties {
 
 @class PLCPlace;
 
-@class NSObject;
+
 
 
 @interface PLCPhotoID : NSManagedObjectID {}
@@ -34,11 +34,11 @@ extern const struct PLCPhotoFetchedProperties {
 
 
 
-@property (nonatomic, strong) id image;
+@property (nonatomic, strong) NSData* imageData;
 
 
 
-//- (BOOL)validateImage:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateImageData:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -71,8 +71,8 @@ extern const struct PLCPhotoFetchedProperties {
 @interface _PLCPhoto (CoreDataGeneratedPrimitiveAccessors)
 
 
-- (id)primitiveImage;
-- (void)setPrimitiveImage:(id)value;
+- (NSData*)primitiveImageData;
+- (void)setPrimitiveImageData:(NSData*)value;
 
 
 

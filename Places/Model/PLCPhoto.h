@@ -10,4 +10,5 @@
 #import "PLCFirebaseCoding.h"
 
 @interface PLCPhoto : _PLCPhoto<PLCFirebaseCoding>
+@property(nonatomic)UIImage *image;
 @end

@@ -17,10 +17,20 @@
     }
 }
 
+- (void)setImage:(UIImage *)image {
+    self.imageData = UIImageJPEGRepresentation(self.image, 1.0);
+}
+
+- (UIImage *)image {
+    if (self.imageData) {
+        return [[UIImage alloc] initWithData:self.imageData];
+    }
+    return nil;
+}
+
 - (NSDictionary *)firebaseObject {
-    NSData *data = UIImageJPEGRepresentation(self.image, 1.0);
-    NSString *base64 = [data base64EncodedStringWithOptions:0];
-    return @{PLCPhotoAttributes.image: base64};
+    NSString *base64 = [self.imageData base64EncodedStringWithOptions:0];
+    return @{@"image": base64};
 }
 
 @end

@@ -21,15 +21,16 @@
         [[Firebase photoClientForPhoto:photo] removeValue];
     }
     if (image) {
-        PLCPhoto *photo = [PLCPhoto insertInManagedObjectContext:place.managedObjectContext];
-        photo.image = image;
-        photo.place = place;
-        [[Firebase photoClientForPhoto:photo] setValue:[photo firebaseObject]];
-        BOOL success = [place.managedObjectContext save:nil];
-        if (!success) {
-            abort();
-        }
-
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+            NSData *data = UIImageJPEGRepresentation(image, 1);
+            [place.managedObjectContext performBlock:^{
+                PLCPhoto *photo = [PLCPhoto insertInManagedObjectContext:place.managedObjectContext];
+                photo.imageData = data;
+                photo.place = place;
+                [place.managedObjectContext save:nil];
+                [[Firebase photoClientForPhoto:photo] setValue:[photo firebaseObject]];
+            }];
+        });
     }
 }
 
