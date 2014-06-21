@@ -401,6 +401,7 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="310" height="300"/>
                     <connections>
+                        <outlet property="accessoryToolbar" destination="7hg-a5-RnK" id="Cti-Fq-rCN"/>
                         <outlet property="bottomSpacingConstraint" destination="TMK-i0-w4J" id="kh1-m5-RqE"/>
                         <outlet property="bottomToolbar" destination="8l8-Tq-XPd" id="IB6-eB-2fd"/>
                         <outlet property="captionTextView" destination="1Fi-jR-Vew" id="429-Bx-evO"/>
@@ -409,6 +410,18 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PwR-vm-YkE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="7hg-a5-RnK">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <items>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="vCU-bY-Ykf"/>
+                        <barButtonItem systemItem="done" id="JsC-xa-VZC">
+                            <connections>
+                                <action selector="doneEditing:" destination="1NL-xg-0xe" id="Xh3-hQ-iK2"/>
+                            </connections>
+                        </barButtonItem>
+                    </items>
+                </toolbar>
             </objects>
             <point key="canvasLocation" x="390" y="91"/>
         </scene>

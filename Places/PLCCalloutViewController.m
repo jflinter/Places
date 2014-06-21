@@ -14,6 +14,8 @@
 
 @interface PLCCalloutViewController() <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate>
 
+@property (strong, nonatomic) IBOutlet UIInputView *inputView;
+@property (strong, nonatomic) IBOutlet UIToolbar *accessoryToolbar;
 @property (nonatomic, weak) IBOutlet UIScrollView *contentView;
 @end
 
@@ -36,19 +38,29 @@
     self.captionTextView.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.75f];
     self.captionTextView.layer.cornerRadius = 5.0f;
     self.captionTextView.text = self.place.caption;
+    [self textViewDidChange:self.captionTextView];
     if ((!self.place.caption || [self.place.caption isEqualToString:@""]) && self.place.geocodedAddress) {
         self.captionTextView.text = [[self.place.geocodedAddress objectForKey:@"Street"] description];
     }
+    [self.accessoryToolbar setBackgroundImage:[UIImage new] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
+    self.inputView = [[UIInputView alloc] initWithFrame:CGRectMake(0, 0, 320, 37) inputViewStyle:UIInputViewStyleDefault];
+    [self.inputView addSubview:self.accessoryToolbar];
+    self.captionTextView.inputAccessoryView = self.inputView;
 }
 
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
     self.contentView.contentSize = self.contentView.frame.size;
-    [self resizeTextView:self.captionTextView];
 }
 
 - (void)editCaption {
     [self.captionTextView becomeFirstResponder];
+}
+
+- (IBAction)doneEditing:(id)sender {
+    if ([self.captionTextView isFirstResponder]) {
+        [self.captionTextView resignFirstResponder];
+    }
 }
 
 // TODO: viewWillDisappear et. al. are not being called correctly; I think they should be used here instead.
@@ -145,12 +157,14 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 #pragma mark -
 #pragma mark UITextViewDelegate
 
-- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
-    if ([text isEqualToString:@"\n"]) {
-        [textView resignFirstResponder];
-        return NO;
+- (void)textViewDidChange:(UITextView *)textView {
+    NSCharacterSet *set = [NSCharacterSet newlineCharacterSet];
+    NSRange newLineRange = [textView.text rangeOfCharacterFromSet:set];
+    if (newLineRange.location != NSNotFound) {
+        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithAttributedString:self.captionTextView.attributedText];
+        [attributedString addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"AvenirNext-Regular" size:18.0f] range:NSMakeRange( newLineRange.location, textView.text.length - newLineRange.location)];
+        textView.attributedText = attributedString;
     }
-    return YES;
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
@@ -158,26 +172,11 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     [[PLCPlaceStore sharedInstance] save];
 }
 
--(void)textViewDidChange:(UITextView *)textView {
-    [self resizeTextView:textView];
-}
-
-- (void) resizeTextView:(UITextView *)textView {
-    if ([textView.text isEqualToString:@""]) {
-        self.textViewWidthConstraint.constant = 50.0f;
-    }
-    else {
-        CGSize inset = CGSizeMake(14, 16);
-        CGSize insetSize = CGSizeMake(CGRectGetWidth(textView.superview.frame) - inset.width, CGFLOAT_MAX);
-        CGSize size = [textView.attributedText boundingRectWithSize:insetSize options:NSStringDrawingUsesLineFragmentOrigin context:NULL].size;
-        self.textViewHeightConstraint.constant = size.height + inset.height;
-        self.textViewWidthConstraint.constant = MAX(size.width + inset.width, 50.0f);
-    }
-    [self.contentView setNeedsLayout];
-    textView.contentOffset = CGPointZero;
-}
-
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if (scrollView == self.captionTextView) {
+        return;
+        
+    }
     scrollView.contentOffset = CGPointZero;
 }
 
