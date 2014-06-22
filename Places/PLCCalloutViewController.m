@@ -29,7 +29,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
     self.contentView.layer.cornerRadius = self.calloutView.cornerRadius;
     self.contentView.layer.masksToBounds = YES;
     self.bottomSpacingConstraint.constant = self.calloutView.arrowHeight;
@@ -46,6 +45,7 @@
     self.inputView = [[UIInputView alloc] initWithFrame:CGRectMake(0, 0, 320, 37) inputViewStyle:UIInputViewStyleDefault];
     [self.inputView addSubview:self.accessoryToolbar];
     self.captionTextView.inputAccessoryView = self.inputView;
+    [self addImage:self.place.image];
 }
 
 - (void)viewDidLayoutSubviews {
@@ -97,6 +97,29 @@
 - (void) imageSelected:(UIImage *)image {
     [[PLCPhotoStore new] addPhotoWithImage:image toPlace:self.place];
     self.placeImageView.image = image;
+    [self addImage:image];
+}
+
+- (void)addImage:(UIImage *)image {
+    if (!image) {
+//        NSMutableAttributedString *mut = [self.captionTextView.attributedText mutableCopy];
+//        [mut.mutableString replaceCharactersInRange:NSMakeRange(mut.mutableString.length - 1, 0) withString:@""];
+//        self.captionTextView.attributedText = mut;
+        return;
+    }
+    NSTextAttachment *attachment = [NSTextAttachment new];
+    attachment.image = image;
+    attachment.bounds = CGRectMake(0, 0, 200, 200);
+    NSMutableAttributedString *mut = [[NSAttributedString attributedStringWithAttachment:attachment] mutableCopy];
+    NSDictionary *attributes = [self.captionTextView.attributedText attributesAtIndex:0 effectiveRange:nil];
+    [mut addAttributes:attributes range:NSMakeRange(0, mut.length)];
+    NSMutableParagraphStyle *style = [NSMutableParagraphStyle new];
+    style.alignment = NSTextAlignmentCenter;
+    [mut addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, mut.length)];
+    NSMutableAttributedString *full = [self.captionTextView.attributedText mutableCopy];
+    [full appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
+    [full appendAttributedString:mut];
+    self.captionTextView.attributedText = full;
 }
 
 #pragma mark -
@@ -168,14 +191,13 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
-    self.place.caption = textView.text;
+    self.place.caption = [textView.text stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithRange:NSMakeRange(NSAttachmentCharacter, 1)]];
     [[PLCPlaceStore sharedInstance] save];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     if (scrollView == self.captionTextView) {
         return;
-        
     }
     scrollView.contentOffset = CGPointZero;
 }
