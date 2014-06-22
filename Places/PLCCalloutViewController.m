@@ -11,15 +11,23 @@
 #import "PLCCalloutViewController.h"
 #import "PLCPhotoStore.h"
 #import "PLCPlaceStore.h"
+#import <JTSImageViewController/JTSImageViewController.h>
 
 @interface PLCCalloutViewController() <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate>
 
 @property (strong, nonatomic) IBOutlet UIInputView *inputView;
 @property (strong, nonatomic) IBOutlet UIToolbar *accessoryToolbar;
 @property (nonatomic, weak) IBOutlet UIScrollView *contentView;
+@property (nonatomic) UIEdgeInsets originalInsets;
+@property (weak, nonatomic) IBOutlet UIButton *addressButton;
+@property (nonatomic, weak) UIButton *imageButton;
 @end
 
 @implementation PLCCalloutViewController
+
+- (CGFloat)imageSize {
+    return 180.0f;
+}
 
 + (CGSize)calloutSize
 {
@@ -29,23 +37,50 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.captionTextView.text = self.place.caption;
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake((self.captionTextView.frame.size.width - self.imageSize)/2, 0, self.imageSize, self.imageSize)];
+    self.imageButton = button;
+    [button setImage:self.place.image forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(imageTapped:) forControlEvents:UIControlEventTouchUpInside];
+    self.originalInsets = self.captionTextView.contentInset;
+    self.originalInsets = ({
+        UIEdgeInsets insets = self.originalInsets;
+        insets.bottom += self.bottomToolbar.frame.size.height;
+        insets;
+    });
+    [self.captionTextView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:NULL];
+    [self.captionTextView addSubview:button];
     self.contentView.layer.cornerRadius = self.calloutView.cornerRadius;
     self.contentView.layer.masksToBounds = YES;
     self.bottomSpacingConstraint.constant = self.calloutView.arrowHeight;
-    self.placeImageView.image = self.place.image;
     self.bottomToolbar.clipsToBounds = YES;
     self.captionTextView.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.75f];
     self.captionTextView.layer.cornerRadius = 5.0f;
-    self.captionTextView.text = self.place.caption;
-    [self textViewDidChange:self.captionTextView];
-    if ((!self.place.caption || [self.place.caption isEqualToString:@""]) && self.place.geocodedAddress) {
-        self.captionTextView.text = [[self.place.geocodedAddress objectForKey:@"Street"] description];
-    }
     [self.accessoryToolbar setBackgroundImage:[UIImage new] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
     self.inputView = [[UIInputView alloc] initWithFrame:CGRectMake(0, 0, 320, 37) inputViewStyle:UIInputViewStyleDefault];
     [self.inputView addSubview:self.accessoryToolbar];
     self.captionTextView.inputAccessoryView = self.inputView;
-    [self addImage:self.place.image];
+    [self updateInsets];
+    [self.addressButton setTitle:[[self.place.geocodedAddress objectForKey:@"Street"] description] forState:UIControlStateNormal];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([keyPath isEqualToString:@"contentSize"]) {
+        [self textViewDidChange:self.captionTextView];
+    }
+}
+
+- (void)updateInsets {
+    if ([self.imageButton imageForState:UIControlStateNormal]) {
+        self.captionTextView.contentInset = ({
+            UIEdgeInsets insets = self.originalInsets;
+            insets.bottom += self.imageSize + 10;
+            insets;
+        });
+    }
+    else {
+        self.captionTextView.contentInset = self.originalInsets;
+    }
 }
 
 - (void)viewDidLayoutSubviews {
@@ -94,32 +129,30 @@
     [self presentViewController:activityViewController animated:YES completion:nil];
 }
 
-- (void) imageSelected:(UIImage *)image {
-    [[PLCPhotoStore new] addPhotoWithImage:image toPlace:self.place];
-    self.placeImageView.image = image;
-    [self addImage:image];
-}
-
-- (void)addImage:(UIImage *)image {
+- (void)imageTapped:(UIButton *)sender {
+    UIImage *image = [sender imageForState:UIControlStateNormal];
     if (!image) {
-//        NSMutableAttributedString *mut = [self.captionTextView.attributedText mutableCopy];
-//        [mut.mutableString replaceCharactersInRange:NSMakeRange(mut.mutableString.length - 1, 0) withString:@""];
-//        self.captionTextView.attributedText = mut;
         return;
     }
-    NSTextAttachment *attachment = [NSTextAttachment new];
-    attachment.image = image;
-    attachment.bounds = CGRectMake(0, 0, 200, 200);
-    NSMutableAttributedString *mut = [[NSAttributedString attributedStringWithAttachment:attachment] mutableCopy];
-    NSDictionary *attributes = [self.captionTextView.attributedText attributesAtIndex:0 effectiveRange:nil];
-    [mut addAttributes:attributes range:NSMakeRange(0, mut.length)];
-    NSMutableParagraphStyle *style = [NSMutableParagraphStyle new];
-    style.alignment = NSTextAlignmentCenter;
-    [mut addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, mut.length)];
-    NSMutableAttributedString *full = [self.captionTextView.attributedText mutableCopy];
-    [full appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
-    [full appendAttributedString:mut];
-    self.captionTextView.attributedText = full;
+    // Create image info
+    JTSImageInfo *imageInfo = [[JTSImageInfo alloc] init];
+    imageInfo.image = image;
+    imageInfo.referenceRect = self.imageButton.frame;
+    imageInfo.referenceView = self.imageButton.superview;
+    
+    // Setup view controller
+    JTSImageViewController *imageViewer = [[JTSImageViewController alloc]
+                                           initWithImageInfo:imageInfo
+                                           mode:JTSImageViewControllerMode_Image
+                                           backgroundStyle:JTSImageViewControllerBackgroundStyle_ScaledDimmedBlurred];
+    
+    // Present the view controller.
+    [imageViewer showFromViewController:self transition:JTSImageViewControllerTransition_FromOriginalPosition];
+}
+
+- (void) imageSelected:(UIImage *)image {
+    [[PLCPhotoStore new] addPhotoWithImage:image toPlace:self.place];
+    [self.imageButton setImage:image forState:UIControlStateNormal];
 }
 
 #pragma mark -
@@ -151,6 +184,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     }
     if (buttonIndex == actionSheet.destructiveButtonIndex) {
         [self imageSelected:nil];
+        [self updateInsets];
         return;
     }
     UIImagePickerControllerSourceType sourceType;
@@ -175,6 +209,8 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
     [self imageSelected:image];
     [picker.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+    [self updateInsets];
 }
 
 #pragma mark -
@@ -188,6 +224,11 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
         [attributedString addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"AvenirNext-Regular" size:18.0f] range:NSMakeRange( newLineRange.location, textView.text.length - newLineRange.location)];
         textView.attributedText = attributedString;
     }
+    self.imageButton.frame = ({
+        CGRect rect = self.imageButton.frame;
+        rect.origin.y = self.captionTextView.contentSize.height;
+        rect;
+    });
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView {

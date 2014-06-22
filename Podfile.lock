@@ -2,21 +2,21 @@ PODS:
   - BDDROneFingerZoomGestureRecognizer (1.0.2)
   - Firebase (1.1.7)
   - INTULocationManager (1.1.0)
-  - PSPDFTextView (1.2.0)
+  - JTSImageViewController (1.1.1)
   - Reveal-iOS-SDK (1.0.4)
 
 DEPENDENCIES:
   - BDDROneFingerZoomGestureRecognizer (~> 1.0)
   - Firebase
   - INTULocationManager
-  - PSPDFTextView
+  - JTSImageViewController
   - Reveal-iOS-SDK
 
 SPEC CHECKSUMS:
   BDDROneFingerZoomGestureRecognizer: 44f79476001ffaa189795f425345d6508134561d
   Firebase: 88d2a0f4c0c8f2d65a732bb2f7ec9b9c6e72876f
   INTULocationManager: 41506443733adccd44c0f00b44837d4ef2fda246
-  PSPDFTextView: bd966902213eaa97697e9edb0dbb56205f543b5e
+  JTSImageViewController: e8167cffe5ffdb9203a8931d41ba5a4dd5ac5f5a
   Reveal-iOS-SDK: d3c8e109d42219daaa7a6e1ad2de34f0bdbb7a88
 
 COCOAPODS: 0.33.1

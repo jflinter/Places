@@ -233,7 +233,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     PLCCalloutTransitionAnimator *animator = [[PLCCalloutTransitionAnimator alloc] init];
 
     [animator animateTransition:transitionContext completion:^{
-        if (!calloutViewController.place.caption) {
+        if (!calloutViewController.place.caption || [calloutViewController.place.caption isEqualToString:@""]) {
             [calloutViewController editCaption];
         }
     }];
