@@ -10,6 +10,10 @@
 
 @interface MKPlacemark (LocationSharing)
 
-- (NSURL *)temporaryFileURLForLocationSharing:(NSError**)error;
+extern NSString * const MKPlaceMarkPLCMapFieldNameKey;
+extern NSString * const MKPlaceMarkPLCMapFieldValueKey;
+extern NSString * const MKPlaceMarkPLCMapPreviewKey;
+
+- (NSURL *)temporaryFileURLForLocationSharingWithOptions:(NSDictionary *)options error:(NSError**)error;
 
 @end

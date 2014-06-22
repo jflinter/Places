@@ -11,26 +11,40 @@
 #import <AddressBook/AddressBook.h>
 #import <AddressBookUI/AddressBookUI.h>
 
+NSString * const MKPlaceMarkPLCMapFieldNameKey = @"MKPlaceMarkPLCMapFieldNameKey";
+NSString * const MKPlaceMarkPLCMapFieldValueKey = @"MKPlaceMarkPLCMapFieldValueKey";
+NSString * const MKPlaceMarkPLCMapPreviewKey = @"MKPlaceMarkPLCMapPreviewKey";
+
 @implementation MKPlacemark (LocationSharing)
 
-- (NSURL *)temporaryFileURLForLocationSharing:(NSError *__autoreleasing *)error {
+- (NSURL *)temporaryFileURLForLocationSharingWithOptions:(NSDictionary *)options
+                                                   error:(NSError *__autoreleasing *)error {
     ABRecordRef person = ABPersonCreate();
     ABRecordRef people[1] = { person };
     CFErrorRef errorRef = NULL;
     
-    NSString *address = ABCreateStringWithAddressDictionary(self.addressDictionary, NO);
+    NSString *address = options[MKPlaceMarkPLCMapPreviewKey];
+    if (!address) {
+        address = ABCreateStringWithAddressDictionary(self.addressDictionary, NO);
+    }
     
     ABRecordSetValue(person, kABPersonFirstNameProperty, (__bridge CFStringRef)address, &errorRef);
     
     ABMutableMultiValueRef multiHome = ABMultiValueCreateMutable(kABMultiDictionaryPropertyType);
+    
     ABMultiValueAddValueAndLabel(multiHome, (__bridge CFTypeRef)(self.addressDictionary), kABHomeLabel, NULL);
     ABRecordSetValue(person, kABPersonAddressProperty, multiHome, &errorRef);
     CFRelease(multiHome), multiHome = NULL;
     
     ABMutableMultiValueRef multiURL = ABMultiValueCreateMutable(kABMultiStringPropertyType);
-    NSURL *mapsUrl = [self appleMapsURL];
-    NSString *urlDesc = [mapsUrl description];
-    ABMultiValueAddValueAndLabel(multiURL, (__bridge CFTypeRef)urlDesc, CFSTR("map url"), NULL);
+    NSString *urlDesc = [[self appleMapsURL] description];
+    ABMultiValueAddValueAndLabel(multiURL, (__bridge CFTypeRef)urlDesc, CFSTR("Open in Maps"), NULL);
+    
+    if (options[MKPlaceMarkPLCMapFieldNameKey] && options[MKPlaceMarkPLCMapFieldValueKey]) {
+        NSString *mapUrlDesc = [options[MKPlaceMarkPLCMapFieldValueKey] description];
+        ABMultiValueAddValueAndLabel(multiURL, (__bridge CFTypeRef)mapUrlDesc, (__bridge  CFStringRef)options[MKPlaceMarkPLCMapFieldNameKey], NULL);
+    }
+    
     ABRecordSetValue(person, kABPersonURLProperty, multiURL, &errorRef);
     CFRelease(multiURL), multiURL = NULL;
     

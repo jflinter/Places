@@ -9,6 +9,7 @@
 #import "PLCPlace.h"
 #import "MKPlacemark+LocationSharing.h"
 #import "NSMutableDictionary+NilSafe.h"
+#import "PLCMap.h"
 
 @implementation PLCPlace
 
@@ -74,7 +75,16 @@
                   itemForActivityType:(NSString *)activityType {
     if ([activityType isEqualToString:UIActivityTypeMessage]) {
         MKPlacemark *placemark = [[MKPlacemark alloc] initWithCoordinate:self.coordinate addressDictionary:self.geocodedAddress];
-        NSURL *url = [placemark temporaryFileURLForLocationSharing:nil];
+        NSString *caption;
+        if (self.caption && ![self.caption isEqualToString:@""]) {
+            caption = self.caption;
+        }
+        NSDictionary *options = @{
+                                  MKPlaceMarkPLCMapFieldNameKey: @"Made with Places - see the rest here:",
+                                  MKPlaceMarkPLCMapFieldValueKey: [self.map shareURL],
+                                  MKPlaceMarkPLCMapPreviewKey: caption,
+                                  };
+        NSURL *url = [placemark temporaryFileURLForLocationSharingWithOptions:options error:nil];
         if (url) {
             return url;
         }
