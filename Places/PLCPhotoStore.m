@@ -16,22 +16,25 @@
 
 - (void) addPhotoWithImage:(UIImage *)image
                    toPlace:(PLCPlace *)place {
+    [self removePhotoFromPlace:place];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        NSData *data = UIImageJPEGRepresentation(image, 1);
+        [place.managedObjectContext performBlock:^{
+            PLCPhoto *photo = [PLCPhoto insertInManagedObjectContext:place.managedObjectContext];
+            photo.imageData = data;
+            photo.place = place;
+            [place.managedObjectContext save:nil];
+            [[Firebase photoClientForPhoto:photo] setValue:[photo firebaseObject]];
+        }];
+    });
+}
+
+- (void) removePhotoFromPlace:(PLCPlace *)place {
     for (PLCPhoto *photo in place.photos) {
         [place.managedObjectContext deleteObject:photo];
         [[Firebase photoClientForPhoto:photo] removeValue];
     }
-    if (image) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-            NSData *data = UIImageJPEGRepresentation(image, 1);
-            [place.managedObjectContext performBlock:^{
-                PLCPhoto *photo = [PLCPhoto insertInManagedObjectContext:place.managedObjectContext];
-                photo.imageData = data;
-                photo.place = place;
-                [place.managedObjectContext save:nil];
-                [[Firebase photoClientForPhoto:photo] setValue:[photo firebaseObject]];
-            }];
-        });
-    }
 }
+
 
 @end

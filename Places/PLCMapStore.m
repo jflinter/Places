@@ -79,6 +79,7 @@ static NSString * const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidC
     }
     selectedMap.selectedValue = YES;
     [[self managedObjectContext] save:nil];
+    [self.delegate mapStore:self didChangeMap:selectedMap];
     [[NSNotificationCenter defaultCenter] postNotificationName:PLCCurrentMapDidChangeNotification object:self];
 }
 

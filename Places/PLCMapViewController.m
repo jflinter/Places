@@ -18,11 +18,13 @@
 #import "PLCMapSelectionTableViewController.h"
 #import "PLCMapSelectionViewController.h"
 #import <INTULocationManager/INTULocationManager.h>
+#import "PLCMap.h"
+#import "PLCMapStore.h"
 
 static NSString * const PLCMapPinReuseIdentifier = @"PLCMapPinReuseIdentifier";
 static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 
-@interface PLCMapViewController () <PLCMapViewDelegate, PLCPlaceStoreDelegate, CLLocationManagerDelegate>
+@interface PLCMapViewController () <PLCMapViewDelegate, PLCPlaceStoreDelegate, PLCMapStoreDelegate, CLLocationManagerDelegate>
 
 @property (nonatomic, weak, readwrite) IBOutlet PLCMapView *mapView;
 @property (nonatomic, readonly) PLCPlaceStore *placeStore;
@@ -45,6 +47,7 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     [self.mapView addAnnotations:self.placeStore.allPlaces];
     [self.mapView addGestureRecognizer:[self addPlaceGestureRecognizer]];
     self.mapView.rotateEnabled = NO;
+    [PLCMapStore sharedInstance].delegate = self;
 }
 
 #pragma mark -
@@ -170,6 +173,15 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     else {
         [self.mapView removeAnnotation:place];
     }
+}
+
+#pragma mark -
+#pragma mark PLCMapStoreDelegate
+
+- (void)mapStore:(PLCMapStore *)store didChangeMap:(PLCMap *)map {
+    [self.mapView removeAnnotations:self.mapView.annotations];
+    [self.mapView addAnnotations:map.places.allObjects];
+    [self.mapView showAnnotations:map.places.allObjects animated:YES];
 }
 
 #pragma mark -

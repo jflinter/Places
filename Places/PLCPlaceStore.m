@@ -48,14 +48,8 @@
 
 - (void)currentMapChanged:(NSNotification *)notification {
     dispatch_async(dispatch_get_main_queue(), ^{
-        for (PLCPlace *place in self.fetchedResultsController.fetchedObjects) {
-            [self.delegate placeStore:self didRemovePlace:place];
-        }
         self.fetchedResultsController.fetchRequest.predicate = [self placePredicate];
         [self.fetchedResultsController performFetch:nil];
-        for (PLCPlace *place in self.fetchedResultsController.fetchedObjects) {
-            [self.delegate placeStore:self didInsertPlace:place new:NO];
-        }
     });
 }
 

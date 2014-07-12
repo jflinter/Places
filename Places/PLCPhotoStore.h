@@ -14,5 +14,6 @@
 
 - (void) addPhotoWithImage:(UIImage *)image
                    toPlace:(PLCPlace *)place;
+- (void) removePhotoFromPlace:(PLCPlace *)place;
 
 @end

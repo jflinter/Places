@@ -10,7 +10,11 @@
 
 static NSString * const PLCCurrentMapDidChangeNotification;
 
-@class PLCMap;
+@class PLCMap, PLCMapStore;
+
+@protocol PLCMapStoreDelegate <NSObject>
+- (void)mapStore:(PLCMapStore *)store didChangeMap:(PLCMap *)map;
+@end
 
 @interface PLCMapStore : NSObject
 
@@ -19,5 +23,6 @@ static NSString * const PLCCurrentMapDidChangeNotification;
 - (PLCMap *)mapAtIndex:(NSUInteger)index;
 - (PLCMap *)insertMapWithName:(NSString *)name;
 @property(nonatomic, strong)PLCMap *selectedMap;
+@property(nonatomic, weak)id<PLCMapStoreDelegate> delegate;
 
 @end

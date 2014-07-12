@@ -151,7 +151,12 @@
 }
 
 - (void) imageSelected:(UIImage *)image {
-    [[PLCPhotoStore new] addPhotoWithImage:image toPlace:self.place];
+    if (image) {
+        [[PLCPhotoStore new] addPhotoWithImage:image toPlace:self.place];
+    }
+    else {
+        [[PLCPhotoStore new] removePhotoFromPlace:self.place];
+    }
     [self.imageButton setImage:image forState:UIControlStateNormal];
 }
 
