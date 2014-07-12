@@ -22,6 +22,10 @@
     return [[self placesFirebaseClient] childByAppendingPath:@"maps"];
 }
 
++ (instancetype)photosClient {
+    return [[self placesFirebaseClient] childByAppendingPath:@"photos"];
+}
+
 + (instancetype)mapClientForMap:(PLCMap *)map {
     return [[self mapClient] childByAppendingPath:map.uuid];
 }
@@ -31,7 +35,7 @@
 }
 
 + (instancetype)photoClientForPhoto:(PLCPhoto *)photo {
-    return [[[self placeClientForPlace:photo.place] childByAppendingPath:@"photos"] childByAppendingPath:photo.uuid];
+    return [[[self photosClient] childByAppendingPath:photo.place.uuid] childByAppendingPath:photo.uuid];
 }
 
 @end

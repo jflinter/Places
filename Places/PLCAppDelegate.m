@@ -9,11 +9,14 @@
 #import "PLCAppDelegate.h"
 #import "PLCMapViewController.h"
 #import "PLCUserStore.h"
+#import <Firebase/Firebase.h>
 
 @implementation PLCAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    // beta offline persistence for firebase queries - will retry offline saves after e.g. app termination
+    [Firebase setOption:@"persistence" to:@YES];
     [[PLCUserStore sharedInstance] beginICloudMonitoring];
     return YES;
 }
