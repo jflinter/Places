@@ -215,6 +215,9 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     [self imageSelected:image];
     [picker.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+    if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
+        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
+    }
     [self updateInsets];
 }
 
