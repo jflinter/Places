@@ -181,9 +181,6 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet
 clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if ([self.captionTextView isFirstResponder]) {
-        [self.captionTextView resignFirstResponder];        
-    }
     if (buttonIndex == actionSheet.cancelButtonIndex) {
         return;
     }
@@ -191,6 +188,9 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         [self imageSelected:nil];
         [self updateInsets];
         return;
+    }
+    if ([self.captionTextView isFirstResponder]) {
+        [self.captionTextView resignFirstResponder];
     }
     UIImagePickerControllerSourceType sourceType;
     if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:NSLocalizedString(@"Take Photo", nil)]) {
@@ -209,11 +209,19 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 #pragma mark -
 #pragma mark UIImagePickerControllerDelegate
 
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [picker.presentingViewController dismissViewControllerAnimated:YES completion:^{
+        [self.captionTextView becomeFirstResponder];
+    }];
+}
+
 - (void)imagePickerController:(UIImagePickerController *)picker
 didFinishPickingMediaWithInfo:(NSDictionary *)info {
     UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
     [self imageSelected:image];
-    [picker.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    [picker.presentingViewController dismissViewControllerAnimated:YES completion:^{
+        [self.captionTextView becomeFirstResponder];
+    }];
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
     if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
         UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
