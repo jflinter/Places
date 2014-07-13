@@ -47,6 +47,7 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     [self.mapView addAnnotations:self.placeStore.allPlaces];
     [self.mapView addGestureRecognizer:[self addPlaceGestureRecognizer]];
     self.mapView.rotateEnabled = NO;
+    self.mapView.showsPointsOfInterest = NO;
     [PLCMapStore sharedInstance].delegate = self;
 }
 
@@ -331,7 +332,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 }
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
-    [mapView viewForAnnotation:userLocation].enabled = NO;
+    userLocation.title = @"";
     
     // This is just for initial map load, when we want to show the user's location in the absence of any places on the map.
     if (self.determiningInitialLocation) {
