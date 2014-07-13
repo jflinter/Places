@@ -11,6 +11,7 @@
 #import "PLCCalloutViewController.h"
 #import "PLCPhotoStore.h"
 #import "PLCPlaceStore.h"
+#import "PLCPlaceTextStorage.h"
 #import <JTSImageViewController/JTSImageViewController.h>
 
 @interface PLCCalloutViewController() <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate>
@@ -18,9 +19,11 @@
 @property (strong, nonatomic) IBOutlet UIInputView *inputView;
 @property (strong, nonatomic) IBOutlet UIToolbar *accessoryToolbar;
 @property (nonatomic, weak) IBOutlet UIScrollView *contentView;
+@property (weak, nonatomic) IBOutlet UIView *containerView;
 @property (nonatomic) UIEdgeInsets originalInsets;
 @property (weak, nonatomic) IBOutlet UIButton *addressButton;
 @property (nonatomic, weak) UIButton *imageButton;
+@property (nonatomic) PLCPlaceTextStorage *textStorage;
 @end
 
 @implementation PLCCalloutViewController
@@ -32,6 +35,22 @@
 + (CGSize)calloutSize
 {
     return CGSizeMake(310.0f, 310.0f);
+}
+
+- (void)loadView {
+    [super loadView];
+    self.textStorage = [PLCPlaceTextStorage new];
+    NSLayoutManager *layoutManager = [NSLayoutManager new];
+    [self.textStorage addLayoutManager: layoutManager];
+    
+    NSTextContainer *textContainer = [NSTextContainer new];
+    [layoutManager addTextContainer: textContainer];
+    
+    UITextView *textView = [[UITextView alloc] initWithFrame:self.view.bounds textContainer:textContainer];
+    textView.textAlignment = NSTextAlignmentCenter;
+    textView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    [self.containerView addSubview:textView];
+    self.captionTextView = textView;
 }
 
 - (void)viewDidLoad
