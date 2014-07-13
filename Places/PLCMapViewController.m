@@ -306,10 +306,12 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 
 - (IBAction)showLocation:(id)sender {
     [self determineLocation:^{
-        [UIView animateWithDuration:PLCMapPanAnimationDuration animations:^{
-            [self.mapView setCenterCoordinate:self.mapView.userLocation.coordinate
-                                     animated:NO];
-        }];
+        if (self.mapView.userLocation) {
+            [UIView animateWithDuration:PLCMapPanAnimationDuration animations:^{
+                [self.mapView setCenterCoordinate:self.mapView.userLocation.coordinate
+                                         animated:NO];
+            }];
+        }
     }];
 }
 
