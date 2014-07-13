@@ -16,8 +16,10 @@
 
 @interface PLCCalloutViewController() <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate>
 
-@property (strong, nonatomic) IBOutlet UIInputView *inputView;
+@property (strong, nonatomic) UIInputView *inputView;
 @property (strong, nonatomic) IBOutlet UIToolbar *accessoryToolbar;
+@property (weak, nonatomic) IBOutlet UIToolbar *trashToolbar;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *trashButton;
 @property (nonatomic, weak) IBOutlet UIScrollView *contentView;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
 @property (nonatomic) UIEdgeInsets originalInsets;
@@ -46,9 +48,14 @@
     NSTextContainer *textContainer = [NSTextContainer new];
     [layoutManager addTextContainer: textContainer];
     
-    UITextView *textView = [[UITextView alloc] initWithFrame:self.view.bounds textContainer:textContainer];
+    UITextView *textView = [[UITextView alloc] initWithFrame:self.containerView.bounds textContainer:textContainer];
+    
+    textView.typingAttributes = @{NSFontAttributeName: [UIFont fontWithName:@"AvenirNext-DemiBold" size:18.0f]};
+    textView.textContainerInset = UIEdgeInsetsMake(12, 15, 10, 15);
     textView.textAlignment = NSTextAlignmentCenter;
     textView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    
+    textView.delegate = self;
     [self.containerView addSubview:textView];
     self.captionTextView = textView;
 }
@@ -56,6 +63,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.trashToolbar.layer.cornerRadius = 5.0f;
+    self.captionTextView.frame = self.captionTextView.superview.bounds;
     self.captionTextView.text = self.place.caption;
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake((self.captionTextView.frame.size.width - self.imageSize)/2, 0, self.imageSize, self.imageSize)];
     self.imageButton = button;
@@ -67,6 +76,7 @@
         insets.bottom += self.bottomToolbar.frame.size.height;
         insets;
     });
+    self.captionTextView.scrollIndicatorInsets = UIEdgeInsetsMake(12, 0, self.originalInsets.bottom, 5);
     [self.captionTextView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:NULL];
     [self.captionTextView addSubview:button];
     self.contentView.layer.cornerRadius = self.calloutView.cornerRadius;
@@ -91,6 +101,7 @@
 
 - (void)updateInsets {
     if ([self.imageButton imageForState:UIControlStateNormal]) {
+        self.imageButton.hidden = NO;
         self.captionTextView.contentInset = ({
             UIEdgeInsets insets = self.originalInsets;
             insets.bottom += self.imageSize + 10;
@@ -98,6 +109,7 @@
         });
     }
     else {
+        self.imageButton.hidden = YES;
         self.captionTextView.contentInset = self.originalInsets;
     }
 }
@@ -109,12 +121,21 @@
 
 - (void)editCaption {
     [self.captionTextView becomeFirstResponder];
+    self.trashToolbar.hidden = NO;
+    [UIView animateWithDuration:0.3 animations:^{
+        self.trashToolbar.alpha = 1.0f;
+    }];
 }
 
 - (IBAction)doneEditing:(id)sender {
     if ([self.captionTextView isFirstResponder]) {
         [self.captionTextView resignFirstResponder];
     }
+    [UIView animateWithDuration:0.3 animations:^{
+        self.trashToolbar.alpha = 0;
+    } completion:^(BOOL finished) {
+        self.trashToolbar.hidden = YES;
+    }];
 }
 
 // TODO: viewWillDisappear et. al. are not being called correctly; I think they should be used here instead.
@@ -133,7 +154,7 @@
 }
 
 - (IBAction)sharePlace:(id)sender {
-    [self.captionTextView resignFirstResponder];
+    [self doneEditing:sender];
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[self.place] applicationActivities:nil];
     //exclude the airdrop action because it's incredibly fucking slow and noone uses it
     NSMutableArray *excludedTypes = [@[UIActivityTypePrint,
@@ -208,9 +229,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         [self updateInsets];
         return;
     }
-    if ([self.captionTextView isFirstResponder]) {
-        [self.captionTextView resignFirstResponder];
-    }
+    [self doneEditing:nil];
     UIImagePickerControllerSourceType sourceType;
     if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:NSLocalizedString(@"Take Photo", nil)]) {
         sourceType = UIImagePickerControllerSourceTypeCamera;
@@ -230,7 +249,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     [picker.presentingViewController dismissViewControllerAnimated:YES completion:^{
-        [self.captionTextView becomeFirstResponder];
+        [self editCaption];
     }];
 }
 
@@ -239,7 +258,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
     [self imageSelected:image];
     [picker.presentingViewController dismissViewControllerAnimated:YES completion:^{
-        [self.captionTextView becomeFirstResponder];
+        [self editCaption];
     }];
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
     if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
@@ -252,18 +271,18 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 #pragma mark UITextViewDelegate
 
 - (void)textViewDidChange:(UITextView *)textView {
-    NSCharacterSet *set = [NSCharacterSet newlineCharacterSet];
-    NSRange newLineRange = [textView.text rangeOfCharacterFromSet:set];
-    if (newLineRange.location != NSNotFound) {
-        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithAttributedString:self.captionTextView.attributedText];
-        [attributedString addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"AvenirNext-Regular" size:18.0f] range:NSMakeRange( newLineRange.location, textView.text.length - newLineRange.location)];
-        textView.attributedText = attributedString;
-    }
     self.imageButton.frame = ({
         CGRect rect = self.imageButton.frame;
         rect.origin.y = self.captionTextView.contentSize.height;
         rect;
     });
+}
+
+- (void)textViewDidBeginEditing:(UITextView *)textView {
+    self.trashToolbar.hidden = NO;
+    [UIView animateWithDuration:0.3 animations:^{
+        self.trashToolbar.alpha = 1.0f;
+    }];
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
