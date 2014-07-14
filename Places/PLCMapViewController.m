@@ -181,8 +181,9 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 
 - (void)mapStore:(PLCMapStore *)store didChangeMap:(PLCMap *)map {
     [self.mapView removeAnnotations:self.mapView.annotations];
-    [self.mapView addAnnotations:map.places.allObjects];
-    [self.mapView showAnnotations:map.places.allObjects animated:YES];
+    NSArray *annotations = [map activePlaces];
+    [self.mapView addAnnotations:annotations];
+    [self.mapView showAnnotations:annotations animated:YES];
 }
 
 #pragma mark -

@@ -11,6 +11,7 @@
 
 @interface PLCMap : _PLCMap<PLCFirebaseCoding>
 
+- (NSArray *)activePlaces;
 - (NSURL *)shareURL;
 
 @end
