@@ -9,6 +9,7 @@
 #import "PLCMapSelectionViewController.h"
 #import "PLCMapSelectionTransitionAnimator.h"
 #import "PLCMapSelectionTableViewController.h"
+#import "PLCPlaceSearchTableViewController.h"
 
 @interface PLCMapSelectionViewController ()
 @property(nonatomic, readwrite, weak)UIPanGestureRecognizer *gestureRecognizer;
@@ -31,16 +32,35 @@
     [self setupGestureRecognizer];
 }
 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    [super prepareForSegue:segue sender:sender];
+    if (self.embeddedConfigurationBlock) {
+        self.embeddedConfigurationBlock(segue.destinationViewController);
+    }
+    if ([segue.destinationViewController isKindOfClass:[UINavigationController class]]) {
+        UINavigationController *navController = segue.destinationViewController;
+        PLCMapSelectionTableViewController *tableViewController = [navController.viewControllers firstObject];
+        if ([tableViewController isKindOfClass:[PLCMapSelectionTableViewController class]]) {
+            self.scrollController = tableViewController;
+        }
+    }
+    if ([segue.destinationViewController isKindOfClass:[PLCPlaceSearchTableViewController class]]) {
+        PLCPlaceSearchTableViewController *controller = segue.destinationViewController;
+        if ([controller isKindOfClass:[PLCPlaceSearchTableViewController class]]) {
+            self.scrollController = controller;
+        }
+    }
+}
+
 - (void)setupGestureRecognizer {
     if (self.gestureRecognizer) {
         [self.view removeGestureRecognizer:self.gestureRecognizer];
         self.gestureRecognizer = nil;
     }
-    self.gestureRecognizer = nil;
     if ([self.transitioningDelegate isKindOfClass:[PLCMapSelectionTransitionAnimator class]]) {
         PLCMapSelectionTransitionAnimator *animator = (PLCMapSelectionTransitionAnimator *)self.transitioningDelegate;
         UIPanGestureRecognizer *recognizer = [[UIPanGestureRecognizer alloc] initWithTarget:animator action:@selector(panned:)];
-        recognizer.delegate = [self tableViewController];
+        recognizer.delegate = self.scrollController;
         self.gestureRecognizer = recognizer;
         [self.view addGestureRecognizer:recognizer];
     }
@@ -48,16 +68,7 @@
 
 - (void)setScrollEnabled:(BOOL)scrollEnabled {
     _scrollEnabled = scrollEnabled;
-    [self tableViewController].tableView.scrollEnabled = scrollEnabled;
-}
-
-- (PLCMapSelectionTableViewController *) tableViewController {
-    UINavigationController *navController = [self.childViewControllers firstObject];
-    PLCMapSelectionTableViewController *controller = [navController.viewControllers firstObject];
-    if ([controller isKindOfClass:[PLCMapSelectionTableViewController class]]) {
-        return controller;
-    }
-    return nil;
+    self.scrollController.scrollView.scrollEnabled = scrollEnabled;
 }
 
 @end

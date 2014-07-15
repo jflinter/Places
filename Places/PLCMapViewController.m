@@ -20,6 +20,7 @@
 #import <INTULocationManager/INTULocationManager.h>
 #import "PLCMap.h"
 #import "PLCMapStore.h"
+#import "PLCPlaceSearchTableViewController.h"
 
 static NSString * const PLCMapPinReuseIdentifier = @"PLCMapPinReuseIdentifier";
 static CGFloat const PLCMapPanAnimationDuration = 0.3f;
@@ -306,6 +307,11 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     }
 }
 
+- (IBAction)openSearch:(id)sender {
+    
+}
+
+
 - (IBAction)showLocation:(id)sender {
     [self determineLocation:^{
         if (self.mapView.userLocation) {
@@ -349,6 +355,11 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     if ([segue.destinationViewController isKindOfClass:[PLCMapSelectionViewController class]]) {
         [self dismissAllCalloutViewControllers];
         PLCMapSelectionViewController *controller = (PLCMapSelectionViewController *)segue.destinationViewController;
+        controller.embeddedConfigurationBlock = ^void(UIViewController *embedded) {
+            if ([embedded isKindOfClass:[PLCPlaceSearchTableViewController class]]) {
+                [((PLCPlaceSearchTableViewController *)embedded) setSearchRegion:self.mapView.region];
+            }
+        };
         self.animator = [[PLCMapSelectionTransitionAnimator alloc] initWithParentViewController:controller];
         self.animator.presenting = YES;
         controller.transitioningDelegate = self.animator;

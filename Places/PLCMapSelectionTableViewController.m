@@ -101,4 +101,9 @@
     return self.tableView.contentOffset.y <= 0 && point.y > 0;
 }
 
+#pragma mark - PLCScrollViewController
+- (UIScrollView *)scrollView {
+    return self.tableView;
+}
+
 @end

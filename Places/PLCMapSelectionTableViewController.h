@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PLCScrollViewController.h"
 
-@interface PLCMapSelectionTableViewController : UITableViewController<UIGestureRecognizerDelegate>
+@interface PLCMapSelectionTableViewController : UITableViewController<UIGestureRecognizerDelegate, PLCScrollViewController>
 @end

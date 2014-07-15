@@ -18,6 +18,12 @@
 #define COCOAPODS_VERSION_MINOR_Firebase 1
 #define COCOAPODS_VERSION_PATCH_Firebase 7
 
+// Foursquare-API-v2
+#define COCOAPODS_POD_AVAILABLE_Foursquare_API_v2
+#define COCOAPODS_VERSION_MAJOR_Foursquare_API_v2 1
+#define COCOAPODS_VERSION_MINOR_Foursquare_API_v2 4
+#define COCOAPODS_VERSION_PATCH_Foursquare_API_v2 5
+
 // INTULocationManager
 #define COCOAPODS_POD_AVAILABLE_INTULocationManager
 #define COCOAPODS_VERSION_MAJOR_INTULocationManager 1
