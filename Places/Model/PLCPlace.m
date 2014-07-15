@@ -10,6 +10,7 @@
 #import "MKPlacemark+LocationSharing.h"
 #import "NSMutableDictionary+NilSafe.h"
 #import "PLCMap.h"
+#import "PLCGoogleMapsActivity.h"
 
 @implementation PLCPlace
 
@@ -94,6 +95,9 @@
     }
     if ([activityType isEqualToString:UIActivityTypeSaveToCameraRoll]) {
         return self.image;
+    }
+    if ([activityType isEqualToString:PLCGoogleMapsActivityType]) {
+        return [[MKPlacemark alloc] initWithCoordinate:self.coordinate addressDictionary:self.geocodedAddress];
     }
     else {
         return self.caption;

@@ -12,6 +12,7 @@
 #import "PLCPhotoStore.h"
 #import "PLCPlaceStore.h"
 #import "PLCPlaceTextStorage.h"
+#import "PLCGoogleMapsActivity.h"
 #import <JTSImageViewController/JTSImageViewController.h>
 
 @interface PLCCalloutViewController() <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate>
@@ -155,7 +156,9 @@
 
 - (IBAction)sharePlace:(id)sender {
     [self doneEditing:sender];
-    UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[self.place] applicationActivities:nil];
+    MKPlacemark *placemark = [[MKPlacemark alloc] initWithCoordinate:self.place.coordinate addressDictionary:self.place.geocodedAddress];
+    MKMapItem *mapItem = [[MKMapItem alloc] initWithPlacemark:placemark];
+    UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[self.place, mapItem] applicationActivities:@[[PLCGoogleMapsActivity new]]];
     //exclude the airdrop action because it's incredibly fucking slow and noone uses it
     NSMutableArray *excludedTypes = [@[UIActivityTypePrint,
                                        UIActivityTypeAirDrop] mutableCopy];
