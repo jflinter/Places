@@ -233,16 +233,15 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         return;
     }
     [self doneEditing:nil];
-    UIImagePickerControllerSourceType sourceType;
+    UIImagePickerController *imagePicker = [UIImagePickerController new];
     if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:NSLocalizedString(@"Take Photo", nil)]) {
-        sourceType = UIImagePickerControllerSourceTypeCamera;
+        imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        imagePicker.cameraFlashMode = UIImagePickerControllerCameraFlashModeOff;
     }
     else {
-        sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     }
-    UIImagePickerController *imagePicker = [UIImagePickerController new];
     imagePicker.delegate = self;
-    imagePicker.sourceType = sourceType;
     imagePicker.allowsEditing = YES;
     [self.parentViewController presentViewController:imagePicker animated:YES completion:nil];
 }
