@@ -4,6 +4,7 @@ PODS:
   - Foursquare-API-v2 (1.4.5)
   - INTULocationManager (1.1.0)
   - JTSImageViewController (1.1.1)
+  - Reachability (3.1.1)
   - Reveal-iOS-SDK (1.0.4)
 
 DEPENDENCIES:
@@ -12,6 +13,7 @@ DEPENDENCIES:
   - Foursquare-API-v2
   - INTULocationManager
   - JTSImageViewController
+  - Reachability
   - Reveal-iOS-SDK
 
 SPEC CHECKSUMS:
@@ -20,6 +22,7 @@ SPEC CHECKSUMS:
   Foursquare-API-v2: 31b9b6a9e68bc914bae4d3e20d65dc2826f4394d
   INTULocationManager: 41506443733adccd44c0f00b44837d4ef2fda246
   JTSImageViewController: e8167cffe5ffdb9203a8931d41ba5a4dd5ac5f5a
+  Reachability: 8e9635e3cb4f98e7f825e51147f677ecc694d0e7
   Reveal-iOS-SDK: d3c8e109d42219daaa7a6e1ad2de34f0bdbb7a88
 
 COCOAPODS: 0.33.1

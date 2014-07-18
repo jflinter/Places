@@ -11,6 +11,7 @@
 #import "NSMutableDictionary+NilSafe.h"
 #import "PLCMap.h"
 #import "PLCGoogleMapsActivity.h"
+#import "PLCPlaceGeocoder.h"
 
 @implementation PLCPlace
 
@@ -19,21 +20,6 @@
     if (!self.uuid) {
         self.uuid = [[NSUUID UUID] UUIDString];
     }
-}
-
-#pragma mark -
-#pragma mark Geocoding
-
-- (void) geocode {
-    CLGeocoder *geocoder = [[CLGeocoder alloc] init];
-    CLLocation *location = [[CLLocation alloc] initWithLatitude:self.latitude.doubleValue longitude:self.longitude.doubleValue];
-    [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
-        if (!error) {
-            CLPlacemark *placemark = [placemarks firstObject];
-            self.geocodedAddress = [placemark.addressDictionary mutableCopy];
-            [self.managedObjectContext save:nil];
-        }
-    }];
 }
 
 #pragma mark MKAnnotation
@@ -53,7 +39,7 @@
 - (void)setCoordinate:(CLLocationCoordinate2D)newCoordinate {
     self.latitude = @(newCoordinate.latitude);
     self.longitude = @(newCoordinate.longitude);
-    [self geocode];
+    [[PLCPlaceGeocoder sharedInstance] reverseGeocodePlace:self];
 }
 
 // The MKAnnotation protocol dictates that the coordinate property be KVO-compliant.

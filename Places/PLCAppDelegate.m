@@ -9,6 +9,7 @@
 #import "PLCAppDelegate.h"
 #import "PLCMapViewController.h"
 #import "PLCUserStore.h"
+#import "PLCPlaceGeocoder.h"
 #import <Firebase/Firebase.h>
 #import <Foursquare-API-v2/Foursquare2.h>
 
@@ -22,6 +23,7 @@
     // beta offline persistence for firebase queries - will retry offline saves after e.g. app termination
     [Firebase setOption:@"persistence" to:@YES];
     [[PLCUserStore sharedInstance] beginICloudMonitoring];
+    [[PLCPlaceGeocoder sharedInstance] resumeGeocoding];
     return YES;
 }
 

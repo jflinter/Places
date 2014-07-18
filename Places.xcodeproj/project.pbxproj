@@ -41,6 +41,9 @@
 		A06A0F3419742DEA00ABD4A9 /* PLCPlaceSearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = A06A0F3319742DEA00ABD4A9 /* PLCPlaceSearchResult.m */; };
 		A06A0F371974527800ABD4A9 /* PLCPlaceSearchResultTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A06A0F361974527800ABD4A9 /* PLCPlaceSearchResultTableViewCell.m */; };
 		A06A0F3A1974E2DB00ABD4A9 /* PLCGoogleMapsActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = A06A0F391974E2DB00ABD4A9 /* PLCGoogleMapsActivity.m */; };
+		A06A0F3D197849CC00ABD4A9 /* PLCGeocodingService.m in Sources */ = {isa = PBXBuildFile; fileRef = A06A0F3C197849CC00ABD4A9 /* PLCGeocodingService.m */; };
+		A06A0F4019784A9500ABD4A9 /* PLCGeocodingOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = A06A0F3F19784A9500ABD4A9 /* PLCGeocodingOperation.m */; };
+		A06A0F461978945000ABD4A9 /* PLCPlaceGeocoder.m in Sources */ = {isa = PBXBuildFile; fileRef = A06A0F451978945000ABD4A9 /* PLCPlaceGeocoder.m */; };
 		A0938F97191DD7CC0021CF7D /* NSURLComponents+QueryDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = A0938F96191DD7CC0021CF7D /* NSURLComponents+QueryDictionary.m */; };
 		A0938F9A191DD7F90021CF7D /* MKPlacemark+LocationSharing.m in Sources */ = {isa = PBXBuildFile; fileRef = A0938F99191DD7F90021CF7D /* MKPlacemark+LocationSharing.m */; };
 		A0938F9E19213C660021CF7D /* PLCTemplateButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A0938F9D19213C660021CF7D /* PLCTemplateButton.m */; };
@@ -139,6 +142,12 @@
 		A06A0F361974527800ABD4A9 /* PLCPlaceSearchResultTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCPlaceSearchResultTableViewCell.m; sourceTree = "<group>"; };
 		A06A0F381974E2DB00ABD4A9 /* PLCGoogleMapsActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCGoogleMapsActivity.h; sourceTree = "<group>"; };
 		A06A0F391974E2DB00ABD4A9 /* PLCGoogleMapsActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCGoogleMapsActivity.m; sourceTree = "<group>"; };
+		A06A0F3B197849CC00ABD4A9 /* PLCGeocodingService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCGeocodingService.h; sourceTree = "<group>"; };
+		A06A0F3C197849CC00ABD4A9 /* PLCGeocodingService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCGeocodingService.m; sourceTree = "<group>"; };
+		A06A0F3E19784A9500ABD4A9 /* PLCGeocodingOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCGeocodingOperation.h; sourceTree = "<group>"; };
+		A06A0F3F19784A9500ABD4A9 /* PLCGeocodingOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCGeocodingOperation.m; sourceTree = "<group>"; };
+		A06A0F441978945000ABD4A9 /* PLCPlaceGeocoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCPlaceGeocoder.h; sourceTree = "<group>"; };
+		A06A0F451978945000ABD4A9 /* PLCPlaceGeocoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCPlaceGeocoder.m; sourceTree = "<group>"; };
 		A0938F95191DD7CC0021CF7D /* NSURLComponents+QueryDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURLComponents+QueryDictionary.h"; sourceTree = "<group>"; };
 		A0938F96191DD7CC0021CF7D /* NSURLComponents+QueryDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURLComponents+QueryDictionary.m"; sourceTree = "<group>"; };
 		A0938F98191DD7F90021CF7D /* MKPlacemark+LocationSharing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKPlacemark+LocationSharing.h"; sourceTree = "<group>"; };
@@ -407,6 +416,12 @@
 				A0C0422A1939B94B0003630E /* NSMutableDictionary+NilSafe.m */,
 				A06A0F381974E2DB00ABD4A9 /* PLCGoogleMapsActivity.h */,
 				A06A0F391974E2DB00ABD4A9 /* PLCGoogleMapsActivity.m */,
+				A06A0F3B197849CC00ABD4A9 /* PLCGeocodingService.h */,
+				A06A0F3C197849CC00ABD4A9 /* PLCGeocodingService.m */,
+				A06A0F3E19784A9500ABD4A9 /* PLCGeocodingOperation.h */,
+				A06A0F3F19784A9500ABD4A9 /* PLCGeocodingOperation.m */,
+				A06A0F441978945000ABD4A9 /* PLCPlaceGeocoder.h */,
+				A06A0F451978945000ABD4A9 /* PLCPlaceGeocoder.m */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -593,15 +608,18 @@
 				A06A0F301973936800ABD4A9 /* PLCPlaceSearchTableViewController.m in Sources */,
 				A03F558B192F08DE0015C1D1 /* PLCMapSelectionTransitionAnimator.m in Sources */,
 				A03F5582192EF5060015C1D1 /* PLCMapStore.m in Sources */,
+				A06A0F3D197849CC00ABD4A9 /* PLCGeocodingService.m in Sources */,
 				A06A0F371974527800ABD4A9 /* PLCPlaceSearchResultTableViewCell.m in Sources */,
 				7E54FEB018FFA94B002E2AFC /* PLCManagedObject.m in Sources */,
 				A0938F9E19213C660021CF7D /* PLCTemplateButton.m in Sources */,
+				A06A0F461978945000ABD4A9 /* PLCPlaceGeocoder.m in Sources */,
 				A0AEC2E8190CC48D006D20DE /* PLCPhoto.m in Sources */,
 				A03F5588192F08080015C1D1 /* PLCMapPresentationSegue.m in Sources */,
 				A0F053211903085800BD610C /* PLCMapView.m in Sources */,
 				7E54FE9118FF9854002E2AFC /* _PLCPlace.m in Sources */,
 				A03F5597192F1B4E0015C1D1 /* PLCMapSelectionViewController.m in Sources */,
 				A0938F97191DD7CC0021CF7D /* NSURLComponents+QueryDictionary.m in Sources */,
+				A06A0F4019784A9500ABD4A9 /* PLCGeocodingOperation.m in Sources */,
 				7E54FE6418FF9392002E2AFC /* PLCAppDelegate.m in Sources */,
 				A0F0531E19025E6300BD610C /* PLCCalloutViewController.m in Sources */,
 				A03F5591192F124B0015C1D1 /* UIImage+ImageEffects.m in Sources */,
