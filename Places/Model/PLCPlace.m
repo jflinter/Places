@@ -98,6 +98,7 @@
     [dictionary setValueNilSafe:self.latitude forKey:PLCPlaceAttributes.latitude];
     [dictionary setValueNilSafe:self.longitude forKey:PLCPlaceAttributes.longitude];
     [dictionary setValueNilSafe:self.geocodedAddress forKey:PLCPlaceAttributes.geocodedAddress];
+    [dictionary setValueNilSafe:@(self.deletedAt.timeIntervalSinceReferenceDate) forKey:@"PLCDeletedAt"];
     return [dictionary copy];
 }
 
