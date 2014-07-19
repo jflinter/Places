@@ -1,6 +1,6 @@
 PODS:
   - BDDROneFingerZoomGestureRecognizer (1.0.2)
-  - Firebase (1.1.7)
+  - Firebase (1.1.10)
   - Foursquare-API-v2 (1.4.5)
   - INTULocationManager (1.1.0)
   - JTSImageViewController (1.1.1)
@@ -18,7 +18,7 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   BDDROneFingerZoomGestureRecognizer: 44f79476001ffaa189795f425345d6508134561d
-  Firebase: 88d2a0f4c0c8f2d65a732bb2f7ec9b9c6e72876f
+  Firebase: 299103c06b69ec2efe2478241c187d0d143c4fad
   Foursquare-API-v2: 31b9b6a9e68bc914bae4d3e20d65dc2826f4394d
   INTULocationManager: 41506443733adccd44c0f00b44837d4ef2fda246
   JTSImageViewController: e8167cffe5ffdb9203a8931d41ba5a4dd5ac5f5a

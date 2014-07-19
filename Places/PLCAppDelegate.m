@@ -22,6 +22,11 @@
     
     // beta offline persistence for firebase queries - will retry offline saves after e.g. app termination
     [Firebase setOption:@"persistence" to:@YES];
+//    removes outstanding puts if you have to debug them
+//    NSURL *firebaseURL = [[[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:YES error:NULL] URLByAppendingPathComponent:@"firebase"];
+//    [[NSFileManager defaultManager] removeItemAtURL:firebaseURL error:nil];
+    
+    
     [[PLCUserStore sharedInstance] beginICloudMonitoring];
     [[PLCPlaceGeocoder sharedInstance] resumeGeocoding];
     return YES;
