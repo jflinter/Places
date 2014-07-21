@@ -49,6 +49,7 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     [self.mapView addGestureRecognizer:[self addPlaceGestureRecognizer]];
     self.mapView.rotateEnabled = NO;
     self.mapView.showsPointsOfInterest = NO;
+    self.navigationItem.title = [PLCMapStore sharedInstance].selectedMap.name;
     [PLCMapStore sharedInstance].delegate = self;
 }
 
@@ -338,6 +339,14 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     }];
 }
 
+- (IBAction)shareMap:(id)sender {
+    UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[[[PLCMapStore sharedInstance].selectedMap shareURL]] applicationActivities:nil];
+    //exclude the airdrop action because it's incredibly fucking slow and noone uses it
+    activityViewController.excludedActivityTypes = @[UIActivityTypePrint,
+                                                     UIActivityTypeAirDrop];
+    [self presentViewController:activityViewController animated:YES completion:nil];
+}
+
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
     userLocation.title = @"";
     
@@ -372,6 +381,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
         _chromeHidden = chromeHidden;
         [self.navigationController setToolbarHidden:chromeHidden animated:YES];
         [[UIApplication sharedApplication] setStatusBarHidden:chromeHidden withAnimation:UIStatusBarAnimationSlide];
+        [self.navigationController setNavigationBarHidden:chromeHidden animated:YES];
     }
 }
 

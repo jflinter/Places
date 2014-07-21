@@ -54,7 +54,6 @@
     
     if (isPresenting) {
         calloutView.transform = CGAffineTransformMakeScale(0.001f, 0.001f);
-        calloutView.alpha = 0.0f;
         
         [annotationView addSubview:calloutView];
         
@@ -64,7 +63,6 @@
               initialSpringVelocity:0.0f
                             options:0
                          animations:^{
-                             calloutView.alpha = 1.0f;
                              calloutView.transform = CGAffineTransformIdentity;
                          }
                          completion:^(BOOL finished) {
@@ -80,10 +78,10 @@
               initialSpringVelocity:0.0f
                             options:UIViewAnimationOptionAllowUserInteraction
                          animations:^{
-                             calloutView.alpha = 0.0f;
-                             calloutView.transform = CGAffineTransformMakeScale(0.1f, 0.1f);
+                             calloutView.transform = CGAffineTransformMakeScale(0.01f, 0.01f);
                          }
                          completion:^(BOOL finished) {
+                             [calloutView removeFromSuperview];
                              [transitionContext completeTransition:finished];
                              if (completion) {
                                  completion();

@@ -100,6 +100,10 @@
     }
 }
 
+- (void)dealloc {
+    [self.captionTextView removeObserver:self forKeyPath:@"contentSize"];
+}
+
 - (void)updateInsets {
     if ([self.imageButton imageForState:UIControlStateNormal]) {
         self.imageButton.hidden = NO;
