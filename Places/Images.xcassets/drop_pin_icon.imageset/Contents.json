@@ -3,12 +3,12 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "Google Maps.png"
+      "filename" : "drop_pin_icon.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "Google Maps@2x.png"
+      "filename" : "drop_pin_icon@2x.png"
     }
   ],
   "info" : {

@@ -277,7 +277,7 @@
                         </constraints>
                     </view>
                     <toolbarItems>
-                        <barButtonItem image="753-signpost" id="CtE-Dj-rlY">
+                        <barButtonItem image="854-list" id="CtE-Dj-rlY">
                             <connections>
                                 <segue destination="wN9-sT-jBC" kind="custom" customClass="PLCMapPresentationSegue" id="oTJ-78-Rzp"/>
                             </connections>
@@ -290,7 +290,7 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="37x-vm-QHz"/>
-                        <barButtonItem image="722-location-pin" id="Sof-A0-rxF">
+                        <barButtonItem image="drop_pin_icon" id="Sof-A0-rxF">
                             <connections>
                                 <action selector="dropPin:" destination="OId-a2-hAa" id="Kgw-p8-5rc"/>
                             </connections>
@@ -600,10 +600,10 @@
     </scenes>
     <resources>
         <image name="708-search" width="28" height="28"/>
-        <image name="722-location-pin" width="19" height="28"/>
         <image name="723-location-arrow" width="28" height="28"/>
-        <image name="753-signpost" width="28" height="28"/>
         <image name="765-arrow-left" width="14" height="28"/>
+        <image name="854-list" width="26" height="16"/>
+        <image name="drop_pin_icon" width="31" height="32"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
