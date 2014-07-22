@@ -53,6 +53,22 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     [PLCMapStore sharedInstance].delegate = self;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        self.chromeHidden = YES;
+    });
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        [self setChromeHidden:NO animated:YES];
+    });
+}
+
 #pragma mark -
 #pragma mark Map view delegate
 
@@ -86,7 +102,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     if (view.annotation == mapView.userLocation) {
         return;
     }
-    self.chromeHidden = YES;
+    [self setChromeHidden:YES animated:YES];
     [self dismissAllCalloutViewControllers];
     
     void (^afterCallout)() = ^{
@@ -126,7 +142,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
             [self dismissCalloutViewController:calloutViewController completion:nil];
         }
         if (!self.mapView.selectedAnnotations.count) {
-            self.chromeHidden = NO;
+            [self setChromeHidden:NO animated:YES];
         }
     });
 }
@@ -186,6 +202,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     NSArray *annotations = [map activePlaces];
     [self.mapView addAnnotations:annotations];
     [self.mapView showAnnotations:annotations animated:YES];
+    self.navigationItem.title = map.name;
 }
 
 #pragma mark -
@@ -377,11 +394,21 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 }
 
 - (void)setChromeHidden:(BOOL)chromeHidden {
+    [self setChromeHidden:chromeHidden animated:NO];
+}
+
+- (void)setChromeHidden:(BOOL)chromeHidden
+               animated:(BOOL)animated {
     if (_chromeHidden != chromeHidden) {
         _chromeHidden = chromeHidden;
-        [self.navigationController setToolbarHidden:chromeHidden animated:YES];
-        [[UIApplication sharedApplication] setStatusBarHidden:chromeHidden withAnimation:UIStatusBarAnimationSlide];
-        [self.navigationController setNavigationBarHidden:chromeHidden animated:YES];
+        [self.navigationController setToolbarHidden:chromeHidden animated:animated];
+        if (animated) {
+            [[UIApplication sharedApplication] setStatusBarHidden:chromeHidden withAnimation:UIStatusBarAnimationSlide];
+        }
+        else {
+            [[UIApplication sharedApplication] setStatusBarHidden:chromeHidden];
+        }
+        [self.navigationController setNavigationBarHidden:chromeHidden animated:animated];
     }
 }
 
