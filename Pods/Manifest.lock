@@ -6,6 +6,7 @@ PODS:
   - JTSImageViewController (1.1.1)
   - Reachability (3.1.1)
   - Reveal-iOS-SDK (1.0.4)
+  - SWTableViewCell (0.3.0)
 
 DEPENDENCIES:
   - BDDROneFingerZoomGestureRecognizer (~> 1.0)
@@ -15,6 +16,7 @@ DEPENDENCIES:
   - JTSImageViewController
   - Reachability
   - Reveal-iOS-SDK
+  - SWTableViewCell
 
 SPEC CHECKSUMS:
   BDDROneFingerZoomGestureRecognizer: 44f79476001ffaa189795f425345d6508134561d
@@ -24,5 +26,6 @@ SPEC CHECKSUMS:
   JTSImageViewController: e8167cffe5ffdb9203a8931d41ba5a4dd5ac5f5a
   Reachability: 8e9635e3cb4f98e7f825e51147f677ecc694d0e7
   Reveal-iOS-SDK: d3c8e109d42219daaa7a6e1ad2de34f0bdbb7a88
+  SWTableViewCell: 1725f7607ce4c154264c18aeb78e4636b11b0b29
 
 COCOAPODS: 0.33.1
