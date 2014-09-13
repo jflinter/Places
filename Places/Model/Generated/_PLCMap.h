@@ -5,6 +5,7 @@
 #import "PLCManagedObject.h"
 
 extern const struct PLCMapAttributes {
+	__unsafe_unretained NSString *deletedAt;
 	__unsafe_unretained NSString *name;
 	__unsafe_unretained NSString *selected;
 	__unsafe_unretained NSString *uuid;
@@ -23,6 +24,7 @@ extern const struct PLCMapFetchedProperties {
 
 
 
+
 @interface PLCMapID : NSManagedObjectID {}
 @end
 
@@ -31,6 +33,16 @@ extern const struct PLCMapFetchedProperties {
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 - (PLCMapID*)objectID;
+
+
+
+
+
+@property (nonatomic, strong) NSDate* deletedAt;
+
+
+
+//- (BOOL)validateDeletedAt:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -90,6 +102,12 @@ extern const struct PLCMapFetchedProperties {
 @end
 
 @interface _PLCMap (CoreDataGeneratedPrimitiveAccessors)
+
+
+- (NSDate*)primitiveDeletedAt;
+- (void)setPrimitiveDeletedAt:(NSDate*)value;
+
+
 
 
 - (NSString*)primitiveName;

@@ -90,6 +90,10 @@
     }
 }
 
+- (PLCPlaceType)type {
+    return (PLCPlaceType)self.placeType.unsignedIntegerValue;
+}
+
 #pragma mark - PLCFirebaseCoding
 
 - (NSDictionary *)firebaseObject {

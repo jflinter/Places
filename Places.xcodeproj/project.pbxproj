@@ -148,6 +148,7 @@
 		A06A0F3F19784A9500ABD4A9 /* PLCGeocodingOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCGeocodingOperation.m; sourceTree = "<group>"; };
 		A06A0F441978945000ABD4A9 /* PLCPlaceGeocoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCPlaceGeocoder.h; sourceTree = "<group>"; };
 		A06A0F451978945000ABD4A9 /* PLCPlaceGeocoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCPlaceGeocoder.m; sourceTree = "<group>"; };
+		A072B9A6198647DB00DC1F44 /* Places 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Places 3.xcdatamodel"; sourceTree = "<group>"; };
 		A0938F95191DD7CC0021CF7D /* NSURLComponents+QueryDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURLComponents+QueryDictionary.h"; sourceTree = "<group>"; };
 		A0938F96191DD7CC0021CF7D /* NSURLComponents+QueryDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURLComponents+QueryDictionary.m"; sourceTree = "<group>"; };
 		A0938F98191DD7F90021CF7D /* MKPlacemark+LocationSharing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKPlacemark+LocationSharing.h"; sourceTree = "<group>"; };
@@ -156,6 +157,7 @@
 		A0938F9D19213C660021CF7D /* PLCTemplateButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCTemplateButton.m; sourceTree = "<group>"; };
 		A09932641972084300BB4AB1 /* PLCPlaceTextStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCPlaceTextStorage.h; sourceTree = "<group>"; };
 		A09932651972084300BB4AB1 /* PLCPlaceTextStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCPlaceTextStorage.m; sourceTree = "<group>"; };
+		A0AB9B3319C40E3200CD2186 /* Places 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Places 4.xcdatamodel"; sourceTree = "<group>"; };
 		A0AEC2E3190CC482006D20DE /* _PLCPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _PLCPhoto.h; sourceTree = "<group>"; };
 		A0AEC2E4190CC482006D20DE /* _PLCPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _PLCPhoto.m; sourceTree = "<group>"; };
 		A0AEC2E6190CC48D006D20DE /* PLCPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCPhoto.h; sourceTree = "<group>"; };
@@ -890,10 +892,12 @@
 		7E54FE8418FF9450002E2AFC /* Places.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				A072B9A6198647DB00DC1F44 /* Places 3.xcdatamodel */,
+				A0AB9B3319C40E3200CD2186 /* Places 4.xcdatamodel */,
 				7E500851191B46C4003634DF /* Places 2.xcdatamodel */,
 				7E54FE8518FF9450002E2AFC /* Places.xcdatamodel */,
 			);
-			currentVersion = 7E500851191B46C4003634DF /* Places 2.xcdatamodel */;
+			currentVersion = A0AB9B3319C40E3200CD2186 /* Places 4.xcdatamodel */;
 			path = Places.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

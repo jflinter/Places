@@ -77,12 +77,24 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     if (annotation == mapView.userLocation) {
         return nil; // this makes the blue dot
     }
+    PLCPlace *place = (PLCPlace *)annotation;
     MKAnnotationView *annotationView = [mapView dequeueReusableAnnotationViewWithIdentifier:PLCMapPinReuseIdentifier];
     if (!annotationView) {
         PLCPinAnnotationView *pinAnnotation = [[PLCPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:PLCMapPinReuseIdentifier];
         pinAnnotation.animatesDrop = YES;
         pinAnnotation.draggable = YES;
         pinAnnotation.canShowCallout = NO;
+        MKPinAnnotationColor color;
+        switch (place.type) {
+            case PLCPlaceTypeDo:
+                color = MKPinAnnotationColorGreen;
+                break;
+            case PLCPlaceTypeDrink:
+                color = MKPinAnnotationColorRed;
+            case PLCPlaceTypeEat:
+                color = MKPinAnnotationColorPurple;
+        }
+        pinAnnotation.pinColor = color;
         annotationView = pinAnnotation;
     }
     return annotationView;

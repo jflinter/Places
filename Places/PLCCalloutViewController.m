@@ -24,6 +24,7 @@
 @property (nonatomic, weak) IBOutlet UIScrollView *contentView;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
 @property (nonatomic) UIEdgeInsets originalInsets;
+@property (weak, nonatomic) IBOutlet UITextField *placeTypeField;
 @property (weak, nonatomic) IBOutlet UIButton *addressButton;
 @property (nonatomic, weak) UIButton *imageButton;
 @property (nonatomic) PLCPlaceTextStorage *textStorage;

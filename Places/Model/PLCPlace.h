@@ -9,6 +9,13 @@
 #import "_PLCPlace.h"
 #import "PLCFirebaseCoding.h"
 
+typedef NS_ENUM(NSUInteger, PLCPlaceType) {
+    PLCPlaceTypeEat,
+    PLCPlaceTypeDrink,
+    PLCPlaceTypeDo,
+};
+
 @interface PLCPlace : _PLCPlace<MKAnnotation, UIActivityItemSource, PLCFirebaseCoding>
 - (UIImage *)image;
+- (PLCPlaceType)type;
 @end

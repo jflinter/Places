@@ -23,7 +23,7 @@
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
-    self.pinColor = selected ? MKPinAnnotationColorGreen : MKPinAnnotationColorRed;
+//    self.pinColor = selected ? MKPinAnnotationColorGreen : MKPinAnnotationColorRed;
 }
 
 // measured by subclassing animationDidStart:

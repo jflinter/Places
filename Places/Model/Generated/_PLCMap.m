@@ -4,6 +4,7 @@
 #import "_PLCMap.h"
 
 const struct PLCMapAttributes PLCMapAttributes = {
+	.deletedAt = @"deletedAt",
 	.name = @"name",
 	.selected = @"selected",
 	.uuid = @"uuid",
@@ -50,6 +51,13 @@ const struct PLCMapFetchedProperties PLCMapFetchedProperties = {
 
 	return keyPaths;
 }
+
+
+
+
+@dynamic deletedAt;
+
+
 
 
 

@@ -9,6 +9,7 @@ const struct PLCPlaceAttributes PLCPlaceAttributes = {
 	.geocodedAddress = @"geocodedAddress",
 	.latitude = @"latitude",
 	.longitude = @"longitude",
+	.placeType = @"placeType",
 	.uuid = @"uuid",
 };
 
@@ -53,6 +54,11 @@ const struct PLCPlaceFetchedProperties PLCPlaceFetchedProperties = {
 	}
 	if ([key isEqualToString:@"longitudeValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"longitude"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
+	if ([key isEqualToString:@"placeTypeValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"placeType"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
@@ -130,6 +136,32 @@ const struct PLCPlaceFetchedProperties PLCPlaceFetchedProperties = {
 
 - (void)setPrimitiveLongitudeValue:(double)value_ {
 	[self setPrimitiveLongitude:[NSNumber numberWithDouble:value_]];
+}
+
+
+
+
+
+@dynamic placeType;
+
+
+
+- (int16_t)placeTypeValue {
+	NSNumber *result = [self placeType];
+	return [result shortValue];
+}
+
+- (void)setPlaceTypeValue:(int16_t)value_ {
+	[self setPlaceType:[NSNumber numberWithShort:value_]];
+}
+
+- (int16_t)primitivePlaceTypeValue {
+	NSNumber *result = [self primitivePlaceType];
+	return [result shortValue];
+}
+
+- (void)setPrimitivePlaceTypeValue:(int16_t)value_ {
+	[self setPrimitivePlaceType:[NSNumber numberWithShort:value_]];
 }
 
 
