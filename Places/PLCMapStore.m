@@ -167,4 +167,9 @@ static NSString * const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidC
     [self.delegates removeObject:delegate];
 }
 
+- (void)save {
+    [[self managedObjectContext] save:nil];
+    [self.delegate mapStore:self didChangeMap:self.selectedMap];
+}
+
 @end

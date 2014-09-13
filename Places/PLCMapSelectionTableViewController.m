@@ -7,12 +7,11 @@
 //
 
 #import "PLCMapSelectionTableViewController.h"
-#import "PLCMapDetailViewController.h"
 #import "PLCMap.h"
 #import "PLCMapStore.h"
-#import <SWTableViewCell/SWTableViewCell.h>
+#import "PLCMapSelectionTableViewCell.h"
 
-@interface PLCMapSelectionTableViewController()<SWTableViewCellDelegate, NSFetchedResultsControllerDelegate>
+@interface PLCMapSelectionTableViewController()<SWTableViewCellDelegate, NSFetchedResultsControllerDelegate, UITextFieldDelegate>
 @end
 
 @implementation PLCMapSelectionTableViewController
@@ -69,24 +68,37 @@
     if (indexPath.section == 0) {
         return [tableView dequeueReusableCellWithIdentifier:@"PLCMapSelectionEditableCellReuseIdentifier" forIndexPath:indexPath];
     }
-    SWTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PLCMapSelectionTableCellReuseIdentifier" forIndexPath:indexPath];
+    PLCMapSelectionTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PLCMapSelectionTableCellReuseIdentifier" forIndexPath:indexPath];
     [self configureCell:cell forRowAtIndexPath:indexPath];
     return cell;
 }
 
-- (void)configureCell:(SWTableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)configureCell:(PLCMapSelectionTableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
         return;
     }
     PLCMap *map = [[PLCMapStore sharedInstance] mapAtIndex:(NSUInteger)indexPath.row];
     cell.textLabel.text = map.name;
+    cell.editTitleTextField.text = map.name;
+    cell.editTitleTextField.alpha = 0;
+    cell.editTitleTextField.hidden = YES;
+    cell.editTitleTextField.delegate = self;
     cell.delegate = self;
+    
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.backgroundColor = [UIColor colorWithRed:249.0f/255.0f green:58.0f/255.0f blue:47.0f/255.0f alpha:1.0f];
-    [button setTitle:NSLocalizedString(@"Delete", nil) forState:UIControlStateNormal];
+    button.backgroundColor = [UIColor colorWithRed:131.0f/255.0f green:219.0f/255.0f blue:242.0f/255.0f alpha:1.0f];
+    [button setTitle:NSLocalizedString(@"Edit Title", nil) forState:UIControlStateNormal];
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [button.titleLabel setFont:[UIFont fontWithName:@"AvenirNext-Regular" size:16.0f]];
-    cell.rightUtilityButtons = @[button];
+    
+    UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    deleteButton.backgroundColor = [UIColor colorWithRed:249.0f/255.0f green:58.0f/255.0f blue:47.0f/255.0f alpha:1.0f];
+    [deleteButton setTitle:NSLocalizedString(@"Delete", nil) forState:UIControlStateNormal];
+    [deleteButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [deleteButton.titleLabel setFont:[UIFont fontWithName:@"AvenirNext-Regular" size:16.0f]];
+    
+    
+    cell.rightUtilityButtons = @[button, deleteButton];
     if (map.selectedValue) {
         cell.textLabel.font = [UIFont fontWithName:@"AvenirNext-DemiBold" size:18.0f];
     }
@@ -106,13 +118,23 @@
 #pragma mark - SWTableViewCellDelegate
 
 -(void)swipeableTableViewCell:(SWTableViewCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)index {
+    NSIndexPath *indexPathForSelection = [self.tableView indexPathForCell:cell];
     [cell hideUtilityButtonsAnimated:YES];
+    if (index == 0) {
+        PLCMapSelectionTableViewCell *cast = (PLCMapSelectionTableViewCell *)cell;
+        cast.editTitleTextField.hidden = NO;
+        [UIView animateWithDuration:0.3 animations:^{
+            cast.editTitleTextField.alpha = 1.0;
+        } completion:^(BOOL finished) {
+            [cast.editTitleTextField becomeFirstResponder];
+        }];
+        return;
+    }
     PLCMapStore *mapStore = [PLCMapStore sharedInstance];
     if ([mapStore numberOfMaps] == 1) {
         [[[UIAlertView alloc] initWithTitle:@"Can't delete last map" message:@"You have to have at least one map. To delete this map, make another map first." delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil] show];
         return;
     }
-    NSIndexPath *indexPathForSelection = [self.tableView indexPathForCell:cell];
     [mapStore deleteMapAtIndex:(NSUInteger)indexPathForSelection.row];
 }
 
@@ -129,12 +151,6 @@
     if ([segue.identifier isEqualToString:@"PLCDidSelectMapSegue"]) {
         PLCMapStore *mapStore = [PLCMapStore sharedInstance];
         mapStore.selectedMap = [mapStore mapAtIndex:(NSUInteger)indexPath.row];
-    }
-    else {
-        PLCMapStore *mapStore = [PLCMapStore sharedInstance];
-        PLCMapDetailViewController *controller = (PLCMapDetailViewController *)segue.destinationViewController;
-        controller.map = [mapStore mapAtIndex:(NSUInteger)indexPath.row];
-        self.navigationItem.backBarButtonItem.title = NSLocalizedString(@"Maps", @"Cancel map detail back button item text");
     }
 }
 
@@ -176,7 +192,7 @@
             break;
             
         case NSFetchedResultsChangeUpdate:
-            [self configureCell:(SWTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath] forRowAtIndexPath:indexPath];
+            [self configureCell:(PLCMapSelectionTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath] forRowAtIndexPath:indexPath];
             break;
             
         case NSFetchedResultsChangeMove:
@@ -192,4 +208,17 @@
     // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
     [self.tableView endUpdates];
 }
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    if (textField.text.length != 0) {
+        CGPoint point = [textField convertPoint:textField.center toView:self.tableView];
+        NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:point];
+        PLCMap *map = [[PLCMapStore sharedInstance] mapAtIndex:(NSUInteger)indexPath.row];
+        map.name = textField.text;
+        [[PLCMapStore sharedInstance] save];
+        [textField resignFirstResponder];
+    }
+    return NO;
+}
+
 @end

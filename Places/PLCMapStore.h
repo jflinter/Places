@@ -28,5 +28,6 @@ static NSString * const PLCCurrentMapDidChangeNotification;
 @property(nonatomic, weak)id<PLCMapStoreDelegate> delegate;
 - (void)registerDelegate:(id<NSFetchedResultsControllerDelegate>)delegate;
 - (void)unregisterDelegate:(id<NSFetchedResultsControllerDelegate>)delegate;
+- (void)save;
 
 @end

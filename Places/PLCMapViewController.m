@@ -21,6 +21,7 @@
 #import "PLCMap.h"
 #import "PLCMapStore.h"
 #import "PLCPlaceSearchTableViewController.h"
+#import "PLCDatabase.h"
 
 static NSString * const PLCMapPinReuseIdentifier = @"PLCMapPinReuseIdentifier";
 static CGFloat const PLCMapPanAnimationDuration = 0.3f;
