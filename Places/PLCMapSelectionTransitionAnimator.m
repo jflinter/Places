@@ -101,6 +101,7 @@
         } completion:^(BOOL finished) {
             toViewController.view.userInteractionEnabled = YES;
             [transitionContext completeTransition:YES];
+            [[[UIApplication sharedApplication] keyWindow] addSubview:toViewController.view];
         }];
     }
 }
@@ -196,6 +197,7 @@
         if (finished) {
             toViewController.view.userInteractionEnabled = YES;
             [transitionContext completeTransition:YES];
+            [[[UIApplication sharedApplication] keyWindow] addSubview:toViewController.view];
         }
     }];
 }

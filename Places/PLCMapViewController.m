@@ -459,7 +459,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
         self.animator = [[PLCMapSelectionTransitionAnimator alloc] initWithParentViewController:controller];
         self.animator.presenting = YES;
         controller.transitioningDelegate = self.animator;
-        controller.modalPresentationStyle = UIModalPresentationFullScreen;
+        controller.modalPresentationStyle = UIModalPresentationCustom;
     }
 }
 
@@ -481,5 +481,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
         [self.navigationController setNavigationBarHidden:chromeHidden animated:animated];
     }
 }
+
+
 
 @end
