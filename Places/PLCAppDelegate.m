@@ -26,7 +26,7 @@
 //    NSURL *firebaseURL = [[[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:YES error:NULL] URLByAppendingPathComponent:@"firebase"];
 //    [[NSFileManager defaultManager] removeItemAtURL:firebaseURL error:nil];
     
-    
+    [[CLLocationManager new] requestWhenInUseAuthorization];
     [[PLCUserStore sharedInstance] beginICloudMonitoring];
     [[PLCPlaceGeocoder sharedInstance] resumeGeocoding];
     return YES;

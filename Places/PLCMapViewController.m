@@ -22,6 +22,7 @@
 #import "PLCMapStore.h"
 #import "PLCPlaceSearchTableViewController.h"
 #import "PLCDatabase.h"
+#import <CoreLocation/CoreLocation.h>
 
 static NSString * const PLCMapPinReuseIdentifier = @"PLCMapPinReuseIdentifier";
 static CGFloat const PLCMapPanAnimationDuration = 0.3f;
@@ -36,11 +37,47 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 @property (nonatomic, getter=isAnimatingToPlace) BOOL animatingToPlace;
 @property (nonatomic) PLCMapSelectionTransitionAnimator *animator;
 @property (nonatomic) BOOL chromeHidden;
+@property (nonatomic) CLLocationManager *locationManager;
 @end
 
 @implementation PLCMapViewController
 
 @synthesize placeStore = _placeStore;
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        [self sharedInit];
+    }
+    return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        [self sharedInit];
+    }
+    return self;
+}
+
+- (void)sharedInit {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+    _locationManager = [CLLocationManager new];
+    _locationManager.delegate = self;
+}
+
+- (void)didBecomeActive:(NSNotification *)notification {
+//    self.mapView.showsUserLocation = YES;
+}
+
+- (void)willEnterBackground:(NSNotification *)notification {
+//    self.mapView.showsUserLocation = NO;
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (void)viewDidLoad
 {
@@ -67,6 +104,8 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         [self setChromeHidden:NO animated:YES];
+        CLLocationManager *manager = [[INTULocationManager sharedInstance] valueForKey:@"locationManager"];
+        [manager requestWhenInUseAuthorization];
     });
 }
 
@@ -199,7 +238,9 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     PLCCalloutViewController *calloutViewController = [self existingCalloutViewControllerForAnnotationView:view];
     if (calloutViewController) {
         [self dismissCalloutViewController:calloutViewController completion:^{
-            [self.mapView removeAnnotation:place];
+            if ([self.mapView.annotations containsObject:place]) {
+                [self.mapView removeAnnotation:place];
+            }
         }];
     }
     else {
@@ -313,20 +354,23 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     else {
         self.determiningInitialLocation = YES;
     }
-    self.mapView.showsUserLocation = YES;
+//    self.mapView.showsUserLocation = YES;
 }
 
 - (void) determineLocation:(void (^)(void))completion {
     [self dismissAllCalloutViewControllers];
     switch ([CLLocationManager authorizationStatus]) {
-        case kCLAuthorizationStatusAuthorized: {
+        case kCLAuthorizationStatusAuthorizedWhenInUse:
+        case kCLAuthorizationStatusAuthorizedAlways: {
             if (completion) {
                 completion();
             }
         }
             break;
-        case kCLAuthorizationStatusNotDetermined:
-            self.mapView.showsUserLocation = YES;
+        case kCLAuthorizationStatusNotDetermined: {
+            CLLocationManager *manager = [[INTULocationManager sharedInstance] valueForKey:@"locationManager"];
+            [manager requestWhenInUseAuthorization];
+        }
             break;
         case kCLAuthorizationStatusDenied:
         case kCLAuthorizationStatusRestricted: {
@@ -335,6 +379,19 @@ didChangeDragState:(MKAnnotationViewDragState)newState
             [[[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
         }
             break;
+    }
+}
+
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
+    switch (status) {
+        case kCLAuthorizationStatusAuthorizedWhenInUse:
+        case kCLAuthorizationStatusAuthorizedAlways: {
+            self.mapView.showsUserLocation = YES;
+            return;
+        }
+        default: {
+            self.mapView.showsUserLocation = NO;
+        }
     }
 }
 
@@ -402,7 +459,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
         self.animator = [[PLCMapSelectionTransitionAnimator alloc] initWithParentViewController:controller];
         self.animator.presenting = YES;
         controller.transitioningDelegate = self.animator;
-        controller.modalPresentationStyle = UIModalPresentationCustom;
+        controller.modalPresentationStyle = UIModalPresentationFullScreen;
     }
 }
 

@@ -63,14 +63,13 @@
     if ([activityType isEqualToString:UIActivityTypeMessage]) {
         MKPlacemark *placemark = [[MKPlacemark alloc] initWithCoordinate:self.coordinate addressDictionary:self.geocodedAddress];
         NSString *caption;
-        if (self.caption && ![self.caption isEqualToString:@""]) {
-            caption = self.caption;
-        }
-        NSDictionary *options = @{
+        NSMutableDictionary *options = [@{
                                   MKPlaceMarkPLCMapFieldNameKey: @"Made with Places - see the rest here:",
                                   MKPlaceMarkPLCMapFieldValueKey: [self.map shareURL],
-                                  MKPlaceMarkPLCMapPreviewKey: caption,
-                                  };
+                                  } mutableCopy];
+        if (self.caption && ![self.caption isEqualToString:@""]) {
+            options[MKPlaceMarkPLCMapPreviewKey] = caption;
+        }
         NSURL *url = [placemark temporaryFileURLForLocationSharingWithOptions:options error:nil];
         if (url) {
             return url;

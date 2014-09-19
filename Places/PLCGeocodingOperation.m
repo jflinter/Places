@@ -12,7 +12,7 @@
 @property(nonatomic)CLLocation *location;
 @property(nonatomic, copy)PLCGeocodingCompletionHandler completion;
 @property(nonatomic)CLGeocoder *geocoder;
-@property(nonatomic)BOOL finished, executing, cancelled;
+@property(nonatomic)BOOL plcIsExecuting, plcIsFinished;
 @end
 
 @implementation PLCGeocodingOperation
@@ -64,22 +64,22 @@
 }
 
 - (BOOL)isFinished {
-    return self.finished;
+    return self.plcIsFinished;
 }
 
 - (BOOL)isExecuting {
-    return self.executing;
+    return self.plcIsExecuting;
 }
 
 - (void)setExecuting:(BOOL)executing {
     [self willChangeValueForKey:@"isExecuting"];
-    _executing = executing;
+    _plcIsExecuting = executing;
     [self didChangeValueForKey:@"isExecuting"];
 }
 
 - (void)setFinished:(BOOL)finished {
     [self willChangeValueForKey:@"isFinished"];
-    _finished = finished;
+    _plcIsFinished = finished;
     [self didChangeValueForKey:@"isFinished"];
 }
 
