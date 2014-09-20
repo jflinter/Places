@@ -17,15 +17,12 @@
 
 @interface PLCCalloutViewController() <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate>
 
-@property (strong, nonatomic) UIInputView *inputView;
-@property (strong, nonatomic) IBOutlet UIToolbar *accessoryToolbar;
 @property (weak, nonatomic) IBOutlet UIToolbar *trashToolbar;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *trashButton;
 @property (nonatomic, weak) IBOutlet UIScrollView *contentView;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
 @property (nonatomic) UIEdgeInsets originalInsets;
 @property (weak, nonatomic) IBOutlet UITextField *placeTypeField;
-@property (weak, nonatomic) IBOutlet UIButton *addressButton;
 @property (nonatomic, weak) UIButton *imageButton;
 @property (nonatomic) PLCPlaceTextStorage *textStorage;
 @end
@@ -87,12 +84,7 @@
     self.bottomToolbar.clipsToBounds = YES;
     self.captionTextView.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.75f];
     self.captionTextView.layer.cornerRadius = 5.0f;
-    [self.accessoryToolbar setBackgroundImage:[UIImage new] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
-    self.inputView = [[UIInputView alloc] initWithFrame:CGRectMake(0, 0, 320, 37) inputViewStyle:UIInputViewStyleDefault];
-    [self.inputView addSubview:self.accessoryToolbar];
-    self.captionTextView.inputAccessoryView = self.inputView;
     [self updateInsets];
-    [self.addressButton setTitle:[[self.place.geocodedAddress objectForKey:@"Street"] description] forState:UIControlStateNormal];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -127,9 +119,9 @@
 
 - (void)editCaption {
     [self.captionTextView becomeFirstResponder];
-    self.trashToolbar.hidden = NO;
+    self.bottomToolbar.hidden = NO;
     [UIView animateWithDuration:0.3 animations:^{
-        self.trashToolbar.alpha = 1.0f;
+        self.bottomToolbar.alpha = 1.0f;
     }];
 }
 
@@ -138,9 +130,9 @@
         [self.captionTextView resignFirstResponder];
     }
     [UIView animateWithDuration:0.3 animations:^{
-        self.trashToolbar.alpha = 0;
+        self.bottomToolbar.alpha = 0;
     } completion:^(BOOL finished) {
-        self.trashToolbar.hidden = YES;
+        self.bottomToolbar.hidden = YES;
     }];
 }
 
@@ -286,9 +278,9 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {
-    self.trashToolbar.hidden = NO;
+    self.bottomToolbar.hidden = NO;
     [UIView animateWithDuration:0.3 animations:^{
-        self.trashToolbar.alpha = 1.0f;
+        self.bottomToolbar.alpha = 1.0f;
     }];
 }
 
