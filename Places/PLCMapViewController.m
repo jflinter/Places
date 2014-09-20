@@ -127,12 +127,9 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
         MKPinAnnotationColor color;
         switch (place.type) {
             case PLCPlaceTypeDo:
-                color = MKPinAnnotationColorGreen;
-                break;
             case PLCPlaceTypeDrink:
-                color = MKPinAnnotationColorRed;
             case PLCPlaceTypeEat:
-                color = MKPinAnnotationColorPurple;
+                color = MKPinAnnotationColorRed;
         }
         pinAnnotation.pinColor = color;
         annotationView = pinAnnotation;
@@ -438,8 +435,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     userLocation.title = @"";
     
     // This is just for initial map load, when we want to show the user's location in the absence of any places on the map.
-    if (self.determiningInitialLocation) {
-        [self dismissAllCalloutViewControllers];
+    if (self.determiningInitialLocation && !self.calloutViewControllers.count) {
         MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(userLocation.coordinate, 1600, 1600);
         [self.mapView setRegion:region animated:YES];
         self.determiningInitialLocation = NO;
