@@ -23,7 +23,7 @@
                            response[@"id"],
                            response[@"secret"]];
     result.photoUrl = [NSURL URLWithString:urlString];
-    NSString *thumbString = [NSString stringWithFormat:@"https://farm%@.staticflickr.com/%@/%@_%@_t.jpg",
+    NSString *thumbString = [NSString stringWithFormat:@"https://farm%@.staticflickr.com/%@/%@_%@_q.jpg",
                            response[@"farm"],
                            response[@"server"],
                            response[@"id"],

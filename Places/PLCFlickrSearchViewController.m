@@ -111,7 +111,7 @@ static NSString * const reuseIdentifier = @"Cell";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     PLCFlickrResultCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     PLCFlickrSearchResult *result = self.results[(NSUInteger)indexPath.row];
-    [cell setImageUrl:result.photoUrl animated:YES];
+    [cell setImageUrl:result.thumbnailUrl animated:YES];
     return cell;
 }
 
