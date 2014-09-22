@@ -399,12 +399,19 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 
 - (IBAction)showLocation:(id)sender {
     [self determineLocation:^{
-        if (self.mapView.userLocation) {
-            [UIView animateWithDuration:PLCMapPanAnimationDuration animations:^{
-                [self.mapView setCenterCoordinate:self.mapView.userLocation.coordinate
-                                         animated:NO];
-            }];
-        }
+        [[INTULocationManager sharedInstance] requestLocationWithDesiredAccuracy:INTULocationAccuracyBlock timeout:2 block:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
+            if (status == INTULocationStatusSuccess) {
+                [UIView animateWithDuration:PLCMapPanAnimationDuration animations:^{
+                    [self.mapView setCenterCoordinate:currentLocation.coordinate
+                                             animated:NO];
+                }];
+            }
+            else {
+                NSString *title = NSLocalizedString(@"Couldn't determine location", nil);
+                NSString *message = NSLocalizedString(@"Try again when you have a better signal.", nil);
+                [[[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+            }
+        }];
     }];
 }
 

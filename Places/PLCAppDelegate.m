@@ -12,6 +12,7 @@
 #import "PLCPlaceGeocoder.h"
 #import <Firebase/Firebase.h>
 #import <Foursquare-API-v2/Foursquare2.h>
+#import <FlickrKit/FlickrKit.h>
 
 @implementation PLCAppDelegate
 
@@ -19,6 +20,9 @@
 {
     [Foursquare2 setupFoursquareWithClientId:@"SKJPF13KUWM2EZSOIXXDDQKMAQFTIOBRW5XFOLD1CZBXWCHH"
                                       secret:@"1VOMRGHBELSCUGIZFVLHXTU54P0R51I1AZ5ZSZTW33WA1C5J" callbackURL:@""];
+    [[FlickrKit sharedFlickrKit] initializeWithAPIKey:@"15c508152bc4a2d17ddd00eb18a43c9a"
+                                         sharedSecret:@"d9f2ec04c64fe91e"];
+    
     
     // beta offline persistence for firebase queries - will retry offline saves after e.g. app termination
     [Firebase setOption:@"persistence" to:@YES];

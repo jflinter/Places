@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0430BEC219CF74B4001584BD /* PLCFlickrSearchCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0430BEC119CF74B4001584BD /* PLCFlickrSearchCollectionViewController.m */; };
+		0430BEC519CF8126001584BD /* PLCFlickrSearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 0430BEC419CF8126001584BD /* PLCFlickrSearchResult.m */; };
+		0430BEC819CFA113001584BD /* PLCFlickrResultCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0430BEC719CFA113001584BD /* PLCFlickrResultCollectionViewCell.m */; };
 		7E166E01191B4A53001EF46B /* _PLCMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E166E00191B4A53001EF46B /* _PLCMap.m */; };
 		7E166E04191B4A5E001EF46B /* PLCMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E166E03191B4A5E001EF46B /* PLCMap.m */; };
 		7E42B24C190C6A6C00F9A21E /* PLCCalloutTransitionAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E42B24B190C6A6C00F9A21E /* PLCCalloutTransitionAnimator.m */; };
@@ -75,6 +78,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0430BEC019CF74B4001584BD /* PLCFlickrSearchCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCFlickrSearchCollectionViewController.h; sourceTree = "<group>"; };
+		0430BEC119CF74B4001584BD /* PLCFlickrSearchCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCFlickrSearchCollectionViewController.m; sourceTree = "<group>"; };
+		0430BEC319CF8126001584BD /* PLCFlickrSearchResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCFlickrSearchResult.h; sourceTree = "<group>"; };
+		0430BEC419CF8126001584BD /* PLCFlickrSearchResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCFlickrSearchResult.m; sourceTree = "<group>"; };
+		0430BEC619CFA113001584BD /* PLCFlickrResultCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCFlickrResultCollectionViewCell.h; sourceTree = "<group>"; };
+		0430BEC719CFA113001584BD /* PLCFlickrResultCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCFlickrResultCollectionViewCell.m; sourceTree = "<group>"; };
 		3BED1FCB5856409087BA0323 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		4A94B8A9C60F403FB1A724A5 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E166DFF191B4A53001EF46B /* _PLCMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _PLCMap.h; sourceTree = "<group>"; };
@@ -345,6 +354,8 @@
 				A0D1077C1933B918004DB04A /* PLCNewMapViewController.m */,
 				A06A0F2E1973936800ABD4A9 /* PLCPlaceSearchTableViewController.h */,
 				A06A0F2F1973936800ABD4A9 /* PLCPlaceSearchTableViewController.m */,
+				0430BEC019CF74B4001584BD /* PLCFlickrSearchCollectionViewController.h */,
+				0430BEC119CF74B4001584BD /* PLCFlickrSearchCollectionViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -371,6 +382,8 @@
 		7E54FEAA18FFA914002E2AFC /* Model Support */ = {
 			isa = PBXGroup;
 			children = (
+				0430BEC319CF8126001584BD /* PLCFlickrSearchResult.h */,
+				0430BEC419CF8126001584BD /* PLCFlickrSearchResult.m */,
 				7E54FEAB18FFA94B002E2AFC /* PLCDatabase.h */,
 				7E54FEAC18FFA94B002E2AFC /* PLCDatabase.m */,
 				7E54FEAD18FFA94B002E2AFC /* PLCManagedObject.h */,
@@ -439,6 +452,8 @@
 				A06A0F361974527800ABD4A9 /* PLCPlaceSearchResultTableViewCell.m */,
 				A0AB9B3419C431B500CD2186 /* PLCMapSelectionTableViewCell.h */,
 				A0AB9B3519C431B500CD2186 /* PLCMapSelectionTableViewCell.m */,
+				0430BEC619CFA113001584BD /* PLCFlickrResultCollectionViewCell.h */,
+				0430BEC719CFA113001584BD /* PLCFlickrResultCollectionViewCell.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -614,6 +629,7 @@
 				A06A0F3D197849CC00ABD4A9 /* PLCGeocodingService.m in Sources */,
 				A06A0F371974527800ABD4A9 /* PLCPlaceSearchResultTableViewCell.m in Sources */,
 				7E54FEB018FFA94B002E2AFC /* PLCManagedObject.m in Sources */,
+				0430BEC819CFA113001584BD /* PLCFlickrResultCollectionViewCell.m in Sources */,
 				A0938F9E19213C660021CF7D /* PLCTemplateButton.m in Sources */,
 				A06A0F461978945000ABD4A9 /* PLCPlaceGeocoder.m in Sources */,
 				A0AEC2E8190CC48D006D20DE /* PLCPhoto.m in Sources */,
@@ -628,9 +644,11 @@
 				A03F5591192F124B0015C1D1 /* UIImage+ImageEffects.m in Sources */,
 				7E54FE9418FF985A002E2AFC /* PLCPlace.m in Sources */,
 				7E54FE6018FF9392002E2AFC /* main.m in Sources */,
+				0430BEC219CF74B4001584BD /* PLCFlickrSearchCollectionViewController.m in Sources */,
 				7E166E04191B4A5E001EF46B /* PLCMap.m in Sources */,
 				A0D1077D1933B918004DB04A /* PLCNewMapViewController.m in Sources */,
 				A062BA12191230B2002F0C2E /* PLCTemplateImageView.m in Sources */,
+				0430BEC519CF8126001584BD /* PLCFlickrSearchResult.m in Sources */,
 				7E54FE9B18FF9BC8002E2AFC /* PLCMapViewController.m in Sources */,
 				A03F5594192F125F0015C1D1 /* UIView+SnapshotImage.m in Sources */,
 				A0AEC2EB190CC4CE006D20DE /* PLCPhotoStore.m in Sources */,

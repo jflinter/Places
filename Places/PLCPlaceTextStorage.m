@@ -63,6 +63,16 @@
     [self removeAttribute:NSFontAttributeName range:NSMakeRange(0, self.string.length)];
     [self addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"AvenirNext-DemiBold" size:18.0f] range:NSMakeRange(0, titleLength)];
     [self addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"AvenirNext-Regular" size:18.0f] range:NSMakeRange(titleLength, self.string.length - titleLength)];
+    NSMutableParagraphStyle *style = [NSMutableParagraphStyle new];
+    style.alignment = NSTextAlignmentCenter;
+    style.firstLineHeadIndent = 40;
+    style.headIndent = 40;
+    style.tailIndent = -40;
+    [self addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, titleLength)];
+
+    style = [NSMutableParagraphStyle new];
+    style.alignment = NSTextAlignmentCenter;
+    [self addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(titleLength, self.string.length - titleLength)];
     
     // Call super *after* changing the attrbutes, as it finalizes the attributes and calls the delegate methods.
     [super processEditing];

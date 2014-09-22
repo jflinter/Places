@@ -14,8 +14,9 @@
 #import "PLCPlaceTextStorage.h"
 #import "PLCGoogleMapsActivity.h"
 #import <JTSImageViewController/JTSImageViewController.h>
+#import "PLCFlickrSearchCollectionViewController.h"
 
-@interface PLCCalloutViewController() <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate>
+@interface PLCCalloutViewController() <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate, PLCFlickrSearchCollectionViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIToolbar *trashToolbar;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *trashButton;
@@ -30,7 +31,7 @@
 @implementation PLCCalloutViewController
 
 - (CGFloat)imageSize {
-    return 180.0f;
+    return CGRectGetWidth(self.view.frame) - 120.0f;
 }
 
 + (CGSize)calloutSize
@@ -66,6 +67,7 @@
     self.captionTextView.frame = self.captionTextView.superview.bounds;
     self.captionTextView.text = self.place.caption;
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake((self.captionTextView.frame.size.width - self.imageSize)/2, 0, self.imageSize, self.imageSize)];
+    button.imageView.contentMode = UIViewContentModeScaleAspectFill;
     self.imageButton = button;
     [button setImage:self.place.image forState:UIControlStateNormal];
     [button addTarget:self action:@selector(imageTapped:) forControlEvents:UIControlEventTouchUpInside];
@@ -214,6 +216,7 @@
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
         [actionSheet addButtonWithTitle:NSLocalizedString(@"Choose From Library", nil)];
     }
+    [actionSheet addButtonWithTitle:NSLocalizedString(@"Search Flickr", nil)];
     actionSheet.cancelButtonIndex = [actionSheet addButtonWithTitle:NSLocalizedString(@"Cancel", nil)];
     [actionSheet showInView:self.view.window];
     actionSheet.delegate = self;
@@ -230,6 +233,14 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         return;
     }
     [self doneEditing:nil];
+    if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:NSLocalizedString(@"Search Flickr", nil)]) {
+        PLCFlickrSearchCollectionViewController *controller = [[PLCFlickrSearchCollectionViewController alloc] initWithQuery:self.place.title region:MKCoordinateRegionMakeWithDistance(self.place.coordinate, 500, 500)];
+        controller.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelFlickr:)];
+        controller.delegate = self;
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+        [self.parentViewController presentViewController:navController animated:YES completion:nil];
+        return;
+    }
     UIImagePickerController *imagePicker = [UIImagePickerController new];
     if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:NSLocalizedString(@"Take Photo", nil)]) {
         imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
@@ -241,6 +252,10 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     imagePicker.delegate = self;
     imagePicker.allowsEditing = YES;
     [self.parentViewController presentViewController:imagePicker animated:YES completion:nil];
+}
+
+- (void)cancelFlickr:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark -
@@ -294,6 +309,18 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
         return;
     }
     scrollView.contentOffset = CGPointZero;
+}
+
+#pragma mark -
+#pragma mark - PLCFlickrSearchCollectionViewControllerDelegate
+
+- (void)controller:(PLCFlickrSearchCollectionViewController *)controller didFinishWithImage:(UIImage *)image {
+    [self imageSelected:image];
+    [controller.presentingViewController dismissViewControllerAnimated:YES completion:^{
+        [self editCaption];
+    }];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+    [self updateInsets];
 }
 
 @end
