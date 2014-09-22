@@ -455,11 +455,6 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     if ([segue.destinationViewController isKindOfClass:[PLCMapSelectionViewController class]]) {
         [self dismissAllCalloutViewControllers];
         PLCMapSelectionViewController *controller = (PLCMapSelectionViewController *)segue.destinationViewController;
-        controller.embeddedConfigurationBlock = ^void(UIViewController *embedded) {
-            if ([embedded isKindOfClass:[PLCPlaceSearchTableViewController class]]) {
-                [((PLCPlaceSearchTableViewController *)embedded) setSearchRegion:self.mapView.region];
-            }
-        };
         self.animator = [[PLCMapSelectionTransitionAnimator alloc] initWithParentViewController:controller];
         self.animator.presenting = YES;
         controller.transitioningDelegate = self.animator;

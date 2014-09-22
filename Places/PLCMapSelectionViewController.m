@@ -9,7 +9,6 @@
 #import "PLCMapSelectionViewController.h"
 #import "PLCMapSelectionTransitionAnimator.h"
 #import "PLCMapSelectionTableViewController.h"
-#import "PLCPlaceSearchTableViewController.h"
 
 @interface PLCMapSelectionViewController ()
 @property(nonatomic, readwrite, weak)UIPanGestureRecognizer *gestureRecognizer;
@@ -34,20 +33,11 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     [super prepareForSegue:segue sender:sender];
-    if (self.embeddedConfigurationBlock) {
-        self.embeddedConfigurationBlock(segue.destinationViewController);
-    }
     if ([segue.destinationViewController isKindOfClass:[UINavigationController class]]) {
         UINavigationController *navController = segue.destinationViewController;
         PLCMapSelectionTableViewController *tableViewController = [navController.viewControllers firstObject];
         if ([tableViewController isKindOfClass:[PLCMapSelectionTableViewController class]]) {
             self.scrollController = tableViewController;
-        }
-    }
-    if ([segue.destinationViewController isKindOfClass:[PLCPlaceSearchTableViewController class]]) {
-        PLCPlaceSearchTableViewController *controller = segue.destinationViewController;
-        if ([controller isKindOfClass:[PLCPlaceSearchTableViewController class]]) {
-            self.scrollController = controller;
         }
     }
 }

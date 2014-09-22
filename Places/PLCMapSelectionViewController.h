@@ -9,13 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "PLCScrollViewController.h"
 
-typedef void (^PLCMapSelectionEmbeddedConfigurationBlock)(UIViewController *embedded);
-
 @interface PLCMapSelectionViewController : UIViewController
 @property (weak, nonatomic) id<PLCScrollViewController, UIGestureRecognizerDelegate>scrollController;
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (nonatomic) BOOL scrollEnabled;
-@property (nonatomic, copy) PLCMapSelectionEmbeddedConfigurationBlock embeddedConfigurationBlock;
 @end
