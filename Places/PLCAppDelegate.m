@@ -30,6 +30,9 @@
 //    NSURL *firebaseURL = [[[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:YES error:NULL] URLByAppendingPathComponent:@"firebase"];
 //    [[NSFileManager defaultManager] removeItemAtURL:firebaseURL error:nil];
     
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setFont:[UIFont fontWithName:@"AvenirNext-Regular" size:14.0f]];
+    [[UILabel appearanceWhenContainedIn:[UISearchBar class], nil] setFont:[UIFont fontWithName:@"AvenirNext-Regular" size:16.0f]];
+    
     [[CLLocationManager new] requestWhenInUseAuthorization];
     [[PLCUserStore sharedInstance] beginICloudMonitoring];
     [[PLCPlaceGeocoder sharedInstance] resumeGeocoding];

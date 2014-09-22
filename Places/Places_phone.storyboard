@@ -255,8 +255,7 @@
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Uyg-Id-hGR"/>
                         <barButtonItem image="708-search" id="naG-aU-r06">
                             <connections>
-                                <action selector="openSearch:" destination="OId-a2-hAa" id="9cP-kT-szT"/>
-                                <segue destination="Y1L-Hn-Wdf" kind="custom" customClass="PLCMapPresentationSegue" id="J1t-u3-4iX"/>
+                                <action selector="beginSearch:" destination="OId-a2-hAa" id="yvq-lK-3Q5"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="37x-vm-QHz"/>
@@ -313,7 +312,8 @@
                                         </constraints>
                                     </view>
                                     <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PMe-ea-TKP">
-                                        <rect key="frame" x="254" y="0.0" width="60" height="44"/>
+                                        <rect key="frame" x="256" y="0.0" width="60" height="44"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <items>
                                             <barButtonItem systemItem="action" id="1Y9-Ih-U0y">
                                                 <connections>
@@ -403,152 +403,6 @@
             </objects>
             <point key="canvasLocation" x="-178" y="-532"/>
         </scene>
-        <!--Map Selection View Controller-->
-        <scene sceneID="Uhy-pl-bhu">
-            <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="Y1L-Hn-Wdf" customClass="PLCMapSelectionViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="WJE-2H-fOA"/>
-                        <viewControllerLayoutGuide type="bottom" id="fSs-cv-ey6"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="b9J-KF-AIw">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kmk-F8-6YN">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                            </imageView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EWo-eQ-tXo">
-                                <rect key="frame" x="0.0" y="8" width="320" height="560"/>
-                                <subviews>
-                                    <containerView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="r1W-26-J4c">
-                                        <rect key="frame" x="15" y="15" width="290" height="525"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <connections>
-                                            <segue destination="brF-9e-trJ" kind="embed" id="AMh-df-qmU"/>
-                                        </connections>
-                                    </containerView>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            </view>
-                        </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="EWo-eQ-tXo" firstAttribute="top" secondItem="WJE-2H-fOA" secondAttribute="bottom" constant="-12" id="48h-C9-y27"/>
-                            <constraint firstAttribute="trailing" secondItem="EWo-eQ-tXo" secondAttribute="trailing" id="6m0-xM-WcV"/>
-                            <constraint firstAttribute="centerX" secondItem="kmk-F8-6YN" secondAttribute="centerX" id="LMC-UH-Xgh"/>
-                            <constraint firstAttribute="height" secondItem="kmk-F8-6YN" secondAttribute="height" id="Mnz-fg-WaN"/>
-                            <constraint firstAttribute="width" secondItem="kmk-F8-6YN" secondAttribute="width" id="W0W-jJ-XQX"/>
-                            <constraint firstItem="fSs-cv-ey6" firstAttribute="top" secondItem="EWo-eQ-tXo" secondAttribute="bottom" id="ji0-Ln-PWN"/>
-                            <constraint firstAttribute="centerY" secondItem="kmk-F8-6YN" secondAttribute="centerY" id="pws-Kb-dMA"/>
-                            <constraint firstItem="EWo-eQ-tXo" firstAttribute="leading" secondItem="b9J-KF-AIw" secondAttribute="leading" id="q8f-L1-uib"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="Khp-52-ttJ">
-                        <connections>
-                            <outlet property="leftBarButtonItem" destination="ERM-uI-RgL" id="pv1-QC-HM4"/>
-                        </connections>
-                    </navigationItem>
-                    <connections>
-                        <outlet property="backgroundImageView" destination="kmk-F8-6YN" id="8lx-mS-C47"/>
-                        <outlet property="containerView" destination="r1W-26-J4c" id="lBh-x6-jkh"/>
-                        <outlet property="contentView" destination="r1W-26-J4c" id="Moa-OG-TP7"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="1GQ-Fe-ISW" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <barButtonItem systemItem="stop" id="x8H-aN-3n9">
-                    <connections>
-                        <segue destination="Y1L-Hn-Wdf" kind="custom" customClass="PLCDismissSegue" id="9se-IX-DP1"/>
-                    </connections>
-                </barButtonItem>
-            </objects>
-            <point key="canvasLocation" x="386" y="7"/>
-        </scene>
-        <!--Place Search Table View Controller-->
-        <scene sceneID="AIZ-M1-Cqd">
-            <objects>
-                <viewController id="brF-9e-trJ" customClass="PLCPlaceSearchTableViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="kWf-2J-f0c"/>
-                        <viewControllerLayoutGuide type="bottom" id="7m2-cq-aar"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="grC-oK-ciG">
-                        <rect key="frame" x="0.0" y="0.0" width="290" height="525"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <tableView opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="58" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="TEV-tf-bmY">
-                                <rect key="frame" x="0.0" y="0.0" width="290" height="525"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PLCPlaceSearchResultCellIdentifier" rowHeight="58" id="H88-lM-w4r" customClass="PLCPlaceSearchResultTableViewCell">
-                                        <rect key="frame" x="0.0" y="22" width="290" height="58"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="H88-lM-w4r" id="7vY-YK-vro">
-                                            <rect key="frame" x="0.0" y="0.0" width="290" height="58"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hkJ-74-gUC">
-                                                    <rect key="frame" x="0.0" y="8" width="290" height="50"/>
-                                                    <subviews>
-                                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="YMg-qn-qAk">
-                                                            <rect key="frame" x="10" y="7" width="270" height="21"/>
-                                                            <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="18"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ec9-e8-qlh">
-                                                            <rect key="frame" x="10" y="27" width="270" height="21"/>
-                                                            <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="12"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                    </subviews>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                            <integer key="value" value="5"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                    </userDefinedRuntimeAttributes>
-                                                </view>
-                                            </subviews>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        </tableViewCellContentView>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <connections>
-                                            <outlet property="addressLabel" destination="Ec9-e8-qlh" id="Jng-ey-mXO"/>
-                                            <outlet property="nameLabel" destination="YMg-qn-qAk" id="gfB-a6-G3g"/>
-                                            <outlet property="roundedBackground" destination="hkJ-74-gUC" id="moj-Cq-cIZ"/>
-                                        </connections>
-                                    </tableViewCell>
-                                </prototypes>
-                                <connections>
-                                    <outlet property="dataSource" destination="brF-9e-trJ" id="S5D-q5-cSS"/>
-                                    <outlet property="delegate" destination="brF-9e-trJ" id="uvC-re-VQt"/>
-                                </connections>
-                            </tableView>
-                            <searchBar contentMode="redraw" fixedFrame="YES" searchBarStyle="minimal" prompt="Search for nearby places to add" placeholder="ex. Statue of Liberty" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sB2-aj-SEP">
-                                <rect key="frame" x="0.0" y="0.0" width="290" height="75"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="5"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <outlet property="delegate" destination="brF-9e-trJ" id="ZCm-tv-oYZ"/>
-                                </connections>
-                            </searchBar>
-                        </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    </view>
-                    <connections>
-                        <outlet property="searchBar" destination="sB2-aj-SEP" id="V7A-SX-S7o"/>
-                        <outlet property="tableView" destination="TEV-tf-bmY" id="wjP-IK-Azj"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="TJr-MV-KlF" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="809" y="7"/>
-        </scene>
     </scenes>
     <resources>
         <image name="708-search" width="28" height="28"/>
@@ -564,7 +418,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="J1t-u3-4iX"/>
         <segue reference="oTJ-78-Rzp"/>
         <segue reference="bgf-Ac-FaI"/>
     </inferredMetricsTieBreakers>

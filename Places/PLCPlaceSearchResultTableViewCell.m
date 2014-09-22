@@ -8,30 +8,41 @@
 
 #import "PLCPlaceSearchResultTableViewCell.h"
 
+@interface PLCPlaceSearchResultTableViewCell()
+@property(nonatomic, weak)UIView *roundedBackground;
+@end
+
 @implementation PLCPlaceSearchResultTableViewCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
     if (self) {
-        // Initialization code
+        self.textLabel.font = [UIFont fontWithName:@"AvenirNext-Regular" size:18.0f];
+        self.detailTextLabel.font = [UIFont fontWithName:@"AvenirNext-Regular" size:14.0f];
+        self.backgroundColor = [UIColor clearColor];
+        UIView *roundedBackground = [[UIView alloc] initWithFrame:self.bounds];
+        roundedBackground.layer.cornerRadius = 5.0f;
+        [self insertSubview:roundedBackground atIndex:0];
+        self.roundedBackground = roundedBackground;
+        self.roundedBackground.layer.backgroundColor = [UIColor whiteColor].CGColor;
     }
     return self;
 }
 
-- (void)awakeFromNib
-{
-    // Initialization code
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    self.roundedBackground.frame = CGRectInset(self.bounds, 2, 2);
 }
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
     [UIView animateWithDuration:0.1f delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseOut animations:^{
-        self.roundedBackground.layer.backgroundColor = highlighted ? [UIColor lightGrayColor].CGColor : [UIColor whiteColor].CGColor;
+        self.roundedBackground.alpha = highlighted ? 0.8f : 0.55f;
     } completion:nil];
 }
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    // no-op
-}
+//
+//- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+//    // no-op
+//}
 
 @end

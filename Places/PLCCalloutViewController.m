@@ -14,9 +14,10 @@
 #import "PLCPlaceTextStorage.h"
 #import "PLCGoogleMapsActivity.h"
 #import <JTSImageViewController/JTSImageViewController.h>
-#import "PLCFlickrSearchCollectionViewController.h"
+#import "PLCFlickrSearchViewController.h"
+#import "PLCBlurredModalPresentationController.h"
 
-@interface PLCCalloutViewController() <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate, PLCFlickrSearchCollectionViewControllerDelegate>
+@interface PLCCalloutViewController() <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate, PLCFlickrSearchViewControllerDelegate, UIViewControllerTransitioningDelegate>
 
 @property (weak, nonatomic) IBOutlet UIToolbar *trashToolbar;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *trashButton;
@@ -63,7 +64,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.trashToolbar.layer.cornerRadius = 5.0f;
+    self.trashToolbar.layer.cornerRadius = 10.0f;
     self.captionTextView.frame = self.captionTextView.superview.bounds;
     self.captionTextView.text = self.place.caption;
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake((self.captionTextView.frame.size.width - self.imageSize)/2, 0, self.imageSize, self.imageSize)];
@@ -234,11 +235,15 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     }
     [self doneEditing:nil];
     if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:NSLocalizedString(@"Search Flickr", nil)]) {
-        PLCFlickrSearchCollectionViewController *controller = [[PLCFlickrSearchCollectionViewController alloc] initWithQuery:self.place.title region:MKCoordinateRegionMakeWithDistance(self.place.coordinate, 500, 500)];
-        controller.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelFlickr:)];
+        PLCFlickrSearchViewController *controller = [[PLCFlickrSearchViewController alloc] initWithQuery:self.place.title region:MKCoordinateRegionMakeWithDistance(self.place.coordinate, 500, 500)];
         controller.delegate = self;
-        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-        [self.parentViewController presentViewController:navController animated:YES completion:nil];
+        controller.modalPresentationStyle = UIModalPresentationCustom;
+        controller.transitioningDelegate = self;
+        [UIView animateWithDuration:0.2 animations:^{
+            [actionSheet dismissWithClickedButtonIndex:buttonIndex animated:NO];
+        } completion:^(BOOL finished) {
+            [self.parentViewController presentViewController:controller animated:YES completion:nil];
+        }];
         return;
     }
     UIImagePickerController *imagePicker = [UIImagePickerController new];
@@ -314,13 +319,24 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 #pragma mark -
 #pragma mark - PLCFlickrSearchCollectionViewControllerDelegate
 
-- (void)controller:(PLCFlickrSearchCollectionViewController *)controller didFinishWithImage:(UIImage *)image {
-    [self imageSelected:image];
+- (void)controller:(PLCFlickrSearchViewController *)controller didFinishWithImage:(UIImage *)image {
+    if (image) {
+        [self imageSelected:image];
+    }
     [controller.presentingViewController dismissViewControllerAnimated:YES completion:^{
         [self editCaption];
     }];
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
     [self updateInsets];
+}
+
+- (UIPresentationController *)presentationControllerForPresentedViewController:(UIViewController *)presented presentingViewController:(UIViewController *)presenting sourceViewController:(UIViewController *)source {
+    if ([presented isKindOfClass:[PLCFlickrSearchViewController class]]) {
+        PLCBlurredModalPresentationController *controller = [[PLCBlurredModalPresentationController alloc] initWithPresentedViewController:presented presentingViewController:self];
+        controller.edgeInsets = UIEdgeInsetsMake(10, 5, 0, 5);
+        return controller;
+    }
+    return nil;
 }
 
 @end

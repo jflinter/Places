@@ -7,6 +7,7 @@
 //
 
 #import "PLCFlickrResultCollectionViewCell.h"
+#import <AFNetworking/UIImageView+AFNetworking.h>
 
 @interface PLCFlickrResultCollectionViewCell()
 @property(nonatomic, readwrite, weak)UIImageView *imageView;
@@ -47,6 +48,22 @@
 - (void)prepareForReuse {
     [super prepareForReuse];
     self.imageView.image = nil;
+}
+
+- (void)setImageUrl:(NSURL *)url animated:(BOOL)animated {
+    [self.imageView cancelImageRequestOperation];
+    [UIView animateWithDuration:0.2f delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseOut animations:^{
+        self.imageView.alpha = 0.0f;
+    } completion:nil];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
+    [self.imageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+        self.imageView.image = image;
+        [UIView animateWithDuration:0.2f delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseOut animations:^{
+            self.imageView.alpha = 1.0f;
+        } completion:nil];
+    } failure:nil];
 }
 
 @end

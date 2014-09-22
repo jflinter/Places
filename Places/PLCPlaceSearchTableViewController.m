@@ -29,15 +29,8 @@
 {
     [super viewDidLoad];
     self.searchBar.prompt = NSLocalizedString(@"Search for nearby places to add", nil);
-    self.tableView.contentInset = ({
-        UIEdgeInsets insets = self.tableView.contentInset;
-        insets.top += CGRectGetHeight(self.searchBar.frame);
-        insets;
-    });
-    self.tableView.scrollIndicatorInsets = self.tableView.contentInset;
-    
-    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setFont:[UIFont fontWithName:@"AvenirNext-Regular" size:14.0f]];
-    [[UILabel appearanceWhenContainedIn:[UISearchBar class], nil] setFont:[UIFont fontWithName:@"AvenirNext-Regular" size:16.0f]];
+    self.searchBar.placeholder = NSLocalizedString(@"Ex. Statue of Liberty", nil);
+    [self.tableView registerClass:[PLCPlaceSearchResultTableViewCell class] forCellReuseIdentifier:@"PLCPlaceSearchResultCellIdentifier"];
     
     UIInputView *inputView = [[UIInputView alloc] initWithFrame:CGRectMake(0, 0, 320, 15) inputViewStyle:UIInputViewStyleKeyboard];
     CGRect rect = inputView.bounds;
@@ -48,8 +41,6 @@
     label.font = [UIFont fontWithName:@"AvenirNext-Regular" size:12.0f];
     [inputView addSubview:label];
     self.searchBar.inputAccessoryView = inputView;
-    
-
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -72,8 +63,8 @@
 {
     PLCPlaceSearchResultTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PLCPlaceSearchResultCellIdentifier" forIndexPath:indexPath];
     PLCPlaceSearchResult *result = self.searchResults[(NSUInteger)indexPath.row];
-    cell.nameLabel.text = result.title;
-    cell.addressLabel.text = result.addressString;
+    cell.textLabel.text = result.title;
+    cell.detailTextLabel.text = result.addressString;
     return cell;
 }
 
@@ -168,7 +159,16 @@
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
     [self.foursquareOperation cancel];
+    [searchBar resignFirstResponder];
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 60;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 60;
 }
 
 @end

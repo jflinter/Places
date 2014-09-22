@@ -10,4 +10,5 @@
 
 @interface PLCFlickrResultCollectionViewCell : UICollectionViewCell
 @property(nonatomic, weak, readonly)UIImageView *imageView;
+- (void)setImageUrl:(NSURL *)url animated:(BOOL)animated;
 @end

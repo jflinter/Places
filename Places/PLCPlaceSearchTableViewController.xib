@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PLCPlaceSearchTableViewController">
+            <connections>
+                <outlet property="searchBar" destination="Lns-6g-UM8" id="BS6-ij-cCx"/>
+                <outlet property="tableView" destination="GPQ-VT-m0G" id="zAD-br-07X"/>
+                <outlet property="view" destination="8ez-Rq-HRY" id="khD-eY-zHj"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="8ez-Rq-HRY">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <searchBar contentMode="redraw" searchBarStyle="minimal" prompt="ASd" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lns-6g-UM8">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="75"/>
+                    <textInputTraits key="textInputTraits"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="v5r-Rg-vyD"/>
+                    </connections>
+                </searchBar>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="GPQ-VT-m0G">
+                    <rect key="frame" x="0.0" y="75" width="320" height="405"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="gj8-OW-Pd9"/>
+                        <outlet property="delegate" destination="-1" id="d2w-Xy-Qr6"/>
+                    </connections>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="GPQ-VT-m0G" firstAttribute="leading" secondItem="8ez-Rq-HRY" secondAttribute="leading" id="3al-cA-vhx"/>
+                <constraint firstItem="Lns-6g-UM8" firstAttribute="top" secondItem="8ez-Rq-HRY" secondAttribute="top" id="3u2-aP-GxM"/>
+                <constraint firstAttribute="bottom" secondItem="GPQ-VT-m0G" secondAttribute="bottom" id="4MD-vU-Ef8"/>
+                <constraint firstItem="Lns-6g-UM8" firstAttribute="leading" secondItem="8ez-Rq-HRY" secondAttribute="leading" id="THg-BG-x6b"/>
+                <constraint firstItem="GPQ-VT-m0G" firstAttribute="top" secondItem="Lns-6g-UM8" secondAttribute="bottom" id="WxA-jx-CfH"/>
+                <constraint firstAttribute="trailing" secondItem="GPQ-VT-m0G" secondAttribute="trailing" id="gHr-OL-DP9"/>
+                <constraint firstAttribute="trailing" secondItem="Lns-6g-UM8" secondAttribute="trailing" id="wEX-zH-1RE"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+        </view>
+    </objects>
+</document>

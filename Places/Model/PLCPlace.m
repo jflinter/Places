@@ -33,7 +33,7 @@
 }
 
 - (NSString *) title {
-    return [self.caption copy];
+    return [[self.caption componentsSeparatedByString:@"\n"] firstObject];
 }
 
 - (void)setCoordinate:(CLLocationCoordinate2D)newCoordinate {

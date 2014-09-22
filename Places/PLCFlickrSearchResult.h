@@ -11,6 +11,7 @@
 @interface PLCFlickrSearchResult : NSObject
 
 + (instancetype)resultWithResponse:(NSDictionary *)response;
+@property(nonatomic, readonly, strong)NSURL *thumbnailUrl;
 @property(nonatomic, readonly, strong)NSURL *photoUrl;
 
 @end

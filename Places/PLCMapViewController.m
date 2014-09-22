@@ -23,11 +23,12 @@
 #import "PLCPlaceSearchTableViewController.h"
 #import "PLCDatabase.h"
 #import <CoreLocation/CoreLocation.h>
+#import "PLCBlurredModalPresentationController.h"
 
 static NSString * const PLCMapPinReuseIdentifier = @"PLCMapPinReuseIdentifier";
 static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 
-@interface PLCMapViewController () <PLCMapViewDelegate, PLCPlaceStoreDelegate, PLCMapStoreDelegate, CLLocationManagerDelegate>
+@interface PLCMapViewController () <PLCMapViewDelegate, PLCPlaceStoreDelegate, PLCMapStoreDelegate, CLLocationManagerDelegate, UIViewControllerTransitioningDelegate>
 
 @property (nonatomic, weak, readwrite) IBOutlet PLCMapView *mapView;
 @property (nonatomic, readonly) PLCPlaceStore *placeStore;
@@ -466,6 +467,14 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     }
 }
 
+- (IBAction)beginSearch:(id)sender {
+    PLCPlaceSearchTableViewController *tableViewController = [PLCPlaceSearchTableViewController new];
+    tableViewController.searchRegion = self.mapView.region;
+    tableViewController.transitioningDelegate = self;
+    tableViewController.modalPresentationStyle = UIModalPresentationCustom;
+    [self presentViewController:tableViewController animated:YES completion:nil];
+}
+
 - (void)setChromeHidden:(BOOL)chromeHidden {
     [self setChromeHidden:chromeHidden animated:NO];
 }
@@ -485,6 +494,11 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     }
 }
 
-
+- (UIPresentationController *)presentationControllerForPresentedViewController:(UIViewController *)presented presentingViewController:(UIViewController *)presenting sourceViewController:(UIViewController *)source {
+    if ([presented isKindOfClass:[PLCPlaceSearchTableViewController class]]) {
+        return [[PLCBlurredModalPresentationController alloc] initWithPresentedViewController:presented presentingViewController:self];
+    }
+    return nil;
+}
 
 @end

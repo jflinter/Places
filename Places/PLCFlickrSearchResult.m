@@ -9,6 +9,7 @@
 #import "PLCFlickrSearchResult.h"
 
 @interface PLCFlickrSearchResult()
+@property(nonatomic, strong)NSURL *thumbnailUrl;
 @property(nonatomic, strong)NSURL *photoUrl;
 @end
 
@@ -22,6 +23,12 @@
                            response[@"id"],
                            response[@"secret"]];
     result.photoUrl = [NSURL URLWithString:urlString];
+    NSString *thumbString = [NSString stringWithFormat:@"https://farm%@.staticflickr.com/%@/%@_%@_t.jpg",
+                           response[@"farm"],
+                           response[@"server"],
+                           response[@"id"],
+                           response[@"secret"]];
+    result.thumbnailUrl = [NSURL URLWithString:thumbString];
     return result;
 }
 

@@ -9,9 +9,4 @@
 #import <UIKit/UIKit.h>
 
 @interface PLCPlaceSearchResultTableViewCell : UITableViewCell
-
-@property(nonatomic) IBOutlet UILabel *nameLabel;
-@property(nonatomic) IBOutlet UILabel *addressLabel;
-@property (weak, nonatomic) IBOutlet UIView *roundedBackground;
-
 @end
