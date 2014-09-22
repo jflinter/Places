@@ -106,10 +106,14 @@ static NSString * const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidC
 
 - (PLCMap *)insertMapWithName:(NSString *)name {
     PLCMap *map = [PLCMap insertInManagedObjectContext:[self managedObjectContext]];
+    [self updateMap:map withName:name];
+    return map;
+}
+
+- (void)updateMap:(PLCMap *)map withName:(NSString *)name {
     map.name = name;
     [[self managedObjectContext] save:nil];
     [[[Firebase mapClient] childByAppendingPath:map.uuid] setValue:[map firebaseObject] andPriority:[[PLCUserStore sharedInstance] currentUserId]];
-    return map;
 }
 
 - (void)deleteMapAtIndex:(NSUInteger)index {

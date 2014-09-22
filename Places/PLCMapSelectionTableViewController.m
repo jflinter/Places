@@ -239,8 +239,7 @@
         CGPoint point = [textField convertPoint:textField.center toView:self.tableView];
         NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:point];
         PLCMap *map = [[PLCMapStore sharedInstance] mapAtIndex:(NSUInteger)indexPath.row];
-        map.name = textField.text;
-        [[PLCMapStore sharedInstance] save];
+        [[PLCMapStore sharedInstance] updateMap:map withName:textField.text];
         [textField resignFirstResponder];
     }
     return NO;

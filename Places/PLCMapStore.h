@@ -23,6 +23,7 @@ static NSString * const PLCCurrentMapDidChangeNotification;
 - (NSUInteger)numberOfMaps;
 - (PLCMap *)mapAtIndex:(NSUInteger)index;
 - (PLCMap *)insertMapWithName:(NSString *)name;
+- (void)updateMap:(PLCMap *)map withName:(NSString *)name;
 - (void)deleteMapAtIndex:(NSUInteger)index;
 @property(nonatomic, strong)PLCMap *selectedMap;
 @property(nonatomic, weak)id<PLCMapStoreDelegate> delegate;
