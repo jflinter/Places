@@ -10,15 +10,18 @@
 #import <FlickrKit/FlickrKit.h>
 #import "PLCFlickrSearchResult.h"
 #import "PLCFlickrResultCollectionViewCell.h"
-#import <AFNetworking/UIImageView+AFNetworking.h>
+#import "PLCImageDownloader.h"
 
-@interface PLCFlickrSearchViewController ()<UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDelegate>
+@interface PLCFlickrSearchViewController ()<UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDelegate, PLCImageDownloaderDelegate>
 @property(nonatomic, readwrite, strong)NSString *query;
 @property (nonatomic, readwrite, assign) MKCoordinateRegion searchRegion;
-@property (nonatomic, readwrite, strong) NSArray *results;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) NSOperation *flickrOperation;
+@property (strong, nonatomic) PLCImageDownloader *downloader;
+@property (strong, nonatomic) NSMutableArray *thumbnails;
+@property (strong, nonatomic) NSMutableDictionary *urlMap;
+@property (strong, nonatomic) NSMutableDictionary *largeUrlMap;
 @end
 
 @implementation PLCFlickrSearchViewController
@@ -32,6 +35,9 @@ static NSString * const reuseIdentifier = @"Cell";
     if (self) {
         _query = query;
         _searchRegion = region;
+        _thumbnails = [NSMutableArray array];
+        _downloader = [PLCImageDownloader new];
+        _downloader.delegate = self;
     }
     return self;
 }
@@ -52,8 +58,8 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (void)performSearchWithQuery:(NSString *)query {
-    
-    self.results = @[];
+    [self.downloader reset];
+    [self.thumbnails removeAllObjects];
     [self.collectionView reloadData];
     self.searchBar.text = query;
     self.searchBar.prompt = NSLocalizedString(@"Searching for images...", nil);
@@ -78,46 +84,63 @@ static NSString * const reuseIdentifier = @"Cell";
             self.searchBar.prompt = NSLocalizedString(@"Error fetching images", nil);
             return;
         }
-        NSMutableArray *results = [NSMutableArray array];
         NSArray *dicts = response[@"photos"][@"photo"];
         if (dicts.count > 40) {
             dicts = [dicts subarrayWithRange:NSMakeRange(0, 40)];
         }
+        self.urlMap = [NSMutableDictionary dictionary];
+        self.largeUrlMap = [NSMutableDictionary dictionary];
+        NSMutableArray *urls = [@[] mutableCopy];
         for (NSDictionary *dict in dicts) {
             PLCFlickrSearchResult *result = [PLCFlickrSearchResult resultWithResponse:dict];
-            [results addObject:result];
+            [urls addObject:result.thumbnailUrl];
+            [self.urlMap setObject:result.photoUrl forKey:result.thumbnailUrl];
         }
-        self.results = [results copy];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (!dicts.count) {
-                self.searchBar.prompt = NSLocalizedString(@"0 images found", nil);
-            }
-            else if (dicts.count == 1) {
-                self.searchBar.prompt = NSLocalizedString(@"1 image found", nil);
-            }
-            else {
-                NSString *template = NSLocalizedString(@"%@ images found", nil);
-                self.searchBar.prompt = [NSString stringWithFormat:template, @(dicts.count)];
-            }
-            [self.collectionView reloadData];
-        });
+        __weak typeof(self) weakself = self;
+        [self.downloader addUrls:urls completion:^(NSArray *images) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (!weakself.thumbnails.count) {
+                    weakself.searchBar.prompt = NSLocalizedString(@"0 images found", nil);
+                }
+                else if (weakself.thumbnails.count == 1) {
+                    weakself.searchBar.prompt = NSLocalizedString(@"1 image found", nil);
+                }
+                else {
+                    NSString *template = NSLocalizedString(@"%@ images found", nil);
+                    weakself.searchBar.prompt = [NSString stringWithFormat:template, @(weakself.thumbnails.count)];
+                }
+            });
+        }];
     }];
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return (NSInteger)self.results.count;
+    return (NSInteger)self.thumbnails.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     PLCFlickrResultCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
-    PLCFlickrSearchResult *result = self.results[(NSUInteger)indexPath.row];
-    [cell setImageUrl:result.thumbnailUrl animated:YES];
+    cell.imageView.image = self.thumbnails[(NSUInteger)indexPath.row];
     return cell;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     PLCFlickrResultCollectionViewCell *cell = (PLCFlickrResultCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    [self.delegate controller:self didFinishWithImage:cell.imageView.image];
+    [cell.activityIndicator startAnimating];
+    NSURL *url = self.largeUrlMap[indexPath];
+    
+    __weak typeof(self) weakself = self;
+    self.searchBar.userInteractionEnabled = NO;
+    self.collectionView.userInteractionEnabled = NO;
+    [self.downloader addUrls:@[url] completion:^(NSArray *images) {
+        UIImage *image = images[0];
+        if (image) {
+            [weakself.delegate controller:weakself didFinishWithImage:image];
+            return;
+        }
+        weakself.searchBar.userInteractionEnabled = YES;
+        weakself.collectionView.userInteractionEnabled = YES;
+    }];
 }
 
 #pragma mark <UICollectionViewDelegate>
@@ -157,6 +180,22 @@ static NSString * const reuseIdentifier = @"Cell";
             ((UIButton *)view).enabled = YES;
         }
     }
+}
+
+#pragma mark <PLCImageDownloaderDelegate>
+
+- (void)imageDownloader:(PLCImageDownloader *)downloader
+       didDownloadImage:(UIImage *)image
+                  atURL:(NSURL *)url {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (image && url && self.urlMap[url]) {
+            [self.thumbnails addObject:image];
+            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:(NSInteger)self.thumbnails.count - 1 inSection:0];
+            self.largeUrlMap[indexPath] = self.urlMap[url];
+            [self.collectionView insertItemsAtIndexPaths:@[indexPath]];
+
+        }
+    });
 }
 
 @end

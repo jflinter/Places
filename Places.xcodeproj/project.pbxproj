@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0430BEC519CF8126001584BD /* PLCFlickrSearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 0430BEC419CF8126001584BD /* PLCFlickrSearchResult.m */; };
 		0430BEC819CFA113001584BD /* PLCFlickrResultCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0430BEC719CFA113001584BD /* PLCFlickrResultCollectionViewCell.m */; };
+		0477975819D282DB0022A00F /* PLCImageDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0477975719D282DB0022A00F /* PLCImageDownloader.m */; };
 		04DD4B2619CFBEFC00408002 /* PLCPlaceSearchTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04DD4B2519CFBEFC00408002 /* PLCPlaceSearchTableViewController.xib */; };
 		04DEDD8619CFC5EB00A0D0BA /* PLCBlurredModalPresentationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DEDD8519CFC5EB00A0D0BA /* PLCBlurredModalPresentationController.m */; };
 		04DEDD8A19CFE0E200A0D0BA /* PLCFlickrSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DEDD8819CFE0E200A0D0BA /* PLCFlickrSearchViewController.m */; };
@@ -85,6 +86,8 @@
 		0430BEC419CF8126001584BD /* PLCFlickrSearchResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCFlickrSearchResult.m; sourceTree = "<group>"; };
 		0430BEC619CFA113001584BD /* PLCFlickrResultCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCFlickrResultCollectionViewCell.h; sourceTree = "<group>"; };
 		0430BEC719CFA113001584BD /* PLCFlickrResultCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCFlickrResultCollectionViewCell.m; sourceTree = "<group>"; };
+		0477975619D282DB0022A00F /* PLCImageDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCImageDownloader.h; sourceTree = "<group>"; };
+		0477975719D282DB0022A00F /* PLCImageDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCImageDownloader.m; sourceTree = "<group>"; };
 		04DD4B2519CFBEFC00408002 /* PLCPlaceSearchTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PLCPlaceSearchTableViewController.xib; sourceTree = "<group>"; };
 		04DEDD8419CFC5EB00A0D0BA /* PLCBlurredModalPresentationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCBlurredModalPresentationController.h; sourceTree = "<group>"; };
 		04DEDD8519CFC5EB00A0D0BA /* PLCBlurredModalPresentationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCBlurredModalPresentationController.m; sourceTree = "<group>"; };
@@ -411,6 +414,8 @@
 				A06A0F3319742DEA00ABD4A9 /* PLCPlaceSearchResult.m */,
 				A0C0421C19395DB70003630E /* Firebase+Places.h */,
 				A0C0421D19395DB70003630E /* Firebase+Places.m */,
+				0477975619D282DB0022A00F /* PLCImageDownloader.h */,
+				0477975719D282DB0022A00F /* PLCImageDownloader.m */,
 			);
 			name = "Model Support";
 			sourceTree = "<group>";
@@ -645,6 +650,7 @@
 				0430BEC819CFA113001584BD /* PLCFlickrResultCollectionViewCell.m in Sources */,
 				A0938F9E19213C660021CF7D /* PLCTemplateButton.m in Sources */,
 				A06A0F461978945000ABD4A9 /* PLCPlaceGeocoder.m in Sources */,
+				0477975819D282DB0022A00F /* PLCImageDownloader.m in Sources */,
 				A0AEC2E8190CC48D006D20DE /* PLCPhoto.m in Sources */,
 				A03F5588192F08080015C1D1 /* PLCMapPresentationSegue.m in Sources */,
 				A0F053211903085800BD610C /* PLCMapView.m in Sources */,

@@ -11,6 +11,7 @@
 
 @interface PLCFlickrResultCollectionViewCell()
 @property(nonatomic, readwrite, weak)UIImageView *imageView;
+@property(nonatomic, weak)UIActivityIndicatorView *activityIndicator;
 @end
 
 @implementation PLCFlickrResultCollectionViewCell
@@ -38,32 +39,21 @@
     imageView.clipsToBounds = YES;
     [self addSubview:imageView];
     _imageView = imageView;
+    
+    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [self addSubview:activityIndicator];
+    self.activityIndicator = activityIndicator;
 }
 
 - (void)layoutSubviews {
     [super layoutSubviews];
     self.imageView.frame = self.bounds;
+    self.activityIndicator.frame = self.bounds;
 }
 
 - (void)prepareForReuse {
     [super prepareForReuse];
     self.imageView.image = nil;
-}
-
-- (void)setImageUrl:(NSURL *)url animated:(BOOL)animated {
-    [self.imageView cancelImageRequestOperation];
-    [UIView animateWithDuration:0.2f delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseOut animations:^{
-        self.imageView.alpha = 0.0f;
-    } completion:nil];
-    
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
-    [self.imageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-        self.imageView.image = image;
-        [UIView animateWithDuration:0.2f delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseOut animations:^{
-            self.imageView.alpha = 1.0f;
-        } completion:nil];
-    } failure:nil];
 }
 
 @end
