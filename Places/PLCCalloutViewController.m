@@ -17,7 +17,11 @@
 #import "PLCFlickrSearchViewController.h"
 #import "PLCBlurredModalPresentationController.h"
 
-@interface PLCCalloutViewController() <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate, PLCFlickrSearchViewControllerDelegate, UIViewControllerTransitioningDelegate>
+@interface PLCCalloutViewController () <UIImagePickerControllerDelegate,
+                                        UINavigationControllerDelegate,
+                                        UIActionSheetDelegate,
+                                        PLCFlickrSearchViewControllerDelegate,
+                                        UIViewControllerTransitioningDelegate>
 
 @property (weak, nonatomic) IBOutlet UIToolbar *trashToolbar;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *trashButton;
@@ -35,39 +39,38 @@
     return CGRectGetWidth(self.view.frame) - 120.0f;
 }
 
-+ (CGSize)calloutSize
-{
-    return CGSizeMake(310.0f, 310.0f);
++ (CGSize)calloutSize {
+    return CGSizeMake(240.0f, 240.0f);
 }
 
 - (void)loadView {
     [super loadView];
     self.textStorage = [PLCPlaceTextStorage new];
     NSLayoutManager *layoutManager = [NSLayoutManager new];
-    [self.textStorage addLayoutManager: layoutManager];
-    
+    [self.textStorage addLayoutManager:layoutManager];
+
     NSTextContainer *textContainer = [NSTextContainer new];
-    [layoutManager addTextContainer: textContainer];
-    
+    [layoutManager addTextContainer:textContainer];
+
     UITextView *textView = [[UITextView alloc] initWithFrame:self.containerView.bounds textContainer:textContainer];
-    
-    textView.typingAttributes = @{NSFontAttributeName: [UIFont fontWithName:@"AvenirNext-DemiBold" size:18.0f]};
+
+    textView.typingAttributes = @{ NSFontAttributeName: [UIFont fontWithName:@"AvenirNext-DemiBold" size:18.0f] };
     textView.textContainerInset = UIEdgeInsetsMake(12, 15, 10, 15);
     textView.textAlignment = NSTextAlignmentCenter;
     textView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    
+
     textView.delegate = self;
     [self.containerView addSubview:textView];
     self.captionTextView = textView;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     self.trashToolbar.layer.cornerRadius = 10.0f;
     self.captionTextView.frame = self.captionTextView.superview.bounds;
     self.captionTextView.text = self.place.caption;
-    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake((self.captionTextView.frame.size.width - self.imageSize)/2, 0, self.imageSize, self.imageSize)];
+    UIButton *button =
+        [[UIButton alloc] initWithFrame:CGRectMake((self.captionTextView.frame.size.width - self.imageSize) / 2, 0, self.imageSize, self.imageSize)];
     button.imageView.contentMode = UIViewContentModeScaleAspectFill;
     self.imageButton = button;
     [button setImage:self.place.image forState:UIControlStateNormal];
@@ -108,8 +111,7 @@
             insets.bottom += self.imageSize + 10;
             insets;
         });
-    }
-    else {
+    } else {
         self.imageButton.hidden = YES;
         self.captionTextView.contentInset = self.originalInsets;
     }
@@ -123,20 +125,14 @@
 - (void)editCaption {
     [self.captionTextView becomeFirstResponder];
     self.bottomToolbar.hidden = NO;
-    [UIView animateWithDuration:0.3 animations:^{
-        self.bottomToolbar.alpha = 1.0f;
-    }];
+    [UIView animateWithDuration:0.3 animations:^{ self.bottomToolbar.alpha = 1.0f; }];
 }
 
 - (IBAction)doneEditing:(id)sender {
     if ([self.captionTextView isFirstResponder]) {
         [self.captionTextView resignFirstResponder];
     }
-    [UIView animateWithDuration:0.3 animations:^{
-        self.bottomToolbar.alpha = 0;
-    } completion:^(BOOL finished) {
-        self.bottomToolbar.hidden = YES;
-    }];
+    [UIView animateWithDuration:0.3 animations:^{ self.bottomToolbar.alpha = 0; } completion:^(BOOL finished) { self.bottomToolbar.hidden = YES; }];
 }
 
 // TODO: viewWillDisappear et. al. are not being called correctly; I think they should be used here instead.
@@ -145,8 +141,7 @@
     [self.captionTextView resignFirstResponder];
 }
 
-- (PLCCalloutView *)calloutView
-{
+- (PLCCalloutView *)calloutView {
     return (PLCCalloutView *)self.view;
 }
 
@@ -158,10 +153,10 @@
     [self doneEditing:sender];
     MKPlacemark *placemark = [[MKPlacemark alloc] initWithCoordinate:self.place.coordinate addressDictionary:self.place.geocodedAddress];
     MKMapItem *mapItem = [[MKMapItem alloc] initWithPlacemark:placemark];
-    UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[self.place, mapItem] applicationActivities:@[[PLCGoogleMapsActivity new]]];
-    //exclude the airdrop action because it's incredibly fucking slow and noone uses it
-    NSMutableArray *excludedTypes = [@[UIActivityTypePrint,
-                                       UIActivityTypeAirDrop] mutableCopy];
+    UIActivityViewController *activityViewController =
+        [[UIActivityViewController alloc] initWithActivityItems:@[self.place, mapItem] applicationActivities:@[[PLCGoogleMapsActivity new]]];
+    // exclude the airdrop action because it's incredibly fucking slow and noone uses it
+    NSMutableArray *excludedTypes = [@[UIActivityTypePrint, UIActivityTypeAirDrop] mutableCopy];
     if (!self.place.geocodedAddress) {
         [excludedTypes addObject:UIActivityTypeMessage];
     }
@@ -182,22 +177,20 @@
     imageInfo.image = image;
     imageInfo.referenceRect = self.imageButton.frame;
     imageInfo.referenceView = self.imageButton.superview;
-    
+
     // Setup view controller
-    JTSImageViewController *imageViewer = [[JTSImageViewController alloc]
-                                           initWithImageInfo:imageInfo
-                                           mode:JTSImageViewControllerMode_Image
-                                           backgroundStyle:JTSImageViewControllerBackgroundStyle_ScaledDimmedBlurred];
-    
+    JTSImageViewController *imageViewer = [[JTSImageViewController alloc] initWithImageInfo:imageInfo
+                                                                                       mode:JTSImageViewControllerMode_Image
+                                                                            backgroundStyle:JTSImageViewControllerBackgroundStyle_ScaledDimmedBlurred];
+
     // Present the view controller.
     [imageViewer showFromViewController:self transition:JTSImageViewControllerTransition_FromOriginalPosition];
 }
 
-- (void) imageSelected:(UIImage *)image {
+- (void)imageSelected:(UIImage *)image {
     if (image) {
         [[PLCPhotoStore new] addPhotoWithImage:image toPlace:self.place];
-    }
-    else {
+    } else {
         [[PLCPhotoStore new] removePhotoFromPlace:self.place];
     }
     [self.imageButton setImage:image forState:UIControlStateNormal];
@@ -223,8 +216,7 @@
     actionSheet.delegate = self;
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet
-clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == actionSheet.cancelButtonIndex) {
         return;
     }
@@ -235,23 +227,21 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     }
     [self doneEditing:nil];
     if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:NSLocalizedString(@"Search Flickr", nil)]) {
-        PLCFlickrSearchViewController *controller = [[PLCFlickrSearchViewController alloc] initWithQuery:self.place.title region:MKCoordinateRegionMakeWithDistance(self.place.coordinate, 500, 500)];
+        PLCFlickrSearchViewController *controller =
+            [[PLCFlickrSearchViewController alloc] initWithQuery:self.place.title region:MKCoordinateRegionMakeWithDistance(self.place.coordinate, 500, 500)];
         controller.delegate = self;
         controller.modalPresentationStyle = UIModalPresentationCustom;
         controller.transitioningDelegate = self;
-        [UIView animateWithDuration:0.2 animations:^{
-            [actionSheet dismissWithClickedButtonIndex:buttonIndex animated:NO];
-        } completion:^(BOOL finished) {
-            [self.parentViewController presentViewController:controller animated:YES completion:nil];
-        }];
+        [UIView animateWithDuration:0.2
+            animations:^{ [actionSheet dismissWithClickedButtonIndex:buttonIndex animated:NO]; }
+            completion:^(BOOL finished) { [self.parentViewController presentViewController:controller animated:YES completion:nil]; }];
         return;
     }
     UIImagePickerController *imagePicker = [UIImagePickerController new];
     if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:NSLocalizedString(@"Take Photo", nil)]) {
         imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
         imagePicker.cameraFlashMode = UIImagePickerControllerCameraFlashModeOff;
-    }
-    else {
+    } else {
         imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     }
     imagePicker.delegate = self;
@@ -267,18 +257,13 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 #pragma mark UIImagePickerControllerDelegate
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    [picker.presentingViewController dismissViewControllerAnimated:YES completion:^{
-        [self editCaption];
-    }];
+    [picker.presentingViewController dismissViewControllerAnimated:YES completion:^{ [self editCaption]; }];
 }
 
-- (void)imagePickerController:(UIImagePickerController *)picker
-didFinishPickingMediaWithInfo:(NSDictionary *)info {
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
     [self imageSelected:image];
-    [picker.presentingViewController dismissViewControllerAnimated:YES completion:^{
-        [self editCaption];
-    }];
+    [picker.presentingViewController dismissViewControllerAnimated:YES completion:^{ [self editCaption]; }];
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
     if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
         UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
@@ -299,9 +284,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {
     self.bottomToolbar.hidden = NO;
-    [UIView animateWithDuration:0.3 animations:^{
-        self.bottomToolbar.alpha = 1.0f;
-    }];
+    [UIView animateWithDuration:0.3 animations:^{ self.bottomToolbar.alpha = 1.0f; }];
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
@@ -323,16 +306,17 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     if (image) {
         [self imageSelected:image];
     }
-    [controller.presentingViewController dismissViewControllerAnimated:YES completion:^{
-        [self editCaption];
-    }];
+    [controller.presentingViewController dismissViewControllerAnimated:YES completion:^{ [self editCaption]; }];
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
     [self updateInsets];
 }
 
-- (UIPresentationController *)presentationControllerForPresentedViewController:(UIViewController *)presented presentingViewController:(UIViewController *)presenting sourceViewController:(UIViewController *)source {
+- (UIPresentationController *)presentationControllerForPresentedViewController:(UIViewController *)presented
+                                                      presentingViewController:(UIViewController *)presenting
+                                                          sourceViewController:(UIViewController *)source {
     if ([presented isKindOfClass:[PLCFlickrSearchViewController class]]) {
-        PLCBlurredModalPresentationController *controller = [[PLCBlurredModalPresentationController alloc] initWithPresentedViewController:presented presentingViewController:self];
+        PLCBlurredModalPresentationController *controller =
+            [[PLCBlurredModalPresentationController alloc] initWithPresentedViewController:presented presentingViewController:self];
         controller.edgeInsets = UIEdgeInsetsMake(10, 5, 0, 5);
         return controller;
     }
