@@ -1,1 +1,0 @@
-../../BDDROneFingerZoomGestureRecognizer/BDDROneFingerZoomGestureRecognizer/BDDROneFingerZoomGestureRecognizer.h

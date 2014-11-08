@@ -14,13 +14,13 @@ PODS:
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - BDDROneFingerZoomGestureRecognizer (1.0.2)
-  - Firebase (1.1.12)
+  - Firebase (2.0.1)
   - FlickrKit (1.0.4)
-  - Foursquare-API-v2 (1.4.5)
+  - Foursquare-API-v2 (1.4.7)
   - INTULocationManager (1.2.0)
-  - JTSImageViewController (1.3)
+  - JTSImageViewController (1.4)
   - Reachability (3.1.1)
-  - SWTableViewCell (0.3.4)
+  - SWTableViewCell (0.3.6)
 
 DEPENDENCIES:
   - AFNetworking/UIKit
@@ -36,12 +36,12 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   AFNetworking: 0aabc6fae66d6e5d039eeb21c315843c7aae51ab
   BDDROneFingerZoomGestureRecognizer: 44f79476001ffaa189795f425345d6508134561d
-  Firebase: 26ca966dea982f29a4685f7fa8f596d56e5487ad
+  Firebase: 1557b1723b7455a6573d6daff66fdb6d1680bb34
   FlickrKit: 1bbc5c91f065fa0d7ce4119c5d5c63a9241eea73
-  Foursquare-API-v2: 31b9b6a9e68bc914bae4d3e20d65dc2826f4394d
+  Foursquare-API-v2: 97ce6ee55f7ea871ceec0255bba50845551b51c3
   INTULocationManager: 596c57e35a00ca1ee9d59bf4cc2b63dc299b580e
-  JTSImageViewController: 3951f79d2643c79b57f3961dd030bd328771a27d
+  JTSImageViewController: 9fe6402194b7679f0e28d0c1002d6164301fc34a
   Reachability: 8e9635e3cb4f98e7f825e51147f677ecc694d0e7
-  SWTableViewCell: 169334f3bd63f2525a070208cc876d17c0f0c9cf
+  SWTableViewCell: f5cbe30c49c4e5b97231c076f17331caaf3f6244
 
-COCOAPODS: 0.33.1
+COCOAPODS: 0.34.2

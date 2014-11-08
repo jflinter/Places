@@ -23,7 +23,6 @@
                                         PLCFlickrSearchViewControllerDelegate,
                                         UIViewControllerTransitioningDelegate>
 
-@property (weak, nonatomic) IBOutlet UIToolbar *trashToolbar;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *trashButton;
 @property (nonatomic, weak) IBOutlet UIScrollView *contentView;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
@@ -36,7 +35,7 @@
 @implementation PLCCalloutViewController
 
 - (CGFloat)imageSize {
-    return CGRectGetWidth(self.view.frame) - 120.0f;
+    return 120.0f;
 }
 
 + (CGSize)calloutSize {
@@ -66,7 +65,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.trashToolbar.layer.cornerRadius = 10.0f;
     self.captionTextView.frame = self.captionTextView.superview.bounds;
     self.captionTextView.text = self.place.caption;
     UIButton *button =
@@ -172,6 +170,8 @@
     if (!image) {
         return;
     }
+    sender.selected = NO;
+    sender.highlighted = NO;
     // Create image info
     JTSImageInfo *imageInfo = [[JTSImageInfo alloc] init];
     imageInfo.image = image;
@@ -181,7 +181,7 @@
     // Setup view controller
     JTSImageViewController *imageViewer = [[JTSImageViewController alloc] initWithImageInfo:imageInfo
                                                                                        mode:JTSImageViewControllerMode_Image
-                                                                            backgroundStyle:JTSImageViewControllerBackgroundStyle_ScaledDimmedBlurred];
+                                                                            backgroundStyle:JTSImageViewControllerBackgroundOption_Blurred];
 
     // Present the view controller.
     [imageViewer showFromViewController:self transition:JTSImageViewControllerTransition_FromOriginalPosition];
@@ -290,6 +290,7 @@
 - (void)textViewDidEndEditing:(UITextView *)textView {
     self.place.caption = [textView.text stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithRange:NSMakeRange(NSAttachmentCharacter, 1)]];
     [[PLCPlaceStore sharedInstance] save];
+    [textView setContentOffset:CGPointZero animated:YES];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {

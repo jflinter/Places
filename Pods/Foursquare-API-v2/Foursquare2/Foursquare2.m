@@ -26,7 +26,8 @@ static NSString const * kFOURSQUARE_CALLBACK_URL = @"FOURSQUARE_CALLBACK_URL";
 static NSString const * kFOURSQUARE_ACCESS_TOKEN = @"FOURSQUARE_ACCESS_TOKEN";
 
 NSString * const kFoursquare2NativeAuthErrorDomain = @"fs.native.auth";
-NSString * const kFoursquare2ErrorDomain = @"Foursquare2";
+NSString * const kFoursquare2ErrorDomain = @"kFoursquare2ErrorDomain";
+NSString * const kFoursquare2DidRemoveAccessTokenNotification = @"kFoursquare2DidRemoveAccessTokenNotification";
 
 @interface Foursquare2 () <FSWebLoginDelegate>
 
@@ -42,20 +43,6 @@ NSString * const kFoursquare2ErrorDomain = @"Foursquare2";
 + (NSOperation *)sendPostRequestWithPath:(NSString *)path
                               parameters:(NSDictionary *)parameters
                                 callback:(Foursquare2Callback)callback;
-
-+ (NSOperation *)sendRequestWithPath:(NSString *)path
-                          parameters:(NSDictionary *)parameters
-                          HTTPMethod:(NSString *)HTTPMethod
-                            callback:(Foursquare2Callback)callback;
-
-+ (NSOperation *)uploadPhoto:(NSString *)methodName
-              withParameters:(NSDictionary *)parameters
-#ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
-                   withImage:(NSImage *)image
-#else
-                   withImage:(UIImage *)image
-#endif
-                    callback:(Foursquare2Callback)callback;
 
 + (void)setAccessToken:(NSString *)token;
 + (NSString *)problemTypeToString:(FoursquareProblemType)problem;
@@ -379,29 +366,107 @@ static NSMutableDictionary *attributes;
     return [self sendPostRequestWithPath:path parameters:parameters callback:callback];
 }
 
-#ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
-+ (void)userUpdatePhoto:(NSImage *)image
-               callback:(Foursquare2Callback)callback
-#else
-+ (NSOperation *)userUpdatePhoto:(UIImage *)image
-                        callback:(Foursquare2Callback)callback
-#endif
-{
-    
-    return [self uploadPhoto:@"users/self/update"
-              withParameters:nil
-                   withImage:image
-                    callback:callback];
++ (NSOperation *)userUpdatePhoto:(NSData *)imageData
+                        callback:(Foursquare2Callback)callback {
+    return [[Foursquare2 sharedInstance] uploadPhoto:@"users/self/update"
+                                      withParameters:nil
+                                       withImageData:imageData
+                                            callback:callback];
 }
 
 #pragma mark -
 #pragma mark Lists
+
++ (NSOperation *)listDeleteWithId:(NSString *)listId
+                         callback:(Foursquare2Callback)callback {
+    NSString *path = [NSString stringWithFormat:@"lists/%@/delete", listId];
+
+    return [self sendPostRequestWithPath:path parameters:nil callback:callback];
+}
+
++ (NSOperation *)listUpdateWithId:(NSString *)listId
+                             name:(NSString *)name
+                      description:(NSString *)description
+                    collaborative:(BOOL)isCollaborative
+                          photoId:(NSString *)photoId
+                         callback:(Foursquare2Callback)callback {
+    NSString *path = [NSString stringWithFormat:@"lists/%@/update", listId];
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+
+    if (name) {
+        [parameters setObject:name forKey:@"name"];
+    }
+    if (description) {
+        [parameters setObject:description forKey:@"description"];
+    }
+    if (isCollaborative) {
+        [parameters setObject:@(TRUE) forKey:@"collaborative"];
+    }
+    if (photoId) {
+        [parameters setObject:photoId forKey:@"photoId"];
+    }
+    return [self sendPostRequestWithPath:path parameters:parameters callback:callback];
+}
+
++ (NSOperation *)listDeleteItemWithId:(NSString *)itemId
+                       fromListWithId:(NSString *)listId
+                         callback:(Foursquare2Callback)callback {
+    NSAssert(listId, @"ListId for deletion must not be nil");
+    NSAssert(itemId, @"itemId for deletion must not be nil");
+    NSString *path = [NSString stringWithFormat:@"/lists/%@/deleteitem", listId];
+    NSDictionary *parameters = @{@"itemId":itemId};
+    return [self sendPostRequestWithPath:path parameters:parameters callback:callback];
+}
+
++ (NSOperation *)listAddWithName:(NSString *)listName
+                     description:(NSString *)description
+                   collaborative:(BOOL)isCollaborative
+                         photoID:(NSString *)photoId
+                        callback:(Foursquare2Callback)callback {
+
+    NSString *path = @"lists/add";
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    NSAssert(listName, @"List must have a name");
+    [parameters setObject:listName forKey:@"name"];
+    
+    if (description) {
+        [parameters setObject:description forKey:@"description"];
+    }
+    if (isCollaborative) {
+        [parameters setObject:@(TRUE) forKey:@"collaborative"];
+    }
+    if (photoId) {
+        [parameters setObject:photoId forKey:@"photoId"];
+    }
+    return [self sendPostRequestWithPath:path parameters:parameters callback:callback];
+}
 
 + (NSOperation *)listGetDetail:(NSString *)listID
                       callback:(Foursquare2Callback)callback {
     NSString *path = [NSString stringWithFormat:@"lists/%@", listID];
     return [self sendGetRequestWithPath:path parameters:nil callback:callback];
 }
+
++ (NSOperation *)listAddVenueWithId:(NSString *)venueID
+                             listId:(NSString *)listID
+                               text:(NSString *)text
+                           callback:(Foursquare2Callback)callback {
+    NSAssert(venueID, @"Must pass in a non-nil venueID");
+    NSString *path = [NSString stringWithFormat:@"/lists/%@/additem", listID];
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithDictionary:@{@"venueId":venueID}];
+    if (text) {
+        parameters[@"text"] = text;
+    }
+    return [self sendPostRequestWithPath:path parameters:parameters callback:callback];
+}
+
++ (NSOperation *)listSuggestVenuesForListWithId:(NSString *)listID
+                           callback:(Foursquare2Callback)callback {
+    NSString *path = [NSString stringWithFormat:@"/lists/%@/suggestvenues", listID];
+    return [self sendGetRequestWithPath:path parameters:nil callback:callback];
+}
+
+
 
 #pragma mark -
 #pragma mark Venues
@@ -1032,15 +1097,11 @@ static NSMutableDictionary *attributes;
     return [self sendGetRequestWithPath:path parameters:nil callback:callback];
 }
 
-#ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
-+ (NSOperation *)photoAdd:(NSImage *)photo
-#else
-+ (NSOperation *)photoAdd:(UIImage *)photo
-#endif
++ (NSOperation *)photoAdd:(NSData *)photoData
                 toCheckin:(NSString *)checkinID
                  callback:(Foursquare2Callback)callback {
     
-    return [Foursquare2 photoAddTo:photo
+    return [Foursquare2 photoAddTo:photoData
                            checkin:checkinID
                                tip:nil
                              venue:nil
@@ -1053,11 +1114,7 @@ static NSMutableDictionary *attributes;
                           callback:callback];
 }
 
-#ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
-+ (NSOperation *)photoAddTo:(NSImage *)photo
-#else
-+ (NSOperation *)photoAddTo:(UIImage *)photo
-#endif
++ (NSOperation *)photoAddTo:(NSData *)photoData
                     checkin:(NSString *)checkinID
                         tip:(NSString *)tipID
                       venue:(NSString *)venueID
@@ -1096,10 +1153,10 @@ static NSMutableDictionary *attributes;
     if (venueID) {
         parameters[@"venueId"] = venueID;
     }
-    return [self uploadPhoto:@"photos/add"
-              withParameters:parameters
-                   withImage:photo
-                    callback:callback];
+    return [[Foursquare2 sharedInstance] uploadPhoto:@"photos/add"
+                                      withParameters:parameters
+                                       withImageData:photoData
+                                            callback:callback];
 }
 
 #pragma mark -
@@ -1240,13 +1297,19 @@ static NSMutableDictionary *attributes;
 + (NSOperation *)sendGetRequestWithPath:(NSString *)path
                              parameters:(NSDictionary *)parameters
                                callback:(Foursquare2Callback)callback {
-    return [self sendRequestWithPath:path parameters:parameters HTTPMethod:@"GET" callback:callback];
+    return  [[Foursquare2 sharedInstance] sendRequestWithPath:path
+                                                   parameters:parameters
+                                                   HTTPMethod:@"GET"
+                                                     callback:callback];
 }
 
 + (NSOperation *)sendPostRequestWithPath:(NSString *)path
                               parameters:(NSDictionary *)parameters
                                 callback:(Foursquare2Callback)callback {
-    return [self sendRequestWithPath:path parameters:parameters HTTPMethod:@"POST" callback:callback];
+    return  [[Foursquare2 sharedInstance] sendRequestWithPath:path
+                                                   parameters:parameters
+                                                   HTTPMethod:@"POST"
+                                                     callback:callback];
 }
 
 + (NSURL *)constructURLWithPath:(NSString *)path
@@ -1316,16 +1379,6 @@ static NSMutableDictionary *attributes;
     return self;
 }
 
-+ (NSOperation *)sendRequestWithPath:(NSString *)path
-                          parameters:(NSDictionary *)parameters
-                          HTTPMethod:(NSString *)HTTPMethod
-                            callback:(Foursquare2Callback)callback {
-    return [[Foursquare2 sharedInstance] sendRequestWithPath:path
-                                                  parameters:parameters
-                                                  HTTPMethod:HTTPMethod
-                                                    callback:callback];
-}
-
 - (NSOperation *)sendRequestWithPath:(NSString *)path
                           parameters:(NSDictionary *)parameters
                           HTTPMethod:(NSString *)HTTPMethod
@@ -1333,49 +1386,37 @@ static NSMutableDictionary *attributes;
     NSURL *URL = [Foursquare2 constructURLWithPath:path parameters:parameters];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
     request.HTTPMethod = HTTPMethod;
+    Foursquare2Callback block = ^(BOOL success, id result) {
+        if ([result isKindOfClass:[NSError class]]) {
+            NSError *error = (NSError *)result;
+            BOOL notAuthorizedError = ([error.domain isEqualToString:kFoursquare2ErrorDomain]
+                                       && error.code == Foursquare2ErrorUnauthorized);
+            if (notAuthorizedError && [self.class isAuthorized]) {
+                [Foursquare2.class removeAccessToken];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+                    [center postNotificationName:kFoursquare2DidRemoveAccessTokenNotification object:self];
+                });
+            }
+        }
+        if (callback) {
+            callback(success, result);
+        }
+    };
     FSOperation *operation = [[FSOperation alloc] initWithRequest:request
-                                                         callback:callback
+                                                         callback:block
                                                     callbackQueue:self.callbackQueue];
     [self.operationQueue addOperation:operation];
     return operation;
 }
 
-+ (NSOperation *)    uploadPhoto:(NSString *)methodName
-                  withParameters:(NSDictionary *)parameters
-#ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
-                       withImage:(NSImage *)image
-#else
-                       withImage:(UIImage *)image
-#endif
-                        callback:(Foursquare2Callback)callback {
-    
-    return [[Foursquare2 sharedInstance] uploadPhoto:methodName
-                                      withParameters:parameters
-                                           withImage:image
-                                            callback:callback];
-}
-
-- (NSOperation *)    uploadPhoto:(NSString *)methodName
-                  withParameters:(NSDictionary *)parameters
-#ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
-                       withImage:(NSImage *)image
-#else
-                       withImage:(UIImage *)image
-#endif
-                        callback:(Foursquare2Callback)callback {
+- (NSOperation *)uploadPhoto:(NSString *)methodName
+              withParameters:(NSDictionary *)parameters
+               withImageData:(NSData *)imageData
+                    callback:(Foursquare2Callback)callback {
     NSURL *URL = [Foursquare2 constructURLWithPath:methodName parameters:parameters];
-    
-#ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
-    NSArray *reps = [image representations];
-    NSData *data = [NSBitmapImageRep representationOfImageRepsInArray:reps
-                                                            usingType:NSJPEGFileType
-                                                           properties:nil];
-#else
-    NSData *data = UIImageJPEGRepresentation(image,1.0);
-#endif
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:URL] ;
     request.HTTPMethod = @"POST";
-    
     
     NSString *boundary = @"0xKhTmLbOuNdArY";
     NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", boundary, nil];
@@ -1390,7 +1431,7 @@ static NSMutableDictionary *attributes;
                           dataUsingEncoding:NSUTF8StringEncoding];
     [body appendData:stringData];
     [body appendData:[@"Content-Type: image/jpeg\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-    [body appendData:data];
+    [body appendData:imageData];
     [body appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
     [request setHTTPBody:body];
     

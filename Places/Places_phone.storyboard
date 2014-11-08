@@ -298,34 +298,22 @@
                         <viewControllerLayoutGuide type="bottom" id="Zzu-UK-J3O"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="sdp-0Z-iRs" customClass="PLCCalloutView">
-                        <rect key="frame" x="0.0" y="0.0" width="310" height="300"/>
+                        <rect key="frame" x="0.0" y="0.0" width="240" height="230"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mTy-D0-Tan">
-                                <rect key="frame" x="0.0" y="0.0" width="310" height="300"/>
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="230"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iVb-fx-mhr">
-                                        <rect key="frame" x="0.0" y="0.0" width="310" height="300"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="240" height="230"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="310" id="CF2-61-dOf"/>
-                                            <constraint firstAttribute="height" constant="300" id="jbm-XO-n2H"/>
+                                            <constraint firstAttribute="width" constant="240" id="CF2-61-dOf"/>
+                                            <constraint firstAttribute="height" constant="230" id="jbm-XO-n2H"/>
                                         </constraints>
                                     </view>
-                                    <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PMe-ea-TKP">
-                                        <rect key="frame" x="256" y="0.0" width="60" height="44"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <items>
-                                            <barButtonItem systemItem="action" id="1Y9-Ih-U0y">
-                                                <connections>
-                                                    <action selector="sharePlace:" destination="1NL-xg-0xe" id="x30-IO-X1I"/>
-                                                </connections>
-                                            </barButtonItem>
-                                        </items>
-                                        <color key="barTintColor" white="1" alpha="0.20000000000000001" colorSpace="calibratedWhite"/>
-                                    </toolbar>
                                     <toolbar opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8l8-Tq-XPd">
-                                        <rect key="frame" x="0.0" y="256" width="310" height="44"/>
+                                        <rect key="frame" x="0.0" y="186" width="240" height="44"/>
                                         <items>
                                             <barButtonItem systemItem="trash" id="qQM-lI-S8x">
                                                 <color key="tintColor" red="1" green="0.021699211209647906" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -348,12 +336,29 @@
                                         </items>
                                         <color key="barTintColor" white="1" alpha="0.40000000000000002" colorSpace="calibratedWhite"/>
                                     </toolbar>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Jq-11-CSj">
+                                        <rect key="frame" x="176" y="0.0" width="64" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="UEJ-pj-adI"/>
+                                            <constraint firstAttribute="width" constant="64" id="czC-h3-eIA"/>
+                                        </constraints>
+                                        <state key="normal" image="702-share">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <state key="selected" image="702-share-selected"/>
+                                        <state key="highlighted" image="702-share-selected"/>
+                                        <connections>
+                                            <action selector="sharePlace:" destination="1NL-xg-0xe" eventType="touchUpInside" id="NkM-17-SSb"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="iVb-fx-mhr" secondAttribute="bottom" id="0eF-r5-BZE"/>
                                     <constraint firstItem="iVb-fx-mhr" firstAttribute="leading" secondItem="mTy-D0-Tan" secondAttribute="leading" id="Czf-Ak-jUj"/>
                                     <constraint firstItem="8l8-Tq-XPd" firstAttribute="leading" secondItem="mTy-D0-Tan" secondAttribute="leading" id="Gxo-3D-5Sf"/>
                                     <constraint firstItem="iVb-fx-mhr" firstAttribute="top" secondItem="mTy-D0-Tan" secondAttribute="top" id="QOy-jh-6uL"/>
+                                    <constraint firstAttribute="trailing" secondItem="0Jq-11-CSj" secondAttribute="trailing" id="Wud-AR-BhE"/>
+                                    <constraint firstItem="0Jq-11-CSj" firstAttribute="top" secondItem="mTy-D0-Tan" secondAttribute="top" id="fuQ-ho-KPm"/>
                                     <constraint firstAttribute="trailing" secondItem="8l8-Tq-XPd" secondAttribute="trailing" id="k1N-Qh-OzI"/>
                                     <constraint firstAttribute="bottom" secondItem="8l8-Tq-XPd" secondAttribute="bottom" id="qhj-Me-mJp"/>
                                     <constraint firstAttribute="trailing" secondItem="iVb-fx-mhr" secondAttribute="trailing" id="wE6-Mb-T15"/>
@@ -373,14 +378,13 @@
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="310" height="300"/>
+                    <size key="freeformSize" width="240" height="230"/>
                     <connections>
                         <outlet property="bottomSpacingConstraint" destination="TMK-i0-w4J" id="kh1-m5-RqE"/>
                         <outlet property="bottomToolbar" destination="8l8-Tq-XPd" id="b3N-xn-Saf"/>
                         <outlet property="containerView" destination="iVb-fx-mhr" id="uJj-Z0-cM4"/>
                         <outlet property="contentView" destination="mTy-D0-Tan" id="XmU-CM-efb"/>
                         <outlet property="trashButton" destination="qQM-lI-S8x" id="g8m-Wk-hO7"/>
-                        <outlet property="trashToolbar" destination="PMe-ea-TKP" id="5R6-50-QeU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PwR-vm-YkE" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -406,6 +410,8 @@
         </scene>
     </scenes>
     <resources>
+        <image name="702-share" width="21" height="28"/>
+        <image name="702-share-selected" width="21" height="28"/>
         <image name="708-search" width="28" height="28"/>
         <image name="723-location-arrow" width="28" height="28"/>
         <image name="765-arrow-left" width="14" height="28"/>
