@@ -1,0 +1,92 @@
+
+// To check if a library is compiled with CocoaPods you
+// can use the `COCOAPODS` macro definition which is
+// defined in the xcconfigs so it is available in
+// headers also when they are imported in the client
+// project.
+
+
+// AFNetworking/NSURLConnection
+#define COCOAPODS_POD_AVAILABLE_AFNetworking_NSURLConnection
+#define COCOAPODS_VERSION_MAJOR_AFNetworking_NSURLConnection 2
+#define COCOAPODS_VERSION_MINOR_AFNetworking_NSURLConnection 4
+#define COCOAPODS_VERSION_PATCH_AFNetworking_NSURLConnection 1
+
+// AFNetworking/NSURLSession
+#define COCOAPODS_POD_AVAILABLE_AFNetworking_NSURLSession
+#define COCOAPODS_VERSION_MAJOR_AFNetworking_NSURLSession 2
+#define COCOAPODS_VERSION_MINOR_AFNetworking_NSURLSession 4
+#define COCOAPODS_VERSION_PATCH_AFNetworking_NSURLSession 1
+
+// AFNetworking/Reachability
+#define COCOAPODS_POD_AVAILABLE_AFNetworking_Reachability
+#define COCOAPODS_VERSION_MAJOR_AFNetworking_Reachability 2
+#define COCOAPODS_VERSION_MINOR_AFNetworking_Reachability 4
+#define COCOAPODS_VERSION_PATCH_AFNetworking_Reachability 1
+
+// AFNetworking/Security
+#define COCOAPODS_POD_AVAILABLE_AFNetworking_Security
+#define COCOAPODS_VERSION_MAJOR_AFNetworking_Security 2
+#define COCOAPODS_VERSION_MINOR_AFNetworking_Security 4
+#define COCOAPODS_VERSION_PATCH_AFNetworking_Security 1
+
+// AFNetworking/Serialization
+#define COCOAPODS_POD_AVAILABLE_AFNetworking_Serialization
+#define COCOAPODS_VERSION_MAJOR_AFNetworking_Serialization 2
+#define COCOAPODS_VERSION_MINOR_AFNetworking_Serialization 4
+#define COCOAPODS_VERSION_PATCH_AFNetworking_Serialization 1
+
+// AFNetworking/UIKit
+#define COCOAPODS_POD_AVAILABLE_AFNetworking_UIKit
+#define COCOAPODS_VERSION_MAJOR_AFNetworking_UIKit 2
+#define COCOAPODS_VERSION_MINOR_AFNetworking_UIKit 4
+#define COCOAPODS_VERSION_PATCH_AFNetworking_UIKit 1
+
+// BDDROneFingerZoomGestureRecognizer
+#define COCOAPODS_POD_AVAILABLE_BDDROneFingerZoomGestureRecognizer
+#define COCOAPODS_VERSION_MAJOR_BDDROneFingerZoomGestureRecognizer 1
+#define COCOAPODS_VERSION_MINOR_BDDROneFingerZoomGestureRecognizer 0
+#define COCOAPODS_VERSION_PATCH_BDDROneFingerZoomGestureRecognizer 2
+
+// Firebase
+#define COCOAPODS_POD_AVAILABLE_Firebase
+#define COCOAPODS_VERSION_MAJOR_Firebase 2
+#define COCOAPODS_VERSION_MINOR_Firebase 0
+#define COCOAPODS_VERSION_PATCH_Firebase 1
+
+// FlickrKit
+#define COCOAPODS_POD_AVAILABLE_FlickrKit
+#define COCOAPODS_VERSION_MAJOR_FlickrKit 1
+#define COCOAPODS_VERSION_MINOR_FlickrKit 0
+#define COCOAPODS_VERSION_PATCH_FlickrKit 4
+
+// Foursquare-API-v2
+#define COCOAPODS_POD_AVAILABLE_Foursquare_API_v2
+#define COCOAPODS_VERSION_MAJOR_Foursquare_API_v2 1
+#define COCOAPODS_VERSION_MINOR_Foursquare_API_v2 4
+#define COCOAPODS_VERSION_PATCH_Foursquare_API_v2 7
+
+// INTULocationManager
+#define COCOAPODS_POD_AVAILABLE_INTULocationManager
+#define COCOAPODS_VERSION_MAJOR_INTULocationManager 1
+#define COCOAPODS_VERSION_MINOR_INTULocationManager 2
+#define COCOAPODS_VERSION_PATCH_INTULocationManager 0
+
+// JTSImageViewController
+#define COCOAPODS_POD_AVAILABLE_JTSImageViewController
+#define COCOAPODS_VERSION_MAJOR_JTSImageViewController 1
+#define COCOAPODS_VERSION_MINOR_JTSImageViewController 4
+#define COCOAPODS_VERSION_PATCH_JTSImageViewController 0
+
+// Reachability
+#define COCOAPODS_POD_AVAILABLE_Reachability
+#define COCOAPODS_VERSION_MAJOR_Reachability 3
+#define COCOAPODS_VERSION_MINOR_Reachability 1
+#define COCOAPODS_VERSION_PATCH_Reachability 1
+
+// SWTableViewCell
+#define COCOAPODS_POD_AVAILABLE_SWTableViewCell
+#define COCOAPODS_VERSION_MAJOR_SWTableViewCell 0
+#define COCOAPODS_VERSION_MINOR_SWTableViewCell 3
+#define COCOAPODS_VERSION_PATCH_SWTableViewCell 6
+
