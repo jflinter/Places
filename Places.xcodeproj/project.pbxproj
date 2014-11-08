@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0430BEC519CF8126001584BD /* PLCFlickrSearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 0430BEC419CF8126001584BD /* PLCFlickrSearchResult.m */; };
 		0430BEC819CFA113001584BD /* PLCFlickrResultCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0430BEC719CFA113001584BD /* PLCFlickrResultCollectionViewCell.m */; };
+		043817AC1A0E964400CE6A06 /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 043817AB1A0E964400CE6A06 /* Launch Screen.xib */; };
 		0477975819D282DB0022A00F /* PLCImageDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0477975719D282DB0022A00F /* PLCImageDownloader.m */; };
 		04DD4B2619CFBEFC00408002 /* PLCPlaceSearchTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04DD4B2519CFBEFC00408002 /* PLCPlaceSearchTableViewController.xib */; };
 		04DEDD8619CFC5EB00A0D0BA /* PLCBlurredModalPresentationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DEDD8519CFC5EB00A0D0BA /* PLCBlurredModalPresentationController.m */; };
@@ -86,6 +87,7 @@
 		0430BEC419CF8126001584BD /* PLCFlickrSearchResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCFlickrSearchResult.m; sourceTree = "<group>"; };
 		0430BEC619CFA113001584BD /* PLCFlickrResultCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCFlickrResultCollectionViewCell.h; sourceTree = "<group>"; };
 		0430BEC719CFA113001584BD /* PLCFlickrResultCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCFlickrResultCollectionViewCell.m; sourceTree = "<group>"; };
+		043817AB1A0E964400CE6A06 /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		0477975619D282DB0022A00F /* PLCImageDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCImageDownloader.h; sourceTree = "<group>"; };
 		0477975719D282DB0022A00F /* PLCImageDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCImageDownloader.m; sourceTree = "<group>"; };
 		04DD4B2519CFBEFC00408002 /* PLCPlaceSearchTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PLCPlaceSearchTableViewController.xib; sourceTree = "<group>"; };
@@ -470,6 +472,7 @@
 				A0AB9B3519C431B500CD2186 /* PLCMapSelectionTableViewCell.m */,
 				0430BEC619CFA113001584BD /* PLCFlickrResultCollectionViewCell.h */,
 				0430BEC719CFA113001584BD /* PLCFlickrResultCollectionViewCell.m */,
+				043817AB1A0E964400CE6A06 /* Launch Screen.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -566,6 +569,7 @@
 				7E54FEA118FFA0E7002E2AFC /* Places_phone.storyboard in Resources */,
 				04DEDD8B19CFE0E200A0D0BA /* PLCFlickrSearchViewController.xib in Resources */,
 				A062BA0E19122FD9002F0C2E /* Glyphish.xcassets in Resources */,
+				043817AC1A0E964400CE6A06 /* Launch Screen.xib in Resources */,
 				04DD4B2619CFBEFC00408002 /* PLCPlaceSearchTableViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -766,7 +770,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -809,7 +813,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;

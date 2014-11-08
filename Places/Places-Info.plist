@@ -33,6 +33,12 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Grant access to drop pins at your current location.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Grant access to drop pins at your current location.</string>
+	<key>UILaunchStoryboardName</key>
+	<string>Launch Screen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Places_phone</string>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -54,9 +60,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-  <key>NSLocationWhenInUseUsageDescription</key>
-  <string>Grant access to drop pins at your current location.</string>
-  <key>NSLocationAlwaysUsageDescription</key>
-  <string>Grant access to drop pins at your current location.</string>
 </dict>
 </plist>
