@@ -5,67 +5,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <scenes>
-        <!--Map Selection View Controller-->
-        <scene sceneID="hD8-kr-jhb">
-            <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="wN9-sT-jBC" customClass="PLCMapSelectionViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="tBz-dh-PQZ"/>
-                        <viewControllerLayoutGuide type="bottom" id="eEv-SA-wBr"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="HrT-WC-ifh">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yoI-eU-dJD">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                            </imageView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i83-c0-YWQ">
-                                <rect key="frame" x="0.0" y="8" width="320" height="560"/>
-                                <subviews>
-                                    <containerView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uK3-FQ-QzX">
-                                        <rect key="frame" x="15" y="15" width="290" height="530"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <connections>
-                                            <segue destination="LQl-WR-bJx" kind="embed" id="Yev-Su-NOi"/>
-                                        </connections>
-                                    </containerView>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            </view>
-                        </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="width" secondItem="yoI-eU-dJD" secondAttribute="width" id="Ilh-io-2mG"/>
-                            <constraint firstAttribute="centerX" secondItem="yoI-eU-dJD" secondAttribute="centerX" id="OJU-L8-6uk"/>
-                            <constraint firstItem="i83-c0-YWQ" firstAttribute="top" secondItem="tBz-dh-PQZ" secondAttribute="bottom" constant="-12" id="TZt-bg-ZiR"/>
-                            <constraint firstItem="eEv-SA-wBr" firstAttribute="top" secondItem="i83-c0-YWQ" secondAttribute="bottom" id="chW-nn-Knc"/>
-                            <constraint firstAttribute="trailing" secondItem="i83-c0-YWQ" secondAttribute="trailing" id="eS3-bp-xaV"/>
-                            <constraint firstAttribute="centerY" secondItem="yoI-eU-dJD" secondAttribute="centerY" id="pPu-Wq-R8C"/>
-                            <constraint firstItem="i83-c0-YWQ" firstAttribute="leading" secondItem="HrT-WC-ifh" secondAttribute="leading" id="rV6-s0-F4f"/>
-                            <constraint firstAttribute="height" secondItem="yoI-eU-dJD" secondAttribute="height" id="s1b-SY-dtp"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="8aM-3M-cmn">
-                        <connections>
-                            <outlet property="leftBarButtonItem" destination="ERM-uI-RgL" id="Qah-sd-QE8"/>
-                        </connections>
-                    </navigationItem>
-                    <connections>
-                        <outlet property="backgroundImageView" destination="yoI-eU-dJD" id="TVt-hA-HP1"/>
-                        <outlet property="containerView" destination="uK3-FQ-QzX" id="K0c-JX-k9c"/>
-                        <outlet property="contentView" destination="uK3-FQ-QzX" id="6Qq-cN-dCO"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="1Iu-7c-Fjg" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <barButtonItem systemItem="stop" id="ERM-uI-RgL">
-                    <connections>
-                        <segue destination="wN9-sT-jBC" kind="custom" customClass="PLCDismissSegue" id="u8l-9s-oFy"/>
-                    </connections>
-                </barButtonItem>
-            </objects>
-            <point key="canvasLocation" x="380" y="-661"/>
-        </scene>
         <!--New Map-->
         <scene sceneID="bJM-pK-xqa">
             <objects>
@@ -75,7 +14,7 @@
                         <viewControllerLayoutGuide type="bottom" id="xW6-Tq-xsw"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Oxg-43-4NC">
-                        <rect key="frame" x="0.0" y="0.0" width="290" height="530"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="ex. My Favorite Restaurants" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EJx-oK-HJh">
@@ -103,37 +42,19 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SlJ-b9-tUt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1716" y="-1027"/>
+            <point key="canvasLocation" x="1646" y="7"/>
         </scene>
-        <!--Map Selection Table View Controller-->
+        <!--Your Maps-->
         <scene sceneID="b7B-FO-12E">
             <objects>
-                <tableViewController id="4pf-k5-Kzc" customClass="PLCMapSelectionTableViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="OXt-BQ-Lcf">
-                        <rect key="frame" x="0.0" y="0.0" width="290" height="530"/>
+                <tableViewController title="Your Maps" id="4pf-k5-Kzc" customClass="PLCMapSelectionTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="OXt-BQ-Lcf">
+                        <rect key="frame" x="0.0" y="64" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="sectionIndexTrackingBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="gray" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PLCMapSelectionEditableCellReuseIdentifier" textLabel="0UX-nj-R5u" style="IBUITableViewCellStyleDefault" id="ek8-dx-qiC">
-                                <rect key="frame" x="0.0" y="22" width="290" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ek8-dx-qiC" id="bpK-zD-y3C">
-                                    <rect key="frame" x="0.0" y="0.0" width="257" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Add a new map..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="0UX-nj-R5u">
-                                            <rect key="frame" x="15" y="0.0" width="240" height="43"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" name="AvenirNext-Italic" family="Avenir Next" pointSize="18"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <segue destination="mng-MZ-e1O" kind="push" identifier="PLCSelectedNewMapSegue" id="BS6-4O-6Bp"/>
-                                </connections>
-                            </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PLCMapSelectionTableCellReuseIdentifier" textLabel="ydO-yp-EA5" style="IBUITableViewCellStyleDefault" id="uJZ-EN-xBd" customClass="PLCMapSelectionTableViewCell">
                                 <rect key="frame" x="0.0" y="66" width="290" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
@@ -144,12 +65,13 @@
                                         <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ydO-yp-EA5">
                                             <rect key="frame" x="15" y="0.0" width="260" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="18"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Test" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="thc-V7-cxW">
-                                            <rect key="frame" x="15" y="7" width="260" height="30"/>
+                                            <rect key="frame" x="15" y="7" width="290" height="30"/>
                                             <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="18"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                         </textField>
@@ -160,9 +82,9 @@
                                         <constraint firstItem="thc-V7-cxW" firstAttribute="top" secondItem="DVk-68-JdK" secondAttribute="top" constant="7" id="vQv-IK-8CV"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="editTitleTextField" destination="thc-V7-cxW" id="HSl-YV-QP1"/>
-                                    <segue destination="4pf-k5-Kzc" kind="custom" identifier="PLCDidSelectMapSegue" customClass="PLCDismissSegue" id="3dd-JW-JIZ"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -172,19 +94,29 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="PjA-kV-tJK">
-                        <barButtonItem key="backBarButtonItem" title="Cancel" id="zwQ-Kz-myL"/>
+                        <barButtonItem key="leftBarButtonItem" image="cancel" id="qGz-lv-40g">
+                            <connections>
+                                <action selector="dismiss:" destination="4pf-k5-Kzc" id="Z7Z-pL-R2c"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="709-plus" id="J9B-2s-2xp">
+                            <connections>
+                                <segue destination="mng-MZ-e1O" kind="push" id="AQc-hm-Idk"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yZQ-Bh-Y50" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1208" y="-647"/>
+            <point key="canvasLocation" x="1218" y="7"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Nb8-oY-Tcu">
             <objects>
-                <navigationController definesPresentationContext="YES" navigationBarHidden="YES" id="LQl-WR-bJx" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="PLCMapSelectionNavigationController" definesPresentationContext="YES" id="LQl-WR-bJx" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" backIndicatorImage="765-arrow-left" backIndicatorTransitionMaskImage="765-arrow-left" id="yTo-jb-nIg">
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <textAttributes key="titleTextAttributes">
                             <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="14"/>
                             <offsetWrapper key="textShadowOffset" horizontal="0.0" vertical="0.0"/>
@@ -196,7 +128,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="m18-X0-6m5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="809" y="-647"/>
+            <point key="canvasLocation" x="803" y="7"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Qb1-C7-ZrN">
@@ -250,7 +182,7 @@
                     <toolbarItems>
                         <barButtonItem image="854-list" id="CtE-Dj-rlY">
                             <connections>
-                                <segue destination="wN9-sT-jBC" kind="custom" customClass="PLCMapPresentationSegue" id="oTJ-78-Rzp"/>
+                                <action selector="showMapSelection:" destination="OId-a2-hAa" id="dEO-Ic-pQC"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Uyg-Id-hGR"/>
@@ -406,17 +338,19 @@
                     </items>
                 </toolbar>
             </objects>
-            <point key="canvasLocation" x="-178" y="-532"/>
+            <point key="canvasLocation" x="-20" y="-528"/>
         </scene>
     </scenes>
     <resources>
         <image name="702-share" width="21" height="28"/>
         <image name="702-share-selected" width="21" height="28"/>
         <image name="708-search" width="28" height="28"/>
+        <image name="709-plus" width="28" height="28"/>
         <image name="723-location-arrow" width="28" height="28"/>
         <image name="765-arrow-left" width="14" height="28"/>
         <image name="854-list" width="26" height="16"/>
         <image name="888-checkmark" width="28" height="28"/>
+        <image name="cancel" width="28" height="28"/>
         <image name="drop_pin_icon" width="31" height="32"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
@@ -424,8 +358,4 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
-    <inferredMetricsTieBreakers>
-        <segue reference="oTJ-78-Rzp"/>
-        <segue reference="bgf-Ac-FaI"/>
-    </inferredMetricsTieBreakers>
 </document>

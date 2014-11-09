@@ -212,7 +212,10 @@ static NSString *const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidCh
     [[[Firebase mapClient] queryStartingAtValue:userId]
         observeSingleEventOfType:FEventTypeValue
                        withBlock:^(FDataSnapshot *snapshot) {
-                           NSDictionary *maps = [snapshot value];
+                           id maps = [snapshot value];
+                           if (maps == [NSNull null]) {
+                               return;
+                           }
                            [maps enumerateKeysAndObjectsUsingBlock:^(NSString *mapId, NSDictionary *mapDict, BOOL *stop) {
                                if (mapDict[@"PLCDeletedAt"]) {
                                    return;
@@ -222,6 +225,9 @@ static NSString *const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidCh
                                    map = [PLCMap insertInManagedObjectContext:[self managedObjectContext]];
                                    map.name = mapDict[@"name"];
                                    map.uuid = mapId;
+                               }
+                               if (mapDict[@"places"] == [NSNull null]) {
+                                   return;
                                }
                                [mapDict[@"places"] enumerateKeysAndObjectsUsingBlock:^(NSString *placeId, NSDictionary *placeDict, BOOL *stop) {
                                    if (![[[[PLCPlaceStore sharedInstance] allPlaces] valueForKeyPath:@"uuid"] containsObject:placeId]) {
@@ -244,7 +250,7 @@ static NSString *const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidCh
                                    }
                                }];
                            }];
-                           [self save];
+                           [[self managedObjectContext] save:nil];
                        }];
 }
 

@@ -79,6 +79,10 @@
     return viewControllers[key];
 }
 
+- (UIView *)viewForKey:(NSString *)key {
+    return [[self viewControllerForKey:key] view];
+}
+
 - (CGRect)initialFrameForViewController:(UIViewController *)vc
 {
     return CGRectNull;

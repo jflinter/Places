@@ -7,16 +7,16 @@
 //
 
 #import "PLCBlurredModalPresentationController.h"
-//#import "UIView+SnapshotImage.h"
 
-@interface PLCBlurredModalPresentationController()
-@property(nonatomic, weak)UIVisualEffectView *blurView;
-@property(nonatomic, weak)UIView *blurOverlayView;
+@interface PLCBlurredModalPresentationController ()
+@property (nonatomic, weak) UIVisualEffectView *blurView;
+@property (nonatomic, weak) UIView *blurOverlayView;
 @end
 
 @implementation PLCBlurredModalPresentationController
 
-- (instancetype)initWithPresentedViewController:(UIViewController *)presentedViewController presentingViewController:(UIViewController *)presentingViewController {
+- (instancetype)initWithPresentedViewController:(UIViewController *)presentedViewController
+                       presentingViewController:(UIViewController *)presentingViewController {
     self = [super initWithPresentedViewController:presentedViewController presentingViewController:presentingViewController];
     if (self) {
         self.edgeInsets = UIEdgeInsetsMake(20, 20, 20, 20);
