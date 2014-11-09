@@ -7,8 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "PLCScrollViewController.h"
 
-@interface PLCPlaceSearchTableViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, PLCScrollViewController, UIGestureRecognizerDelegate, UISearchBarDelegate>
+@interface PLCPlaceSearchTableViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
 @property (nonatomic) MKCoordinateRegion searchRegion;
 @end

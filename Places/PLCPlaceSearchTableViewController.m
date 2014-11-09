@@ -25,13 +25,12 @@
 
 @implementation PLCPlaceSearchTableViewController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     self.searchBar.prompt = NSLocalizedString(@"Search for nearby places to add", nil);
     self.searchBar.placeholder = NSLocalizedString(@"Ex. Statue of Liberty", nil);
     [self.tableView registerClass:[PLCPlaceSearchResultTableViewCell class] forCellReuseIdentifier:@"PLCPlaceSearchResultCellIdentifier"];
-    
+
     UIInputView *inputView = [[UIInputView alloc] initWithFrame:CGRectMake(0, 0, 320, 15) inputViewStyle:UIInputViewStyleKeyboard];
     CGRect rect = inputView.bounds;
     rect.origin.y = 6;
@@ -48,19 +47,16 @@
     [self.searchBar becomeFirstResponder];
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     self.searchResults = nil;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return (NSInteger)self.searchResults.count;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     PLCPlaceSearchResultTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PLCPlaceSearchResultCellIdentifier" forIndexPath:indexPath];
     PLCPlaceSearchResult *result = self.searchResults[(NSUInteger)indexPath.row];
     cell.textLabel.text = result.title;
@@ -71,10 +67,11 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self.foursquareOperation cancel];
     PLCPlaceSearchResult *result = self.searchResults[(NSUInteger)indexPath.row];
-    [self.presentingViewController dismissViewControllerAnimated:YES completion:^{
-        PLCPlace *place = [[PLCPlaceStore sharedInstance] insertPlaceAtCoordinate:result.coordinate];
-        place.caption = result.title;
-    }];
+    [self.presentingViewController dismissViewControllerAnimated:YES
+                                                      completion:^{
+                                                          PLCPlace *place = [[PLCPlaceStore sharedInstance] insertPlaceAtCoordinate:result.coordinate];
+                                                          place.caption = result.title;
+                                                      }];
 }
 
 - (UIScrollView *)scrollView {
@@ -84,7 +81,7 @@
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
     [self.foursquareOperation cancel];
     if (searchText.length >= 3) {
-        void (^onComplete)(BOOL success, NSDictionary *result) = ^void(BOOL success, NSDictionary *result) {
+        void (^onComplete)(BOOL success, NSDictionary * result) = ^void(BOOL success, NSDictionary *result) {
             if (success) {
                 NSDictionary *response = [result valueForKey:@"response"];
                 NSArray *venues = [response valueForKey:@"minivenues"];
@@ -95,37 +92,35 @@
                 }
                 [self updateTableWithResults:[results copy]];
                 switch (self.searchResults.count) {
-                    case 0:
-                        self.searchBar.prompt = NSLocalizedString(@"No places found", nil);
-                        break;
-                    case 1:
-                        self.searchBar.prompt = NSLocalizedString(@"1 place found", nil);
-                        break;
-                    default:
-                        self.searchBar.prompt = [NSString stringWithFormat:NSLocalizedString(@"%i places found", nil), self.searchResults.count];
-                        break;
+                case 0:
+                    self.searchBar.prompt = NSLocalizedString(@"No places found. Try moving the map?", nil);
+                    break;
+                case 1:
+                    self.searchBar.prompt = NSLocalizedString(@"1 place found", nil);
+                    break;
+                default:
+                    self.searchBar.prompt = [NSString stringWithFormat:NSLocalizedString(@"%i places found", nil), self.searchResults.count];
+                    break;
                 }
-            }
-            else {
+            } else {
                 self.searchBar.prompt = NSLocalizedString(@"Error fetching nearby places", nil);
             }
         };
         self.foursquareOperation = [Foursquare2 venueSuggestCompletionByLatitude:@(self.searchRegion.center.latitude)
-                                            longitude:@(self.searchRegion.center.longitude)
-                                                 near:@""
-                                           accuracyLL:nil
-                                             altitude:nil
-                                          accuracyAlt:nil
-                                                query:searchText
-                                                limit:@4
-                                               radius:nil
-                                                    s:nil
-                                                    w:nil
-                                                    n:nil
-                                                    e:nil
-                                             callback:onComplete];
-    }
-    else {
+                                                                       longitude:@(self.searchRegion.center.longitude)
+                                                                            near:@""
+                                                                      accuracyLL:nil
+                                                                        altitude:nil
+                                                                     accuracyAlt:nil
+                                                                           query:searchText
+                                                                           limit:@5
+                                                                          radius:nil
+                                                                               s:nil
+                                                                               w:nil
+                                                                               n:nil
+                                                                               e:nil
+                                                                        callback:onComplete];
+    } else {
         self.searchBar.prompt = NSLocalizedString(@"Search for nearby places to add", nil);
         [self updateTableWithResults:@[]];
     }
@@ -154,7 +149,6 @@
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {

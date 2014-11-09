@@ -22,6 +22,7 @@
 #import "PLCDatabase.h"
 #import <CoreLocation/CoreLocation.h>
 #import "PLCBlurredModalPresentationController.h"
+#import "PLCZoomAnimator.h"
 
 static NSString *const PLCMapPinReuseIdentifier = @"PLCMapPinReuseIdentifier";
 static CGFloat const PLCMapPanAnimationDuration = 0.3f;
@@ -465,6 +466,20 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     }
 }
 
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented
+                                                                  presentingController:(UIViewController *)presenting
+                                                                      sourceController:(UIViewController *)source {
+    PLCZoomAnimator *animator = [PLCZoomAnimator new];
+    animator.presenting = YES;
+    return animator;
+}
+
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
+    PLCZoomAnimator *animator = [PLCZoomAnimator new];
+    animator.presenting = NO;
+    return animator;
+}
+
 - (UIPresentationController *)presentationControllerForPresentedViewController:(UIViewController *)presented
                                                       presentingViewController:(UIViewController *)presenting
                                                           sourceViewController:(UIViewController *)source {
@@ -472,6 +487,9 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
         [[PLCBlurredModalPresentationController alloc] initWithPresentedViewController:presented presentingViewController:self];
     if ([presented isKindOfClass:[UINavigationController class]]) {
         controller.edgeInsets = UIEdgeInsetsZero;
+    }
+    else {
+        controller.edgeInsets = UIEdgeInsetsMake(20, 20, 20, 20);
     }
     return controller;
 }

@@ -35,7 +35,7 @@
     [self.containerView addSubview:snapshot];
     [self.presentingViewController.transitionCoordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
         self.blurOverlayView.alpha = 0.0f;
-    } completion:nil];
+    } completion:^(id<UIViewControllerTransitionCoordinatorContext> context){}];
 }
 
 - (void)presentationTransitionDidEnd:(BOOL)completed {

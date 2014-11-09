@@ -47,6 +47,11 @@
     [[PLCMapStore sharedInstance] unregisterDelegate:self];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController.navigationBar.layer removeAllAnimations];
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return (NSInteger)[[PLCMapStore sharedInstance] numberOfMaps];
 }
@@ -61,6 +66,31 @@
 
 - (IBAction)dismiss:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)newMap:(id)sender {
+    UIAlertController *controller =
+        [UIAlertController alertControllerWithTitle:@"New Map" message:@"Type a name for your map." preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *action = [UIAlertAction actionWithTitle:@"Create Map"
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction *action) {
+                                                       NSString *mapTitle = [controller.textFields[0] text];
+                                                       PLCMapStore *store = [PLCMapStore sharedInstance];
+                                                       store.selectedMap = [store insertMapWithName:mapTitle];
+                                                       [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+                                                   }];
+    action.enabled = NO;
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action){}];
+    [controller addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        textField.placeholder = @"Ex. My Favorite Restaurants";
+        [[NSNotificationCenter defaultCenter] addObserverForName:UITextFieldTextDidChangeNotification
+                                                          object:textField
+                                                           queue:[NSOperationQueue mainQueue]
+                                                      usingBlock:^(NSNotification *note) { action.enabled = ![textField.text isEqualToString:@""]; }];
+    }];
+    [controller addAction:cancelAction];
+    [controller addAction:action];
+    [self presentViewController:controller animated:YES completion:nil];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -130,30 +160,6 @@
     [mapStore deleteMapAtIndex:(NSUInteger)indexPathForSelection.row];
 }
 
-#pragma mark - Navigation
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(UITableViewCell *)sender {
-    [super prepareForSegue:segue sender:sender];
-    self.navigationItem.backBarButtonItem.title = NSLocalizedString(@"Cancel", @"Cancel new map back button item text");
-    return;
-}
-
-#pragma mark - UIGestureRecognizerDelegate
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer
-    shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
-    return YES;
-}
-
-- (BOOL)gestureRecognizerShouldBegin:(UIPanGestureRecognizer *)gestureRecognizer {
-    CGPoint point = [gestureRecognizer velocityInView:self.tableView];
-    return self.tableView.contentOffset.y <= 0 && point.y > 0;
-}
-
-#pragma mark - PLCScrollViewController
-- (UIScrollView *)scrollView {
-    return self.tableView;
-}
-
 #pragma mark - NSFetchedResultsControllerDelegate
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
@@ -166,7 +172,7 @@
         atIndexPath:(NSIndexPath *)indexPath
       forChangeType:(NSFetchedResultsChangeType)type
        newIndexPath:(NSIndexPath *)newIndexPath {
-    indexPath = [NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section + 1];
+    indexPath = [NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section];
     newIndexPath = [NSIndexPath indexPathForRow:newIndexPath.row inSection:newIndexPath.section];
 
     switch (type) {
