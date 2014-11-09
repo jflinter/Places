@@ -10,21 +10,22 @@
 
 @class PLCPlace, PLCPlaceStore;
 
-@protocol PLCPlaceStoreDelegate <NSObject>
+@protocol PLCPlaceStoreDelegate<NSObject>
 - (void)placeStore:(PLCPlaceStore *)store didInsertPlace:(PLCPlace *)place new:(BOOL)isNew;
 - (void)placeStore:(PLCPlaceStore *)store didRemovePlace:(PLCPlace *)place;
 @end
 
 @interface PLCPlaceStore : NSObject
 
-@property(readonly, nonatomic) NSArray *allPlaces;
-@property(weak, nonatomic) id<PLCPlaceStoreDelegate> delegate;
+@property (readonly, nonatomic) NSArray *allPlaces;
+@property (weak, nonatomic) id<PLCPlaceStoreDelegate> delegate;
 
-+(instancetype)sharedInstance;
++ (instancetype)sharedInstance;
 
-- (void) save;
+- (void)save;
 
-- (PLCPlace *) insertPlaceAtCoordinate:(CLLocationCoordinate2D)coordinate;
-- (void) removePlace:(PLCPlace *)place;
+- (PLCPlace *)insertPlaceAtCoordinate:(CLLocationCoordinate2D)coordinate save:(BOOL)save;
+- (PLCPlace *)insertPlaceAtCoordinate:(CLLocationCoordinate2D)coordinate;
+- (void)removePlace:(PLCPlace *)place;
 
 @end

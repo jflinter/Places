@@ -21,12 +21,16 @@
 - (NSArray *)activePlaces {
     NSExpression *nilExpression = [NSExpression expressionForConstantValue:[NSNull null]];
     NSExpression *deletedAtExpression = [NSExpression expressionForKeyPath:PLCPlaceAttributes.deletedAt];
-    NSPredicate *notDeletedPredicate = [NSComparisonPredicate predicateWithLeftExpression:deletedAtExpression rightExpression:nilExpression modifier:NSDirectPredicateModifier type:NSEqualToPredicateOperatorType options:0];
+    NSPredicate *notDeletedPredicate = [NSComparisonPredicate predicateWithLeftExpression:deletedAtExpression
+                                                                          rightExpression:nilExpression
+                                                                                 modifier:NSDirectPredicateModifier
+                                                                                     type:NSEqualToPredicateOperatorType
+                                                                                  options:0];
     return [[self.places filteredSetUsingPredicate:notDeletedPredicate] allObjects];
 }
 
 - (NSDictionary *)firebaseObject {
-    return @{PLCMapAttributes.name: self.name};
+    return @{ PLCMapAttributes.name: self.name, @"PLCDeletedAt": @(self.deletedAt.timeIntervalSinceReferenceDate) };
 }
 
 - (NSURL *)shareURL {

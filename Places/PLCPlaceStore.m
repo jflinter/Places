@@ -14,22 +14,20 @@
 #import <Firebase/Firebase.h>
 #import "Firebase+Places.h"
 
-@interface PLCPlaceStore()<NSFetchedResultsControllerDelegate>
-@property(strong, nonatomic)NSFetchedResultsController *fetchedResultsController;
+@interface PLCPlaceStore () <NSFetchedResultsControllerDelegate>
+@property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @end
 
 @implementation PLCPlaceStore
 
-+(instancetype)sharedInstance {
++ (instancetype)sharedInstance {
     static id sharedInstance;
     static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sharedInstance = [self new];
-    });
+    dispatch_once(&onceToken, ^{ sharedInstance = [self new]; });
     return sharedInstance;
 }
 
-- (id) init {
+- (id)init {
     self = [super init];
     if (self) {
         self.fetchedResultsController.fetchRequest.predicate = [self placePredicate];
@@ -37,7 +35,10 @@
         if (!success) {
             abort();
         }
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currentMapChanged:) name:PLCCurrentMapDidChangeNotification object:[PLCMapStore sharedInstance]];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(currentMapChanged:)
+                                                     name:PLCCurrentMapDidChangeNotification
+                                                   object:[PLCMapStore sharedInstance]];
     }
     return self;
 }
@@ -57,7 +58,7 @@
     return self.fetchedResultsController.fetchedObjects;
 }
 
-- (PLCPlace *) insertPlaceAtCoordinate:(CLLocationCoordinate2D)coordinate {
+- (PLCPlace *)insertPlaceAtCoordinate:(CLLocationCoordinate2D)coordinate save:(BOOL)save {
     PLCPlace *place = [PLCPlace insertInManagedObjectContext:[self managedObjectContext]];
     place.coordinate = coordinate;
     place.map = [[PLCMapStore sharedInstance] selectedMap];
@@ -66,13 +67,22 @@
     return place;
 }
 
-- (void) removePlace:(PLCPlace *)place {
+- (PLCPlace *)insertPlaceAtCoordinate:(CLLocationCoordinate2D)coordinate {
+    PLCPlace *place = [PLCPlace insertInManagedObjectContext:[self managedObjectContext]];
+    place.coordinate = coordinate;
+    place.map = [[PLCMapStore sharedInstance] selectedMap];
+    [self save];
+    [self.delegate placeStore:self didInsertPlace:place new:YES];
+    return place;
+}
+
+- (void)removePlace:(PLCPlace *)place {
     place.deletedAt = [NSDate date];
     [self save];
     [self.delegate placeStore:self didRemovePlace:place];
 }
 
-- (void) save {
+- (void)save {
     NSError *error;
     for (PLCPlace *place in [[self managedObjectContext] insertedObjects]) {
         if ([place isKindOfClass:[PLCPlace class]]) {
@@ -95,19 +105,23 @@
     }
 }
 
-- (NSFetchedResultsController *)fetchedResultsController
-{
+- (NSFetchedResultsController *)fetchedResultsController {
     if (!_fetchedResultsController) {
-        _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:[self fetchRequest] managedObjectContext:[self managedObjectContext] sectionNameKeyPath:nil cacheName:nil];
+        _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:[self fetchRequest]
+                                                                        managedObjectContext:[self managedObjectContext]
+                                                                          sectionNameKeyPath:nil
+                                                                                   cacheName:nil];
         _fetchedResultsController.delegate = self;
     }
     return _fetchedResultsController;
 }
 
-- (NSFetchRequest *)fetchRequest
-{
+- (NSFetchRequest *)fetchRequest {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[PLCPlace entityName]];
-    fetchRequest.sortDescriptors = @[ [NSSortDescriptor sortDescriptorWithKey:PLCPlaceAttributes.latitude ascending:YES], [NSSortDescriptor sortDescriptorWithKey:PLCPlaceAttributes.longitude ascending:YES] ];
+    fetchRequest.sortDescriptors = @[
+        [NSSortDescriptor sortDescriptorWithKey:PLCPlaceAttributes.latitude ascending:YES],
+        [NSSortDescriptor sortDescriptorWithKey:PLCPlaceAttributes.longitude ascending:YES]
+    ];
     fetchRequest.predicate = [self placePredicate];
     return fetchRequest;
 }
@@ -115,10 +129,18 @@
 - (NSPredicate *)placePredicate {
     NSExpression *nilExpression = [NSExpression expressionForConstantValue:[NSNull null]];
     NSExpression *deletedAtExpression = [NSExpression expressionForKeyPath:PLCPlaceAttributes.deletedAt];
-    NSPredicate *notDeletedPredicate = [NSComparisonPredicate predicateWithLeftExpression:deletedAtExpression rightExpression:nilExpression modifier:NSDirectPredicateModifier type:NSEqualToPredicateOperatorType options:0];
+    NSPredicate *notDeletedPredicate = [NSComparisonPredicate predicateWithLeftExpression:deletedAtExpression
+                                                                          rightExpression:nilExpression
+                                                                                 modifier:NSDirectPredicateModifier
+                                                                                     type:NSEqualToPredicateOperatorType
+                                                                                  options:0];
     NSExpression *selectedExpression = [NSExpression expressionForKeyPath:@"map.selected"];
     NSExpression *yesExpression = [NSExpression expressionForConstantValue:@YES];
-    NSPredicate *mapPredicate = [NSComparisonPredicate predicateWithLeftExpression:selectedExpression rightExpression:yesExpression modifier:0 type:NSEqualToPredicateOperatorType options:0];
+    NSPredicate *mapPredicate = [NSComparisonPredicate predicateWithLeftExpression:selectedExpression
+                                                                   rightExpression:yesExpression
+                                                                          modifier:0
+                                                                              type:NSEqualToPredicateOperatorType
+                                                                           options:0];
     return [[NSCompoundPredicate alloc] initWithType:NSAndPredicateType subpredicates:@[notDeletedPredicate, mapPredicate]];
 }
 

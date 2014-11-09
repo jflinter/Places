@@ -7,6 +7,7 @@
 //
 
 #import "PLCUserStore.h"
+#import "PLCMapStore.h"
 
 static NSString *const PLCPlacesDeviceIdentifiersKey = @"PLCPlacesDeviceIdentifiers";
 
@@ -15,36 +16,37 @@ static NSString *const PLCPlacesDeviceIdentifiersKey = @"PLCPlacesDeviceIdentifi
 + (instancetype)sharedInstance {
     static id sharedInstance;
     static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sharedInstance = [self new];
-    });
+    dispatch_once(&onceToken, ^{ sharedInstance = [self new]; });
     return sharedInstance;
 }
 
 - (void)beginICloudMonitoring {
     [[NSUbiquitousKeyValueStore defaultStore] synchronize];
-    
+
     [self updateUbiquitousDeviceIdentifiers];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUbiquitousDeviceIdentifiers:) name:NSUbiquitousKeyValueStoreDidChangeExternallyNotification object:[NSUbiquitousKeyValueStore defaultStore]];
-    
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateUbiquitousDeviceIdentifiers:)
+                                                 name:NSUbiquitousKeyValueStoreDidChangeExternallyNotification
+                                               object:[NSUbiquitousKeyValueStore defaultStore]];
 }
 
-- (void)updateUbiquitousDeviceIdentifiers
-{
+- (void)updateUbiquitousDeviceIdentifiers {
     [self updateUbiquitousDeviceIdentifiers:nil];
 }
 
-- (void)updateUbiquitousDeviceIdentifiers:(NSNotification *)notification
-{
+- (void)updateUbiquitousDeviceIdentifiers:(NSNotification *)notification {
     NSString *identifier = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
-    
-    NSMutableOrderedSet *allIdentifiers = [NSMutableOrderedSet orderedSetWithArray:[[NSUbiquitousKeyValueStore defaultStore] arrayForKey:PLCPlacesDeviceIdentifiersKey] ?: @[]];
+
+    NSMutableOrderedSet *allIdentifiers =
+        [NSMutableOrderedSet orderedSetWithArray:[[NSUbiquitousKeyValueStore defaultStore] arrayForKey:PLCPlacesDeviceIdentifiersKey] ?: @[]];
+    if (![allIdentifiers containsObject:identifier]) {
+        [[PLCMapStore sharedInstance] downloadMapsForUserId:identifier];
+    }
     [allIdentifiers addObject:identifier];
-    
+
     [[NSUbiquitousKeyValueStore defaultStore] setArray:[allIdentifiers array] forKey:PLCPlacesDeviceIdentifiersKey];
 }
-
 
 - (NSString *)currentUserId {
     NSArray *array = [[NSUbiquitousKeyValueStore defaultStore] objectForKey:PLCPlacesDeviceIdentifiersKey];

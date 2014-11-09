@@ -7,18 +7,21 @@
 //
 
 #import "PLCMapStore.h"
+#import "PLCPlaceStore.h"
 #import "PLCDatabase.h"
 #import "PLCMap.h"
 #import "PLCUserStore.h"
 #import <Firebase/Firebase.h>
 #import "Firebase+Places.h"
+#import "PLCPlaceStore.h"
+#import "PLCPlace.h"
 
-static NSString * const PLCCurrentMapSaveKey = @"PLCCurrentMapSaveKey";
-static NSString * const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidChangeNotification";
+static NSString *const PLCCurrentMapSaveKey = @"PLCCurrentMapSaveKey";
+static NSString *const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidChangeNotification";
 
-@interface PLCMapStore()<NSFetchedResultsControllerDelegate>
-@property(nonatomic)NSFetchedResultsController *fetchedResultsController;
-@property(nonatomic)NSMutableArray *delegates;
+@interface PLCMapStore () <NSFetchedResultsControllerDelegate>
+@property (nonatomic) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic) NSMutableArray *delegates;
 - (NSArray *)allMaps;
 @end
 
@@ -27,9 +30,7 @@ static NSString * const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidC
 + (instancetype)sharedInstance {
     static PLCMapStore *sharedInstance;
     static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sharedInstance = [self new];
-    });
+    dispatch_once(&onceToken, ^{ sharedInstance = [self new]; });
     return sharedInstance;
 }
 
@@ -38,7 +39,10 @@ static NSString * const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidC
     if (self) {
         _delegates = [@[] mutableCopy];
         self.selectedMap = [self selectedMap] ?: [self defaultMap];
-        self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:[self fetchRequest:NO] managedObjectContext:[self managedObjectContext] sectionNameKeyPath:nil cacheName:nil];
+        self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:[self fetchRequest:NO]
+                                                                            managedObjectContext:[self managedObjectContext]
+                                                                              sectionNameKeyPath:nil
+                                                                                       cacheName:nil];
         self.fetchedResultsController.delegate = self;
         [self.fetchedResultsController performFetch:nil];
     }
@@ -50,7 +54,7 @@ static NSString * const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidC
     return [section numberOfObjects];
 }
 
-- (NSArray *) notDeletedMaps {
+- (NSArray *)notDeletedMaps {
     return self.fetchedResultsController.fetchedObjects;
 }
 
@@ -63,11 +67,28 @@ static NSString * const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidC
     fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:PLCMapAttributes.name ascending:YES]];
     NSExpression *nilExpression = [NSExpression expressionForConstantValue:[NSNull null]];
     NSExpression *deletedAtExpression = [NSExpression expressionForKeyPath:PLCMapAttributes.deletedAt];
-    NSPredicate *notDeletedPredicate = [NSComparisonPredicate predicateWithLeftExpression:deletedAtExpression rightExpression:nilExpression modifier:NSDirectPredicateModifier type:NSEqualToPredicateOperatorType options:0];
+    NSPredicate *notDeletedPredicate = [NSComparisonPredicate predicateWithLeftExpression:deletedAtExpression
+                                                                          rightExpression:nilExpression
+                                                                                 modifier:NSDirectPredicateModifier
+                                                                                     type:NSEqualToPredicateOperatorType
+                                                                                  options:0];
     if (!allowDeleted) {
         fetchRequest.predicate = notDeletedPredicate;
     }
     return fetchRequest;
+}
+
+- (PLCMap *)mapWithUUID:(NSString *)uuid {
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[PLCMap entityName]];
+    fetchRequest.fetchLimit = 1;
+    NSExpression *uuidExpression = [NSExpression expressionForKeyPath:PLCMapAttributes.uuid];
+    NSExpression *otherUuidExpression = [NSExpression expressionForConstantValue:uuid];
+    fetchRequest.predicate = [NSComparisonPredicate predicateWithLeftExpression:uuidExpression
+                                                                rightExpression:otherUuidExpression
+                                                                       modifier:0
+                                                                           type:NSEqualToPredicateOperatorType
+                                                                        options:0];
+    return [[[self managedObjectContext] executeFetchRequest:fetchRequest error:nil] firstObject];
 }
 
 - (NSManagedObjectContext *)managedObjectContext {
@@ -87,7 +108,11 @@ static NSString * const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidC
     fetchRequest.fetchLimit = 1;
     NSExpression *selectedExpression = [NSExpression expressionForKeyPath:PLCMapAttributes.selected];
     NSExpression *yesExpression = [NSExpression expressionForConstantValue:@YES];
-    fetchRequest.predicate = [NSComparisonPredicate predicateWithLeftExpression:selectedExpression rightExpression:yesExpression modifier:0 type:NSEqualToPredicateOperatorType options:0];
+    fetchRequest.predicate = [NSComparisonPredicate predicateWithLeftExpression:selectedExpression
+                                                                rightExpression:yesExpression
+                                                                       modifier:0
+                                                                           type:NSEqualToPredicateOperatorType
+                                                                        options:0];
     return [[[self managedObjectContext] executeFetchRequest:fetchRequest error:nil] firstObject];
 }
 
@@ -139,13 +164,20 @@ static NSString * const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidC
     }
 }
 
-- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+- (void)controller:(NSFetchedResultsController *)controller
+    didChangeObject:(id)anObject
+        atIndexPath:(NSIndexPath *)indexPath
+      forChangeType:(NSFetchedResultsChangeType)type
+       newIndexPath:(NSIndexPath *)newIndexPath {
     for (id<NSFetchedResultsControllerDelegate> delegate in self.delegates) {
         [delegate controller:controller didChangeObject:anObject atIndexPath:indexPath forChangeType:type newIndexPath:newIndexPath];
     }
 }
 
-- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
+- (void)controller:(NSFetchedResultsController *)controller
+    didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo
+             atIndex:(NSUInteger)sectionIndex
+       forChangeType:(NSFetchedResultsChangeType)type {
     for (id<NSFetchedResultsControllerDelegate> delegate in self.delegates) {
         [delegate controller:controller didChangeSection:sectionInfo atIndex:sectionIndex forChangeType:type];
     }
@@ -174,6 +206,46 @@ static NSString * const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidC
 - (void)save {
     [[self managedObjectContext] save:nil];
     [self.delegate mapStore:self didChangeMap:self.selectedMap];
+}
+
+- (void)downloadMapsForUserId:(NSString *)userId {
+    [[[Firebase mapClient] queryStartingAtValue:userId]
+        observeSingleEventOfType:FEventTypeValue
+                       withBlock:^(FDataSnapshot *snapshot) {
+                           NSDictionary *maps = [snapshot value];
+                           [maps enumerateKeysAndObjectsUsingBlock:^(NSString *mapId, NSDictionary *mapDict, BOOL *stop) {
+                               if (mapDict[@"PLCDeletedAt"]) {
+                                   return;
+                               }
+                               PLCMap *map = [self mapWithUUID:mapId];
+                               if (!map) {
+                                   map = [PLCMap insertInManagedObjectContext:[self managedObjectContext]];
+                                   map.name = mapDict[@"name"];
+                                   map.uuid = mapId;
+                               }
+                               [mapDict[@"places"] enumerateKeysAndObjectsUsingBlock:^(NSString *placeId, NSDictionary *placeDict, BOOL *stop) {
+                                   if (![[[[PLCPlaceStore sharedInstance] allPlaces] valueForKeyPath:@"uuid"] containsObject:placeId]) {
+                                       PLCPlace *place = [PLCPlace insertInManagedObjectContext:[self managedObjectContext]];
+                                       place.latitude = placeDict[@"latitude"];
+                                       place.longitude = placeDict[@"longitude"];
+                                       place.uuid = placeId;
+                                       place.caption = placeDict[@"caption"];
+                                       place.map = map;
+                                       place.geocodedAddress = placeDict[@"geocodedAddress"];
+                                       if (!place.geocodedAddress && !place.deletedAt && !map.deletedAt) {
+                                           CLLocationCoordinate2D coord =
+                                               CLLocationCoordinate2DMake([placeDict[@"latitude"] doubleValue], [placeDict[@"longitude"] doubleValue]);
+                                           [place setCoordinate:coord];
+                                       }
+                                       if ([placeDict[@"PLCDeletedAt"] doubleValue] > 1000) {
+                                           place.deletedAt = [NSDate dateWithTimeIntervalSinceReferenceDate:[placeDict[@"PLCDeletedAt"] doubleValue]];
+                                       }
+                                       // todo: async download image for that place
+                                   }
+                               }];
+                           }];
+                           [self save];
+                       }];
 }
 
 @end
