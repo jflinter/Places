@@ -55,7 +55,10 @@
 }
 
 - (NSArray *)allPlaces {
-    return self.fetchedResultsController.fetchedObjects;
+    return [self.fetchedResultsController.fetchedObjects
+        filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(PLCPlace *evaluatedObject, NSDictionary *bindings) {
+                                        return CLLocationCoordinate2DIsValid(evaluatedObject.coordinate);
+                                    }]];
 }
 
 - (PLCPlace *)insertPlaceAtCoordinate:(CLLocationCoordinate2D)coordinate save:(BOOL)save {
@@ -85,12 +88,12 @@
 - (void)save {
     NSError *error;
     for (PLCPlace *place in [[self managedObjectContext] insertedObjects]) {
-        if ([place isKindOfClass:[PLCPlace class]]) {
+        if ([place isKindOfClass:[PLCPlace class]] && CLLocationCoordinate2DIsValid(place.coordinate)) {
             [[Firebase placeClientForPlace:place] setValue:[place firebaseObject]];
         }
     }
     for (PLCPlace *place in [[self managedObjectContext] updatedObjects]) {
-        if ([place isKindOfClass:[PLCPlace class]]) {
+        if ([place isKindOfClass:[PLCPlace class]] && CLLocationCoordinate2DIsValid(place.coordinate)) {
             [[Firebase placeClientForPlace:place] setValue:[place firebaseObject]];
         }
     }
@@ -118,6 +121,7 @@
 
 - (NSFetchRequest *)fetchRequest {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[PLCPlace entityName]];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"latitude != -180 && longitude != -180"];
     fetchRequest.sortDescriptors = @[
         [NSSortDescriptor sortDescriptorWithKey:PLCPlaceAttributes.latitude ascending:YES],
         [NSSortDescriptor sortDescriptorWithKey:PLCPlaceAttributes.longitude ascending:YES]
