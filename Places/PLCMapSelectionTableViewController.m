@@ -35,10 +35,6 @@
 }
 
 - (void)sharedInit {
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
-    [self.navigationController.navigationBar setBarStyle:UIBarStyleDefault];
-    [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
     self.title = NSLocalizedString(@"Your Maps", nil);
     [[PLCMapStore sharedInstance] registerDelegate:self];
 }
