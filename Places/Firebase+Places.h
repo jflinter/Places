@@ -16,6 +16,7 @@
 + (instancetype)mapClient;
 + (instancetype)mapClientForMap:(PLCMap *)map;
 + (instancetype)placeClientForPlace:(PLCPlace *)place;
++ (instancetype)photoClientForPlace:(PLCPlace *)place;
 + (instancetype)photoClientForPhoto:(PLCPhoto *)photo;
     
 @end

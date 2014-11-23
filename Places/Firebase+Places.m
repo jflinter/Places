@@ -34,8 +34,12 @@
     return [[[self mapClientForMap:place.map] childByAppendingPath:@"places"] childByAppendingPath:place.uuid];
 }
 
++ (instancetype)photoClientForPlace:(PLCPlace *)place {
+    return [[self photosClient] childByAppendingPath:place.uuid];
+}
+
 + (instancetype)photoClientForPhoto:(PLCPhoto *)photo {
-    return [[[self photosClient] childByAppendingPath:photo.place.uuid] childByAppendingPath:photo.uuid];
+    return [[self photoClientForPlace:photo.place] childByAppendingPath:photo.uuid];
 }
 
 @end

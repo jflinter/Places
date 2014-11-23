@@ -12,8 +12,8 @@
 
 @interface PLCPhotoStore : NSObject
 
-- (void) addPhotoWithImage:(UIImage *)image
-                   toPlace:(PLCPlace *)place;
-- (void) removePhotoFromPlace:(PLCPlace *)place;
+- (void)addPhotoWithImage:(UIImage *)image toPlace:(PLCPlace *)place withUUID:(NSString *)uuid;
+- (void)addPhotoWithImage:(UIImage *)image toPlace:(PLCPlace *)place;
+- (void)removePhotoFromPlace:(PLCPlace *)place;
 
 @end

@@ -14,8 +14,7 @@
 
 @implementation PLCPhotoStore
 
-- (void) addPhotoWithImage:(UIImage *)image
-                   toPlace:(PLCPlace *)place {
+- (void)addPhotoWithImage:(UIImage *)image toPlace:(PLCPlace *)place withUUID:(NSString *)uuid {
     [self removePhotoFromPlace:place];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         NSData *data = UIImageJPEGRepresentation(image, 1);
@@ -23,18 +22,24 @@
             PLCPhoto *photo = [PLCPhoto insertInManagedObjectContext:place.managedObjectContext];
             photo.imageData = data;
             photo.place = place;
+            if (uuid) {
+                photo.uuid = uuid;
+            }
             [place.managedObjectContext save:nil];
             [[Firebase photoClientForPhoto:photo] setValue:[photo firebaseObject]];
         }];
     });
 }
 
-- (void) removePhotoFromPlace:(PLCPlace *)place {
+- (void)addPhotoWithImage:(UIImage *)image toPlace:(PLCPlace *)place {
+    [self addPhotoWithImage:image toPlace:place withUUID:nil];
+}
+
+- (void)removePhotoFromPlace:(PLCPlace *)place {
     for (PLCPhoto *photo in place.photos) {
         [place.managedObjectContext deleteObject:photo];
         [[Firebase photoClientForPhoto:photo] removeValue];
     }
 }
-
 
 @end

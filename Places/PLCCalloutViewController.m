@@ -16,6 +16,7 @@
 #import <JTSImageViewController/JTSImageViewController.h>
 #import "PLCFlickrSearchViewController.h"
 #import "PLCBlurredModalPresentationController.h"
+#import "Firebase+Places.h"
 
 @interface PLCCalloutViewController () <UIImagePickerControllerDelegate,
                                         UINavigationControllerDelegate,
@@ -72,6 +73,25 @@
     button.imageView.contentMode = UIViewContentModeScaleAspectFill;
     self.imageButton = button;
     [button setImage:self.place.image forState:UIControlStateNormal];
+    if (!self.place.image) {
+        [[Firebase photoClientForPlace:self.place] observeSingleEventOfType:FEventTypeValue
+                                                                  withBlock:^(FDataSnapshot *snapshot) {
+                                                                      NSDictionary *value = snapshot.value;
+                                                                      if ([value isKindOfClass:[NSDictionary class]]) {
+                                                                          NSString *uuid = [[value allKeys] firstObject];
+                                                                          NSString *imageString = [[value valueForKey:uuid] valueForKey:@"image"];
+                                                                          if (imageString) {
+                                                                              NSData *data = [[NSData alloc] initWithBase64EncodedString:imageString options:0];
+                                                                              UIImage *image = [UIImage imageWithData:data];
+                                                                              [[PLCPhotoStore new] addPhotoWithImage:image toPlace:self.place withUUID:uuid];
+                                                                              dispatch_async(dispatch_get_main_queue(), ^{
+                                                                                  [self.imageButton setImage:image forState:UIControlStateNormal];
+                                                                                  [self updateInsets];
+                                                                              });
+                                                                          }
+                                                                      }
+                                                                  }];
+    }
     [button addTarget:self action:@selector(imageTapped:) forControlEvents:UIControlEventTouchUpInside];
     self.originalInsets = self.captionTextView.contentInset;
     self.originalInsets = ({
