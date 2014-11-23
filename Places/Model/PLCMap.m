@@ -26,7 +26,10 @@
                                                                                  modifier:NSDirectPredicateModifier
                                                                                      type:NSEqualToPredicateOperatorType
                                                                                   options:0];
-    return [[self.places filteredSetUsingPredicate:notDeletedPredicate] allObjects];
+    return [[[self.places filteredSetUsingPredicate:notDeletedPredicate]
+        filteredSetUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(PLCPlace *evaluatedObject, NSDictionary *bindings) {
+                                      return CLLocationCoordinate2DIsValid(evaluatedObject.coordinate);
+                                  }]] allObjects];
 }
 
 - (NSDictionary *)firebaseObject {

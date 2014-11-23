@@ -100,7 +100,7 @@ static NSString *const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidCh
 }
 
 - (PLCMap *)defaultMap {
-    return [self insertMapWithName:NSLocalizedString(@"My Neighborhood", nil)];
+    return [self insertMapWithName:NSLocalizedString(@"Places", nil)];
 }
 
 - (PLCMap *)selectedMap {
@@ -217,7 +217,11 @@ static NSString *const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidCh
                                return;
                            }
                            [maps enumerateKeysAndObjectsUsingBlock:^(NSString *mapId, NSDictionary *mapDict, BOOL *stop) {
-                               if (mapDict[@"PLCDeletedAt"]) {
+                               if ([mapDict[@"PLCDeletedAt"] doubleValue] > 1000.0f) {
+                                   return;
+                               }
+                               id places = mapDict[@"places"];
+                               if (!places || places == [NSNull null]) {
                                    return;
                                }
                                PLCMap *map = [self mapWithUUID:mapId];
@@ -226,11 +230,15 @@ static NSString *const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidCh
                                    map.name = mapDict[@"name"];
                                    map.uuid = mapId;
                                }
-                               if (mapDict[@"places"] == [NSNull null]) {
-                                   return;
-                               }
                                [mapDict[@"places"] enumerateKeysAndObjectsUsingBlock:^(NSString *placeId, NSDictionary *placeDict, BOOL *stop) {
                                    if (![[[[PLCPlaceStore sharedInstance] allPlaces] valueForKeyPath:@"uuid"] containsObject:placeId]) {
+                                       CLLocationCoordinate2D coord =
+                                           CLLocationCoordinate2DMake([placeDict[@"latitude"] doubleValue], [placeDict[@"longitude"] doubleValue]);
+                                       if (!CLLocationCoordinate2DIsValid(coord)) {
+                                           [[[[[Firebase mapClient] childByAppendingPath:mapId] childByAppendingPath:@"places"]
+                                               childByAppendingPath:placeId] removeValue];
+                                           return;
+                                       }
                                        PLCPlace *place = [PLCPlace insertInManagedObjectContext:[self managedObjectContext]];
                                        place.latitude = placeDict[@"latitude"];
                                        place.longitude = placeDict[@"longitude"];
@@ -239,14 +247,11 @@ static NSString *const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidCh
                                        place.map = map;
                                        place.geocodedAddress = placeDict[@"geocodedAddress"];
                                        if (!place.geocodedAddress && !place.deletedAt && !map.deletedAt) {
-                                           CLLocationCoordinate2D coord =
-                                               CLLocationCoordinate2DMake([placeDict[@"latitude"] doubleValue], [placeDict[@"longitude"] doubleValue]);
-                                           [place setCoordinate:coord];
+                                           [place setCoordinate:coord]; // this triggers a geocode operation
                                        }
                                        if ([placeDict[@"PLCDeletedAt"] doubleValue] > 1000) {
                                            place.deletedAt = [NSDate dateWithTimeIntervalSinceReferenceDate:[placeDict[@"PLCDeletedAt"] doubleValue]];
                                        }
-                                       // todo: async download image for that place
                                    }
                                }];
                            }];
