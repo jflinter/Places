@@ -30,21 +30,26 @@
     self.searchBar.prompt = NSLocalizedString(@"Search for nearby places to add", nil);
     self.searchBar.placeholder = NSLocalizedString(@"Ex. Statue of Liberty", nil);
     [self.tableView registerClass:[PLCPlaceSearchResultTableViewCell class] forCellReuseIdentifier:@"PLCPlaceSearchResultCellIdentifier"];
-
-    UIInputView *inputView = [[UIInputView alloc] initWithFrame:CGRectMake(0, 0, 320, 15) inputViewStyle:UIInputViewStyleKeyboard];
-    CGRect rect = inputView.bounds;
-    rect.origin.y = 6;
-    UILabel *label = [[UILabel alloc] initWithFrame:rect];
-    label.text = NSLocalizedString(@"Search powered by Foursquare", nil);
-    label.textAlignment = NSTextAlignmentCenter;
-    label.font = [UIFont fontWithName:@"AvenirNext-Regular" size:12.0f];
-    [inputView addSubview:label];
-    self.searchBar.inputAccessoryView = inputView;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.searchBar becomeFirstResponder];
+}
+
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
+    if (!self.searchBar.inputAccessoryView) {
+        UIInputView *inputView = [[UIInputView alloc] initWithFrame:CGRectMake(0, 0, self.view.window.frame.size.width, 15) inputViewStyle:UIInputViewStyleKeyboard];
+        CGRect rect = inputView.bounds;
+        rect.origin.y = 6;
+        UILabel *label = [[UILabel alloc] initWithFrame:rect];
+        label.text = NSLocalizedString(@"Search powered by Foursquare", nil);
+        label.textAlignment = NSTextAlignmentCenter;
+        label.font = [UIFont fontWithName:@"AvenirNext-Regular" size:12.0f];
+        [inputView addSubview:label];
+        self.searchBar.inputAccessoryView = inputView;
+    }
+    return YES;
 }
 
 - (void)didReceiveMemoryWarning {
