@@ -219,7 +219,6 @@ static NSString *const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidCh
                               if (![maps isKindOfClass:[NSDictionary class]]) {
                                   return;
                               }
-                              NSLog(@"%lu results for %@", maps.count, userId);
                               [maps enumerateKeysAndObjectsUsingBlock:^(NSString *mapId, NSDictionary *mapDict, BOOL *stop) {
                                   if ([mapDict[@"PLCDeletedAt"] doubleValue] > 1000.0f) {
                                       return;
@@ -270,7 +269,7 @@ static NSString *const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidCh
     static NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     NSMutableString *mapId = [@"" mutableCopy];
     for (NSInteger i = 0; i < 8; i++) {
-        NSUInteger idx = arc4random_uniform(letters.length);
+        NSUInteger idx = (NSUInteger)arc4random_uniform((u_int32_t)letters.length);
         NSString *letter = [letters substringWithRange:NSMakeRange(idx, 1)];
         [mapId appendString:letter];
     }
