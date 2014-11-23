@@ -7,6 +7,7 @@ const struct PLCMapAttributes PLCMapAttributes = {
 	.deletedAt = @"deletedAt",
 	.name = @"name",
 	.selected = @"selected",
+	.urlId = @"urlId",
 	.uuid = @"uuid",
 };
 
@@ -90,6 +91,13 @@ const struct PLCMapFetchedProperties PLCMapFetchedProperties = {
 - (void)setPrimitiveSelectedValue:(BOOL)value_ {
 	[self setPrimitiveSelected:[NSNumber numberWithBool:value_]];
 }
+
+
+
+
+
+@dynamic urlId;
+
 
 
 

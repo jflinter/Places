@@ -10,41 +10,35 @@
 #import "PLCGeocodingOperation.h"
 #import <Reachability/Reachability.h>
 
-@interface PLCGeocodingService()
-@property(nonatomic, readwrite)NSOperationQueue *operationQueue;
+@interface PLCGeocodingService ()
+@property (nonatomic, readwrite) NSOperationQueue *operationQueue;
 @end
 
 @implementation PLCGeocodingService
 
-+(instancetype)sharedInstance {
++ (instancetype)sharedInstance {
     static id sharedInstance;
     static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sharedInstance = [self new];
-    });
+    dispatch_once(&onceToken, ^{ sharedInstance = [self new]; });
     return sharedInstance;
 }
 
 - (id)init {
     self = [super init];
     if (self) {
-        _operationQueue = [NSOperationQueue new];
+        _operationQueue = [[NSOperationQueue alloc] init];
+        _operationQueue.qualityOfService = NSQualityOfServiceBackground;
         _operationQueue.maxConcurrentOperationCount = 1;
         Reachability *reach = [Reachability reachabilityForInternetConnection];
         [_operationQueue setSuspended:reach.currentReachabilityStatus == NotReachable];
-        reach.reachableBlock = ^(Reachability *reachability) {
-            [self.operationQueue setSuspended:NO];
-        };
-        reach.unreachableBlock = ^(Reachability *reachability) {
-            [self.operationQueue setSuspended:YES];
-        };
+        reach.reachableBlock = ^(Reachability *reachability) { [self.operationQueue setSuspended:NO]; };
+        reach.unreachableBlock = ^(Reachability *reachability) { [self.operationQueue setSuspended:YES]; };
         [reach startNotifier];
     }
     return self;
 }
 
-- (PLCGeocodingOperation *)reverseGeocodeLocation:(CLLocation *)location
-                                       completion:(PLCGeocodingCompletionHandler)completion {
+- (PLCGeocodingOperation *)reverseGeocodeLocation:(CLLocation *)location completion:(PLCGeocodingCompletionHandler)completion {
     PLCGeocodingCompletionHandler wrapped = ^(NSArray *placemarks, NSError *error) {
         if (error && error.code == kCLErrorNetwork) {
             [self reverseGeocodeLocation:location completion:completion];

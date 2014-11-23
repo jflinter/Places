@@ -33,11 +33,11 @@
 }
 
 - (NSDictionary *)firebaseObject {
-    return @{ PLCMapAttributes.name: self.name, @"PLCDeletedAt": @(self.deletedAt.timeIntervalSinceReferenceDate) };
+    return @{ PLCMapAttributes.name: self.name, @"PLCDeletedAt": @(self.deletedAt.timeIntervalSinceReferenceDate), PLCMapAttributes.urlId: self.urlId };
 }
 
 - (NSURL *)shareURL {
-    NSString *string = [NSString stringWithFormat:@"https://shareplaces.firebaseapp.com/#/maps/%@", self.uuid];
+    NSString *string = [NSString stringWithFormat:@"https://shareplac.es/#/%@", self.urlId];
     return [NSURL URLWithString:string];
 }
 

@@ -137,8 +137,11 @@ static NSString *const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidCh
 
 - (void)updateMap:(PLCMap *)map withName:(NSString *)name {
     map.name = name;
+    NSString *urlId = [self urlIdForMap:map];
+    map.urlId = urlId;
     [[self managedObjectContext] save:nil];
     [[[Firebase mapClient] childByAppendingPath:map.uuid] setValue:[map firebaseObject] andPriority:[[PLCUserStore sharedInstance] currentUserId]];
+    [[[[Firebase placesFirebaseClient] childByAppendingPath:@"urls"] childByAppendingPath:urlId] setValue:map.uuid];
 }
 
 - (void)deleteMapAtIndex:(NSUInteger)index {
@@ -209,54 +212,73 @@ static NSString *const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidCh
 }
 
 - (void)downloadMapsForUserId:(NSString *)userId {
-    [[[Firebase mapClient] queryStartingAtValue:userId]
-        observeSingleEventOfType:FEventTypeValue
-                       withBlock:^(FDataSnapshot *snapshot) {
-                           id maps = [snapshot value];
-                           if (maps == [NSNull null]) {
-                               return;
-                           }
-                           [maps enumerateKeysAndObjectsUsingBlock:^(NSString *mapId, NSDictionary *mapDict, BOOL *stop) {
-                               if ([mapDict[@"PLCDeletedAt"] doubleValue] > 1000.0f) {
-                                   return;
-                               }
-                               id places = mapDict[@"places"];
-                               if (!places || places == [NSNull null]) {
-                                   return;
-                               }
-                               PLCMap *map = [self mapWithUUID:mapId];
-                               if (!map) {
-                                   map = [PLCMap insertInManagedObjectContext:[self managedObjectContext]];
-                                   map.name = mapDict[@"name"];
-                                   map.uuid = mapId;
-                               }
-                               [mapDict[@"places"] enumerateKeysAndObjectsUsingBlock:^(NSString *placeId, NSDictionary *placeDict, BOOL *stop) {
-                                   if (![[[[PLCPlaceStore sharedInstance] allPlaces] valueForKeyPath:@"uuid"] containsObject:placeId]) {
-                                       CLLocationCoordinate2D coord =
-                                           CLLocationCoordinate2DMake([placeDict[@"latitude"] doubleValue], [placeDict[@"longitude"] doubleValue]);
-                                       if (!CLLocationCoordinate2DIsValid(coord)) {
-                                           [[[[[Firebase mapClient] childByAppendingPath:mapId] childByAppendingPath:@"places"]
-                                               childByAppendingPath:placeId] removeValue];
-                                           return;
-                                       }
-                                       PLCPlace *place = [PLCPlace insertInManagedObjectContext:[self managedObjectContext]];
-                                       place.latitude = placeDict[@"latitude"];
-                                       place.longitude = placeDict[@"longitude"];
-                                       place.uuid = placeId;
-                                       place.caption = placeDict[@"caption"];
-                                       place.map = map;
-                                       place.geocodedAddress = placeDict[@"geocodedAddress"];
-                                       if (!place.geocodedAddress && !place.deletedAt && !map.deletedAt) {
-                                           [place setCoordinate:coord]; // this triggers a geocode operation
-                                       }
-                                       if ([placeDict[@"PLCDeletedAt"] doubleValue] > 1000) {
-                                           place.deletedAt = [NSDate dateWithTimeIntervalSinceReferenceDate:[placeDict[@"PLCDeletedAt"] doubleValue]];
-                                       }
-                                   }
-                               }];
-                           }];
-                           [[self managedObjectContext] save:nil];
-                       }];
+    FQuery *query = [[[Firebase mapClient] queryStartingAtValue:userId] queryEndingAtValue:userId];
+    [query observeSingleEventOfType:FEventTypeValue
+                          withBlock:^(FDataSnapshot *snapshot) {
+                              NSDictionary *maps = [snapshot value];
+                              if (![maps isKindOfClass:[NSDictionary class]]) {
+                                  return;
+                              }
+                              NSLog(@"%lu results for %@", maps.count, userId);
+                              [maps enumerateKeysAndObjectsUsingBlock:^(NSString *mapId, NSDictionary *mapDict, BOOL *stop) {
+                                  if ([mapDict[@"PLCDeletedAt"] doubleValue] > 1000.0f) {
+                                      return;
+                                  }
+                                  id places = mapDict[@"places"];
+                                  if (!places || places == [NSNull null]) {
+                                      return;
+                                  }
+                                  PLCMap *map = [self mapWithUUID:mapId];
+                                  if (!map) {
+                                      map = [PLCMap insertInManagedObjectContext:[self managedObjectContext]];
+                                      map.name = mapDict[@"name"];
+                                      map.uuid = mapId;
+                                      map.urlId = mapDict[@"urlId"];
+                                      if (!map.urlId) {
+                                          map.urlId = [self urlIdForMap:map];
+                                          [[[[Firebase placesFirebaseClient] childByAppendingPath:@"urls"] childByAppendingPath:map.urlId] setValue:map.uuid];
+                                      }
+                                  }
+                                  [mapDict[@"places"] enumerateKeysAndObjectsUsingBlock:^(NSString *placeId, NSDictionary *placeDict, BOOL *stop) {
+                                      CLLocationCoordinate2D coord =
+                                          CLLocationCoordinate2DMake([placeDict[@"latitude"] doubleValue], [placeDict[@"longitude"] doubleValue]);
+                                      if (!CLLocationCoordinate2DIsValid(coord)) {
+                                          [[[[[Firebase mapClient] childByAppendingPath:mapId] childByAppendingPath:@"places"]
+                                              childByAppendingPath:placeId] removeValue];
+                                          return;
+                                      }
+                                      PLCPlace *place = [PLCPlace insertInManagedObjectContext:[self managedObjectContext]];
+                                      place.latitude = placeDict[@"latitude"];
+                                      place.longitude = placeDict[@"longitude"];
+                                      place.uuid = placeId;
+                                      place.caption = placeDict[@"caption"];
+                                      place.map = map;
+                                      place.geocodedAddress = placeDict[@"geocodedAddress"];
+                                      if (!place.geocodedAddress && !place.deletedAt && !map.deletedAt) {
+                                          [place setCoordinate:coord]; // this triggers a geocode operation
+                                      }
+                                      if ([placeDict[@"PLCDeletedAt"] doubleValue] > 1000) {
+                                          place.deletedAt = [NSDate dateWithTimeIntervalSinceReferenceDate:[placeDict[@"PLCDeletedAt"] doubleValue]];
+                                      }
+                                  }];
+                              }];
+                              [[self managedObjectContext] save:nil];
+                          }];
+}
+
+- (NSString *)urlIdForMap:(PLCMap *)map {
+    static NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    NSMutableString *mapId = [@"" mutableCopy];
+    for (NSInteger i = 0; i < 8; i++) {
+        NSUInteger idx = arc4random_uniform(letters.length);
+        NSString *letter = [letters substringWithRange:NSMakeRange(idx, 1)];
+        [mapId appendString:letter];
+    }
+    NSString *urlId =
+        [[[map.name.lowercaseString stringByAppendingString:@"-"] componentsSeparatedByCharactersInSet:[NSCharacterSet alphanumericCharacterSet].invertedSet] componentsJoinedByString:@"-"] ?:
+            [@"" stringByAppendingString:mapId];
+    NSParameterAssert(urlId);
+    return urlId;
 }
 
 @end

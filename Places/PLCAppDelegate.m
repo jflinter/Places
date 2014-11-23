@@ -34,7 +34,7 @@
 
     [[CLLocationManager new] requestWhenInUseAuthorization];
     [[PLCUserStore sharedInstance] beginICloudMonitoring];
-    [[PLCPlaceGeocoder sharedInstance] resumeGeocoding];
+//    [[PLCPlaceGeocoder sharedInstance] resumeGeocoding];
     return YES;
 }
 

@@ -18,6 +18,11 @@
     return [[self alloc] initWithUrl:@"https://shareplaces.firebaseio.com/"];
 }
 
++ (instancetype)currentUserClient {
+    NSString *currentUserId = [[PLCUserStore sharedInstance] currentUserId];
+    return [[[self placesFirebaseClient] childByAppendingPath:@"users"] childByAppendingPath:currentUserId];
+}
+
 + (instancetype)mapClient {
     return [[self placesFirebaseClient] childByAppendingPath:@"maps"];
 }

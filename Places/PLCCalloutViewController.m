@@ -230,7 +230,7 @@
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
         [actionSheet addButtonWithTitle:NSLocalizedString(@"Choose From Library", nil)];
     }
-    [actionSheet addButtonWithTitle:NSLocalizedString(@"Search Flickr", nil)];
+    [actionSheet addButtonWithTitle:NSLocalizedString(@"Image Search", nil)];
     actionSheet.cancelButtonIndex = [actionSheet addButtonWithTitle:NSLocalizedString(@"Cancel", nil)];
     [actionSheet showInView:self.view.window];
     actionSheet.delegate = self;

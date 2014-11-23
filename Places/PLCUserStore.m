@@ -8,6 +8,7 @@
 
 #import "PLCUserStore.h"
 #import "PLCMapStore.h"
+#import "Firebase+Places.h"
 
 static NSString *const PLCPlacesDeviceIdentifiersKey = @"PLCPlacesDeviceIdentifiers";
 
@@ -41,7 +42,9 @@ static NSString *const PLCPlacesDeviceIdentifiersKey = @"PLCPlacesDeviceIdentifi
     NSMutableOrderedSet *allIdentifiers =
         [NSMutableOrderedSet orderedSetWithArray:[[NSUbiquitousKeyValueStore defaultStore] arrayForKey:PLCPlacesDeviceIdentifiersKey] ?: @[]];
     if (![allIdentifiers containsObject:identifier]) {
-        [[PLCMapStore sharedInstance] downloadMapsForUserId:identifier];
+        for (NSString *userId in allIdentifiers) {
+            [[PLCMapStore sharedInstance] downloadMapsForUserId:userId];
+        }
     }
     [allIdentifiers addObject:identifier];
 
