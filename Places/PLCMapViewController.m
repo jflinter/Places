@@ -306,7 +306,7 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 
     [animator animateTransition:transitionContext
                      completion:^{
-                         if (!calloutViewController.place.caption || [calloutViewController.place.caption isEqualToString:@""]) {
+                         if ((!calloutViewController.place.caption || [calloutViewController.place.caption isEqualToString:@""]) && !calloutViewController.place.image) {
                              [calloutViewController editCaption];
                          }
                      }];

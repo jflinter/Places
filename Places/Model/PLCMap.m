@@ -37,7 +37,7 @@
 }
 
 - (NSURL *)shareURL {
-    NSString *string = [NSString stringWithFormat:@"https://shareplac.es/#/%@", self.urlId];
+    NSString *string = [NSString stringWithFormat:@"https://shareplac.es.s3.amazonaws.com/index.html#!/%@", self.urlId];
     return [NSURL URLWithString:string];
 }
 

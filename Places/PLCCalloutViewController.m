@@ -71,6 +71,8 @@
     UIButton *button =
         [[UIButton alloc] initWithFrame:CGRectMake((self.captionTextView.frame.size.width - self.imageSize) / 2, 0, self.imageSize, self.imageSize)];
     button.imageView.contentMode = UIViewContentModeScaleAspectFill;
+    button.layer.cornerRadius = 6.0f;
+    button.clipsToBounds = YES;
     self.imageButton = button;
     [button setImage:self.place.image forState:UIControlStateNormal];
     if (!self.place.image) {
@@ -123,7 +125,13 @@
 
 - (void)updateInsets {
     if ([self.imageButton imageForState:UIControlStateNormal]) {
-        self.imageButton.hidden = NO;
+        if (self.imageButton.hidden) {
+            self.imageButton.alpha = 0;
+            self.imageButton.hidden = NO;
+            [UIView animateWithDuration:0.2f animations:^{
+                self.imageButton.alpha = 1.0f;
+            }];
+        }
         self.captionTextView.contentInset = ({
             UIEdgeInsets insets = self.originalInsets;
             insets.bottom += self.imageSize + 10;

@@ -273,9 +273,12 @@ static NSString *const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidCh
         NSString *letter = [letters substringWithRange:NSMakeRange(idx, 1)];
         [mapId appendString:letter];
     }
-    NSString *urlId =
-        [[[map.name.lowercaseString stringByAppendingString:@"-"] componentsSeparatedByCharactersInSet:[NSCharacterSet alphanumericCharacterSet].invertedSet] componentsJoinedByString:@"-"] ?:
-            [@"" stringByAppendingString:mapId];
+    NSString *urlId = @"";
+    if (map.name) {
+        NSCharacterSet *set = [[NSCharacterSet alphanumericCharacterSet] invertedSet];
+        urlId = [[[map.name componentsSeparatedByCharactersInSet:set] componentsJoinedByString:@"-"] stringByAppendingString:@"-"];
+    }
+    urlId = [urlId stringByAppendingString:mapId];
     NSParameterAssert(urlId);
     return urlId;
 }
