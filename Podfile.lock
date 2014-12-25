@@ -21,6 +21,7 @@ PODS:
   - JTSImageViewController (1.4)
   - Reachability (3.2)
   - SWTableViewCell (0.3.6)
+  - TUSafariActivity (1.0.2)
 
 DEPENDENCIES:
   - AFNetworking/UIKit
@@ -32,6 +33,7 @@ DEPENDENCIES:
   - JTSImageViewController
   - Reachability
   - SWTableViewCell
+  - TUSafariActivity
 
 SPEC CHECKSUMS:
   AFNetworking: 0f54cb5d16ce38c1b76948faffb8d5fb705021c7
@@ -43,5 +45,6 @@ SPEC CHECKSUMS:
   JTSImageViewController: 9fe6402194b7679f0e28d0c1002d6164301fc34a
   Reachability: 1ef8adf5c4e3d362f96515d4278f68dad3c26930
   SWTableViewCell: f5cbe30c49c4e5b97231c076f17331caaf3f6244
+  TUSafariActivity: 63c6b0584d1f0a731e955c0e4d9c89cde63bedc2
 
-COCOAPODS: 0.34.2
+COCOAPODS: 0.35.0

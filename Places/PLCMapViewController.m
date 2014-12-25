@@ -23,6 +23,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import "PLCBlurredModalPresentationController.h"
 #import "PLCZoomAnimator.h"
+#import <TUSafariActivity/TUSafariActivity.h>
 
 static NSString *const PLCMapPinReuseIdentifier = @"PLCMapPinReuseIdentifier";
 static CGFloat const PLCMapPanAnimationDuration = 0.3f;
@@ -417,7 +418,7 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 
 - (IBAction)shareMap:(id)sender {
     UIActivityViewController *activityViewController =
-        [[UIActivityViewController alloc] initWithActivityItems:@[[[PLCMapStore sharedInstance].selectedMap shareURL]] applicationActivities:nil];
+        [[UIActivityViewController alloc] initWithActivityItems:@[[[PLCMapStore sharedInstance].selectedMap shareURL]] applicationActivities:@[[TUSafariActivity new]]];
     // exclude the airdrop action because it's incredibly fucking slow and noone uses it
     activityViewController.excludedActivityTypes = @[UIActivityTypePrint, UIActivityTypeAirDrop];
     [self presentViewController:activityViewController animated:YES completion:nil];
