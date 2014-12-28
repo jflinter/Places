@@ -9,7 +9,7 @@
 #import "PLCAppDelegate.h"
 #import "PLCMapViewController.h"
 #import "PLCUserStore.h"
-#import "PLCPlaceGeocoder.h"
+#import "PLCPersistentQueue.h"
 #import <Firebase/Firebase.h>
 #import <Foursquare-API-v2/Foursquare2.h>
 #import <FlickrKit/FlickrKit.h>
@@ -34,7 +34,7 @@
 
     [[CLLocationManager new] requestWhenInUseAuthorization];
     [[PLCUserStore sharedInstance] beginICloudMonitoring];
-//    [[PLCPlaceGeocoder sharedInstance] resumeGeocoding];
+    [[PLCPersistentQueue sharedInstance] resume];
     return YES;
 }
 

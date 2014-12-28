@@ -11,7 +11,7 @@
 #import "NSMutableDictionary+NilSafe.h"
 #import "PLCMap.h"
 #import "PLCGoogleMapsActivity.h"
-#import "PLCPlaceGeocoder.h"
+#import "PLCGeocodingWork.h"
 
 @implementation PLCPlace
 
@@ -32,18 +32,20 @@
     return CLLocationCoordinate2DMake(self.latitude.doubleValue, self.longitude.doubleValue);
 }
 
-- (NSString *) title {
+- (NSString *)title {
     return [[self.caption componentsSeparatedByString:@"\n"] firstObject];
 }
 
 - (void)setCoordinate:(CLLocationCoordinate2D)newCoordinate {
     self.latitude = @(newCoordinate.latitude);
     self.longitude = @(newCoordinate.longitude);
-    [[PLCPlaceGeocoder sharedInstance] reverseGeocodePlace:self];
+    CLLocation *location = [[CLLocation alloc] initWithLatitude:newCoordinate.latitude longitude:newCoordinate.longitude];
+    PLCGeocodingWork *work = [[PLCGeocodingWork alloc] initWithLocation:location placeId:self.uuid];
+    [[PLCPersistentQueue sharedInstance] addWork:work];
 }
 
 // The MKAnnotation protocol dictates that the coordinate property be KVO-compliant.
-+ (NSSet *) keyPathsForValuesAffectingValueForKey:(NSString *)key {
++ (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key {
     NSMutableSet *set = [NSMutableSet setWithSet:[super keyPathsForValuesAffectingValueForKey:key]];
     if ([key isEqualToString:@"coordinate"]) {
         [set addObjectsFromArray:@[PLCPlaceAttributes.latitude, PLCPlaceAttributes.longitude]];
@@ -58,22 +60,20 @@
     return self.caption;
 }
 
-- (id)activityViewController:(UIActivityViewController *)activityViewController
-                  itemForActivityType:(NSString *)activityType {
+- (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType {
     if ([activityType isEqualToString:UIActivityTypeMessage]) {
         MKPlacemark *placemark = [[MKPlacemark alloc] initWithCoordinate:self.coordinate addressDictionary:self.geocodedAddress];
         NSMutableDictionary *options = [@{
-                                  MKPlaceMarkPLCMapFieldNameKey: @"Made with Places - see the rest here:",
-                                  MKPlaceMarkPLCMapFieldValueKey: [self.map shareURL],
-                                  } mutableCopy];
+            MKPlaceMarkPLCMapFieldNameKey: @"Made with Places - see the rest here:",
+            MKPlaceMarkPLCMapFieldValueKey: [self.map shareURL],
+        } mutableCopy];
         if (self.caption && ![self.caption isEqualToString:@""]) {
             options[MKPlaceMarkPLCMapPreviewKey] = self.caption;
         }
         NSURL *url = [placemark temporaryFileURLForLocationSharingWithOptions:options error:nil];
         if (url) {
             return url;
-        }
-        else {
+        } else {
             return self.caption;
         }
     }
@@ -82,8 +82,7 @@
     }
     if ([activityType isEqualToString:PLCGoogleMapsActivityType]) {
         return [[MKPlacemark alloc] initWithCoordinate:self.coordinate addressDictionary:self.geocodedAddress];
-    }
-    else {
+    } else {
         return self.caption;
     }
 }
