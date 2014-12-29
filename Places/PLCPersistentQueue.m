@@ -51,7 +51,9 @@
     NSArray *contents =
         [fileManager contentsOfDirectoryAtURL:[self.class fileUrl] includingPropertiesForKeys:@[] options:NSDirectoryEnumerationSkipsHiddenFiles error:nil];
     for (NSURL *fileURL in contents) {
-        [self addWork:[NSKeyedUnarchiver unarchiveObjectWithFile:fileURL.path]];
+        id<PLCAsynchronousWork> work = [NSKeyedUnarchiver unarchiveObjectWithFile:fileURL.path];
+        [[NSFileManager defaultManager] removeItemAtURL:fileURL error:nil];
+        [self addWork:work];
     }
 }
 
@@ -101,7 +103,11 @@
         if (error && ![Reachability reachabilityForInternetConnection].isReachable) {
             [[PLCPersistentQueue sharedInstance] addWork:self.work];
         } else {
-            [[NSFileManager defaultManager] removeItemAtURL:[PLCPersistentQueue fileUrlForUuid:self.uuid] error:nil];
+            NSError *error;
+            [[NSFileManager defaultManager] removeItemAtURL:[PLCPersistentQueue fileUrlForUuid:self.uuid] error:&error];
+            if (error) {
+                
+            }
         }
         dispatch_async(dispatch_get_main_queue(), ^{ [self finish]; });
     }];

@@ -10,10 +10,12 @@
 
 @class PLCPhoto, PLCPlace;
 
+typedef void (^PLCImageFetchBlock)(UIImage *image);
+
 @interface PLCPhotoStore : NSObject
 
 - (void)addPhotoWithImage:(UIImage *)image toPlace:(PLCPlace *)place withUUID:(NSString *)uuid;
-- (void)addPhotoWithImage:(UIImage *)image toPlace:(PLCPlace *)place;
 - (void)removePhotoFromPlace:(PLCPlace *)place;
+- (void)fetchImageWithId:(NSString *)imageId completion:(PLCImageFetchBlock)completion;
 
 @end

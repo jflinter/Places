@@ -31,6 +31,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *placeTypeField;
 @property (nonatomic, weak) UIButton *imageButton;
 @property (nonatomic) PLCPlaceTextStorage *textStorage;
+@property (nonatomic, weak) UIActivityIndicatorView *activityIndicator;
 @end
 
 @implementation PLCCalloutViewController
@@ -74,25 +75,18 @@
     button.layer.cornerRadius = 6.0f;
     button.clipsToBounds = YES;
     self.imageButton = button;
+    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    activityIndicator.hidesWhenStopped = YES;
+    self.activityIndicator = activityIndicator;
     [button setImage:self.place.image forState:UIControlStateNormal];
-    if (!self.place.image) {
-        [[Firebase photoClientForPlace:self.place] observeSingleEventOfType:FEventTypeValue
-                                                                  withBlock:^(FDataSnapshot *snapshot) {
-                                                                      NSDictionary *value = snapshot.value;
-                                                                      if ([value isKindOfClass:[NSDictionary class]]) {
-                                                                          NSString *uuid = [[value allKeys] firstObject];
-                                                                          NSString *imageString = [[value valueForKey:uuid] valueForKey:@"image"];
-                                                                          if (imageString) {
-                                                                              NSData *data = [[NSData alloc] initWithBase64EncodedString:imageString options:0];
-                                                                              UIImage *image = [UIImage imageWithData:data];
-                                                                              [[PLCPhotoStore new] addPhotoWithImage:image toPlace:self.place withUUID:uuid];
-                                                                              dispatch_async(dispatch_get_main_queue(), ^{
-                                                                                  [self.imageButton setImage:image forState:UIControlStateNormal];
-                                                                                  [self updateInsets];
-                                                                              });
-                                                                          }
-                                                                      }
-                                                                  }];
+    if (!self.place.image && self.place.imageId) {
+        [activityIndicator startAnimating];
+        [[PLCPhotoStore new] fetchImageWithId:self.place.imageId
+                                   completion:^(UIImage *image) {
+                                       [self.activityIndicator stopAnimating];
+                                       [button setImage:image forState:UIControlStateNormal];
+                                       [self updateInsets];
+                                   }];
     }
     [button addTarget:self action:@selector(imageTapped:) forControlEvents:UIControlEventTouchUpInside];
     self.originalInsets = self.captionTextView.contentInset;
@@ -104,6 +98,8 @@
     self.captionTextView.scrollIndicatorInsets = UIEdgeInsetsMake(12, 0, self.originalInsets.bottom, 5);
     [self.captionTextView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:NULL];
     [self.captionTextView addSubview:button];
+    [self.captionTextView addSubview:activityIndicator];
+    activityIndicator.center = button.center;
     self.contentView.layer.cornerRadius = self.calloutView.cornerRadius;
     self.contentView.layer.masksToBounds = YES;
     self.bottomSpacingConstraint.constant = self.calloutView.arrowHeight;
@@ -124,22 +120,25 @@
 }
 
 - (void)updateInsets {
-    if ([self.imageButton imageForState:UIControlStateNormal]) {
-        if (self.imageButton.hidden) {
-            self.imageButton.alpha = 0;
-            self.imageButton.hidden = NO;
-            [UIView animateWithDuration:0.2f animations:^{
-                self.imageButton.alpha = 1.0f;
-            }];
-        }
+    if (self.activityIndicator.isAnimating || [self.imageButton imageForState:UIControlStateNormal]) {
         self.captionTextView.contentInset = ({
             UIEdgeInsets insets = self.originalInsets;
             insets.bottom += self.imageSize + 10;
             insets;
         });
-    } else {
-        self.imageButton.hidden = YES;
+    }
+    else {
         self.captionTextView.contentInset = self.originalInsets;
+    }
+    if ([self.imageButton imageForState:UIControlStateNormal]) {
+        if (self.imageButton.hidden) {
+            self.imageButton.alpha = 0;
+            self.imageButton.hidden = NO;
+            [UIView animateWithDuration:0.2f animations:^{ self.imageButton.alpha = 1.0f; }];
+        }
+    }
+    else {
+        self.imageButton.hidden = YES;
     }
 }
 
@@ -217,7 +216,7 @@
 
 - (void)imageSelected:(UIImage *)image {
     if (image) {
-        [[PLCPhotoStore new] addPhotoWithImage:image toPlace:self.place];
+        [[PLCPhotoStore new] addPhotoWithImage:image toPlace:self.place withUUID:[NSUUID UUID].UUIDString];
     } else {
         [[PLCPhotoStore new] removePhotoFromPlace:self.place];
     }
@@ -308,6 +307,7 @@
         rect.origin.y = self.captionTextView.contentSize.height;
         rect;
     });
+    self.activityIndicator.center = self.imageButton.center;
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {

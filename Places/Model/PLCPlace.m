@@ -15,6 +15,12 @@
 
 @implementation PLCPlace
 
+@synthesize image;
+
+- (NSString *)imageId {
+    return self.imageIds.firstObject;
+}
+
 - (void)awakeFromInsert {
     [super awakeFromInsert];
     if (!self.uuid) {
@@ -23,10 +29,6 @@
 }
 
 #pragma mark MKAnnotation
-
-- (UIImage *)image {
-    return [[self.photos anyObject] image];
-}
 
 - (CLLocationCoordinate2D)coordinate {
     return CLLocationCoordinate2DMake(self.latitude.doubleValue, self.longitude.doubleValue);

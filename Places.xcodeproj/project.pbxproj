@@ -14,6 +14,8 @@
 		04A9359B1A0F35120024BE15 /* PLCZoomAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A9359A1A0F35120024BE15 /* PLCZoomAnimator.m */; };
 		04D0446A1A50B89400CC66E3 /* PLCPersistentQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D044691A50B89400CC66E3 /* PLCPersistentQueue.m */; };
 		04D0446D1A50C07C00CC66E3 /* PLCGeocodingWork.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D0446C1A50C07C00CC66E3 /* PLCGeocodingWork.m */; };
+		04D044701A50CE3D00CC66E3 /* PLCImageSavingWork.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D0446F1A50CE3D00CC66E3 /* PLCImageSavingWork.m */; };
+		04D044791A50D5B100CC66E3 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04D044771A50D59C00CC66E3 /* CoreLocation.framework */; };
 		04DD4B2619CFBEFC00408002 /* PLCPlaceSearchTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04DD4B2519CFBEFC00408002 /* PLCPlaceSearchTableViewController.xib */; };
 		04DEDD8619CFC5EB00A0D0BA /* PLCBlurredModalPresentationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DEDD8519CFC5EB00A0D0BA /* PLCBlurredModalPresentationController.m */; };
 		04DEDD8A19CFE0E200A0D0BA /* PLCFlickrSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DEDD8819CFE0E200A0D0BA /* PLCFlickrSearchViewController.m */; };
@@ -49,7 +51,6 @@
 		A09932661972084300BB4AB1 /* PLCPlaceTextStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = A09932651972084300BB4AB1 /* PLCPlaceTextStorage.m */; };
 		A0AB9B3619C431B500CD2186 /* PLCMapSelectionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A0AB9B3519C431B500CD2186 /* PLCMapSelectionTableViewCell.m */; };
 		A0AEC2E5190CC482006D20DE /* _PLCPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = A0AEC2E4190CC482006D20DE /* _PLCPhoto.m */; };
-		A0AEC2E8190CC48D006D20DE /* PLCPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = A0AEC2E7190CC48D006D20DE /* PLCPhoto.m */; };
 		A0AEC2EB190CC4CE006D20DE /* PLCPhotoStore.m in Sources */ = {isa = PBXBuildFile; fileRef = A0AEC2EA190CC4CE006D20DE /* PLCPhotoStore.m */; };
 		A0C0421E19395DB70003630E /* Firebase+Places.m in Sources */ = {isa = PBXBuildFile; fileRef = A0C0421D19395DB70003630E /* Firebase+Places.m */; };
 		A0C0422419395EAF0003630E /* PLCUserStore.m in Sources */ = {isa = PBXBuildFile; fileRef = A0C0422319395EAF0003630E /* PLCUserStore.m */; };
@@ -87,6 +88,13 @@
 		04D044691A50B89400CC66E3 /* PLCPersistentQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCPersistentQueue.m; sourceTree = "<group>"; };
 		04D0446B1A50C07C00CC66E3 /* PLCGeocodingWork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCGeocodingWork.h; sourceTree = "<group>"; };
 		04D0446C1A50C07C00CC66E3 /* PLCGeocodingWork.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCGeocodingWork.m; sourceTree = "<group>"; };
+		04D0446E1A50CE3D00CC66E3 /* PLCImageSavingWork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCImageSavingWork.h; sourceTree = "<group>"; };
+		04D0446F1A50CE3D00CC66E3 /* PLCImageSavingWork.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCImageSavingWork.m; sourceTree = "<group>"; };
+		04D044711A50D58800CC66E3 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		04D044731A50D59100CC66E3 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		04D044751A50D59600CC66E3 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		04D044771A50D59C00CC66E3 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		04D0447A1A50D77600CC66E3 /* Places 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Places 6.xcdatamodel"; sourceTree = "<group>"; };
 		04DD4B2519CFBEFC00408002 /* PLCPlaceSearchTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PLCPlaceSearchTableViewController.xib; sourceTree = "<group>"; };
 		04DEDD8419CFC5EB00A0D0BA /* PLCBlurredModalPresentationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCBlurredModalPresentationController.h; sourceTree = "<group>"; };
 		04DEDD8519CFC5EB00A0D0BA /* PLCBlurredModalPresentationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCBlurredModalPresentationController.m; sourceTree = "<group>"; };
@@ -156,8 +164,6 @@
 		A0AB9B3519C431B500CD2186 /* PLCMapSelectionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCMapSelectionTableViewCell.m; sourceTree = "<group>"; };
 		A0AEC2E3190CC482006D20DE /* _PLCPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _PLCPhoto.h; sourceTree = "<group>"; };
 		A0AEC2E4190CC482006D20DE /* _PLCPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _PLCPhoto.m; sourceTree = "<group>"; };
-		A0AEC2E6190CC48D006D20DE /* PLCPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCPhoto.h; sourceTree = "<group>"; };
-		A0AEC2E7190CC48D006D20DE /* PLCPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCPhoto.m; sourceTree = "<group>"; };
 		A0AEC2E9190CC4CE006D20DE /* PLCPhotoStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCPhotoStore.h; sourceTree = "<group>"; };
 		A0AEC2EA190CC4CE006D20DE /* PLCPhotoStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCPhotoStore.m; sourceTree = "<group>"; };
 		A0C0421C19395DB70003630E /* Firebase+Places.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Firebase+Places.h"; sourceTree = "<group>"; };
@@ -195,6 +201,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04D044791A50D5B100CC66E3 /* CoreLocation.framework in Frameworks */,
 				7E54FEA818FFA3EE002E2AFC /* MapKit.framework in Frameworks */,
 				D0FE6C18C7A34A49A217A9F8 /* libPods.a in Frameworks */,
 			);
@@ -294,8 +301,6 @@
 				7E54FE8418FF9450002E2AFC /* Places.xcdatamodeld */,
 				7E166E02191B4A5E001EF46B /* PLCMap.h */,
 				7E166E03191B4A5E001EF46B /* PLCMap.m */,
-				A0AEC2E6190CC48D006D20DE /* PLCPhoto.h */,
-				A0AEC2E7190CC48D006D20DE /* PLCPhoto.m */,
 				7E54FE9218FF985A002E2AFC /* PLCPlace.h */,
 				7E54FE9318FF985A002E2AFC /* PLCPlace.m */,
 				A0C042251939B0950003630E /* PLCFirebaseCoding.h */,
@@ -357,6 +362,10 @@
 		7E54FEA918FFA403002E2AFC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				04D044771A50D59C00CC66E3 /* CoreLocation.framework */,
+				04D044751A50D59600CC66E3 /* CoreGraphics.framework */,
+				04D044731A50D59100CC66E3 /* CFNetwork.framework */,
+				04D044711A50D58800CC66E3 /* AudioToolbox.framework */,
 				7E54FEA718FFA3EE002E2AFC /* MapKit.framework */,
 				B14D2510F5C344D19157C783 /* libPods-Places.a */,
 				4A94B8A9C60F403FB1A724A5 /* libPods.a */,
@@ -404,6 +413,8 @@
 				A0C0422A1939B94B0003630E /* NSMutableDictionary+NilSafe.m */,
 				A06A0F381974E2DB00ABD4A9 /* PLCGoogleMapsActivity.h */,
 				A06A0F391974E2DB00ABD4A9 /* PLCGoogleMapsActivity.m */,
+				04D0446E1A50CE3D00CC66E3 /* PLCImageSavingWork.h */,
+				04D0446F1A50CE3D00CC66E3 /* PLCImageSavingWork.m */,
 				04D0446B1A50C07C00CC66E3 /* PLCGeocodingWork.h */,
 				04D0446C1A50C07C00CC66E3 /* PLCGeocodingWork.m */,
 				04D044681A50B89400CC66E3 /* PLCPersistentQueue.h */,
@@ -618,7 +629,6 @@
 				04A9359B1A0F35120024BE15 /* PLCZoomAnimator.m in Sources */,
 				04D0446A1A50B89400CC66E3 /* PLCPersistentQueue.m in Sources */,
 				0477975819D282DB0022A00F /* PLCImageDownloader.m in Sources */,
-				A0AEC2E8190CC48D006D20DE /* PLCPhoto.m in Sources */,
 				A0F053211903085800BD610C /* PLCMapView.m in Sources */,
 				7E54FE9118FF9854002E2AFC /* _PLCPlace.m in Sources */,
 				A0938F97191DD7CC0021CF7D /* NSURLComponents+QueryDictionary.m in Sources */,
@@ -639,6 +649,7 @@
 				7E54FEAF18FFA94B002E2AFC /* PLCDatabase.m in Sources */,
 				7E166E01191B4A53001EF46B /* _PLCMap.m in Sources */,
 				A0AEC2E5190CC482006D20DE /* _PLCPhoto.m in Sources */,
+				04D044701A50CE3D00CC66E3 /* PLCImageSavingWork.m in Sources */,
 				7EFFFB27190D64A900007FAF /* PLCCalloutTransitionContext.m in Sources */,
 				04DEDD8619CFC5EB00A0D0BA /* PLCBlurredModalPresentationController.m in Sources */,
 				7E54FE8618FF9450002E2AFC /* Places.xcdatamodeld in Sources */,
@@ -889,13 +900,14 @@
 		7E54FE8418FF9450002E2AFC /* Places.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				04D0447A1A50D77600CC66E3 /* Places 6.xcdatamodel */,
 				04E681DB1A21E338008404F2 /* Places 5.xcdatamodel */,
 				A072B9A6198647DB00DC1F44 /* Places 3.xcdatamodel */,
 				A0AB9B3319C40E3200CD2186 /* Places 4.xcdatamodel */,
 				7E500851191B46C4003634DF /* Places 2.xcdatamodel */,
 				7E54FE8518FF9450002E2AFC /* Places.xcdatamodel */,
 			);
-			currentVersion = 04E681DB1A21E338008404F2 /* Places 5.xcdatamodel */;
+			currentVersion = 04D0447A1A50D77600CC66E3 /* Places 6.xcdatamodel */;
 			path = Places.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

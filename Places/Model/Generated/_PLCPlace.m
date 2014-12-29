@@ -7,6 +7,7 @@ const struct PLCPlaceAttributes PLCPlaceAttributes = {
 	.caption = @"caption",
 	.deletedAt = @"deletedAt",
 	.geocodedAddress = @"geocodedAddress",
+	.imageIds = @"imageIds",
 	.latitude = @"latitude",
 	.longitude = @"longitude",
 	.placeType = @"placeType",
@@ -15,7 +16,6 @@ const struct PLCPlaceAttributes PLCPlaceAttributes = {
 
 const struct PLCPlaceRelationships PLCPlaceRelationships = {
 	.map = @"map",
-	.photos = @"photos",
 };
 
 const struct PLCPlaceFetchedProperties PLCPlaceFetchedProperties = {
@@ -84,6 +84,13 @@ const struct PLCPlaceFetchedProperties PLCPlaceFetchedProperties = {
 
 
 @dynamic geocodedAddress;
+
+
+
+
+
+
+@dynamic imageIds;
 
 
 
@@ -177,19 +184,6 @@ const struct PLCPlaceFetchedProperties PLCPlaceFetchedProperties = {
 
 @dynamic map;
 
-	
-
-@dynamic photos;
-
-	
-- (NSMutableSet*)photosSet {
-	[self willAccessValueForKey:@"photos"];
-  
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"photos"];
-  
-	[self didAccessValueForKey:@"photos"];
-	return result;
-}
 	
 
 

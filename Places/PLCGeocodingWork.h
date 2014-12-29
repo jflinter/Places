@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <Mantle/Mantle.h>
 #import "PLCPersistentQueue.h"
 
-@interface PLCGeocodingWork : NSObject<PLCAsynchronousWork>
+@interface PLCGeocodingWork : MTLModel<PLCAsynchronousWork>
 - (instancetype)initWithLocation:(CLLocation *)location placeId:(NSString *)placeId;
 @end

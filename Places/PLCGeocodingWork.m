@@ -17,6 +17,10 @@
 
 @implementation PLCGeocodingWork
 
++ (NSUInteger)modelVersion {
+    return 0;
+}
+
 - (void)doWork:(PLCAsynchronousWorkCallback)completion {
     [[CLGeocoder new] reverseGeocodeLocation:self.location
                            completionHandler:^(NSArray *placemarks, NSError *error) {
@@ -37,20 +41,6 @@
         _placeId = placeId;
     }
     return self;
-}
-
-- (id)initWithCoder:(NSCoder *)aDecoder {
-    self = [super init];
-    if (self) {
-        _placeId = [aDecoder decodeObjectForKey:@"placeId"];
-        _location = [aDecoder decodeObjectForKey:@"location"];
-    }
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)aCoder {
-    [aCoder encodeObject:self.placeId forKey:@"placeId"];
-    [aCoder encodeObject:self.location forKey:@"location"];
 }
 
 + (PLCPlace *)placeWithUUID:(NSString *)uuid {

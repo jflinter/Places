@@ -8,6 +8,7 @@ extern const struct PLCPlaceAttributes {
 	__unsafe_unretained NSString *caption;
 	__unsafe_unretained NSString *deletedAt;
 	__unsafe_unretained NSString *geocodedAddress;
+	__unsafe_unretained NSString *imageIds;
 	__unsafe_unretained NSString *latitude;
 	__unsafe_unretained NSString *longitude;
 	__unsafe_unretained NSString *placeType;
@@ -16,18 +17,17 @@ extern const struct PLCPlaceAttributes {
 
 extern const struct PLCPlaceRelationships {
 	__unsafe_unretained NSString *map;
-	__unsafe_unretained NSString *photos;
 } PLCPlaceRelationships;
 
 extern const struct PLCPlaceFetchedProperties {
 } PLCPlaceFetchedProperties;
 
 @class PLCMap;
-@class PLCPhoto;
 
 
 
 @class NSMutableDictionary;
+@class NSArray;
 
 
 
@@ -71,6 +71,16 @@ extern const struct PLCPlaceFetchedProperties {
 
 
 //- (BOOL)validateGeocodedAddress:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSArray* imageIds;
+
+
+
+//- (BOOL)validateImageIds:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -135,22 +145,10 @@ extern const struct PLCPlaceFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSSet *photos;
-
-- (NSMutableSet*)photosSet;
-
-
-
-
 
 @end
 
 @interface _PLCPlace (CoreDataGeneratedAccessors)
-
-- (void)addPhotos:(NSSet*)value_;
-- (void)removePhotos:(NSSet*)value_;
-- (void)addPhotosObject:(PLCPhoto*)value_;
-- (void)removePhotosObject:(PLCPhoto*)value_;
 
 @end
 
@@ -171,6 +169,12 @@ extern const struct PLCPlaceFetchedProperties {
 
 - (NSMutableDictionary*)primitiveGeocodedAddress;
 - (void)setPrimitiveGeocodedAddress:(NSMutableDictionary*)value;
+
+
+
+
+- (NSArray*)primitiveImageIds;
+- (void)setPrimitiveImageIds:(NSArray*)value;
 
 
 
@@ -211,11 +215,6 @@ extern const struct PLCPlaceFetchedProperties {
 
 - (PLCMap*)primitiveMap;
 - (void)setPrimitiveMap:(PLCMap*)value;
-
-
-
-- (NSMutableSet*)primitivePhotos;
-- (void)setPrimitivePhotos:(NSMutableSet*)value;
 
 
 @end

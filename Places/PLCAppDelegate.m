@@ -13,14 +13,18 @@
 #import <Firebase/Firebase.h>
 #import <Foursquare-API-v2/Foursquare2.h>
 #import <FlickrKit/FlickrKit.h>
+#import <Parse/Parse.h>
+#import <TMCache/TMCache.h>
 
 @implementation PLCAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    [Parse setApplicationId:@"d7IlXMx8MHI3emtHCF5LjKhVXm787WSWHyfKY9w5" clientKey:@"OWY7Gra9KewRjFmtPLW3hudPbpifSqEEqpl9hwS7"];
     [Foursquare2 setupFoursquareWithClientId:@"SKJPF13KUWM2EZSOIXXDDQKMAQFTIOBRW5XFOLD1CZBXWCHH"
                                       secret:@"1VOMRGHBELSCUGIZFVLHXTU54P0R51I1AZ5ZSZTW33WA1C5J"
                                  callbackURL:@""];
     [[FlickrKit sharedFlickrKit] initializeWithAPIKey:@"15c508152bc4a2d17ddd00eb18a43c9a" sharedSecret:@"d9f2ec04c64fe91e"];
+    [TMCache sharedCache].diskCache.byteLimit = 100000000;
 
     // beta offline persistence for firebase queries - will retry offline saves after e.g. app termination
     [Firebase setOption:@"persistence" to:@YES];

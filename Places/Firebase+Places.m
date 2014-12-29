@@ -10,7 +10,6 @@
 #import "PLCUserStore.h"
 #import "PLCMap.h"
 #import "PLCPlace.h"
-#import "PLCPhoto.h"
 
 @implementation Firebase (Places)
 
@@ -41,10 +40,6 @@
 
 + (instancetype)photoClientForPlace:(PLCPlace *)place {
     return [[self photosClient] childByAppendingPath:place.uuid];
-}
-
-+ (instancetype)photoClientForPhoto:(PLCPhoto *)photo {
-    return [[self photoClientForPlace:photo.place] childByAppendingPath:photo.uuid];
 }
 
 @end
