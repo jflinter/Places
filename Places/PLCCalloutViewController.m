@@ -126,8 +126,7 @@
             insets.bottom += self.imageSize + 10;
             insets;
         });
-    }
-    else {
+    } else {
         self.captionTextView.contentInset = self.originalInsets;
     }
     if ([self.imageButton imageForState:UIControlStateNormal]) {
@@ -136,8 +135,7 @@
             self.imageButton.hidden = NO;
             [UIView animateWithDuration:0.2f animations:^{ self.imageButton.alpha = 1.0f; }];
         }
-    }
-    else {
+    } else {
         self.imageButton.hidden = YES;
     }
 }
@@ -227,57 +225,55 @@
 #pragma mark UIActionSheetDelegate
 
 - (IBAction)choosePhoto:(id)sender {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] init];
-    if (self.place.image) {
-        actionSheet.destructiveButtonIndex = [actionSheet addButtonWithTitle:NSLocalizedString(@"Remove Photo", nil)];
+    [self.captionTextView resignFirstResponder];
+    UIAlertController *controller = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    if (self.place.imageId) {
+        [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Remove Photo", nil)
+                                                       style:UIAlertActionStyleDestructive
+                                                     handler:^(UIAlertAction *action) {
+                                                         [self imageSelected:nil];
+                                                         [self updateInsets];
+                                                     }]];
     }
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        [actionSheet addButtonWithTitle:NSLocalizedString(@"Take Photo", nil)];
+        [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Take Photo", nil)
+                                                       style:UIAlertActionStyleDefault
+                                                     handler:^(UIAlertAction *action) {
+                                                         UIImagePickerController *imagePicker = [UIImagePickerController new];
+                                                         imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+                                                         imagePicker.cameraFlashMode = UIImagePickerControllerCameraFlashModeOff;
+                                                         imagePicker.delegate = self;
+                                                         imagePicker.allowsEditing = YES;
+                                                         [self.parentViewController presentViewController:imagePicker animated:YES completion:nil];
+                                                     }]];
     }
+
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
-        [actionSheet addButtonWithTitle:NSLocalizedString(@"Choose From Library", nil)];
+        [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Choose From Library", nil)
+                                                       style:UIAlertActionStyleDefault
+                                                     handler:^(UIAlertAction *action) {
+                                                         UIImagePickerController *imagePicker = [UIImagePickerController new];
+                                                         imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+                                                         imagePicker.delegate = self;
+                                                         imagePicker.allowsEditing = YES;
+                                                         [self.parentViewController presentViewController:imagePicker animated:YES completion:nil];
+                                                     }]];
     }
-    [actionSheet addButtonWithTitle:NSLocalizedString(@"Image Search", nil)];
-    actionSheet.cancelButtonIndex = [actionSheet addButtonWithTitle:NSLocalizedString(@"Cancel", nil)];
-    [actionSheet showInView:self.view.window];
-    actionSheet.delegate = self;
-}
+    [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Image Search", nil)
+                                                   style:UIAlertActionStyleDefault
+                                                 handler:^(UIAlertAction *action) {
+                                                     PLCFlickrSearchViewController *flickrController = [[PLCFlickrSearchViewController alloc]
+                                                         initWithQuery:self.place.title
+                                                                region:MKCoordinateRegionMakeWithDistance(self.place.coordinate, 500, 500)];
+                                                     flickrController.delegate = self;
+                                                     flickrController.modalPresentationStyle = UIModalPresentationCustom;
+                                                     flickrController.transitioningDelegate = self;
+                                                     [self.parentViewController presentViewController:flickrController animated:YES completion:nil];
+                                                 }]];
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == actionSheet.cancelButtonIndex) {
-        return;
-    }
-    if (buttonIndex == actionSheet.destructiveButtonIndex) {
-        [self imageSelected:nil];
-        [self updateInsets];
-        return;
-    }
-    [self doneEditing:nil];
-    if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:NSLocalizedString(@"Search Flickr", nil)]) {
-        PLCFlickrSearchViewController *controller =
-            [[PLCFlickrSearchViewController alloc] initWithQuery:self.place.title region:MKCoordinateRegionMakeWithDistance(self.place.coordinate, 500, 500)];
-        controller.delegate = self;
-        controller.modalPresentationStyle = UIModalPresentationCustom;
-        controller.transitioningDelegate = self;
-        [UIView animateWithDuration:0.2
-            animations:^{ [actionSheet dismissWithClickedButtonIndex:buttonIndex animated:NO]; }
-            completion:^(BOOL finished) { [self.parentViewController presentViewController:controller animated:YES completion:nil]; }];
-        return;
-    }
-    UIImagePickerController *imagePicker = [UIImagePickerController new];
-    if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:NSLocalizedString(@"Take Photo", nil)]) {
-        imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
-        imagePicker.cameraFlashMode = UIImagePickerControllerCameraFlashModeOff;
-    } else {
-        imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    }
-    imagePicker.delegate = self;
-    imagePicker.allowsEditing = YES;
-    [self.parentViewController presentViewController:imagePicker animated:YES completion:nil];
-}
+    [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil]];
 
-- (void)cancelFlickr:(id)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self presentViewController:controller animated:YES completion:nil];
 }
 
 #pragma mark -

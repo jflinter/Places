@@ -41,7 +41,7 @@
 - (void)addUrls:(NSArray *)urls completion:(PLCImageDownloadingHandler)completion {
     NSMutableArray *mutableUrls = [urls mutableCopy];
     NSMutableArray *images = [NSMutableArray array];
-    for (NSURL *url in mutableUrls) {
+    for (NSURL *url in urls) {
         UIImage *cachedImage = [[[self class] sharedImageCache] objectForKey:url.absoluteString];
         if (cachedImage) {
             [self.delegate imageDownloader:self didDownloadImage:cachedImage atURL:url];
