@@ -75,12 +75,8 @@
     [self.presentingViewController dismissViewControllerAnimated:YES
                                                       completion:^{
                                                           PLCPlace *place = [[PLCPlaceStore sharedInstance] insertPlaceAtCoordinate:result.coordinate];
-                                                          place.caption = result.title;
+                                                          place.caption = [result.title stringByAppendingString:@"\n"];
                                                       }];
-}
-
-- (UIScrollView *)scrollView {
-    return self.tableView;
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {

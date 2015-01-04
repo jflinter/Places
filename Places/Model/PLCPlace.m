@@ -66,8 +66,8 @@
     if ([activityType isEqualToString:UIActivityTypeMessage]) {
         MKPlacemark *placemark = [[MKPlacemark alloc] initWithCoordinate:self.coordinate addressDictionary:self.geocodedAddress];
         NSMutableDictionary *options = [@{
-            MKPlaceMarkPLCMapFieldNameKey: @"Made with Places - see the rest here:",
-            MKPlaceMarkPLCMapFieldValueKey: [self.map shareURL],
+            MKPlaceMarkPLCMapFieldNameKey: @"Made with Places",
+            MKPlaceMarkPLCMapFieldValueKey: [NSURL URLWithString:@"http://shareplac.es"],
         } mutableCopy];
         if (self.caption && ![self.caption isEqualToString:@""]) {
             options[MKPlaceMarkPLCMapPreviewKey] = self.caption;

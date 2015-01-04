@@ -78,6 +78,7 @@
     action.enabled = NO;
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action){}];
     [controller addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        textField.autocapitalizationType = UITextAutocapitalizationTypeSentences;
         textField.placeholder = @"Ex. My Favorite Restaurants";
         [[NSNotificationCenter defaultCenter] addObserverForName:UITextFieldTextDidChangeNotification
                                                           object:textField

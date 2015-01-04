@@ -155,10 +155,10 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     }
     [self setChromeHidden:YES animated:YES];
     [self dismissAllCalloutViewControllers];
-
+    BOOL shouldEdit = self.isAddingPlace;
     void (^afterCallout)() = ^{
         PLCCalloutViewController *calloutViewController = [self instantiateCalloutControllerForAnnotation:view.annotation];
-        [self presentCalloutViewController:calloutViewController fromAnnotationView:view];
+        [self presentCalloutViewController:calloutViewController fromAnnotationView:view forceEditing:shouldEdit];
     };
 
     BOOL const waitToShow = self.isAddingPlace;
@@ -248,8 +248,12 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 - (void)mapStore:(PLCMapStore *)store didChangeMap:(PLCMap *)map {
     [self.mapView removeAnnotations:self.mapView.annotations];
     NSArray *annotations = [map activePlaces];
-    [self.mapView addAnnotations:annotations];
-    [self.mapView showAnnotations:annotations animated:YES];
+    if (annotations.count) {
+        [self.mapView addAnnotations:annotations];
+        [self.mapView showAnnotations:annotations animated:YES];
+    } else if (CLLocationCoordinate2DIsValid(self.mapView.userLocation.coordinate)) {
+        [UIView animateWithDuration:PLCMapPanAnimationDuration animations:^{ self.mapView.centerCoordinate = self.mapView.userLocation.coordinate; }];
+    }
     self.navigationItem.title = map.name;
 }
 
@@ -295,7 +299,9 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 #pragma mark -
 #pragma mark Callout presentation methods
 
-- (void)presentCalloutViewController:(PLCCalloutViewController *)calloutViewController fromAnnotationView:(MKAnnotationView *)annotationView {
+- (void)presentCalloutViewController:(PLCCalloutViewController *)calloutViewController
+                  fromAnnotationView:(MKAnnotationView *)annotationView
+                        forceEditing:(BOOL)forceEditing {
     [self addChildViewController:calloutViewController];
 
     PLCCalloutTransitionContext *transitionContext = [[PLCCalloutTransitionContext alloc] initWithOperation:PLCCalloutTransitionContextOperationPresent];
@@ -307,7 +313,9 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 
     [animator animateTransition:transitionContext
                      completion:^{
-                         if ((!calloutViewController.place.caption || [calloutViewController.place.caption isEqualToString:@""]) && !calloutViewController.place.image && !calloutViewController.place.imageId) {
+                         if (((!calloutViewController.place.caption || [calloutViewController.place.caption isEqualToString:@""]) &&
+                              !calloutViewController.place.image && !calloutViewController.place.imageId) ||
+                             forceEditing) {
                              [calloutViewController editCaption];
                          }
                      }];
@@ -375,6 +383,10 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 }
 
 - (IBAction)showLocation:(id)sender {
+    if (CLLocationCoordinate2DIsValid(self.mapView.userLocation.coordinate)) {
+        [UIView animateWithDuration:PLCMapPanAnimationDuration animations:^{ self.mapView.centerCoordinate = self.mapView.userLocation.coordinate; }];
+        return;
+    }
     [self determineLocation:^{
         [[INTULocationManager sharedInstance]
             requestLocationWithDesiredAccuracy:INTULocationAccuracyBlock
@@ -418,7 +430,8 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 
 - (IBAction)shareMap:(id)sender {
     UIActivityViewController *activityViewController =
-        [[UIActivityViewController alloc] initWithActivityItems:@[[[PLCMapStore sharedInstance].selectedMap shareURL]] applicationActivities:@[[TUSafariActivity new]]];
+        [[UIActivityViewController alloc] initWithActivityItems:@[[[PLCMapStore sharedInstance].selectedMap shareURL]]
+                                          applicationActivities:@[[TUSafariActivity new]]];
     // exclude the airdrop action because it's incredibly fucking slow and noone uses it
     activityViewController.excludedActivityTypes = @[UIActivityTypePrint, UIActivityTypeAirDrop];
     [self presentViewController:activityViewController animated:YES completion:nil];
@@ -488,8 +501,7 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
         [[PLCBlurredModalPresentationController alloc] initWithPresentedViewController:presented presentingViewController:self];
     if ([presented isKindOfClass:[UINavigationController class]]) {
         controller.edgeInsets = UIEdgeInsetsZero;
-    }
-    else {
+    } else {
         controller.edgeInsets = UIEdgeInsetsMake(20, 20, 20, 20);
     }
     return controller;

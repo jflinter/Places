@@ -32,18 +32,19 @@ NSString * const MKPlaceMarkPLCMapPreviewKey = @"MKPlaceMarkPLCMapPreviewKey";
     
     ABMutableMultiValueRef multiHome = ABMultiValueCreateMutable(kABMultiDictionaryPropertyType);
     
-    ABMultiValueAddValueAndLabel(multiHome, (__bridge CFTypeRef)(self.addressDictionary), kABHomeLabel, NULL);
+    NSMutableDictionary *mutableAddressDictionary = [self.addressDictionary mutableCopy];
+    if (options[MKPlaceMarkPLCMapFieldNameKey] && options[MKPlaceMarkPLCMapFieldValueKey]) {
+        NSString *mapUrlDesc = [options[MKPlaceMarkPLCMapFieldValueKey] description];
+        mutableAddressDictionary[@"Url"] = mapUrlDesc;
+    }
+    
+    ABMultiValueAddValueAndLabel(multiHome, (__bridge CFTypeRef)(mutableAddressDictionary), kABHomeLabel, NULL);
     ABRecordSetValue(person, kABPersonAddressProperty, multiHome, &errorRef);
     CFRelease(multiHome), multiHome = NULL;
     
     ABMutableMultiValueRef multiURL = ABMultiValueCreateMutable(kABMultiStringPropertyType);
     NSString *urlDesc = [[self appleMapsURL] description];
     ABMultiValueAddValueAndLabel(multiURL, (__bridge CFTypeRef)urlDesc, CFSTR("Open in Maps"), NULL);
-    
-    if (options[MKPlaceMarkPLCMapFieldNameKey] && options[MKPlaceMarkPLCMapFieldValueKey]) {
-        NSString *mapUrlDesc = [options[MKPlaceMarkPLCMapFieldValueKey] description];
-        ABMultiValueAddValueAndLabel(multiURL, (__bridge CFTypeRef)mapUrlDesc, (__bridge  CFStringRef)options[MKPlaceMarkPLCMapFieldNameKey], NULL);
-    }
     
     ABRecordSetValue(person, kABPersonURLProperty, multiURL, &errorRef);
     CFRelease(multiURL), multiURL = NULL;

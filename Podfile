@@ -13,3 +13,4 @@ pod "TUSafariActivity"
 pod "Mantle"
 pod "Parse"
 pod "TMCache"
+pod 'HockeySDK', '~> 3.6.2'

@@ -15,10 +15,16 @@
 #import <FlickrKit/FlickrKit.h>
 #import <Parse/Parse.h>
 #import <TMCache/TMCache.h>
+#import "HockeySDK.h"
 
 @implementation PLCAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"6ce20bad14fd46cc1d3fecac42002f0c"];
+    [[BITHockeyManager sharedHockeyManager] startManager];
+    [[BITHockeyManager sharedHockeyManager].authenticator
+     authenticateInstallation];
+
     [Parse setApplicationId:@"d7IlXMx8MHI3emtHCF5LjKhVXm787WSWHyfKY9w5" clientKey:@"OWY7Gra9KewRjFmtPLW3hudPbpifSqEEqpl9hwS7"];
     [Foursquare2 setupFoursquareWithClientId:@"SKJPF13KUWM2EZSOIXXDDQKMAQFTIOBRW5XFOLD1CZBXWCHH"
                                       secret:@"1VOMRGHBELSCUGIZFVLHXTU54P0R51I1AZ5ZSZTW33WA1C5J"

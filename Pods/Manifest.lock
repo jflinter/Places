@@ -18,6 +18,7 @@ PODS:
   - Firebase (2.0.2)
   - FlickrKit (1.0.4)
   - Foursquare-API-v2 (1.4.7)
+  - HockeySDK (3.6.2)
   - INTULocationManager (1.2.0)
   - JTSImageViewController (1.4)
   - Mantle (1.5.1):
@@ -36,6 +37,7 @@ DEPENDENCIES:
   - Firebase
   - FlickrKit
   - Foursquare-API-v2
+  - HockeySDK (~> 3.6.2)
   - INTULocationManager
   - JTSImageViewController
   - Mantle
@@ -52,6 +54,7 @@ SPEC CHECKSUMS:
   Firebase: 793a4581e4f4d9cb1e156cab89ca367f3d02b473
   FlickrKit: 1bbc5c91f065fa0d7ce4119c5d5c63a9241eea73
   Foursquare-API-v2: 97ce6ee55f7ea871ceec0255bba50845551b51c3
+  HockeySDK: bfd1f5ac75938b07499c4ac12932244b72a2e70b
   INTULocationManager: 596c57e35a00ca1ee9d59bf4cc2b63dc299b580e
   JTSImageViewController: 9fe6402194b7679f0e28d0c1002d6164301fc34a
   Mantle: d7c5ac734579ec751c58fecbf56189853056c58c
