@@ -22,14 +22,15 @@
     // delete any existing photos
     [self removePhotoFromPlace:place];
     place.image = image;
-    [[TMCache sharedCache] setObject:image forKey:uuid];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        // save the file locally with that uuid
-        NSData *data = UIImageJPEGRepresentation(image, 1);
-        [data writeToFile:[self fileUrlForPhotoWithUUID:uuid].path atomically:YES];
-        PLCImageSavingWork *work = [[PLCImageSavingWork alloc] initWithImage:data imageId:uuid placeId:place.uuid];
-        [[PLCPersistentQueue sharedInstance] addWork:work];
-    });
+    [[TMCache sharedCache] setObject:image
+                              forKey:uuid
+                               block:^(TMCache *cache, NSString *key, id object) {
+                                   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+                                       NSData *data = UIImageJPEGRepresentation(image, 1);
+                                       PLCImageSavingWork *work = [[PLCImageSavingWork alloc] initWithImage:data imageId:uuid placeId:place.uuid];
+                                       [[PLCPersistentQueue sharedInstance] addWork:work];
+                                   });
+                               }];
 }
 
 - (NSURL *)fileUrlForPhotoWithUUID:(NSString *)uuid {

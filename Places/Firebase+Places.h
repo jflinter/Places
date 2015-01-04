@@ -16,6 +16,5 @@
 + (instancetype)mapClient;
 + (instancetype)mapClientForMap:(PLCMap *)map;
 + (instancetype)placeClientForPlace:(PLCPlace *)place;
-+ (instancetype)currentUserClient;
 
 @end

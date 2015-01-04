@@ -71,7 +71,8 @@
     NSString *uuid = [[NSUUID UUID] UUIDString];
     // archive the operation to a file
     NSURL *url = [self.class fileUrlForUuid:uuid];
-    [NSKeyedArchiver archiveRootObject:work toFile:url.path];
+    [[NSFileManager defaultManager] removeItemAtURL:url error:nil];
+//    [NSKeyedArchiver archiveRootObject:work toFile:url.path];
     // start doing it
     PLCSavableOperation *saveableOp = [PLCSavableOperation operationWithWork:work uuid:uuid];
     [self.operationQueue addOperation:saveableOp];
@@ -109,7 +110,7 @@
                 
             }
         }
-        dispatch_async(dispatch_get_main_queue(), ^{ [self finish]; });
+        [self finish];
     }];
 }
 

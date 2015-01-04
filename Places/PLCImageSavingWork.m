@@ -46,12 +46,14 @@
                     completion(error);
                 } else {
                     PLCPlace *place = [self.class placeWithUUID:self.placeId];
-                    [place.managedObjectContext performBlock:^{
-                        place.imageIds = @[self.imageId];
-                        [place.managedObjectContext save:nil];
-                        [[Firebase placeClientForPlace:place] setValue:[place firebaseObject]];
-                        completion(nil);
-                    }];
+                    if (!place.imageId) {
+                        [place.managedObjectContext performBlock:^{
+                            place.imageIds = @[self.imageId];
+                            [place.managedObjectContext save:nil];
+                            [[Firebase placeClientForPlace:place] setValue:[place firebaseObject]];
+                        }];
+                    }
+                    completion(nil);
                 }
             }];
         }

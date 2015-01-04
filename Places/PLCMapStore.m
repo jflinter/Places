@@ -15,6 +15,8 @@
 #import "Firebase+Places.h"
 #import "PLCPlaceStore.h"
 #import "PLCPlace.h"
+#import "PLCPhotoStore.h"
+#import <TMCache/TMCache.h>
 
 static NSString *const PLCCurrentMapSaveKey = @"PLCCurrentMapSaveKey";
 static NSString *const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidChangeNotification";
@@ -252,6 +254,7 @@ static NSString *const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidCh
                                       place.uuid = placeId;
                                       place.caption = placeDict[@"caption"];
                                       place.map = map;
+                                      place.imageIds = placeDict[@"imageIds"];
                                       place.geocodedAddress = placeDict[@"geocodedAddress"];
                                       if (!place.geocodedAddress && !place.deletedAt && !map.deletedAt) {
                                           [place setCoordinate:coord]; // this triggers a geocode operation
