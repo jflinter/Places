@@ -14,3 +14,4 @@ pod "Mantle"
 pod "Parse"
 pod "TMCache"
 pod 'HockeySDK', '~> 3.6.2'
+pod 'Reveal-iOS-SDK', :configurations => ['Debug']

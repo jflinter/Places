@@ -80,12 +80,17 @@
     self.activityIndicator = activityIndicator;
     [button setImage:self.place.image forState:UIControlStateNormal];
     if (!self.place.image && self.place.imageId) {
-        [activityIndicator startAnimating];
+        [self.activityIndicator startAnimating];
         [[PLCPhotoStore new] fetchImageWithId:self.place.imageId
                                    completion:^(UIImage *image) {
                                        [self.activityIndicator stopAnimating];
-                                       [button setImage:image forState:UIControlStateNormal];
-                                       [self updateInsets];
+                                       if (image) {
+                                           [button setImage:image forState:UIControlStateNormal];
+                                           [self updateInsets];
+                                           self.imageButton.enabled = NO;
+                                           self.imageButton.enabled = YES;
+                                           self.activityIndicator.userInteractionEnabled = NO;
+                                       }
                                    }];
     }
     [button addTarget:self action:@selector(imageTapped:) forControlEvents:UIControlEventTouchUpInside];
@@ -97,9 +102,9 @@
     });
     self.captionTextView.scrollIndicatorInsets = UIEdgeInsetsMake(12, 0, self.originalInsets.bottom, 5);
     [self.captionTextView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:NULL];
-    [self.captionTextView addSubview:button];
-    [self.captionTextView addSubview:activityIndicator];
-    activityIndicator.center = button.center;
+    [self.captionTextView addSubview:self.imageButton];
+    [self.captionTextView addSubview:self.activityIndicator];
+    self.activityIndicator.center = button.center;
     self.contentView.layer.cornerRadius = self.calloutView.cornerRadius;
     self.contentView.layer.masksToBounds = YES;
     self.bottomSpacingConstraint.constant = self.calloutView.arrowHeight;
@@ -107,6 +112,11 @@
     self.captionTextView.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.75f];
     self.captionTextView.layer.cornerRadius = 5.0f;
     [self updateInsets];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self textViewDidChange:self.captionTextView];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
