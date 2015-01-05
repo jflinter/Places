@@ -11,5 +11,5 @@
 #import "PLCPersistentQueue.h"
 
 @interface PLCGeocodingWork : MTLModel<PLCAsynchronousWork>
-- (instancetype)initWithLocation:(CLLocation *)location placeId:(NSString *)placeId;
+- (instancetype)initWithLocation:(CLLocation *)location placeId:(NSString *)placeId NS_DESIGNATED_INITIALIZER;
 @end

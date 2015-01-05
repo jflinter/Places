@@ -58,11 +58,11 @@
 #pragma mark -
 #pragma mark UIActivityItemSource
 
-- (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController {
+- (id)activityViewControllerPlaceholderItem:(__unused UIActivityViewController *)activityViewController {
     return self.caption;
 }
 
-- (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType {
+- (id)activityViewController:(__unused UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType {
     if ([activityType isEqualToString:UIActivityTypeMessage]) {
         MKPlacemark *placemark = [[MKPlacemark alloc] initWithCoordinate:self.coordinate addressDictionary:self.geocodedAddress];
         NSMutableDictionary *options = [@{
@@ -72,7 +72,7 @@
         if (self.caption && ![self.caption isEqualToString:@""]) {
             options[MKPlaceMarkPLCMapPreviewKey] = self.caption;
         }
-        NSURL *url = [placemark temporaryFileURLForLocationSharingWithOptions:options error:nil];
+        NSURL *url = [placemark jrf_temporaryFileURLForLocationSharingWithOptions:options error:nil];
         if (url) {
             return url;
         } else {
@@ -97,12 +97,12 @@
 
 - (NSDictionary *)firebaseObject {
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-    [dictionary setValueNilSafe:self.caption forKey:PLCPlaceAttributes.caption];
-    [dictionary setValueNilSafe:self.latitude forKey:PLCPlaceAttributes.latitude];
-    [dictionary setValueNilSafe:self.longitude forKey:PLCPlaceAttributes.longitude];
-    [dictionary setValueNilSafe:self.geocodedAddress forKey:PLCPlaceAttributes.geocodedAddress];
-    [dictionary setValueNilSafe:@(self.deletedAt.timeIntervalSinceReferenceDate) forKey:@"PLCDeletedAt"];
-    [dictionary setValueNilSafe:self.imageIds forKey:PLCPlaceAttributes.imageIds];
+    [dictionary jrf_setValueNilSafe:self.caption forKey:PLCPlaceAttributes.caption];
+    [dictionary jrf_setValueNilSafe:self.latitude forKey:PLCPlaceAttributes.latitude];
+    [dictionary jrf_setValueNilSafe:self.longitude forKey:PLCPlaceAttributes.longitude];
+    [dictionary jrf_setValueNilSafe:self.geocodedAddress forKey:PLCPlaceAttributes.geocodedAddress];
+    [dictionary jrf_setValueNilSafe:@(self.deletedAt.timeIntervalSinceReferenceDate) forKey:@"PLCDeletedAt"];
+    [dictionary jrf_setValueNilSafe:self.imageIds forKey:PLCPlaceAttributes.imageIds];
     return [dictionary copy];
 }
 

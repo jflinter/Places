@@ -14,6 +14,6 @@
 @property(nonatomic, readonly)CLLocationCoordinate2D coordinate;
 @property(nonatomic, readonly)NSString *addressString;
 
-- (id)initWithResponseDict:(NSDictionary *)dict;
+- (instancetype)initWithResponseDict:(NSDictionary *)dict NS_DESIGNATED_INITIALIZER;
 
 @end

@@ -19,7 +19,7 @@
 
 @implementation PLCAppDelegate
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+- (BOOL)application:(__unused UIApplication *)application didFinishLaunchingWithOptions:(__unused NSDictionary *)launchOptions {
     [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"6ce20bad14fd46cc1d3fecac42002f0c"];
     [[BITHockeyManager sharedHockeyManager] startManager];
     [[BITHockeyManager sharedHockeyManager].authenticator
@@ -30,7 +30,7 @@
                                       secret:@"1VOMRGHBELSCUGIZFVLHXTU54P0R51I1AZ5ZSZTW33WA1C5J"
                                  callbackURL:@""];
     [[FlickrKit sharedFlickrKit] initializeWithAPIKey:@"15c508152bc4a2d17ddd00eb18a43c9a" sharedSecret:@"d9f2ec04c64fe91e"];
-    [TMCache sharedCache].diskCache.byteLimit = 100000000;
+    [TMCache sharedCache].diskCache.byteLimit = 200000000;
 
     // beta offline persistence for firebase queries - will retry offline saves after e.g. app termination
     [Firebase setOption:@"persistence" to:@YES];

@@ -311,7 +311,7 @@
         <image name="765-arrow-left" width="14" height="28"/>
         <image name="854-list" width="26" height="16"/>
         <image name="888-checkmark" width="28" height="28"/>
-        <image name="cancel" width="28" height="28"/>
+        <image name="cancel" width="22" height="22"/>
         <image name="drop_pin_icon" width="31" height="32"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

@@ -20,7 +20,7 @@ didFinishWithImage:(UIImage *)image;
 
 @interface PLCFlickrSearchViewController : UIViewController
 
-- (id)initWithQuery:(NSString *)query region:(MKCoordinateRegion)region;
+- (instancetype)initWithQuery:(NSString *)query region:(MKCoordinateRegion)region NS_DESIGNATED_INITIALIZER;
 @property(nonatomic, readwrite, weak)id<PLCFlickrSearchViewControllerDelegate>delegate;
 
 @end

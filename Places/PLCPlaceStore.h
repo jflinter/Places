@@ -24,7 +24,6 @@
 
 - (void)save;
 
-- (PLCPlace *)insertPlaceAtCoordinate:(CLLocationCoordinate2D)coordinate save:(BOOL)save;
 - (PLCPlace *)insertPlaceAtCoordinate:(CLLocationCoordinate2D)coordinate;
 - (void)removePlace:(PLCPlace *)place;
 

@@ -26,58 +26,56 @@
 + (instancetype)sharedDatabase {
     static PLCDatabase *sharedDatabase;
     static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sharedDatabase = [[PLCDatabase alloc] initWithModelURL:[self databaseModelURL] storeURL:[self databaseStoreURL]];
-    });
+    dispatch_once(&onceToken, ^{ sharedDatabase = [[PLCDatabase alloc] initWithModelURL:[self databaseModelURL] storeURL:[self databaseStoreURL]]; });
     return sharedDatabase;
 }
 
-+ (NSURL *)databaseModelURL
-{
++ (NSURL *)databaseModelURL {
     return [[NSBundle mainBundle] URLForResource:@"Places" withExtension:@"momd"];
 }
 
-+ (NSURL *)databaseStoreURL
-{
-    return [[[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:YES error:NULL] URLByAppendingPathComponent:[@"Places" stringByAppendingPathExtension:@"sqlite"]];
++ (NSURL *)databaseStoreURL {
+    return [[[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:YES error:NULL]
+        URLByAppendingPathComponent:[@"Places" stringByAppendingPathExtension:@"sqlite"]];
 }
 
-
-- (instancetype)initWithModelURL:(NSURL *)modelURL storeURL:(NSURL *)storeURL
-{
+- (instancetype)initWithModelURL:(NSURL *)modelURL storeURL:(NSURL *)storeURL {
     if ((self = [super init])) {
-        self.managedObjectModelURL = modelURL;
-        self.persistentStoreURL = storeURL;
+        _managedObjectModelURL = modelURL;
+        _persistentStoreURL = storeURL;
     }
     return self;
 }
 
-- (NSManagedObjectModel *)managedObjectModel
-{
+- (NSManagedObjectModel *)managedObjectModel {
     if (_managedObjectModel == nil) {
         _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:self.managedObjectModelURL];
     }
     return _managedObjectModel;
 }
 
-- (NSPersistentStoreCoordinator *)persistentStoreCoordinator
-{
+- (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
     if (_persistentStoreCoordinator == nil) {
         _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:self.managedObjectModel];
 
         NSPersistentStore *store = nil;
-        NSError *error = nil;
-        if ((store = [_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:self.persistentStoreURL options:@{ NSMigratePersistentStoresAutomaticallyOption : @YES, NSInferMappingModelAutomaticallyOption : @YES } error:&error]) == nil) {
-            // this is a tiny thing that makes it easy to just build twice in a row on your device/simulator if there is a migration error the first time. Should be cleaned up eventually.
-            [[NSFileManager defaultManager] removeItemAtURL:self.persistentStoreURL error:nil];
+        if ((store = [_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
+                                                               configuration:nil
+                                                                         URL:self.persistentStoreURL
+                                                                     options:@{
+                                                                         NSMigratePersistentStoresAutomaticallyOption: @YES,
+                                                                         NSInferMappingModelAutomaticallyOption: @YES
+                                                                     } error:nil]) == nil) {
+            //            // this is a tiny thing that makes it easy to just build twice in a row on your device/simulator if there is a migration error the
+            //            first time. Should be cleaned up eventually.
+            //            [[NSFileManager defaultManager] removeItemAtURL:self.persistentStoreURL error:nil];
             abort();
         }
     }
     return _persistentStoreCoordinator;
 }
 
-- (NSManagedObjectContext *)mainContext
-{
+- (NSManagedObjectContext *)mainContext {
     if (_mainContext == nil) {
         _mainContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
         _mainContext.persistentStoreCoordinator = self.persistentStoreCoordinator;

@@ -101,7 +101,7 @@
         insets;
     });
     self.captionTextView.scrollIndicatorInsets = UIEdgeInsetsMake(12, 0, self.originalInsets.bottom, 5);
-    [self.captionTextView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:NULL];
+    [self.captionTextView addObserver:self forKeyPath:NSStringFromSelector(@selector(contentSize)) options:NSKeyValueObservingOptionNew context:NULL];
     [self.captionTextView addSubview:self.imageButton];
     [self.captionTextView addSubview:self.activityIndicator];
     self.activityIndicator.center = button.center;
@@ -119,14 +119,14 @@
     [self textViewDidChange:self.captionTextView];
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([keyPath isEqualToString:@"contentSize"]) {
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(__unused id)object change:(__unused NSDictionary *)change context:(__unused void *)context {
+    if ([keyPath isEqualToString:NSStringFromSelector(@selector(contentSize))]) {
         [self textViewDidChange:self.captionTextView];
     }
 }
 
 - (void)dealloc {
-    [self.captionTextView removeObserver:self forKeyPath:@"contentSize"];
+    [self.captionTextView removeObserver:self forKeyPath:NSStringFromSelector(@selector(contentSize))];
 }
 
 - (void)updateInsets {
@@ -161,11 +161,11 @@
     [UIView animateWithDuration:0.3 animations:^{ self.bottomToolbar.alpha = 1.0f; }];
 }
 
-- (IBAction)doneEditing:(id)sender {
+- (IBAction)doneEditing:(__unused id)sender {
     if ([self.captionTextView isFirstResponder]) {
         [self.captionTextView resignFirstResponder];
     }
-    [UIView animateWithDuration:0.3 animations:^{ self.bottomToolbar.alpha = 0; } completion:^(BOOL finished) { self.bottomToolbar.hidden = YES; }];
+    [UIView animateWithDuration:0.3 animations:^{ self.bottomToolbar.alpha = 0; } completion:^(__unused BOOL finished) { self.bottomToolbar.hidden = YES; }];
 }
 
 // TODO: viewWillDisappear et. al. are not being called correctly; I think they should be used here instead.
@@ -178,7 +178,7 @@
     return (PLCCalloutView *)self.view;
 }
 
-- (IBAction)deletePlace:(id)sender {
+- (IBAction)deletePlace:(__unused id)sender {
     [[PLCPlaceStore sharedInstance] removePlace:self.place];
 }
 
@@ -234,13 +234,13 @@
 #pragma mark -
 #pragma mark UIActionSheetDelegate
 
-- (IBAction)choosePhoto:(id)sender {
+- (IBAction)choosePhoto:(__unused id)sender {
     [self.captionTextView resignFirstResponder];
     UIAlertController *controller = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     if (self.place.imageId) {
         [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Remove Photo", nil)
                                                        style:UIAlertActionStyleDestructive
-                                                     handler:^(UIAlertAction *action) {
+                                                     handler:^(__unused UIAlertAction *action) {
                                                          [self imageSelected:nil];
                                                          [self updateInsets];
                                                      }]];
@@ -248,7 +248,7 @@
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Take Photo", nil)
                                                        style:UIAlertActionStyleDefault
-                                                     handler:^(UIAlertAction *action) {
+                                                     handler:^(__unused UIAlertAction *action) {
                                                          UIImagePickerController *imagePicker = [UIImagePickerController new];
                                                          imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
                                                          imagePicker.cameraFlashMode = UIImagePickerControllerCameraFlashModeOff;
@@ -261,7 +261,7 @@
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
         [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Choose From Library", nil)
                                                        style:UIAlertActionStyleDefault
-                                                     handler:^(UIAlertAction *action) {
+                                                     handler:^(__unused UIAlertAction *action) {
                                                          UIImagePickerController *imagePicker = [UIImagePickerController new];
                                                          imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
                                                          imagePicker.delegate = self;
@@ -271,7 +271,7 @@
     }
     [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Image Search", nil)
                                                    style:UIAlertActionStyleDefault
-                                                 handler:^(UIAlertAction *action) {
+                                                 handler:^(__unused UIAlertAction *action) {
                                                      PLCFlickrSearchViewController *flickrController = [[PLCFlickrSearchViewController alloc]
                                                          initWithQuery:self.place.title
                                                                 region:MKCoordinateRegionMakeWithDistance(self.place.coordinate, 500, 500)];
@@ -294,7 +294,7 @@
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
+    UIImage *image = info[UIImagePickerControllerEditedImage];
     [self imageSelected:image];
     [picker.presentingViewController dismissViewControllerAnimated:YES completion:^{ [self editCaption]; }];
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
@@ -307,7 +307,7 @@
 #pragma mark -
 #pragma mark UITextViewDelegate
 
-- (void)textViewDidChange:(UITextView *)textView {
+- (void)textViewDidChange:(__unused UITextView *)textView {
     self.imageButton.frame = ({
         CGRect rect = self.imageButton.frame;
         rect.origin.y = self.captionTextView.contentSize.height;
@@ -316,7 +316,7 @@
     self.activityIndicator.center = self.imageButton.center;
 }
 
-- (void)textViewDidBeginEditing:(UITextView *)textView {
+- (void)textViewDidBeginEditing:(__unused UITextView *)textView {
     self.bottomToolbar.hidden = NO;
     [UIView animateWithDuration:0.3 animations:^{ self.bottomToolbar.alpha = 1.0f; }];
 }
@@ -347,8 +347,8 @@
 }
 
 - (UIPresentationController *)presentationControllerForPresentedViewController:(UIViewController *)presented
-                                                      presentingViewController:(UIViewController *)presenting
-                                                          sourceViewController:(UIViewController *)source {
+                                                      presentingViewController:(__unused UIViewController *)presenting
+                                                          sourceViewController:(__unused UIViewController *)source {
     if ([presented isKindOfClass:[PLCFlickrSearchViewController class]]) {
         PLCBlurredModalPresentationController *controller =
             [[PLCBlurredModalPresentationController alloc] initWithPresentedViewController:presented presentingViewController:self];

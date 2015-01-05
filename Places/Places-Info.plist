@@ -9,7 +9,7 @@
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.jackflintermann.${PRODUCT_NAME:rfc1034identifier}</string>
+	<string>com.jackflintermann.Places</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -34,9 +34,13 @@
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Grant access to drop pins at your current location.</string>
+	<string>To show you your location on the map and drop pins at your current location.</string>
+	<key>NSLocationUsageDescription</key>
+	<string>To show you your location on the map and drop pins at your current location.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Grant access to drop pins at your current location.</string>
+	<string>To show you your location on the map and drop pins at your current location.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>To pick photos from your library.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>Launch Screen</string>
 	<key>UIMainStoryboardFile</key>

@@ -36,14 +36,14 @@
 
 - (void)doWork:(PLCAsynchronousWorkCallback)completion {
     PFFile *file = [PFFile fileWithName:self.imageId data:self.imageData];
-    [file saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-        if (error) {
-            completion(error);
+    [file saveInBackgroundWithBlock:^(__unused BOOL filesucceeded, NSError *fileerror) {
+        if (fileerror) {
+            completion(fileerror);
         } else {
             PFObject *photoObject = [PFObject objectWithClassName:@"Photo" dictionary:@{ @"imageId": self.imageId, @"imageFile": file }];
-            [photoObject saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                if (error) {
-                    completion(error);
+            [photoObject saveInBackgroundWithBlock:^(__unused BOOL objsucceeded, NSError *objerror) {
+                if (objerror) {
+                    completion(objerror);
                 } else {
                     PLCPlace *place = [self.class placeWithUUID:self.placeId];
                     if (!place.imageId) {
@@ -63,8 +63,7 @@
 + (PLCPlace *)placeWithUUID:(NSString *)uuid {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[PLCPlace entityName]];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"uuid == %@", uuid];
-    NSError *error = nil;
-    NSArray *fetchedObjects = [[self managedObjectContext] executeFetchRequest:fetchRequest error:&error];
+    NSArray *fetchedObjects = [[self managedObjectContext] executeFetchRequest:fetchRequest error:nil];
     return [fetchedObjects firstObject];
 }
 

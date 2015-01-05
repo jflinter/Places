@@ -10,22 +10,22 @@
 
 @implementation NSURLComponents (QueryDictionary)
 
-- (void)setQueryDictionary:(NSDictionary *)queryDictionary {
-    NSMutableArray *terms = [NSMutableArray arrayWithCapacity:queryDictionary.count];
-    [queryDictionary enumerateKeysAndObjectsUsingBlock:^(NSString* key, id obj, BOOL *stop) {
+- (void)setJrf_queryDictionary:(NSDictionary *)jrf_queryDictionary {
+    NSMutableArray *terms = [NSMutableArray arrayWithCapacity:jrf_queryDictionary.count];
+    [jrf_queryDictionary enumerateKeysAndObjectsUsingBlock:^(NSString* key, id obj, __unused BOOL *stop) {
         NSString *term = [NSString stringWithFormat:@"%@=%@", key, obj];
         [terms addObject:term];
     }];
     self.query = [terms componentsJoinedByString:@"&"];
 }
 
-- (NSDictionary *)queryDictionary {
+- (NSDictionary *)jrf_queryDictionary {
     NSArray *terms = [self.query componentsSeparatedByString:@"&"];
     NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] initWithCapacity:terms.count];
     for (NSString *term in terms) {
         NSArray *params = [term componentsSeparatedByString:@"="];
         if (params.count == 2) {
-            [dictionary setObject:[params lastObject] forKey:[params firstObject]];
+            dictionary[[params firstObject]] = [params lastObject];
         }
     }
     return [dictionary copy];

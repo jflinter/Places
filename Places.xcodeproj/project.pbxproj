@@ -11,6 +11,8 @@
 		0430BEC819CFA113001584BD /* PLCFlickrResultCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0430BEC719CFA113001584BD /* PLCFlickrResultCollectionViewCell.m */; };
 		043817AC1A0E964400CE6A06 /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 043817AB1A0E964400CE6A06 /* Launch Screen.xib */; };
 		0477975819D282DB0022A00F /* PLCImageDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0477975719D282DB0022A00F /* PLCImageDownloader.m */; };
+		0478259F1A5A309000BA6A2B /* Glyphish.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0478259E1A5A309000BA6A2B /* Glyphish.xcassets */; };
+		047825A11A5A71BE00BA6A2B /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 047825A01A5A71BE00BA6A2B /* Launch Screen.xib */; };
 		04A9359B1A0F35120024BE15 /* PLCZoomAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A9359A1A0F35120024BE15 /* PLCZoomAnimator.m */; };
 		04D0446A1A50B89400CC66E3 /* PLCPersistentQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D044691A50B89400CC66E3 /* PLCPersistentQueue.m */; };
 		04D0446D1A50C07C00CC66E3 /* PLCGeocodingWork.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D0446C1A50C07C00CC66E3 /* PLCGeocodingWork.m */; };
@@ -41,7 +43,6 @@
 		7EFFFB27190D64A900007FAF /* PLCCalloutTransitionContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EFFFB26190D64A900007FAF /* PLCCalloutTransitionContext.m */; };
 		A03F5582192EF5060015C1D1 /* PLCMapStore.m in Sources */ = {isa = PBXBuildFile; fileRef = A03F5581192EF5060015C1D1 /* PLCMapStore.m */; };
 		A03F559A192F1C330015C1D1 /* PLCMapSelectionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A03F5599192F1C330015C1D1 /* PLCMapSelectionTableViewController.m */; };
-		A062BA0E19122FD9002F0C2E /* Glyphish.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A062BA0D19122FD9002F0C2E /* Glyphish.xcassets */; };
 		A06A0F301973936800ABD4A9 /* PLCPlaceSearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A06A0F2F1973936800ABD4A9 /* PLCPlaceSearchTableViewController.m */; };
 		A06A0F3419742DEA00ABD4A9 /* PLCPlaceSearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = A06A0F3319742DEA00ABD4A9 /* PLCPlaceSearchResult.m */; };
 		A06A0F371974527800ABD4A9 /* PLCPlaceSearchResultTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A06A0F361974527800ABD4A9 /* PLCPlaceSearchResultTableViewCell.m */; };
@@ -55,7 +56,6 @@
 		A0C0421E19395DB70003630E /* Firebase+Places.m in Sources */ = {isa = PBXBuildFile; fileRef = A0C0421D19395DB70003630E /* Firebase+Places.m */; };
 		A0C0422419395EAF0003630E /* PLCUserStore.m in Sources */ = {isa = PBXBuildFile; fileRef = A0C0422319395EAF0003630E /* PLCUserStore.m */; };
 		A0C0422B1939B94B0003630E /* NSMutableDictionary+NilSafe.m in Sources */ = {isa = PBXBuildFile; fileRef = A0C0422A1939B94B0003630E /* NSMutableDictionary+NilSafe.m */; };
-		A0D1078019340A46004DB04A /* UIImage+Color.m in Sources */ = {isa = PBXBuildFile; fileRef = A0D1077F19340A46004DB04A /* UIImage+Color.m */; };
 		A0F0531E19025E6300BD610C /* PLCCalloutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0F0531D19025E6300BD610C /* PLCCalloutViewController.m */; };
 		A0F053211903085800BD610C /* PLCMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = A0F053201903085800BD610C /* PLCMapView.m */; };
 		A0FAFD2319008E60001A364D /* PLCPlaceStore.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FAFD2219008E60001A364D /* PLCPlaceStore.m */; };
@@ -82,6 +82,8 @@
 		043817AB1A0E964400CE6A06 /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		0477975619D282DB0022A00F /* PLCImageDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCImageDownloader.h; sourceTree = "<group>"; };
 		0477975719D282DB0022A00F /* PLCImageDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCImageDownloader.m; sourceTree = "<group>"; };
+		0478259E1A5A309000BA6A2B /* Glyphish.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Glyphish.xcassets; sourceTree = "<group>"; };
+		047825A01A5A71BE00BA6A2B /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		04A935991A0F35120024BE15 /* PLCZoomAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCZoomAnimator.h; sourceTree = "<group>"; };
 		04A9359A1A0F35120024BE15 /* PLCZoomAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCZoomAnimator.m; sourceTree = "<group>"; };
 		04D044681A50B89400CC66E3 /* PLCPersistentQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCPersistentQueue.h; sourceTree = "<group>"; };
@@ -143,7 +145,6 @@
 		A03F5581192EF5060015C1D1 /* PLCMapStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCMapStore.m; sourceTree = "<group>"; };
 		A03F5598192F1C330015C1D1 /* PLCMapSelectionTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCMapSelectionTableViewController.h; sourceTree = "<group>"; };
 		A03F5599192F1C330015C1D1 /* PLCMapSelectionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCMapSelectionTableViewController.m; sourceTree = "<group>"; };
-		A062BA0D19122FD9002F0C2E /* Glyphish.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Glyphish.xcassets; sourceTree = "<group>"; };
 		A06A0F2E1973936800ABD4A9 /* PLCPlaceSearchTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCPlaceSearchTableViewController.h; sourceTree = "<group>"; };
 		A06A0F2F1973936800ABD4A9 /* PLCPlaceSearchTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCPlaceSearchTableViewController.m; sourceTree = "<group>"; };
 		A06A0F3219742DEA00ABD4A9 /* PLCPlaceSearchResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCPlaceSearchResult.h; sourceTree = "<group>"; };
@@ -173,8 +174,6 @@
 		A0C042251939B0950003630E /* PLCFirebaseCoding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PLCFirebaseCoding.h; sourceTree = "<group>"; };
 		A0C042291939B94B0003630E /* NSMutableDictionary+NilSafe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableDictionary+NilSafe.h"; sourceTree = "<group>"; };
 		A0C0422A1939B94B0003630E /* NSMutableDictionary+NilSafe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableDictionary+NilSafe.m"; sourceTree = "<group>"; };
-		A0D1077E19340A46004DB04A /* UIImage+Color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Color.h"; sourceTree = "<group>"; };
-		A0D1077F19340A46004DB04A /* UIImage+Color.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Color.m"; sourceTree = "<group>"; };
 		A0F0531C19025E6300BD610C /* PLCCalloutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCCalloutViewController.h; sourceTree = "<group>"; };
 		A0F0531D19025E6300BD610C /* PLCCalloutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCCalloutViewController.m; sourceTree = "<group>"; };
 		A0F0531F1903085800BD610C /* PLCMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCMapView.h; sourceTree = "<group>"; };
@@ -354,7 +353,8 @@
 			isa = PBXGroup;
 			children = (
 				7E54FE6518FF9392002E2AFC /* Images.xcassets */,
-				A062BA0D19122FD9002F0C2E /* Glyphish.xcassets */,
+				0478259E1A5A309000BA6A2B /* Glyphish.xcassets */,
+				047825A01A5A71BE00BA6A2B /* Launch Screen.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -407,15 +407,13 @@
 				A0938F96191DD7CC0021CF7D /* NSURLComponents+QueryDictionary.m */,
 				A0938F98191DD7F90021CF7D /* MKPlacemark+LocationSharing.h */,
 				A0938F99191DD7F90021CF7D /* MKPlacemark+LocationSharing.m */,
-				A0D1077E19340A46004DB04A /* UIImage+Color.h */,
-				A0D1077F19340A46004DB04A /* UIImage+Color.m */,
 				A0C042291939B94B0003630E /* NSMutableDictionary+NilSafe.h */,
 				A0C0422A1939B94B0003630E /* NSMutableDictionary+NilSafe.m */,
 				A06A0F381974E2DB00ABD4A9 /* PLCGoogleMapsActivity.h */,
 				A06A0F391974E2DB00ABD4A9 /* PLCGoogleMapsActivity.m */,
 				04D0446E1A50CE3D00CC66E3 /* PLCImageSavingWork.h */,
-				04D0446B1A50C07C00CC66E3 /* PLCGeocodingWork.h */,
 				04D0446F1A50CE3D00CC66E3 /* PLCImageSavingWork.m */,
+				04D0446B1A50C07C00CC66E3 /* PLCGeocodingWork.h */,
 				04D0446C1A50C07C00CC66E3 /* PLCGeocodingWork.m */,
 				04D044681A50B89400CC66E3 /* PLCPersistentQueue.h */,
 				04D044691A50B89400CC66E3 /* PLCPersistentQueue.m */,
@@ -542,9 +540,10 @@
 			files = (
 				7E54FE5E18FF9392002E2AFC /* InfoPlist.strings in Resources */,
 				7E54FE6618FF9392002E2AFC /* Images.xcassets in Resources */,
+				0478259F1A5A309000BA6A2B /* Glyphish.xcassets in Resources */,
 				7E54FEA118FFA0E7002E2AFC /* Places_phone.storyboard in Resources */,
 				04DEDD8B19CFE0E200A0D0BA /* PLCFlickrSearchViewController.xib in Resources */,
-				A062BA0E19122FD9002F0C2E /* Glyphish.xcassets in Resources */,
+				047825A11A5A71BE00BA6A2B /* Launch Screen.xib in Resources */,
 				043817AC1A0E964400CE6A06 /* Launch Screen.xib in Resources */,
 				04DD4B2619CFBEFC00408002 /* PLCPlaceSearchTableViewController.xib in Resources */,
 			);
@@ -632,7 +631,6 @@
 				A0C0422B1939B94B0003630E /* NSMutableDictionary+NilSafe.m in Sources */,
 				A0938F9A191DD7F90021CF7D /* MKPlacemark+LocationSharing.m in Sources */,
 				7E42B24C190C6A6C00F9A21E /* PLCCalloutTransitionAnimator.m in Sources */,
-				A0D1078019340A46004DB04A /* UIImage+Color.m in Sources */,
 				A09932661972084300BB4AB1 /* PLCPlaceTextStorage.m in Sources */,
 				A06A0F301973936800ABD4A9 /* PLCPlaceSearchTableViewController.m in Sources */,
 				A03F5582192EF5060015C1D1 /* PLCMapStore.m in Sources */,
@@ -805,14 +803,59 @@
 			baseConfigurationReference = 7A7EB8F5B3117E927930E81B /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_ENTITLEMENTS = Places/Places.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Places/Places-Prefix.pch";
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_UNUSED_PARAMETER = YES;
 				INFOPLIST_FILE = "Places/Places-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/BDDROneFingerZoomGestureRecognizer\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/Bolts\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/Firebase\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/FlickrKit\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/Foursquare-API-v2\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/HockeySDK\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/INTULocationManager\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/JTSImageViewController\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/Mantle\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/Parse\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/Reachability\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/Reveal-iOS-SDK\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/SWTableViewCell\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/TMCache\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/TUSafariActivity\"",
+					"-Wundef",
+					"-Wfloat-equal",
+					"-Wextra",
+					"-Wall",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
@@ -824,14 +867,59 @@
 			baseConfigurationReference = BDF99872151969245E966840 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_ENTITLEMENTS = Places/Places.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Places/Places-Prefix.pch";
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_UNUSED_PARAMETER = YES;
 				INFOPLIST_FILE = "Places/Places-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/BDDROneFingerZoomGestureRecognizer\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/Bolts\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/Firebase\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/FlickrKit\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/Foursquare-API-v2\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/HockeySDK\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/INTULocationManager\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/JTSImageViewController\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/Mantle\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/Parse\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/Reachability\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/Reveal-iOS-SDK\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/SWTableViewCell\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/TMCache\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/TUSafariActivity\"",
+					"-Wundef",
+					"-Wfloat-equal",
+					"-Wextra",
+					"-Wall",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;

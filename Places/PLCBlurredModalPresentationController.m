@@ -19,7 +19,7 @@
                        presentingViewController:(UIViewController *)presentingViewController {
     self = [super initWithPresentedViewController:presentedViewController presentingViewController:presentingViewController];
     if (self) {
-        self.edgeInsets = UIEdgeInsetsMake(20, 20, 20, 20);
+        _edgeInsets = UIEdgeInsetsMake(20, 20, 20, 20);
     }
     return self;
 }
@@ -33,9 +33,9 @@
     self.blurOverlayView = snapshot;
     [self.containerView addSubview:self.blurView];
     [self.containerView addSubview:snapshot];
-    [self.presentingViewController.transitionCoordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+    [self.presentingViewController.transitionCoordinator animateAlongsideTransition:^(__unused id<UIViewControllerTransitionCoordinatorContext> context) {
         self.blurOverlayView.alpha = 0.0f;
-    } completion:^(id<UIViewControllerTransitionCoordinatorContext> context){}];
+    } completion:^(__unused id<UIViewControllerTransitionCoordinatorContext> context){}];
 }
 
 - (void)presentationTransitionDidEnd:(BOOL)completed {
@@ -51,7 +51,7 @@
     snapshot.alpha = 0.0f;
     self.blurOverlayView = snapshot;
     [self.containerView insertSubview:snapshot aboveSubview:self.blurView];
-    [self.presentingViewController.transitionCoordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+    [self.presentingViewController.transitionCoordinator animateAlongsideTransition:^(__unused id<UIViewControllerTransitionCoordinatorContext> context) {
         self.blurOverlayView.alpha = 1.0f;
     } completion:nil];
 }

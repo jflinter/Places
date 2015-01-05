@@ -21,6 +21,10 @@ static NSString *const PLCPlacesDeviceIdentifiersKey = @"PLCPlacesDeviceIdentifi
     return sharedInstance;
 }
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)beginICloudMonitoring {
     [[NSUbiquitousKeyValueStore defaultStore] synchronize];
 
@@ -36,7 +40,7 @@ static NSString *const PLCPlacesDeviceIdentifiersKey = @"PLCPlacesDeviceIdentifi
     [self updateUbiquitousDeviceIdentifiers:nil];
 }
 
-- (void)updateUbiquitousDeviceIdentifiers:(NSNotification *)notification {
+- (void)updateUbiquitousDeviceIdentifiers:(__unused NSNotification *)notification {
     NSString *identifier = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
 
     NSMutableOrderedSet *allIdentifiers =

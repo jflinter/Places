@@ -25,7 +25,7 @@
 
 @implementation PLCMapViewInternalOneFingerGestureRecognizerDelegate
 
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+- (BOOL)gestureRecognizer:(__unused UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(__unused UIGestureRecognizer *)otherGestureRecognizer {
     return YES;
 }
 
@@ -47,7 +47,7 @@
 
 @dynamic delegate;
 
-- (id)initWithCoder:(NSCoder *)aDecoder {
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
     if (self) {
         [self sharedInit];
@@ -55,7 +55,7 @@
     return self;
 }
 
-- (id) initWithFrame:(CGRect)frame {
+- (instancetype) initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         [self sharedInit];
@@ -67,7 +67,8 @@
     self.currentScale = 1.0f;
     self.oneFingerZoomRecognizer = [[BDDROneFingerZoomGestureRecognizer alloc] initWithTarget:self action:@selector(oneFingerZoomed:)];
     self.oneFingerZoomRecognizer.scaleFactor = 8.0f;
-    self.oneFingerGestureRecognizerDelegate = [PLCMapViewInternalOneFingerGestureRecognizerDelegate new];
+    PLCMapViewInternalOneFingerGestureRecognizerDelegate *delegate = [PLCMapViewInternalOneFingerGestureRecognizerDelegate new];
+    self.oneFingerGestureRecognizerDelegate = delegate;
     self.oneFingerGestureRecognizerDelegate.mapView = self;
     self.oneFingerZoomRecognizer.delegate = self.oneFingerGestureRecognizerDelegate;
     [self addGestureRecognizer:self.oneFingerZoomRecognizer];
@@ -95,7 +96,7 @@
 #pragma mark -
 #pragma mark UIGestureRecognizerDelegate
 
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+- (BOOL)gestureRecognizer:(__unused UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
     // Note: `gestureRecognizer` could be an internal MKMapView gesture recognizer. We want to block all touches that
     // could conflict with callout view gesture handling.

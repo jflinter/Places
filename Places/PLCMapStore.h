@@ -20,7 +20,7 @@ static NSString *const PLCCurrentMapDidChangeNotification;
 
 + (instancetype)sharedInstance;
 
-- (NSUInteger)numberOfMaps;
+@property (NS_NONATOMIC_IOSONLY, readonly) NSUInteger numberOfMaps;
 - (PLCMap *)mapAtIndex:(NSUInteger)index;
 - (PLCMap *)insertMapWithName:(NSString *)name;
 - (void)updateMap:(PLCMap *)map withName:(NSString *)name;

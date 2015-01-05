@@ -10,6 +10,6 @@
 
 @interface NSURLComponents (QueryDictionary)
 
-@property(nonatomic, readwrite, copy) NSDictionary *queryDictionary;
+@property(nonatomic, readwrite, copy) NSDictionary *jrf_queryDictionary;
 
 @end

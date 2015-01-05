@@ -27,7 +27,7 @@
                                                                                      type:NSEqualToPredicateOperatorType
                                                                                   options:0];
     return [[[self.places filteredSetUsingPredicate:notDeletedPredicate]
-        filteredSetUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(PLCPlace *evaluatedObject, NSDictionary *bindings) {
+        filteredSetUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(PLCPlace *evaluatedObject, __unused NSDictionary *bindings) {
                                       return CLLocationCoordinate2DIsValid(evaluatedObject.coordinate);
                                   }]] allObjects];
 }

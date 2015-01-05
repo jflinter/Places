@@ -14,6 +14,6 @@
 
 + (instancetype)sharedDatabase;
 
-- (instancetype)initWithModelURL:(NSURL *)modelURL storeURL:(NSURL *)storeURL;
+- (instancetype)initWithModelURL:(NSURL *)modelURL storeURL:(NSURL *)storeURL NS_DESIGNATED_INITIALIZER;
 
 @end

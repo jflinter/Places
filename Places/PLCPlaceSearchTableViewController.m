@@ -37,7 +37,7 @@
     [self.searchBar becomeFirstResponder];
 }
 
-- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
+- (BOOL)searchBarShouldBeginEditing:(__unused UISearchBar *)searchBar {
     if (!self.searchBar.inputAccessoryView) {
         UIInputView *inputView = [[UIInputView alloc] initWithFrame:CGRectMake(0, 0, self.view.window.frame.size.width, 15) inputViewStyle:UIInputViewStyleKeyboard];
         CGRect rect = inputView.bounds;
@@ -57,7 +57,7 @@
     self.searchResults = nil;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(__unused UITableView *)tableView numberOfRowsInSection:(__unused NSInteger)section {
     return (NSInteger)self.searchResults.count;
 }
 
@@ -69,7 +69,7 @@
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(__unused UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self.foursquareOperation cancel];
     PLCPlaceSearchResult *result = self.searchResults[(NSUInteger)indexPath.row];
     [self.presentingViewController dismissViewControllerAnimated:YES
@@ -79,12 +79,12 @@
                                                       }];
 }
 
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+- (void)searchBar:(__unused UISearchBar *)searchBar textDidChange:(NSString *)searchText {
     [self.foursquareOperation cancel];
     if (searchText.length >= 3) {
-        void (^onComplete)(BOOL success, NSDictionary * result) = ^void(BOOL success, NSDictionary *result) {
+        void (^onComplete)(BOOL success, NSDictionary * result) = ^void(BOOL success, NSDictionary *foursquareResult) {
             if (success) {
-                NSDictionary *response = [result valueForKey:@"response"];
+                NSDictionary *response = [foursquareResult valueForKey:@"response"];
                 NSArray *venues = [response valueForKey:@"minivenues"];
                 NSMutableArray *results = [@[] mutableCopy];
                 for (NSDictionary *dict in venues) {
@@ -133,12 +133,12 @@
     // deleted rows
     NSMutableArray *rowsToDelete = [@[] mutableCopy];
     NSMutableArray *rowsToAdd = [@[] mutableCopy];
-    [self.searchResults enumerateObjectsUsingBlock:^(PLCPlaceSearchResult *old, NSUInteger idx, BOOL *stop) {
+    [self.searchResults enumerateObjectsUsingBlock:^(PLCPlaceSearchResult *old, NSUInteger idx, __unused BOOL *stop) {
         if (![newResults containsObject:old]) {
             [rowsToDelete addObject:[NSIndexPath indexPathForRow:(NSInteger)idx inSection:0]];
         }
     }];
-    [newResults enumerateObjectsUsingBlock:^(PLCPlaceSearchResult *new, NSUInteger idx, BOOL *stop) {
+    [newResults enumerateObjectsUsingBlock:^(PLCPlaceSearchResult *new, NSUInteger idx, __unused BOOL *stop) {
         if (![self.searchResults containsObject:new]) {
             [rowsToAdd addObject:[NSIndexPath indexPathForRow:(NSInteger)idx inSection:0]];
         }
@@ -149,7 +149,7 @@
     [self.tableView endUpdates];
 }
 
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+- (void)searchBarSearchButtonClicked:(__unused UISearchBar *)searchBar {
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
@@ -158,11 +158,11 @@
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat)tableView:(__unused UITableView *)tableView estimatedHeightForRowAtIndexPath:(__unused NSIndexPath *)indexPath {
     return 60;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat)tableView:(__unused UITableView *)tableView heightForRowAtIndexPath:(__unused NSIndexPath *)indexPath {
     return 60;
 }
 

@@ -10,7 +10,7 @@
 
 @implementation NSMutableDictionary (NilSafe)
 
-- (void)setValueNilSafe:(id)value forKey:(id)key {
+- (void)jrf_setValueNilSafe:(id)value forKey:(id)key {
     if (value) {
         [self setValue:value forKey:key];
     }

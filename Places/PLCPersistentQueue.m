@@ -38,8 +38,8 @@
         _operationQueue.maxConcurrentOperationCount = 2;
         Reachability *reach = [Reachability reachabilityForInternetConnection];
         [_operationQueue setSuspended:reach.currentReachabilityStatus == NotReachable];
-        reach.reachableBlock = ^(Reachability *reachability) { [self.operationQueue setSuspended:NO]; };
-        reach.unreachableBlock = ^(Reachability *reachability) { [self.operationQueue setSuspended:YES]; };
+        reach.reachableBlock = ^(__unused Reachability *reachability) { [self.operationQueue setSuspended:NO]; };
+        reach.unreachableBlock = ^(__unused Reachability *reachability) { [self.operationQueue setSuspended:YES]; };
         [reach startNotifier];
     }
     return self;
@@ -104,7 +104,6 @@
         if (error && ![Reachability reachabilityForInternetConnection].isReachable) {
             [[PLCPersistentQueue sharedInstance] addWork:self.work];
         } else {
-            NSError *error;
             [[NSFileManager defaultManager] removeItemAtURL:[PLCPersistentQueue fileUrlForUuid:self.uuid] error:&error];
             if (error) {
                 
@@ -128,15 +127,17 @@
 }
 
 - (void)setExecuting:(BOOL)executing {
-    [self willChangeValueForKey:@"isExecuting"];
+    NSString *keyPath = NSStringFromSelector(@selector(isExecuting));
+    [self willChangeValueForKey:keyPath];
     _plcIsExecuting = executing;
-    [self didChangeValueForKey:@"isExecuting"];
+    [self didChangeValueForKey:keyPath];
 }
 
 - (void)setFinished:(BOOL)finished {
-    [self willChangeValueForKey:@"isFinished"];
+    NSString *keyPath = NSStringFromSelector(@selector(isFinished));
+    [self willChangeValueForKey:keyPath];
     _plcIsFinished = finished;
-    [self didChangeValueForKey:@"isFinished"];
+    [self didChangeValueForKey:keyPath];
 }
 
 @end

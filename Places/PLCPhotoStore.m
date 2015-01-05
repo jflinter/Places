@@ -24,7 +24,7 @@
     place.image = image;
     [[TMCache sharedCache] setObject:image
                               forKey:uuid
-                               block:^(TMCache *cache, NSString *key, id object) {
+                               block:^(__unused TMCache *cache, __unused NSString *key, __unused id object) {
                                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
                                        NSData *data = UIImageJPEGRepresentation(image, 1);
                                        PLCImageSavingWork *work = [[PLCImageSavingWork alloc] initWithImage:data imageId:uuid placeId:place.uuid];
@@ -50,9 +50,9 @@
 
 - (void)fetchImageWithId:(NSString *)imageId completion:(PLCImageFetchBlock)completion {
     [[TMCache sharedCache] objectForKey:imageId
-                                  block:^(TMCache *cache, NSString *key, id object) {
-                                      if (object) {
-                                          completion(object);
+                                  block:^(__unused TMCache *cache, __unused NSString *key, id cacheObject) {
+                                      if (cacheObject) {
+                                          completion(cacheObject);
                                           return;
                                       }
                                       PFQuery *query = [PFQuery queryWithClassName:@"Photo"];
@@ -62,9 +62,9 @@
                                               completion(nil);
                                           } else {
                                               PFObject *object = objects.firstObject;
-                                              PFFile *imageFile = [object objectForKey:@"imageFile"];
-                                              [imageFile getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
-                                                  if (data) {
+                                              PFFile *imageFile = object[@"imageFile"];
+                                              [imageFile getDataInBackgroundWithBlock:^(NSData *data, __unused NSError *fetchError) {
+                                                  if (data && !fetchError) {
                                                       UIImage *image = [[UIImage alloc] initWithData:data];
                                                       [[TMCache sharedCache] setObject:image forKey:imageId];
                                                       completion(image);

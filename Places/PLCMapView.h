@@ -19,6 +19,6 @@
 
 @interface PLCMapView : MKMapView <UIGestureRecognizerDelegate>
 
-@property (nonatomic, assign) id<PLCMapViewDelegate> delegate;
+@property (nonatomic, weak) id<PLCMapViewDelegate> delegate;
 
 @end

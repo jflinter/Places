@@ -8,6 +8,11 @@
 
 #import "PLCImageDownloader.h"
 #import <AFNetworking/AFHTTPRequestOperation.h>
+#import <TMCache/TMCache.h>
+
+@interface PLCImageDownloader()
+@property(nonatomic) id<NSObject> observerCache;
+@end
 
 @implementation PLCImageDownloader
 
@@ -22,18 +27,6 @@
     return _af_sharedImageRequestOperationQueue;
 }
 
-+ (NSCache *)sharedImageCache {
-    static NSCache *cache = nil;
-    static dispatch_once_t oncePredicate;
-    dispatch_once(&oncePredicate, ^{
-        cache = [[NSCache alloc] init];
-        [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidReceiveMemoryWarningNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * __unused notification) {
-            [cache removeAllObjects];
-        }];
-    });
-    return cache;
-}
-
 - (void)dealloc {
     [self reset];
 }
@@ -42,7 +35,7 @@
     NSMutableArray *mutableUrls = [urls mutableCopy];
     NSMutableArray *images = [NSMutableArray array];
     for (NSURL *url in urls) {
-        UIImage *cachedImage = [[[self class] sharedImageCache] objectForKey:url.absoluteString];
+        UIImage *cachedImage = [[TMCache sharedCache] objectForKey:url.absoluteString];
         if (cachedImage) {
             [self.delegate imageDownloader:self didDownloadImage:cachedImage atURL:url];
             [images addObject:cachedImage];
@@ -56,16 +49,16 @@
         NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
         AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:urlRequest];
         operation.responseSerializer = [AFImageResponseSerializer serializer];
-        [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [operation setCompletionBlockWithSuccess:^(__unused AFHTTPRequestOperation *completionOperation, id responseObject) {
             __strong __typeof(weakSelf)strongSelf = weakSelf;
             [strongSelf.delegate imageDownloader:strongSelf didDownloadImage:responseObject atURL:url];
             [images addObject:responseObject];
-            [[[strongSelf class] sharedImageCache] setObject:responseObject forKey:url.absoluteString];
+            [[TMCache sharedCache] setObject:responseObject forKey:url.absoluteString];
             [mutableUrls removeObject:url];
             if (mutableUrls.count == 0) {
                 completion(images);
             }
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        } failure:^(__unused AFHTTPRequestOperation *failureOperation, __unused NSError *error) {
             [mutableUrls removeObject:url];
             if (mutableUrls.count == 0) {
                 completion(images);

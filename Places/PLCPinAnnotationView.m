@@ -11,7 +11,7 @@
 
 @implementation PLCPinAnnotationView
 
-- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent*)event
+- (BOOL)pointInside:(CGPoint)point withEvent:(__unused UIEvent*)event
 {
     BOOL pointInside = CGRectContainsPoint(self.bounds, point);
     for (UIView *subview in self.subviews) {

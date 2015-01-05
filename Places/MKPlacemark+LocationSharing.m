@@ -17,7 +17,7 @@ NSString * const MKPlaceMarkPLCMapPreviewKey = @"MKPlaceMarkPLCMapPreviewKey";
 
 @implementation MKPlacemark (LocationSharing)
 
-- (NSURL *)temporaryFileURLForLocationSharingWithOptions:(NSDictionary *)options
+- (NSURL *)jrf_temporaryFileURLForLocationSharingWithOptions:(NSDictionary *)options
                                                    error:(NSError *__autoreleasing *)error {
     ABRecordRef person = ABPersonCreate();
     ABRecordRef people[1] = { person };
@@ -43,7 +43,7 @@ NSString * const MKPlaceMarkPLCMapPreviewKey = @"MKPlaceMarkPLCMapPreviewKey";
     CFRelease(multiHome), multiHome = NULL;
     
     ABMutableMultiValueRef multiURL = ABMultiValueCreateMutable(kABMultiStringPropertyType);
-    NSString *urlDesc = [[self appleMapsURL] description];
+    NSString *urlDesc = [[self jrf_appleMapsURL] description];
     ABMultiValueAddValueAndLabel(multiURL, (__bridge CFTypeRef)urlDesc, CFSTR("Open in Maps"), NULL);
     
     ABRecordSetValue(person, kABPersonURLProperty, multiURL, &errorRef);
@@ -60,7 +60,7 @@ NSString * const MKPlaceMarkPLCMapPreviewKey = @"MKPlaceMarkPLCMapPreviewKey";
     CFArrayRef peopleArray = CFArrayCreate(NULL, (void *)people, 1, &kCFTypeArrayCallBacks);
     NSData *data = (__bridge_transfer NSData *)ABPersonCreateVCardRepresentationWithPeople(peopleArray);
 
-    NSURL *url = [self generateTemporaryURL];
+    NSURL *url = [self jrf_generateTemporaryURL];
     if (![data writeToURL:url options:NSDataWritingFileProtectionNone | NSDataWritingAtomic error:error]) {
         url = nil;
     }
@@ -71,7 +71,7 @@ NSString * const MKPlaceMarkPLCMapPreviewKey = @"MKPlaceMarkPLCMapPreviewKey";
     return url;
 }
 
-- (NSURL *)generateTemporaryURL {
+- (NSURL *)jrf_generateTemporaryURL {
     NSString *uuid = [[[NSUUID UUID] UUIDString] stringByAppendingString:@".loc"];
     NSString *fileName = [uuid stringByAppendingPathExtension:@"vcf"];
     NSString *filePath = [NSTemporaryDirectory() stringByAppendingPathComponent:fileName];
@@ -79,11 +79,11 @@ NSString * const MKPlaceMarkPLCMapPreviewKey = @"MKPlaceMarkPLCMapPreviewKey";
 }
 
 // https://developer.apple.com/library/ios/featuredarticles/iPhoneURLScheme_Reference/MapLinks/MapLinks.html
-- (NSURL *)appleMapsURL {
+- (NSURL *)jrf_appleMapsURL {
     NSURLComponents *components = [NSURLComponents componentsWithString:@"http://maps.apple.com/"];
     NSString *sll = [NSString stringWithFormat:@"%.06f,%.06f", self.coordinate.latitude, self.coordinate.longitude];
     NSString *address = ABCreateStringWithAddressDictionary(self.addressDictionary, YES);
-    components.queryDictionary = @{
+    components.jrf_queryDictionary = @{
                                    @"sll": sll,
                                    @"q"  : address,
                                    };

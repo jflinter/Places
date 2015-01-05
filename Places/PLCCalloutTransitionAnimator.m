@@ -12,7 +12,7 @@
 
 @implementation PLCCalloutTransitionAnimator
 
-- (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext
+- (NSTimeInterval)transitionDuration:(__unused id<UIViewControllerContextTransitioning>)transitionContext
 {
     return 0.35;
 }

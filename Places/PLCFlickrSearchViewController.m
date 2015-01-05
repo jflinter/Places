@@ -28,7 +28,7 @@
 
 static NSString * const reuseIdentifier = @"Cell";
 
-- (id)initWithQuery:(NSString *)query region:(MKCoordinateRegion)region {
+- (instancetype)initWithQuery:(NSString *)query region:(MKCoordinateRegion)region {
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     layout.itemSize = CGSizeMake(50, 50);
     self = [super initWithNibName:nil bundle:nil];
@@ -94,10 +94,10 @@ static NSString * const reuseIdentifier = @"Cell";
         for (NSDictionary *dict in dicts) {
             PLCFlickrSearchResult *result = [PLCFlickrSearchResult resultWithResponse:dict];
             [urls addObject:result.thumbnailUrl];
-            [self.urlMap setObject:result.photoUrl forKey:result.thumbnailUrl];
+            (self.urlMap)[result.thumbnailUrl] = result.photoUrl;
         }
         __weak typeof(self) weakself = self;
-        [self.downloader addUrls:urls completion:^(NSArray *images) {
+        [self.downloader addUrls:urls completion:^(__unused NSArray *images) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (!weakself.thumbnails.count) {
                     weakself.searchBar.prompt = NSLocalizedString(@"0 images found", nil);
@@ -114,7 +114,7 @@ static NSString * const reuseIdentifier = @"Cell";
     }];
 }
 
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+- (NSInteger)collectionView:(__unused UICollectionView *)collectionView numberOfItemsInSection:(__unused NSInteger)section {
     return (NSInteger)self.thumbnails.count;
 }
 
@@ -150,7 +150,7 @@ static NSString * const reuseIdentifier = @"Cell";
     return cell.imageView.image != nil;
 }
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(__unused NSIndexPath *)indexPath {
     NSInteger cols = 3;
     UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)collectionViewLayout;
     CGFloat totalWidth = CGRectGetWidth(collectionView.frame);
@@ -168,7 +168,7 @@ static NSString * const reuseIdentifier = @"Cell";
     [self enableSearchBar];
 }
 
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+- (void)searchBarCancelButtonClicked:(__unused UISearchBar *)searchBar {
     [self.delegate controller:self didFinishWithImage:nil];
 }
 
@@ -184,7 +184,7 @@ static NSString * const reuseIdentifier = @"Cell";
 
 #pragma mark <PLCImageDownloaderDelegate>
 
-- (void)imageDownloader:(PLCImageDownloader *)downloader
+- (void)imageDownloader:(__unused PLCImageDownloader *)downloader
        didDownloadImage:(UIImage *)image
                   atURL:(NSURL *)url {
     dispatch_async(dispatch_get_main_queue(), ^{

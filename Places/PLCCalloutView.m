@@ -14,14 +14,14 @@
 
 @implementation PLCCalloutView
 
-- (id)initWithFrame:(CGRect)frame {
+- (instancetype)initWithFrame:(CGRect)frame {
     if ((self = [super initWithFrame:frame])) {
         [self sharedInit];
     }
     return self;
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder {
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
     if ((self = [super initWithCoder:aDecoder])) {
         [self sharedInit];
     }
@@ -37,13 +37,14 @@
     self.layer.shadowRadius = 5;
     self.layer.shadowOpacity = 0.3f;
 
+    NSString *keyPath = [NSString stringWithFormat:@"%@.%@", NSStringFromSelector(@selector(layer)), NSStringFromSelector(@selector(shadowOffset))];
     UIInterpolatingMotionEffect *verticalMotionEffect =
-        [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"layer.shadowOffset" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
+        [[UIInterpolatingMotionEffect alloc] initWithKeyPath:keyPath type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
     verticalMotionEffect.minimumRelativeValue = [NSValue valueWithCGSize:CGSizeMake(0, 10)];
     verticalMotionEffect.maximumRelativeValue = [NSValue valueWithCGSize:CGSizeMake(0, -10)];
 
     UIInterpolatingMotionEffect *horizontalMotionEffect =
-        [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"layer.shadowOffset" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+        [[UIInterpolatingMotionEffect alloc] initWithKeyPath:keyPath type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
     horizontalMotionEffect.minimumRelativeValue = [NSValue valueWithCGSize:CGSizeMake(-10, 0)];
     horizontalMotionEffect.maximumRelativeValue = [NSValue valueWithCGSize:CGSizeMake(10, 0)];
 

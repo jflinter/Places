@@ -16,10 +16,14 @@
 
 @implementation PLCCalloutTransitionContext
 
+- (CGAffineTransform)targetTransform {
+    return CGAffineTransformIdentity;
+}
+
 - (instancetype)initWithOperation:(PLCCalloutTransitionContextOperation)operation
 {
     if ((self = [super init])) {
-        self.operation = operation;
+        _operation = operation;
     }
     return self;
 }
@@ -44,7 +48,7 @@
     return UIModalPresentationCustom;
 }
 
-- (void)updateInteractiveTransition:(CGFloat)percentComplete
+- (void)updateInteractiveTransition:(__unused CGFloat)percentComplete
 {
     return;
 }
@@ -59,7 +63,7 @@
     return;
 }
 
-- (void)completeTransition:(BOOL)didComplete
+- (void)completeTransition:(__unused BOOL)didComplete
 {
     return;
 }
@@ -83,12 +87,12 @@
     return [[self viewControllerForKey:key] view];
 }
 
-- (CGRect)initialFrameForViewController:(UIViewController *)vc
+- (CGRect)initialFrameForViewController:(__unused UIViewController *)vc
 {
     return CGRectNull;
 }
 
-- (CGRect)finalFrameForViewController:(UIViewController *)vc
+- (CGRect)finalFrameForViewController:(__unused UIViewController *)vc
 {
     return CGRectNull;
 }

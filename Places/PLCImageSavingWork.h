@@ -11,5 +11,5 @@
 #import "PLCPersistentQueue.h"
 
 @interface PLCImageSavingWork : MTLModel<PLCAsynchronousWork>
-- (instancetype)initWithImage:(NSData *)imageData imageId:(NSString *)imageId placeId:(NSString *)placeId;
+- (instancetype)initWithImage:(NSData *)imageData imageId:(NSString *)imageId placeId:(NSString *)placeId NS_DESIGNATED_INITIALIZER;
 @end

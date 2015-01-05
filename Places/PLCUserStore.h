@@ -12,6 +12,6 @@
 
 + (instancetype)sharedInstance;
 - (void)beginICloudMonitoring;
-- (NSString *)currentUserId;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *currentUserId;
 
 @end

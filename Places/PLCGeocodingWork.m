@@ -47,8 +47,7 @@
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[PLCPlace entityName]];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"uuid == %@", uuid];
 
-    NSError *error = nil;
-    NSArray *fetchedObjects = [[self managedObjectContext] executeFetchRequest:fetchRequest error:&error];
+    NSArray *fetchedObjects = [[self managedObjectContext] executeFetchRequest:fetchRequest error:nil];
     return [fetchedObjects firstObject];
 }
 

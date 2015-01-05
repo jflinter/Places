@@ -48,7 +48,7 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 
 @synthesize placeStore = _placeStore;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         [self sharedInit];
@@ -56,7 +56,7 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     return self;
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder {
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
     if (self) {
         [self sharedInit];
@@ -74,15 +74,16 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     _locationManager.delegate = self;
 }
 
-- (void)didBecomeActive:(NSNotification *)notification {
-    //    self.mapView.showsUserLocation = YES;
+- (void)didBecomeActive:(__unused NSNotification *)notification {
+    self.mapView.showsUserLocation = YES;
 }
 
-- (void)willEnterBackground:(NSNotification *)notification {
-    //    self.mapView.showsUserLocation = NO;
+- (void)willEnterBackground:(__unused NSNotification *)notification {
+    self.mapView.showsUserLocation = NO;
 }
 
 - (void)dealloc {
+    _locationManager.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -108,7 +109,7 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         [self setChromeHidden:NO animated:YES];
-        CLLocationManager *manager = [[INTULocationManager sharedInstance] valueForKey:@"locationManager"];
+        CLLocationManager *manager = [[INTULocationManager sharedInstance] valueForKey:NSStringFromSelector(@selector(locationManager))];
         [manager requestWhenInUseAuthorization];
     });
 }
@@ -140,10 +141,10 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     return annotationView;
 }
 
-- (void)mapView:(MKMapView *)mapView
-        annotationView:(MKAnnotationView *)view
+- (void)mapView:(__unused MKMapView *)mapView
+        annotationView:(__unused MKAnnotationView *)view
     didChangeDragState:(MKAnnotationViewDragState)newState
-          fromOldState:(MKAnnotationViewDragState)oldState {
+          fromOldState:(__unused MKAnnotationViewDragState)oldState {
     if (newState == MKAnnotationViewDragStateEnding) {
         [self.placeStore save];
     }
@@ -191,13 +192,13 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
         if (calloutViewController) {
             [self dismissCalloutViewController:calloutViewController completion:nil];
         }
-        if (!self.mapView.selectedAnnotations.count) {
+        if (!mapView.selectedAnnotations.count) {
             [self setChromeHidden:NO animated:YES];
         }
     });
 }
 
-- (void)mapView:(PLCMapView *)mapView regionWillChangeAnimated:(BOOL)animated {
+- (void)mapView:(PLCMapView *)mapView regionWillChangeAnimated:(__unused BOOL)animated {
     // fixes a weird bug where the region changes when presenting an image picker
     if ([self.presentedViewController isKindOfClass:[UIImagePickerController class]]) {
         return;
@@ -209,14 +210,14 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     }
 }
 
-- (NSArray *)presentedCalloutViewControllersForMapView:(PLCMapView *)mapView {
+- (NSArray *)presentedCalloutViewControllersForMapView:(__unused PLCMapView *)mapView {
     return self.calloutViewControllers;
 }
 
 #pragma mark -
 #pragma mark Place Store Delegate
 
-- (void)placeStore:(PLCPlaceStore *)store didInsertPlace:(PLCPlace *)place new:(BOOL)isNew {
+- (void)placeStore:(__unused PLCPlaceStore *)store didInsertPlace:(PLCPlace *)place new:(BOOL)isNew {
     self.addingPlace = YES;
 
     [self.mapView addAnnotation:place];
@@ -227,7 +228,7 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     self.addingPlace = NO;
 }
 
-- (void)placeStore:(PLCPlaceStore *)store didRemovePlace:(PLCPlace *)place {
+- (void)placeStore:(__unused PLCPlaceStore *)store didRemovePlace:(PLCPlace *)place {
     MKAnnotationView *view = [self.mapView viewForAnnotation:place];
     PLCCalloutViewController *calloutViewController = [self existingCalloutViewControllerForAnnotationView:view];
     if (calloutViewController) {
@@ -245,7 +246,7 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 #pragma mark -
 #pragma mark PLCMapStoreDelegate
 
-- (void)mapStore:(PLCMapStore *)store didChangeMap:(PLCMap *)map {
+- (void)mapStore:(__unused PLCMapStore *)store didChangeMap:(PLCMap *)map {
     [self.mapView removeAnnotations:self.mapView.annotations];
     NSArray *annotations = [map activePlaces];
     if (annotations.count) {
@@ -358,7 +359,7 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
         }
     } break;
     case kCLAuthorizationStatusNotDetermined: {
-        CLLocationManager *manager = [[INTULocationManager sharedInstance] valueForKey:@"locationManager"];
+        CLLocationManager *manager = [[INTULocationManager sharedInstance] valueForKey:NSStringFromSelector(@selector(locationManager))];
         [manager requestWhenInUseAuthorization];
     } break;
     case kCLAuthorizationStatusDenied:
@@ -366,12 +367,12 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
         NSString *title = NSLocalizedString(@"Location Services Required", nil);
         NSString *message =
             NSLocalizedString(@"To show your location, open the Settings app, go to Privacy -> Location Services, and turn Places to \"on\".", nil);
-        [[[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+        [[[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil] show];
     } break;
     }
 }
 
-- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
+- (void)locationManager:(__unused CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
     switch (status) {
     case kCLAuthorizationStatusAuthorizedWhenInUse:
     case kCLAuthorizationStatusAuthorizedAlways: {
@@ -382,7 +383,7 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     }
 }
 
-- (IBAction)showLocation:(id)sender {
+- (IBAction)showLocation:(__unused id)sender {
     if (CLLocationCoordinate2DIsValid(self.mapView.userLocation.coordinate)) {
         [UIView animateWithDuration:PLCMapPanAnimationDuration animations:^{ self.mapView.centerCoordinate = self.mapView.userLocation.coordinate; }];
         return;
@@ -391,7 +392,9 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
         [[INTULocationManager sharedInstance]
             requestLocationWithDesiredAccuracy:INTULocationAccuracyBlock
                                        timeout:2
-                                         block:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
+                                         block:^(CLLocation *currentLocation,
+                                                 __unused INTULocationAccuracy achievedAccuracy,
+                                                 __unused INTULocationStatus status) {
                                              if (status == INTULocationStatusSuccess) {
                                                  [UIView animateWithDuration:PLCMapPanAnimationDuration
                                                                   animations:^{ [self.mapView setCenterCoordinate:currentLocation.coordinate animated:NO]; }];
@@ -401,34 +404,38 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
                                                  [[[UIAlertView alloc] initWithTitle:title
                                                                              message:message
                                                                             delegate:nil
-                                                                   cancelButtonTitle:@"OK"
+                                                                   cancelButtonTitle:NSLocalizedString(@"OK", nil)
                                                                    otherButtonTitles:nil] show];
                                              }
                                          }];
     }];
 }
 
-- (IBAction)dropPin:(id)sender {
+- (IBAction)dropPin:(__unused id)sender {
     [self determineLocation:^{
         PLCPlace *place = [self.placeStore insertPlaceAtCoordinate:self.mapView.userLocation.coordinate];
-        [[INTULocationManager sharedInstance]
-            requestLocationWithDesiredAccuracy:INTULocationAccuracyHouse
-                                       timeout:180
-                                         block:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
-                                             // in case the current location's accuracy isn't very good, we want to add the place immediately but then
-                                             // asynchronously try and improve it.
-                                             if (status == INTULocationStatusSuccess) {
-                                                 if (place.coordinate.latitude != currentLocation.coordinate.latitude ||
-                                                     place.coordinate.longitude != currentLocation.coordinate.longitude) {
-                                                     place.coordinate = currentLocation.coordinate;
-                                                     [self.placeStore save];
-                                                 }
-                                             }
-                                         }];
+        [[INTULocationManager sharedInstance] requestLocationWithDesiredAccuracy:INTULocationAccuracyHouse
+                                                                         timeout:180
+                                                                           block:^(CLLocation *currentLocation,
+                                                                                   __unused INTULocationAccuracy achievedAccuracy,
+                                                                                   __unused INTULocationStatus status) {
+                                                                               // in case the current location's accuracy isn't very good, we want to add the
+                                                                               // place immediately but then
+                                                                               // asynchronously try and improve it.
+                                                                               if (status == INTULocationStatusSuccess) {
+                                                                                   if (!fequal(place.coordinate.latitude,
+                                                                                               currentLocation.coordinate.latitude) ||
+                                                                                       !fequal(place.coordinate.longitude,
+                                                                                               currentLocation.coordinate.longitude)) {
+                                                                                       place.coordinate = currentLocation.coordinate;
+                                                                                       [self.placeStore save];
+                                                                                   }
+                                                                               }
+                                                                           }];
     }];
 }
 
-- (IBAction)shareMap:(id)sender {
+- (IBAction)shareMap:(__unused id)sender {
     UIActivityViewController *activityViewController =
         [[UIActivityViewController alloc] initWithActivityItems:@[[[PLCMapStore sharedInstance].selectedMap shareURL]]
                                           applicationActivities:@[[TUSafariActivity new]]];
@@ -443,19 +450,19 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     // This is just for initial map load, when we want to show the user's location in the absence of any places on the map.
     if (self.determiningInitialLocation && !self.calloutViewControllers.count) {
         MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(userLocation.coordinate, 1600, 1600);
-        [self.mapView setRegion:region animated:YES];
+        [mapView setRegion:region animated:YES];
         self.determiningInitialLocation = NO;
     }
 }
 
-- (IBAction)showMapSelection:(id)sender {
+- (IBAction)showMapSelection:(__unused id)sender {
     UINavigationController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"PLCMapSelectionNavigationController"];
     controller.modalPresentationStyle = UIModalPresentationCustom;
     controller.transitioningDelegate = self;
     [self presentViewController:controller animated:YES completion:nil];
 }
 
-- (IBAction)beginSearch:(id)sender {
+- (IBAction)beginSearch:(__unused id)sender {
     PLCPlaceSearchTableViewController *tableViewController = [PLCPlaceSearchTableViewController new];
     tableViewController.searchRegion = self.mapView.region;
     tableViewController.transitioningDelegate = self;
@@ -480,23 +487,23 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     }
 }
 
-- (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented
-                                                                  presentingController:(UIViewController *)presenting
-                                                                      sourceController:(UIViewController *)source {
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(__unused UIViewController *)presented
+                                                                  presentingController:(__unused UIViewController *)presenting
+                                                                      sourceController:(__unused UIViewController *)source {
     PLCZoomAnimator *animator = [PLCZoomAnimator new];
     animator.presenting = YES;
     return animator;
 }
 
-- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(__unused UIViewController *)dismissed {
     PLCZoomAnimator *animator = [PLCZoomAnimator new];
     animator.presenting = NO;
     return animator;
 }
 
-- (UIPresentationController *)presentationControllerForPresentedViewController:(UIViewController *)presented
-                                                      presentingViewController:(UIViewController *)presenting
-                                                          sourceViewController:(UIViewController *)source {
+- (UIPresentationController *)presentationControllerForPresentedViewController:(__unused UIViewController *)presented
+                                                      presentingViewController:(__unused UIViewController *)presenting
+                                                          sourceViewController:(__unused UIViewController *)source {
     PLCBlurredModalPresentationController *controller =
         [[PLCBlurredModalPresentationController alloc] initWithPresentedViewController:presented presentingViewController:self];
     if ([presented isKindOfClass:[UINavigationController class]]) {

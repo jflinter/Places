@@ -24,7 +24,7 @@ static NSString *const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidCh
 @interface PLCMapStore () <NSFetchedResultsControllerDelegate>
 @property (nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic) NSMutableArray *delegates;
-- (NSArray *)allMaps;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSArray *allMaps;
 @end
 
 @implementation PLCMapStore
@@ -36,19 +36,23 @@ static NSString *const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidCh
     return sharedInstance;
 }
 
-- (id)init {
+- (instancetype)init {
     self = [super init];
     if (self) {
         _delegates = [@[] mutableCopy];
         self.selectedMap = [self selectedMap] ?: [self defaultMap];
-        self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:[self fetchRequest:NO]
+        _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:[self fetchRequest:NO]
                                                                             managedObjectContext:[self managedObjectContext]
                                                                               sectionNameKeyPath:nil
                                                                                        cacheName:nil];
-        self.fetchedResultsController.delegate = self;
-        [self.fetchedResultsController performFetch:nil];
+        _fetchedResultsController.delegate = self;
+        [_fetchedResultsController performFetch:nil];
     }
     return self;
+}
+
+- (void)dealloc {
+    _fetchedResultsController.delegate = nil;
 }
 
 - (NSUInteger)numberOfMaps {
@@ -148,7 +152,7 @@ static NSString *const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidCh
 
 - (void)deleteMapAtIndex:(NSUInteger)index {
     NSArray *maps = self.notDeletedMaps;
-    PLCMap *map = [maps objectAtIndex:index];
+    PLCMap *map = maps[index];
     if (!map) {
         return;
     }
@@ -159,7 +163,7 @@ static NSString *const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidCh
     if (map.selectedValue) {
         map.selectedValue = NO;
         NSUInteger newIndex = (index == 0) ? 1 : index - 1;
-        newMap = [maps objectAtIndex:newIndex];
+        newMap = maps[newIndex];
         newMap.selectedValue = YES;
     }
     [[self managedObjectContext] save:nil];
@@ -221,7 +225,7 @@ static NSString *const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidCh
                               if (![maps isKindOfClass:[NSDictionary class]]) {
                                   return;
                               }
-                              [maps enumerateKeysAndObjectsUsingBlock:^(NSString *mapId, NSDictionary *mapDict, BOOL *stop) {
+                              [maps enumerateKeysAndObjectsUsingBlock:^(NSString *mapId, NSDictionary *mapDict, __unused BOOL *mapstop) {
                                   if ([mapDict[@"PLCDeletedAt"] doubleValue] > 1000.0f) {
                                       return;
                                   }
@@ -240,7 +244,7 @@ static NSString *const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidCh
                                           [[[[Firebase placesFirebaseClient] childByAppendingPath:@"urls"] childByAppendingPath:map.urlId] setValue:map.uuid];
                                       }
                                   }
-                                  [mapDict[@"places"] enumerateKeysAndObjectsUsingBlock:^(NSString *placeId, NSDictionary *placeDict, BOOL *stop) {
+                                  [mapDict[@"places"] enumerateKeysAndObjectsUsingBlock:^(NSString *placeId, NSDictionary *placeDict, __unused BOOL *placestop) {
                                       CLLocationCoordinate2D coord =
                                           CLLocationCoordinate2DMake([placeDict[@"latitude"] doubleValue], [placeDict[@"longitude"] doubleValue]);
                                       if (!CLLocationCoordinate2DIsValid(coord)) {

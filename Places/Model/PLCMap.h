@@ -11,7 +11,7 @@
 
 @interface PLCMap : _PLCMap<PLCFirebaseCoding>
 
-- (NSArray *)activePlaces;
-- (NSURL *)shareURL;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSArray *activePlaces;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSURL *shareURL;
 
 @end

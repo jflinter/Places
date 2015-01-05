@@ -18,7 +18,7 @@
 
 @implementation PLCPlaceSearchResult
 
-- (id)initWithResponseDict:(NSDictionary *)dict {
+- (instancetype)initWithResponseDict:(NSDictionary *)dict {
     self = [super init];
     if (self) {
         _title = [dict valueForKey:@"name"];
@@ -44,11 +44,15 @@
 - (BOOL)isEqual:(PLCPlaceSearchResult *)object {
     if ([object isKindOfClass:[PLCPlaceSearchResult class]]) {
         return [object.title isEqualToString:self.title] &&
-        object.coordinate.latitude == self.coordinate.latitude &&
-        object.coordinate.longitude == self.coordinate.longitude &&
+        fequal(object.coordinate.latitude, self.coordinate.latitude) &&
+        fequal(object.coordinate.longitude, self.coordinate.longitude) &&
         [object.addressString isEqualToString:self.addressString];
     }
     return false;
+}
+
+- (NSUInteger)hash {
+    return [self.title hash];
 }
 
 @end

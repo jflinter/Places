@@ -13,7 +13,7 @@
 	NSMutableAttributedString *_imp;
 }
 
-- (id)init
+- (instancetype)init
 {
 	self = [super init];
     

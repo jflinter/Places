@@ -10,7 +10,7 @@
 
 @implementation PLCZoomAnimator
 
-- (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext {
+- (NSTimeInterval)transitionDuration:(__unused id<UIViewControllerContextTransitioning>)transitionContext {
     if (self.presenting) {
         return 0.4f;
     }

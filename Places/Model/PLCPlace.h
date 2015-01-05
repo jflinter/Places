@@ -18,5 +18,5 @@ typedef NS_ENUM(NSUInteger, PLCPlaceType) {
 @interface PLCPlace : _PLCPlace<MKAnnotation, UIActivityItemSource, PLCFirebaseCoding>
 @property(nonatomic)UIImage *image;
 @property(nonatomic, readonly)NSString *imageId;
-- (PLCPlaceType)type;
+@property (NS_NONATOMIC_IOSONLY, readonly) PLCPlaceType type;
 @end

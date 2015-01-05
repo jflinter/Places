@@ -12,13 +12,14 @@
 #import "PLCMapSelectionTableViewCell.h"
 
 @interface PLCMapSelectionTableViewController () <SWTableViewCellDelegate, NSFetchedResultsControllerDelegate, UITextFieldDelegate>
+@property(nonatomic)id<NSObject>notificationCenterCache;
 @end
 
 @implementation PLCMapSelectionTableViewController
 
 #pragma mark - Table view data source
 
-- (id)initWithCoder:(NSCoder *)aDecoder {
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
     if (self) {
         [self sharedInit];
@@ -26,7 +27,7 @@
     return self;
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         [self sharedInit];
@@ -40,6 +41,7 @@
 }
 
 - (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self.notificationCenterCache];
     [[PLCMapStore sharedInstance] unregisterDelegate:self];
 }
 
@@ -48,45 +50,45 @@
     [self.navigationController.navigationBar.layer removeAllAnimations];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(__unused UITableView *)tableView numberOfRowsInSection:(__unused NSInteger)section {
     return (NSInteger)[[PLCMapStore sharedInstance] numberOfMaps];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat)tableView:(__unused UITableView *)tableView estimatedHeightForRowAtIndexPath:(__unused NSIndexPath *)indexPath {
     return 44;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat)tableView:(__unused UITableView *)tableView heightForRowAtIndexPath:(__unused NSIndexPath *)indexPath {
     return 44;
 }
 
-- (IBAction)dismiss:(id)sender {
+- (IBAction)dismiss:(__unused id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (IBAction)newMap:(id)sender {
+- (IBAction)newMap:(__unused id)sender {
     UIAlertController *controller =
         [UIAlertController alertControllerWithTitle:@"New Map" message:@"Type a name for your map." preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *action = [UIAlertAction actionWithTitle:@"Create Map"
+    UIAlertAction *createMapAction = [UIAlertAction actionWithTitle:@"Create Map"
                                                      style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction *action) {
+                                                   handler:^(__unused UIAlertAction *action) {
                                                        NSString *mapTitle = [controller.textFields[0] text];
                                                        PLCMapStore *store = [PLCMapStore sharedInstance];
                                                        store.selectedMap = [store insertMapWithName:mapTitle];
                                                        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
                                                    }];
-    action.enabled = NO;
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action){}];
+    createMapAction.enabled = NO;
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(__unused UIAlertAction *action){}];
     [controller addTextFieldWithConfigurationHandler:^(UITextField *textField) {
         textField.autocapitalizationType = UITextAutocapitalizationTypeSentences;
-        textField.placeholder = @"Ex. My Favorite Restaurants";
-        [[NSNotificationCenter defaultCenter] addObserverForName:UITextFieldTextDidChangeNotification
+        textField.placeholder = NSLocalizedString(@"Ex. My Favorite Restaurants", nil);
+        self.notificationCenterCache = [[NSNotificationCenter defaultCenter] addObserverForName:UITextFieldTextDidChangeNotification
                                                           object:textField
                                                            queue:[NSOperationQueue mainQueue]
-                                                      usingBlock:^(NSNotification *note) { action.enabled = ![textField.text isEqualToString:@""]; }];
+                                                      usingBlock:^(__unused NSNotification *note) { createMapAction.enabled = ![textField.text isEqualToString:@""]; }];
     }];
     [controller addAction:cancelAction];
-    [controller addAction:action];
+    [controller addAction:createMapAction];
     [self presentViewController:controller animated:YES completion:nil];
 }
 
@@ -142,16 +144,16 @@
         cast.editTitleTextField.hidden = NO;
         [UIView animateWithDuration:0.3
             animations:^{ cast.editTitleTextField.alpha = 1.0; }
-            completion:^(BOOL finished) { [cast.editTitleTextField becomeFirstResponder]; }];
+            completion:^(__unused BOOL finished) { [cast.editTitleTextField becomeFirstResponder]; }];
         return;
     }
     PLCMapStore *mapStore = [PLCMapStore sharedInstance];
     if ([mapStore numberOfMaps] == 1) {
-        [[[UIAlertView alloc] initWithTitle:@"Can't delete last map"
-                                    message:@"You have to have at least one map. To delete this map, make another map first."
+        [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Can't delete last map", nil)
+                                    message:NSLocalizedString(@"You have to have at least one map. To delete this map, make another map first.", nil)
                                    delegate:nil
                           cancelButtonTitle:nil
-                          otherButtonTitles:@"OK", nil] show];
+                          otherButtonTitles:NSLocalizedString(@"OK", nil), nil] show];
         return;
     }
     [mapStore deleteMapAtIndex:(NSUInteger)indexPathForSelection.row];
@@ -159,26 +161,26 @@
 
 #pragma mark - NSFetchedResultsControllerDelegate
 
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+- (void)controllerWillChangeContent:(__unused NSFetchedResultsController *)controller {
     // The fetch controller is about to start sending change notifications, so prepare the table view for updates.
     [self.tableView beginUpdates];
 }
 
-- (void)controller:(NSFetchedResultsController *)controller
-    didChangeObject:(id)anObject
-        atIndexPath:(NSIndexPath *)indexPath
+- (void)controller:(__unused NSFetchedResultsController *)controller
+    didChangeObject:(__unused id)anObject
+        atIndexPath:(NSIndexPath *)unmodifiedIndexPath
       forChangeType:(NSFetchedResultsChangeType)type
-       newIndexPath:(NSIndexPath *)newIndexPath {
-    indexPath = [NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section];
-    newIndexPath = [NSIndexPath indexPathForRow:newIndexPath.row inSection:newIndexPath.section];
+       newIndexPath:(NSIndexPath *)unModifiedNewIndexPath {
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:unmodifiedIndexPath.row inSection:unmodifiedIndexPath.section];
+    NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:unModifiedNewIndexPath.row inSection:unModifiedNewIndexPath.section];
 
     switch (type) {
     case NSFetchedResultsChangeInsert:
-        [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
         break;
 
     case NSFetchedResultsChangeDelete:
-        [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
         break;
 
     case NSFetchedResultsChangeUpdate:
@@ -186,13 +188,13 @@
         break;
 
     case NSFetchedResultsChangeMove:
-        [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-        [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
         break;
     }
 }
 
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+- (void)controllerDidChangeContent:(__unused NSFetchedResultsController *)controller {
     // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
     [self.tableView endUpdates];
 }

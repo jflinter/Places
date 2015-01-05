@@ -19,7 +19,7 @@ typedef NS_ENUM(NSInteger, PLCCalloutTransitionContextOperation) {
 
 @interface PLCCalloutTransitionContext : NSObject <UIViewControllerContextTransitioning>
 
-- (instancetype)initWithOperation:(PLCCalloutTransitionContextOperation)operation;
+- (instancetype)initWithOperation:(PLCCalloutTransitionContextOperation)operation NS_DESIGNATED_INITIALIZER;
 
 @property (nonatomic, readonly) PLCCalloutTransitionContextOperation operation;
 @property (nonatomic) PLCMapViewController *mapViewController;

@@ -27,7 +27,7 @@
     return sharedInstance;
 }
 
-- (id)init {
+- (instancetype)init {
     self = [super init];
     if (self) {
         self.fetchedResultsController.fetchRequest.predicate = [self placePredicate];
@@ -44,10 +44,11 @@
 }
 
 - (void)dealloc {
+    _fetchedResultsController.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)currentMapChanged:(NSNotification *)notification {
+- (void)currentMapChanged:(__unused NSNotification *)notification {
     dispatch_async(dispatch_get_main_queue(), ^{
         self.fetchedResultsController.fetchRequest.predicate = [self placePredicate];
         [self.fetchedResultsController performFetch:nil];
@@ -56,18 +57,9 @@
 
 - (NSArray *)allPlaces {
     return [self.fetchedResultsController.fetchedObjects
-        filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(PLCPlace *evaluatedObject, NSDictionary *bindings) {
+        filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(PLCPlace *evaluatedObject, __unused NSDictionary *bindings) {
                                         return CLLocationCoordinate2DIsValid(evaluatedObject.coordinate);
                                     }]];
-}
-
-- (PLCPlace *)insertPlaceAtCoordinate:(CLLocationCoordinate2D)coordinate save:(BOOL)save {
-    PLCPlace *place = [PLCPlace insertInManagedObjectContext:[self managedObjectContext]];
-    place.coordinate = coordinate;
-    place.map = [[PLCMapStore sharedInstance] selectedMap];
-    [self save];
-    [self.delegate placeStore:self didInsertPlace:place new:YES];
-    return place;
 }
 
 - (PLCPlace *)insertPlaceAtCoordinate:(CLLocationCoordinate2D)coordinate {
@@ -86,7 +78,6 @@
 }
 
 - (void)save {
-    NSError *error;
     for (PLCPlace *place in [[self managedObjectContext] insertedObjects]) {
         if ([place isKindOfClass:[PLCPlace class]] && CLLocationCoordinate2DIsValid(place.coordinate)) {
             [[Firebase placeClientForPlace:place] setValue:[place firebaseObject]];
@@ -102,8 +93,7 @@
             [[Firebase placeClientForPlace:place] removeValue];
         }
     }
-    [[self managedObjectContext] save:&error];
-    if (error) {
+    if (![[self managedObjectContext] save:nil]) {
         abort();
     }
 }
@@ -138,7 +128,8 @@
                                                                                  modifier:NSDirectPredicateModifier
                                                                                      type:NSEqualToPredicateOperatorType
                                                                                   options:0];
-    NSExpression *selectedExpression = [NSExpression expressionForKeyPath:@"map.selected"];
+    NSString *keyPath = [NSString stringWithFormat:@"%@.%@", NSStringFromSelector(@selector(map)),NSStringFromSelector(@selector(selected))];
+    NSExpression *selectedExpression = [NSExpression expressionForKeyPath:keyPath];
     NSExpression *yesExpression = [NSExpression expressionForConstantValue:@YES];
     NSPredicate *mapPredicate = [NSComparisonPredicate predicateWithLeftExpression:selectedExpression
                                                                    rightExpression:yesExpression
