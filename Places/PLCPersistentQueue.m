@@ -72,7 +72,7 @@
     // archive the operation to a file
     NSURL *url = [self.class fileUrlForUuid:uuid];
     [[NSFileManager defaultManager] removeItemAtURL:url error:nil];
-//    [NSKeyedArchiver archiveRootObject:work toFile:url.path];
+    [NSKeyedArchiver archiveRootObject:work toFile:url.path];
     // start doing it
     PLCSavableOperation *saveableOp = [PLCSavableOperation operationWithWork:work uuid:uuid];
     [self.operationQueue addOperation:saveableOp];
@@ -106,7 +106,6 @@
         } else {
             [[NSFileManager defaultManager] removeItemAtURL:[PLCPersistentQueue fileUrlForUuid:self.uuid] error:&error];
             if (error) {
-                
             }
         }
         [self finish];

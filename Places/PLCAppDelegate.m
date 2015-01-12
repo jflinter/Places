@@ -16,14 +16,18 @@
 #import <Parse/Parse.h>
 #import <TMCache/TMCache.h>
 #import "HockeySDK.h"
+#import "TargetConditionals.h"
+
+#if DEBUG && TARGET_IPHONE_SIMULATOR
+#import <SDStatusBarManager.h>
+#endif
 
 @implementation PLCAppDelegate
 
 - (BOOL)application:(__unused UIApplication *)application didFinishLaunchingWithOptions:(__unused NSDictionary *)launchOptions {
     [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"6ce20bad14fd46cc1d3fecac42002f0c"];
     [[BITHockeyManager sharedHockeyManager] startManager];
-    [[BITHockeyManager sharedHockeyManager].authenticator
-     authenticateInstallation];
+    [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
 
     [Parse setApplicationId:@"d7IlXMx8MHI3emtHCF5LjKhVXm787WSWHyfKY9w5" clientKey:@"OWY7Gra9KewRjFmtPLW3hudPbpifSqEEqpl9hwS7"];
     [Foursquare2 setupFoursquareWithClientId:@"SKJPF13KUWM2EZSOIXXDDQKMAQFTIOBRW5XFOLD1CZBXWCHH"
@@ -45,6 +49,10 @@
     [[CLLocationManager new] requestWhenInUseAuthorization];
     [[PLCUserStore sharedInstance] beginICloudMonitoring];
     [[PLCPersistentQueue sharedInstance] resume];
+
+#if DEBUG && TARGET_IPHONE_SIMULATOR
+    [[SDStatusBarManager sharedInstance] enableOverrides];
+#endif
     return YES;
 }
 

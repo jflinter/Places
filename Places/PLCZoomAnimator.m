@@ -26,7 +26,7 @@
         toView.frame = [toViewController.presentationController frameOfPresentedViewInContainerView];
         [container addSubview:toView];
         toView.alpha = 0;
-        toView.transform = CGAffineTransformMakeScale(0.3, 0.3);
+        toView.transform = CGAffineTransformMakeScale(0.3f, 0.3f);
     } else {
         [container insertSubview:toView belowSubview:fromView];
     }
@@ -40,7 +40,7 @@
                 toView.alpha = 1;
                 toView.transform = CGAffineTransformIdentity;
             } else {
-                fromView.transform = CGAffineTransformMakeScale(0.3, 0.3);
+                fromView.transform = CGAffineTransformMakeScale(0.3f, 0.3f);
                 fromView.alpha = 0;
             }
         }
