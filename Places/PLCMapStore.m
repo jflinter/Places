@@ -217,8 +217,13 @@ static NSString *const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidCh
     [self.delegate mapStore:self didChangeMap:self.selectedMap];
 }
 
-- (void)downloadMapsForUserId:(NSString *)userId {
-    FQuery *query = [[[Firebase mapClient] queryStartingAtValue:userId] queryEndingAtValue:userId];
+- (void)downloadMapsForUserId:(__unused NSString *)userId {
+    FQuery *query;
+    if (userId) {
+        query = [[[Firebase mapClient] queryStartingAtValue:userId] queryEndingAtValue:userId];
+    } else {
+        query = [[Firebase mapClient] queryOrderedByPriority];
+    }
     [query observeSingleEventOfType:FEventTypeValue
                           withBlock:^(FDataSnapshot *snapshot) {
                               NSDictionary *maps = [snapshot value];

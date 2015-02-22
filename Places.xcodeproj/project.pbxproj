@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		0430BEC519CF8126001584BD /* PLCFlickrSearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 0430BEC419CF8126001584BD /* PLCFlickrSearchResult.m */; };
 		0430BEC819CFA113001584BD /* PLCFlickrResultCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0430BEC719CFA113001584BD /* PLCFlickrResultCollectionViewCell.m */; };
-		043817AC1A0E964400CE6A06 /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 043817AB1A0E964400CE6A06 /* Launch Screen.xib */; };
 		0477975819D282DB0022A00F /* PLCImageDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0477975719D282DB0022A00F /* PLCImageDownloader.m */; };
 		0478259F1A5A309000BA6A2B /* Glyphish.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0478259E1A5A309000BA6A2B /* Glyphish.xcassets */; };
 		047825A11A5A71BE00BA6A2B /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 047825A01A5A71BE00BA6A2B /* Launch Screen.xib */; };
@@ -499,7 +498,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = PLC;
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = Places;
 				TargetAttributes = {
 					7E54FE4F18FF9392002E2AFC = {
@@ -544,7 +543,6 @@
 				7E54FEA118FFA0E7002E2AFC /* Places_phone.storyboard in Resources */,
 				04DEDD8B19CFE0E200A0D0BA /* PLCFlickrSearchViewController.xib in Resources */,
 				047825A11A5A71BE00BA6A2B /* Launch Screen.xib in Resources */,
-				043817AC1A0E964400CE6A06 /* Launch Screen.xib in Resources */,
 				04DD4B2619CFBEFC00408002 /* PLCPlaceSearchTableViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

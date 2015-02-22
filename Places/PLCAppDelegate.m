@@ -18,7 +18,7 @@
 #import "HockeySDK.h"
 #import "TargetConditionals.h"
 
-#if DEBUG && TARGET_IPHONE_SIMULATOR
+#if defined(DEBUG) && TARGET_IPHONE_SIMULATOR
 #import <SDStatusBarManager.h>
 #endif
 
@@ -50,7 +50,7 @@
     [[PLCUserStore sharedInstance] beginICloudMonitoring];
     [[PLCPersistentQueue sharedInstance] resume];
 
-#if DEBUG && TARGET_IPHONE_SIMULATOR
+#if defined(DEBUG) && TARGET_IPHONE_SIMULATOR
     [[SDStatusBarManager sharedInstance] enableOverrides];
 #endif
     return YES;

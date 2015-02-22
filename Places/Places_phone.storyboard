@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="beW-Pz-9Xk">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="beW-Pz-9Xk">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <scenes>
@@ -215,12 +214,6 @@
                                                 </connections>
                                             </barButtonItem>
                                             <barButtonItem style="plain" systemItem="flexibleSpace" id="IKJ-69-LYR"/>
-                                            <barButtonItem systemItem="camera" id="5Hj-PB-SGj">
-                                                <connections>
-                                                    <action selector="choosePhoto:" destination="1NL-xg-0xe" id="OIu-Cf-OLl"/>
-                                                </connections>
-                                            </barButtonItem>
-                                            <barButtonItem style="plain" systemItem="flexibleSpace" id="CXJ-CC-CKI"/>
                                             <barButtonItem image="888-checkmark" id="2U7-o7-bWx">
                                                 <connections>
                                                     <action selector="doneEditing:" destination="1NL-xg-0xe" id="OpP-4p-xAU"/>
