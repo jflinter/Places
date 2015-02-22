@@ -435,12 +435,15 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     }];
 }
 
-- (IBAction)shareMap:(__unused id)sender {
+- (IBAction)shareMap:(UIBarButtonItem *)sender {
     UIActivityViewController *activityViewController =
         [[UIActivityViewController alloc] initWithActivityItems:@[[[PLCMapStore sharedInstance].selectedMap shareURL]]
                                           applicationActivities:@[[TUSafariActivity new]]];
     // exclude the airdrop action because it's incredibly fucking slow and noone uses it
     activityViewController.excludedActivityTypes = @[UIActivityTypePrint, UIActivityTypeAirDrop];
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+        activityViewController.popoverPresentationController.barButtonItem = sender;
+    }
     [self presentViewController:activityViewController animated:YES completion:nil];
 }
 

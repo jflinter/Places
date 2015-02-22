@@ -182,7 +182,7 @@
     [[PLCPlaceStore sharedInstance] removePlace:self.place];
 }
 
-- (IBAction)sharePlace:(id)sender {
+- (IBAction)sharePlace:(UIButton *)sender {
     [self doneEditing:sender];
     MKPlacemark *placemark = [[MKPlacemark alloc] initWithCoordinate:self.place.coordinate addressDictionary:self.place.geocodedAddress];
     MKMapItem *mapItem = [[MKMapItem alloc] initWithPlacemark:placemark];
@@ -197,6 +197,9 @@
         [excludedTypes addObject:UIActivityTypeAssignToContact];
     }
     activityViewController.excludedActivityTypes = [excludedTypes copy];
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+        activityViewController.popoverPresentationController.sourceView = sender;
+    }
     [self presentViewController:activityViewController animated:YES completion:nil];
 }
 
