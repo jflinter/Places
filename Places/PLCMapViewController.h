@@ -8,11 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-
 @class PLCMapView;
-@interface PLCMapViewController : UIViewController;
-@property (nonatomic, weak, readonly) IBOutlet PLCMapView *mapView;
-- (IBAction)showLocation:(id)sender;
-- (IBAction)dropPin:(id)sender;
+@interface PLCMapViewController : UIViewController
+;
+@property (nonatomic, weak, readonly) PLCMapView *mapView;
+- (void)showLocation:(id)sender;
+- (void)dropPin:(id)sender;
 
 @end

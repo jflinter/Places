@@ -112,10 +112,10 @@
             </objects>
             <point key="canvasLocation" x="-423" y="2"/>
         </scene>
-        <!--Map View Controller-->
+        <!--Map Controls View Controller-->
         <scene sceneID="4Hk-xv-gft">
             <objects>
-                <viewController id="OId-a2-hAa" customClass="PLCMapViewController" sceneMemberID="viewController">
+                <viewController id="OId-a2-hAa" customClass="PLCMapControlsViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="b5m-7t-b29"/>
                         <viewControllerLayoutGuide type="bottom" id="LaD-Hf-YxR"/>
@@ -123,57 +123,32 @@
                     <view key="view" contentMode="scaleToFill" id="lNU-MC-GZc">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="a6V-Pg-lJh" customClass="PLCMapView">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <connections>
-                                    <outlet property="delegate" destination="OId-a2-hAa" id="HYd-MJ-UV2"/>
-                                </connections>
-                            </mapView>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="a6V-Pg-lJh" firstAttribute="top" secondItem="lNU-MC-GZc" secondAttribute="top" id="0A5-et-4EU"/>
-                            <constraint firstAttribute="trailing" secondItem="a6V-Pg-lJh" secondAttribute="trailing" id="1uU-In-0qG"/>
-                            <constraint firstItem="a6V-Pg-lJh" firstAttribute="leading" secondItem="lNU-MC-GZc" secondAttribute="leading" id="GlJ-yn-Lay"/>
-                            <constraint firstAttribute="bottom" secondItem="a6V-Pg-lJh" secondAttribute="bottom" id="zCa-cd-FDS"/>
-                        </constraints>
                     </view>
                     <toolbarItems>
-                        <barButtonItem image="854-list" id="CtE-Dj-rlY">
-                            <connections>
-                                <action selector="showMapSelection:" destination="OId-a2-hAa" id="dEO-Ic-pQC"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Uyg-Id-hGR"/>
-                        <barButtonItem image="708-search" id="naG-aU-r06">
-                            <connections>
-                                <action selector="beginSearch:" destination="OId-a2-hAa" id="yvq-lK-3Q5"/>
-                            </connections>
-                        </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="37x-vm-QHz"/>
-                        <barButtonItem image="drop_pin_icon" id="Sof-A0-rxF">
-                            <connections>
-                                <action selector="dropPin:" destination="OId-a2-hAa" id="Kgw-p8-5rc"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem image="709-plus-toolbar" id="5RP-sJ-mNE"/>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="v0F-Or-7y0"/>
-                        <barButtonItem image="723-location-arrow" id="VzM-jp-IJN">
+                        <barButtonItem image="723-location-arrow-toolbar" id="VzM-jp-IJN">
                             <connections>
-                                <action selector="showLocation:" destination="OId-a2-hAa" id="Xdw-DI-uNv"/>
+                                <action selector="showLocation:" destination="OId-a2-hAa" id="2n7-KE-751"/>
                             </connections>
                         </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" id="njY-NJ-ckP">
                         <nil key="title"/>
+                        <barButtonItem key="leftBarButtonItem" image="854-list-toolbar" id="CtE-Dj-rlY">
+                            <connections>
+                                <action selector="showMapSelection:" destination="OId-a2-hAa" id="O1Y-ml-8lz"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="action" id="ZvM-Ge-oGC">
                             <connections>
-                                <action selector="shareMap:" destination="OId-a2-hAa" id="Ww3-i6-Hsp"/>
+                                <action selector="shareMap:" destination="OId-a2-hAa" id="lVe-7n-CHJ"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="mapView" destination="a6V-Pg-lJh" id="vbR-qJ-8qZ"/>
                         <outlet property="view" destination="lNU-MC-GZc" id="vzn-G1-QQ7"/>
                     </connections>
                 </viewController>
@@ -298,14 +273,13 @@
     <resources>
         <image name="702-share" width="21" height="28"/>
         <image name="702-share-selected" width="21" height="28"/>
-        <image name="708-search" width="28" height="28"/>
         <image name="709-plus" width="28" height="28"/>
-        <image name="723-location-arrow" width="28" height="28"/>
+        <image name="709-plus-toolbar" width="22" height="22"/>
+        <image name="723-location-arrow-toolbar" width="22" height="22"/>
         <image name="765-arrow-left" width="14" height="28"/>
-        <image name="854-list" width="26" height="16"/>
+        <image name="854-list-toolbar" width="20" height="16"/>
         <image name="888-checkmark" width="28" height="28"/>
         <image name="cancel" width="22" height="22"/>
-        <image name="drop_pin_icon" width="31" height="32"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

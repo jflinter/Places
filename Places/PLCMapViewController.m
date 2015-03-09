@@ -14,16 +14,11 @@
 #import "PLCCalloutViewController.h"
 #import "PLCCalloutTransitionAnimator.h"
 #import "PLCCalloutTransitionContext.h"
-#import "PLCMapSelectionTableViewController.h"
 #import <INTULocationManager/INTULocationManager.h>
 #import "PLCMap.h"
 #import "PLCMapStore.h"
-#import "PLCPlaceSearchTableViewController.h"
 #import "PLCDatabase.h"
 #import <CoreLocation/CoreLocation.h>
-#import "PLCBlurredModalPresentationController.h"
-#import "PLCZoomAnimator.h"
-#import <TUSafariActivity/TUSafariActivity.h>
 
 static NSString *const PLCMapPinReuseIdentifier = @"PLCMapPinReuseIdentifier";
 static CGFloat const PLCMapPanAnimationDuration = 0.3f;
@@ -34,13 +29,12 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
                                     CLLocationManagerDelegate,
                                     UIViewControllerTransitioningDelegate>
 
-@property (nonatomic, weak, readwrite) IBOutlet PLCMapView *mapView;
+@property (nonatomic, weak, readwrite) PLCMapView *mapView;
 @property (nonatomic, readonly) PLCPlaceStore *placeStore;
 @property (nonatomic, readonly) NSArray *calloutViewControllers;
 @property (nonatomic) BOOL determiningInitialLocation;
 @property (nonatomic, getter=isAddingPlace) BOOL addingPlace;
 @property (nonatomic, getter=isAnimatingToPlace) BOOL animatingToPlace;
-@property (nonatomic) BOOL chromeHidden;
 @property (nonatomic) CLLocationManager *locationManager;
 @end
 
@@ -74,6 +68,21 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     _locationManager.delegate = self;
 }
 
+- (void)loadView {
+    PLCMapView *mapView = [PLCMapView new];
+    mapView.delegate = self;
+    mapView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.mapView = mapView;
+    [self setupLocationServices];
+    [self.mapView addAnnotations:self.placeStore.allPlaces];
+    [self.mapView addGestureRecognizer:[self addPlaceGestureRecognizer]];
+    self.mapView.rotateEnabled = NO;
+    self.mapView.showsPointsOfInterest = NO;
+    self.navigationItem.title = [PLCMapStore sharedInstance].selectedMap.name;
+    [PLCMapStore sharedInstance].delegate = self;
+    self.view = self.mapView;
+}
+
 - (void)didBecomeActive:(__unused NSNotification *)notification {
     self.mapView.showsUserLocation = YES;
 }
@@ -87,30 +96,12 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    [self setupLocationServices];
-    [self.mapView addAnnotations:self.placeStore.allPlaces];
-    [self.mapView addGestureRecognizer:[self addPlaceGestureRecognizer]];
-    self.mapView.rotateEnabled = NO;
-    self.mapView.showsPointsOfInterest = NO;
-    self.navigationItem.title = [PLCMapStore sharedInstance].selectedMap.name;
-    [PLCMapStore sharedInstance].delegate = self;
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{ self.chromeHidden = YES; });
-}
-
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        [self setChromeHidden:NO animated:YES];
-        CLLocationManager *manager = [[INTULocationManager sharedInstance] valueForKey:NSStringFromSelector(@selector(locationManager))];
-        [manager requestWhenInUseAuthorization];
+      CLLocationManager *manager = [[INTULocationManager sharedInstance] valueForKey:NSStringFromSelector(@selector(locationManager))];
+      [manager requestWhenInUseAuthorization];
     });
 }
 
@@ -154,12 +145,11 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     if (view.annotation == mapView.userLocation) {
         return;
     }
-    [self setChromeHidden:YES animated:YES];
     [self dismissAllCalloutViewControllers];
     BOOL shouldEdit = self.isAddingPlace;
     void (^afterCallout)() = ^{
-        PLCCalloutViewController *calloutViewController = [self instantiateCalloutControllerForAnnotation:view.annotation];
-        [self presentCalloutViewController:calloutViewController fromAnnotationView:view forceEditing:shouldEdit];
+      PLCCalloutViewController *calloutViewController = [self instantiateCalloutControllerForAnnotation:view.annotation];
+      [self presentCalloutViewController:calloutViewController fromAnnotationView:view forceEditing:shouldEdit];
     };
 
     BOOL const waitToShow = self.isAddingPlace;
@@ -173,12 +163,14 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     CLLocationCoordinate2D coord = [self.mapView convertPoint:point toCoordinateFromView:view];
 
     [UIView animateWithDuration:animationDuration
-        animations:^{ [self.mapView setCenterCoordinate:coord animated:NO]; }
+        animations:^{
+          [self.mapView setCenterCoordinate:coord animated:NO];
+        }
         completion:^(BOOL finished) {
-            self.animatingToPlace = NO;
-            if (finished && waitToShow) {
-                afterCallout();
-            }
+          self.animatingToPlace = NO;
+          if (finished && waitToShow) {
+              afterCallout();
+          }
         }];
 
     if (!waitToShow) {
@@ -186,15 +178,12 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     }
 }
 
-- (void)mapView:(PLCMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
+- (void)mapView:(__unused PLCMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
     dispatch_async(dispatch_get_main_queue(), ^{
-        PLCCalloutViewController *calloutViewController = [self existingCalloutViewControllerForAnnotationView:view];
-        if (calloutViewController) {
-            [self dismissCalloutViewController:calloutViewController completion:nil];
-        }
-        if (!mapView.selectedAnnotations.count) {
-            [self setChromeHidden:NO animated:YES];
-        }
+      PLCCalloutViewController *calloutViewController = [self existingCalloutViewControllerForAnnotationView:view];
+      if (calloutViewController) {
+          [self dismissCalloutViewController:calloutViewController completion:nil];
+      }
     });
 }
 
@@ -234,9 +223,9 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     if (calloutViewController) {
         [self dismissCalloutViewController:calloutViewController
                                 completion:^{
-                                    if ([self.mapView.annotations containsObject:place]) {
-                                        [self.mapView removeAnnotation:place];
-                                    }
+                                  if ([self.mapView.annotations containsObject:place]) {
+                                      [self.mapView removeAnnotation:place];
+                                  }
                                 }];
     } else {
         [self.mapView removeAnnotation:place];
@@ -253,7 +242,10 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
         [self.mapView addAnnotations:annotations];
         [self.mapView showAnnotations:annotations animated:YES];
     } else if (CLLocationCoordinate2DIsValid(self.mapView.userLocation.coordinate)) {
-        [UIView animateWithDuration:PLCMapPanAnimationDuration animations:^{ self.mapView.centerCoordinate = self.mapView.userLocation.coordinate; }];
+        [UIView animateWithDuration:PLCMapPanAnimationDuration
+                         animations:^{
+                           self.mapView.centerCoordinate = self.mapView.userLocation.coordinate;
+                         }];
     }
     self.navigationItem.title = map.name;
 }
@@ -292,7 +284,7 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 }
 
 - (PLCCalloutViewController *)instantiateCalloutControllerForAnnotation:(id<MKAnnotation>)annotation {
-    PLCCalloutViewController *calloutController = [self.storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([PLCCalloutViewController class])];
+    PLCCalloutViewController *calloutController = [[UIStoryboard storyboardWithName:@"Places_phone" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([PLCCalloutViewController class])];
     calloutController.place = (PLCPlace *)annotation;
     return calloutController;
 }
@@ -314,11 +306,11 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 
     [animator animateTransition:transitionContext
                      completion:^{
-                         if (((!calloutViewController.place.caption || [calloutViewController.place.caption isEqualToString:@""]) &&
-                              !calloutViewController.place.image && !calloutViewController.place.imageId) ||
-                             forceEditing) {
-                             [calloutViewController editCaption];
-                         }
+                       if (((!calloutViewController.place.caption || [calloutViewController.place.caption isEqualToString:@""]) &&
+                            !calloutViewController.place.image && !calloutViewController.place.imageId) ||
+                           forceEditing) {
+                           [calloutViewController editCaption];
+                       }
                      }];
 }
 
@@ -385,66 +377,57 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 
 - (IBAction)showLocation:(__unused id)sender {
     if (CLLocationCoordinate2DIsValid(self.mapView.userLocation.coordinate)) {
-        [UIView animateWithDuration:PLCMapPanAnimationDuration animations:^{ self.mapView.centerCoordinate = self.mapView.userLocation.coordinate; }];
+        [UIView animateWithDuration:PLCMapPanAnimationDuration
+                         animations:^{
+                           self.mapView.centerCoordinate = self.mapView.userLocation.coordinate;
+                         }];
         return;
     }
     [self determineLocation:^{
-        [[INTULocationManager sharedInstance]
-            requestLocationWithDesiredAccuracy:INTULocationAccuracyBlock
-                                       timeout:2
-                                         block:^(CLLocation *currentLocation,
-                                                 __unused INTULocationAccuracy achievedAccuracy,
-                                                 __unused INTULocationStatus status) {
-                                             if (status == INTULocationStatusSuccess) {
-                                                 [UIView animateWithDuration:PLCMapPanAnimationDuration
-                                                                  animations:^{ [self.mapView setCenterCoordinate:currentLocation.coordinate animated:NO]; }];
-                                             } else {
-                                                 NSString *title = NSLocalizedString(@"Couldn't determine location", nil);
-                                                 NSString *message = NSLocalizedString(@"Try again when you have a better signal.", nil);
-                                                 [[[UIAlertView alloc] initWithTitle:title
-                                                                             message:message
-                                                                            delegate:nil
-                                                                   cancelButtonTitle:NSLocalizedString(@"OK", nil)
-                                                                   otherButtonTitles:nil] show];
-                                             }
-                                         }];
+      [[INTULocationManager sharedInstance]
+          requestLocationWithDesiredAccuracy:INTULocationAccuracyBlock
+                                     timeout:2
+                                       block:^(CLLocation *currentLocation,
+                                               __unused INTULocationAccuracy achievedAccuracy,
+                                               __unused INTULocationStatus status) {
+                                         if (status == INTULocationStatusSuccess) {
+                                             [UIView animateWithDuration:PLCMapPanAnimationDuration
+                                                              animations:^{
+                                                                [self.mapView setCenterCoordinate:currentLocation.coordinate animated:NO];
+                                                              }];
+                                         } else {
+                                             NSString *title = NSLocalizedString(@"Couldn't determine location", nil);
+                                             NSString *message = NSLocalizedString(@"Try again when you have a better signal.", nil);
+                                             [[[UIAlertView alloc] initWithTitle:title
+                                                                         message:message
+                                                                        delegate:nil
+                                                               cancelButtonTitle:NSLocalizedString(@"OK", nil)
+                                                               otherButtonTitles:nil] show];
+                                         }
+                                       }];
     }];
 }
 
 - (IBAction)dropPin:(__unused id)sender {
     [self determineLocation:^{
-        PLCPlace *place = [self.placeStore insertPlaceAtCoordinate:self.mapView.userLocation.coordinate];
-        [[INTULocationManager sharedInstance] requestLocationWithDesiredAccuracy:INTULocationAccuracyHouse
-                                                                         timeout:180
-                                                                           block:^(CLLocation *currentLocation,
-                                                                                   __unused INTULocationAccuracy achievedAccuracy,
-                                                                                   __unused INTULocationStatus status) {
-                                                                               // in case the current location's accuracy isn't very good, we want to add the
-                                                                               // place immediately but then
-                                                                               // asynchronously try and improve it.
-                                                                               if (status == INTULocationStatusSuccess) {
-                                                                                   if (!fequal(place.coordinate.latitude,
-                                                                                               currentLocation.coordinate.latitude) ||
-                                                                                       !fequal(place.coordinate.longitude,
-                                                                                               currentLocation.coordinate.longitude)) {
-                                                                                       place.coordinate = currentLocation.coordinate;
-                                                                                       [self.placeStore save];
-                                                                                   }
+      PLCPlace *place = [self.placeStore insertPlaceAtCoordinate:self.mapView.userLocation.coordinate];
+      [[INTULocationManager sharedInstance] requestLocationWithDesiredAccuracy:INTULocationAccuracyHouse
+                                                                       timeout:180
+                                                                         block:^(CLLocation *currentLocation,
+                                                                                 __unused INTULocationAccuracy achievedAccuracy,
+                                                                                 __unused INTULocationStatus status) {
+                                                                           // in case the current location's accuracy isn't very good, we want to add the
+                                                                           // place immediately but then
+                                                                           // asynchronously try and improve it.
+                                                                           if (status == INTULocationStatusSuccess) {
+                                                                               if (!fequal(place.coordinate.latitude, currentLocation.coordinate.latitude) ||
+                                                                                   !fequal(place.coordinate.longitude, currentLocation.coordinate.longitude)) {
+                                                                                   place.coordinate = currentLocation.coordinate;
+                                                                                   [self.placeStore save];
                                                                                }
-                                                                           }];
+                                                                           }
+                                                                         }];
     }];
-}
-
-- (IBAction)shareMap:(UIBarButtonItem *)sender {
-    UIActivityViewController *activityViewController =
-        [[UIActivityViewController alloc] initWithActivityItems:@[[[PLCMapStore sharedInstance].selectedMap shareURL]]
-                                          applicationActivities:@[[TUSafariActivity new]]];
-    // exclude the airdrop action because it's incredibly fucking slow and noone uses it
-    activityViewController.excludedActivityTypes = @[UIActivityTypePrint, UIActivityTypeAirDrop];
-    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
-        activityViewController.popoverPresentationController.barButtonItem = sender;
-    }
-    [self presentViewController:activityViewController animated:YES completion:nil];
 }
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
@@ -456,65 +439,6 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
         [mapView setRegion:region animated:YES];
         self.determiningInitialLocation = NO;
     }
-}
-
-- (IBAction)showMapSelection:(__unused id)sender {
-    UINavigationController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"PLCMapSelectionNavigationController"];
-    controller.modalPresentationStyle = UIModalPresentationCustom;
-    controller.transitioningDelegate = self;
-    [self presentViewController:controller animated:YES completion:nil];
-}
-
-- (IBAction)beginSearch:(__unused id)sender {
-    PLCPlaceSearchTableViewController *tableViewController = [PLCPlaceSearchTableViewController new];
-    tableViewController.searchRegion = self.mapView.region;
-    tableViewController.transitioningDelegate = self;
-    tableViewController.modalPresentationStyle = UIModalPresentationCustom;
-    [self presentViewController:tableViewController animated:YES completion:nil];
-}
-
-- (void)setChromeHidden:(BOOL)chromeHidden {
-    [self setChromeHidden:chromeHidden animated:NO];
-}
-
-- (void)setChromeHidden:(BOOL)chromeHidden animated:(BOOL)animated {
-    if (_chromeHidden != chromeHidden) {
-        _chromeHidden = chromeHidden;
-        [self.navigationController setToolbarHidden:chromeHidden animated:animated];
-        if (animated) {
-            [[UIApplication sharedApplication] setStatusBarHidden:chromeHidden withAnimation:UIStatusBarAnimationSlide];
-        } else {
-            [[UIApplication sharedApplication] setStatusBarHidden:chromeHidden];
-        }
-        [self.navigationController setNavigationBarHidden:chromeHidden animated:animated];
-    }
-}
-
-- (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(__unused UIViewController *)presented
-                                                                  presentingController:(__unused UIViewController *)presenting
-                                                                      sourceController:(__unused UIViewController *)source {
-    PLCZoomAnimator *animator = [PLCZoomAnimator new];
-    animator.presenting = YES;
-    return animator;
-}
-
-- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(__unused UIViewController *)dismissed {
-    PLCZoomAnimator *animator = [PLCZoomAnimator new];
-    animator.presenting = NO;
-    return animator;
-}
-
-- (UIPresentationController *)presentationControllerForPresentedViewController:(__unused UIViewController *)presented
-                                                      presentingViewController:(__unused UIViewController *)presenting
-                                                          sourceViewController:(__unused UIViewController *)source {
-    PLCBlurredModalPresentationController *controller =
-        [[PLCBlurredModalPresentationController alloc] initWithPresentedViewController:presented presentingViewController:self];
-    if ([presented isKindOfClass:[UINavigationController class]]) {
-        controller.edgeInsets = UIEdgeInsetsZero;
-    } else {
-        controller.edgeInsets = UIEdgeInsetsMake(20, 20, 20, 20);
-    }
-    return controller;
 }
 
 @end

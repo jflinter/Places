@@ -12,6 +12,7 @@
 		0477975819D282DB0022A00F /* PLCImageDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0477975719D282DB0022A00F /* PLCImageDownloader.m */; };
 		0478259F1A5A309000BA6A2B /* Glyphish.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0478259E1A5A309000BA6A2B /* Glyphish.xcassets */; };
 		047825A11A5A71BE00BA6A2B /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 047825A01A5A71BE00BA6A2B /* Launch Screen.xib */; };
+		049F385B1AAD89FA00713B55 /* PLCMapControlsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 049F385A1AAD89FA00713B55 /* PLCMapControlsViewController.m */; };
 		04A9359B1A0F35120024BE15 /* PLCZoomAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A9359A1A0F35120024BE15 /* PLCZoomAnimator.m */; };
 		04D0446A1A50B89400CC66E3 /* PLCPersistentQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D044691A50B89400CC66E3 /* PLCPersistentQueue.m */; };
 		04D0446D1A50C07C00CC66E3 /* PLCGeocodingWork.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D0446C1A50C07C00CC66E3 /* PLCGeocodingWork.m */; };
@@ -83,6 +84,8 @@
 		0477975719D282DB0022A00F /* PLCImageDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCImageDownloader.m; sourceTree = "<group>"; };
 		0478259E1A5A309000BA6A2B /* Glyphish.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Glyphish.xcassets; sourceTree = "<group>"; };
 		047825A01A5A71BE00BA6A2B /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
+		049F38591AAD89FA00713B55 /* PLCMapControlsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCMapControlsViewController.h; sourceTree = "<group>"; };
+		049F385A1AAD89FA00713B55 /* PLCMapControlsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCMapControlsViewController.m; sourceTree = "<group>"; };
 		04A935991A0F35120024BE15 /* PLCZoomAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCZoomAnimator.h; sourceTree = "<group>"; };
 		04A9359A1A0F35120024BE15 /* PLCZoomAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCZoomAnimator.m; sourceTree = "<group>"; };
 		04D044681A50B89400CC66E3 /* PLCPersistentQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCPersistentQueue.h; sourceTree = "<group>"; };
@@ -324,6 +327,8 @@
 			children = (
 				7E54FE9918FF9BC8002E2AFC /* PLCMapViewController.h */,
 				7E54FE9A18FF9BC8002E2AFC /* PLCMapViewController.m */,
+				049F38591AAD89FA00713B55 /* PLCMapControlsViewController.h */,
+				049F385A1AAD89FA00713B55 /* PLCMapControlsViewController.m */,
 				7E42B24A190C6A6C00F9A21E /* PLCCalloutTransitionAnimator.h */,
 				7E42B24B190C6A6C00F9A21E /* PLCCalloutTransitionAnimator.m */,
 				7EFFFB25190D64A900007FAF /* PLCCalloutTransitionContext.h */,
@@ -649,6 +654,7 @@
 				7E166E04191B4A5E001EF46B /* PLCMap.m in Sources */,
 				04DEDD8A19CFE0E200A0D0BA /* PLCFlickrSearchViewController.m in Sources */,
 				0430BEC519CF8126001584BD /* PLCFlickrSearchResult.m in Sources */,
+				049F385B1AAD89FA00713B55 /* PLCMapControlsViewController.m in Sources */,
 				7E54FE9B18FF9BC8002E2AFC /* PLCMapViewController.m in Sources */,
 				A0AEC2EB190CC4CE006D20DE /* PLCPhotoStore.m in Sources */,
 				A0FAFD261901EEDC001A364D /* PLCPinAnnotationView.m in Sources */,
