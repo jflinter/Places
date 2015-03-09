@@ -35,6 +35,7 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 @property (nonatomic) BOOL determiningInitialLocation;
 @property (nonatomic, getter=isAddingPlace) BOOL addingPlace;
 @property (nonatomic, getter=isAnimatingToPlace) BOOL animatingToPlace;
+@property (nonatomic, getter=isSuspended) BOOL suspended;
 @property (nonatomic) CLLocationManager *locationManager;
 @end
 
@@ -84,10 +85,12 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 }
 
 - (void)didBecomeActive:(__unused NSNotification *)notification {
+    self.suspended = NO;
     self.mapView.showsUserLocation = YES;
 }
 
 - (void)willEnterBackground:(__unused NSNotification *)notification {
+    self.suspended = YES;
     self.mapView.showsUserLocation = NO;
 }
 
@@ -188,6 +191,10 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 }
 
 - (void)mapView:(PLCMapView *)mapView regionWillChangeAnimated:(__unused BOOL)animated {
+    // Fixes a silly bug where this is called when the application becomes active
+    if (self.suspended) {
+        return;
+    }
     // fixes a weird bug where the region changes when presenting an image picker
     if ([self.presentedViewController isKindOfClass:[UIImagePickerController class]]) {
         return;
@@ -284,7 +291,8 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 }
 
 - (PLCCalloutViewController *)instantiateCalloutControllerForAnnotation:(id<MKAnnotation>)annotation {
-    PLCCalloutViewController *calloutController = [[UIStoryboard storyboardWithName:@"Places_phone" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([PLCCalloutViewController class])];
+    PLCCalloutViewController *calloutController = [[UIStoryboard storyboardWithName:@"Places_phone" bundle:nil]
+        instantiateViewControllerWithIdentifier:NSStringFromClass([PLCCalloutViewController class])];
     calloutController.place = (PLCPlace *)annotation;
     return calloutController;
 }
