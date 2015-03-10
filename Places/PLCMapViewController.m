@@ -19,20 +19,15 @@
 #import "PLCMapStore.h"
 #import "PLCDatabase.h"
 #import <CoreLocation/CoreLocation.h>
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
 static NSString *const PLCMapPinReuseIdentifier = @"PLCMapPinReuseIdentifier";
 static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 
-@interface PLCMapViewController () <PLCMapViewDelegate,
-                                    PLCPlaceStoreDelegate,
-                                    PLCMapStoreDelegate,
-                                    CLLocationManagerDelegate,
-                                    UIViewControllerTransitioningDelegate>
+@interface PLCMapViewController () <PLCMapViewDelegate, CLLocationManagerDelegate, UIViewControllerTransitioningDelegate>
 
 @property (nonatomic, weak, readwrite) PLCMapView *mapView;
-@property (nonatomic, readonly) PLCPlaceStore *placeStore;
 @property (nonatomic, readonly) NSArray *calloutViewControllers;
-@property (nonatomic) BOOL determiningInitialLocation;
 @property (nonatomic, getter=isAddingPlace) BOOL addingPlace;
 @property (nonatomic, getter=isAnimatingToPlace) BOOL animatingToPlace;
 @property (nonatomic, getter=isSuspended) BOOL suspended;
@@ -40,8 +35,6 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 @end
 
 @implementation PLCMapViewController
-
-@synthesize placeStore = _placeStore;
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -69,18 +62,82 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     _locationManager.delegate = self;
 }
 
+- (PLCPlaceStore *)placeStore {
+    return [PLCMapStore sharedInstance].placeStore;
+}
+
 - (void)loadView {
     PLCMapView *mapView = [PLCMapView new];
+    [[RACObserve(mapView, userLocation) take:1] subscribeNext:^(MKUserLocation *userLocation) {
+        if (userLocation) {
+            userLocation.title = @"";
+            if (!fequal(userLocation.coordinate.latitude, 0) && !fequal(userLocation.coordinate.longitude, 0)) {
+                MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(userLocation.coordinate, 1600, 1600);
+                [mapView setRegion:region animated:YES];
+            }
+        }
+    }];
     mapView.delegate = self;
     mapView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.mapView = mapView;
-    [self setupLocationServices];
-    [self.mapView addAnnotations:self.placeStore.allPlaces];
     [self.mapView addGestureRecognizer:[self addPlaceGestureRecognizer]];
     self.mapView.rotateEnabled = NO;
     self.mapView.showsPointsOfInterest = NO;
     self.navigationItem.title = [PLCMapStore sharedInstance].selectedMap.name;
-    [PLCMapStore sharedInstance].delegate = self;
+    [RACObserve([PLCMapStore sharedInstance], selectedMap) subscribeNext:^(PLCMap *selectedMap) {
+        [self.mapView removeAnnotations:self.mapView.annotations];
+        if (selectedMap.activePlaces.count) {
+            [self.mapView showAnnotations:selectedMap.activePlaces animated:YES];
+        } else if (CLLocationCoordinate2DIsValid(self.mapView.userLocation.coordinate)) {
+            [UIView animateWithDuration:PLCMapPanAnimationDuration
+                                            animations:^{
+                                              self.mapView.centerCoordinate = self.mapView.userLocation.coordinate;
+                                            }];
+        }
+    }];
+    
+    [[[RACObserve([PLCMapStore sharedInstance], selectedMap)
+       map:^(PLCMap *map) {
+           return RACObserve(map, activePlaces);
+       }]
+      switchToLatest]
+     subscribeNext:^(NSArray *places) {
+           NSSet *currentAnnotations = [NSMutableSet setWithArray:places];
+           NSMutableSet *toAdd = [currentAnnotations mutableCopy];
+           [toAdd minusSet:[NSMutableSet setWithArray:self.mapView.annotations]];
+     
+           NSMutableSet *toRemove = [currentAnnotations mutableCopy];
+           [toRemove minusSet:[NSSet setWithArray:places]];
+           [self.mapView addAnnotations:toAdd.allObjects];
+
+//         if (places.count) {
+//             [self.mapView addAnnotations:places];
+//             [self.mapView showAnnotations:places animated:YES];
+//         } else if (CLLocationCoordinate2DIsValid(self.mapView.userLocation.coordinate)) {
+//             [UIView animateWithDuration:PLCMapPanAnimationDuration
+//                              animations:^{
+//                                  self.mapView.centerCoordinate = self.mapView.userLocation.coordinate;
+//                              }];
+//         }
+
+     }];
+//    [[PLCMapStore sharedInstance].placeStore.placesSignal subscribeNext:^(NSArray *places) {
+//      [[[RACObserve(self, calloutViewControllers) takeWhileBlock:^BOOL(NSArray *calloutViewControllers) {
+//          return calloutViewControllers.count == 0;
+//      }] take:1] subscribeNext:^(__unused id x) {
+//          [self.mapView removeAnnotations:toRemove.allObjects];
+//      }];
+//    }];
+    [RACObserve([PLCMapStore sharedInstance].placeStore, selectedPlace) subscribeNext:^(PLCPlaceViewModel *place) {
+      if (place) {
+          [self.mapView selectAnnotation:place animated:YES];
+      } else {
+          PLCCalloutViewController *calloutViewController = self.calloutViewControllers.firstObject;
+          if (calloutViewController) {
+              [self dismissCalloutViewController:calloutViewController completion:nil];
+          }
+      }
+    }];
     self.view = self.mapView;
 }
 
@@ -115,21 +172,12 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     if (annotation == mapView.userLocation) {
         return nil; // this makes the blue dot
     }
-    PLCPlace *place = (PLCPlace *)annotation;
     MKAnnotationView *annotationView = [mapView dequeueReusableAnnotationViewWithIdentifier:PLCMapPinReuseIdentifier];
     if (!annotationView) {
         PLCPinAnnotationView *pinAnnotation = [[PLCPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:PLCMapPinReuseIdentifier];
         pinAnnotation.animatesDrop = YES;
         pinAnnotation.draggable = YES;
         pinAnnotation.canShowCallout = NO;
-        MKPinAnnotationColor color;
-        switch (place.type) {
-        case PLCPlaceTypeDo:
-        case PLCPlaceTypeDrink:
-        case PLCPlaceTypeEat:
-            color = MKPinAnnotationColorRed;
-        }
-        pinAnnotation.pinColor = color;
         annotationView = pinAnnotation;
     }
     return annotationView;
@@ -148,6 +196,7 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     if (view.annotation == mapView.userLocation) {
         return;
     }
+    [self placeStore].selectedPlace = (PLCPlaceViewModel *)view.annotation;
     [self dismissAllCalloutViewControllers];
     BOOL shouldEdit = self.isAddingPlace;
     void (^afterCallout)() = ^{
@@ -181,13 +230,8 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     }
 }
 
-- (void)mapView:(__unused PLCMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
-    dispatch_async(dispatch_get_main_queue(), ^{
-      PLCCalloutViewController *calloutViewController = [self existingCalloutViewControllerForAnnotationView:view];
-      if (calloutViewController) {
-          [self dismissCalloutViewController:calloutViewController completion:nil];
-      }
-    });
+- (void)mapView:(__unused PLCMapView *)mapView didDeselectAnnotationView:(__unused MKAnnotationView *)view {
+    [self placeStore].selectedPlace = nil;
 }
 
 - (void)mapView:(PLCMapView *)mapView regionWillChangeAnimated:(__unused BOOL)animated {
@@ -211,62 +255,7 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 }
 
 #pragma mark -
-#pragma mark Place Store Delegate
-
-- (void)placeStore:(__unused PLCPlaceStore *)store didInsertPlace:(PLCPlace *)place new:(BOOL)isNew {
-    self.addingPlace = YES;
-
-    [self.mapView addAnnotation:place];
-    if (isNew) {
-        [self.mapView selectAnnotation:place animated:YES];
-    }
-
-    self.addingPlace = NO;
-}
-
-- (void)placeStore:(__unused PLCPlaceStore *)store didRemovePlace:(PLCPlace *)place {
-    MKAnnotationView *view = [self.mapView viewForAnnotation:place];
-    PLCCalloutViewController *calloutViewController = [self existingCalloutViewControllerForAnnotationView:view];
-    if (calloutViewController) {
-        [self dismissCalloutViewController:calloutViewController
-                                completion:^{
-                                  if ([self.mapView.annotations containsObject:place]) {
-                                      [self.mapView removeAnnotation:place];
-                                  }
-                                }];
-    } else {
-        [self.mapView removeAnnotation:place];
-    }
-}
-
-#pragma mark -
-#pragma mark PLCMapStoreDelegate
-
-- (void)mapStore:(__unused PLCMapStore *)store didChangeMap:(PLCMap *)map {
-    [self.mapView removeAnnotations:self.mapView.annotations];
-    NSArray *annotations = [map activePlaces];
-    if (annotations.count) {
-        [self.mapView addAnnotations:annotations];
-        [self.mapView showAnnotations:annotations animated:YES];
-    } else if (CLLocationCoordinate2DIsValid(self.mapView.userLocation.coordinate)) {
-        [UIView animateWithDuration:PLCMapPanAnimationDuration
-                         animations:^{
-                           self.mapView.centerCoordinate = self.mapView.userLocation.coordinate;
-                         }];
-    }
-    self.navigationItem.title = map.name;
-}
-
-#pragma mark -
 #pragma mark Helpers
-
-- (PLCPlaceStore *)placeStore {
-    if (!_placeStore) {
-        _placeStore = [PLCPlaceStore sharedInstance];
-        _placeStore.delegate = self;
-    }
-    return _placeStore;
-}
 
 - (UIGestureRecognizer *)addPlaceGestureRecognizer {
     UILongPressGestureRecognizer *recognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressed:)];
@@ -278,7 +267,7 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     if (sender.state == UIGestureRecognizerStateBegan) {
         CGPoint mapViewLocation = [sender locationInView:self.mapView];
         CLLocationCoordinate2D touchCoordinate = [self.mapView convertPoint:mapViewLocation toCoordinateFromView:self.mapView];
-        [self.placeStore insertPlaceAtCoordinate:touchCoordinate];
+        self.placeStore.selectedPlace = [self.placeStore insertPlaceAtCoordinate:touchCoordinate];
     }
 }
 
@@ -314,9 +303,7 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 
     [animator animateTransition:transitionContext
                      completion:^{
-                       if (((!calloutViewController.place.caption || [calloutViewController.place.caption isEqualToString:@""]) &&
-                            !calloutViewController.place.image && !calloutViewController.place.imageId) ||
-                           forceEditing) {
+                       if ((!calloutViewController.place.caption || [calloutViewController.place.caption isEqualToString:@""]) || forceEditing) {
                            [calloutViewController editCaption];
                        }
                      }];
@@ -338,15 +325,6 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     for (PLCCalloutViewController *calloutViewController in [self.calloutViewControllers copy]) {
         [self dismissCalloutViewController:calloutViewController completion:nil];
     }
-}
-
-- (void)setupLocationServices {
-    if (self.placeStore.allPlaces.count) {
-        [self.mapView showAnnotations:self.placeStore.allPlaces animated:NO];
-    } else {
-        self.determiningInitialLocation = YES;
-    }
-    //    self.mapView.showsUserLocation = YES;
 }
 
 - (void)determineLocation:(void (^)(void))completion {
@@ -436,17 +414,6 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
                                                                            }
                                                                          }];
     }];
-}
-
-- (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
-    userLocation.title = @"";
-
-    // This is just for initial map load, when we want to show the user's location in the absence of any places on the map.
-    if (self.determiningInitialLocation && !self.calloutViewControllers.count) {
-        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(userLocation.coordinate, 1600, 1600);
-        [mapView setRegion:region animated:YES];
-        self.determiningInitialLocation = NO;
-    }
 }
 
 @end

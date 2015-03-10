@@ -13,87 +13,83 @@
 #import "PLCMap.h"
 #import <Firebase/Firebase.h>
 #import "Firebase+Places.h"
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
-@interface PLCPlaceStore () <NSFetchedResultsControllerDelegate>
+@interface PLCPlaceStore ()
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic) PLCMapStore *mapStore;
+@property (nonatomic) NSArray *placesViewModels;
 @end
 
 @implementation PLCPlaceStore
 
-+ (instancetype)sharedInstance {
-    static id sharedInstance;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{ sharedInstance = [self new]; });
-    return sharedInstance;
-}
-
-- (instancetype)init {
+- (instancetype)initWithMapStore:(PLCMapStore *)mapStore {
     self = [super init];
     if (self) {
+        _placesViewModels = [@[] mutableCopy];
+        _placesSignal = RACObserve(self, placesViewModels);
+        _mapStore = mapStore;
         self.fetchedResultsController.fetchRequest.predicate = [self placePredicate];
         BOOL success = [self.fetchedResultsController performFetch:nil];
         if (!success) {
             abort();
         }
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(currentMapChanged:)
-                                                     name:PLCCurrentMapDidChangeNotification
-                                                   object:[PLCMapStore sharedInstance]];
+        [RACObserve(mapStore, selectedMap) subscribeNext:^(__unused id x) {
+          dispatch_async(dispatch_get_main_queue(), ^{
+            self.fetchedResultsController.fetchRequest.predicate = [self placePredicate];
+            [self.fetchedResultsController performFetch:nil];
+            self.placesViewModels = [self.fetchedResultsController.fetchedObjects.rac_sequence map:^id(PLCPlace *value) {
+              return [[PLCPlaceViewModel alloc] initWithPlace:value];
+            }].array;
+          });
+        }];
     }
     return self;
 }
 
-- (void)dealloc {
-    _fetchedResultsController.delegate = nil;
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (void)currentMapChanged:(__unused NSNotification *)notification {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        self.fetchedResultsController.fetchRequest.predicate = [self placePredicate];
-        [self.fetchedResultsController performFetch:nil];
-    });
-}
-
-- (NSArray *)allPlaces {
-    return [self.fetchedResultsController.fetchedObjects
-        filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(PLCPlace *evaluatedObject, __unused NSDictionary *bindings) {
-                                        return CLLocationCoordinate2DIsValid(evaluatedObject.coordinate);
-                                    }]];
-}
-
-- (PLCPlace *)insertPlaceAtCoordinate:(CLLocationCoordinate2D)coordinate {
-    PLCPlace *place = [PLCPlace insertInManagedObjectContext:[self managedObjectContext]];
+- (PLCPlaceViewModel *)insertPlaceAtCoordinate:(CLLocationCoordinate2D)coordinate {
+    PLCPlace *place = [PLCPlace insertInManagedObjectContext:[self.class managedObjectContext]];
     place.coordinate = coordinate;
-    place.map = [[PLCMapStore sharedInstance] selectedMap];
+    PLCMap *map = [[PLCMapStore sharedInstance] selectedMap];
+    [map addPlacesObject:place];
+    place.map = map;
+    
     [self save];
-    [self.delegate placeStore:self didInsertPlace:place new:YES];
-    return place;
+    PLCPlaceViewModel *viewModel = [[PLCPlaceViewModel alloc] initWithPlace:place];
+    self.placesViewModels = [self.placesViewModels arrayByAddingObject:viewModel];
+    return viewModel;
 }
 
-- (void)removePlace:(PLCPlace *)place {
-    place.deletedAt = [NSDate date];
+- (void)removePlace:(PLCPlaceViewModel *)place {
+    if (self.selectedPlace == place) {
+        self.selectedPlace = nil;
+    }
+    PLCMap *map = [[PLCMapStore sharedInstance] selectedMap];
+    PLCPlace *placeObject = [[map.places filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"uuid == %@", place.uuid]] anyObject];
+    placeObject.deletedAt = [NSDate date];
     [self save];
-    [self.delegate placeStore:self didRemovePlace:place];
+    NSMutableArray *array = [self.placesViewModels mutableCopy];
+    [array removeObject:place];
+    self.placesViewModels = [array copy];
 }
 
 - (void)save {
-    for (PLCPlace *place in [[self managedObjectContext] insertedObjects]) {
+    for (PLCPlace *place in [[self.class managedObjectContext] insertedObjects]) {
         if ([place isKindOfClass:[PLCPlace class]] && CLLocationCoordinate2DIsValid(place.coordinate)) {
             [[Firebase placeClientForPlace:place] setValue:[place firebaseObject]];
         }
     }
-    for (PLCPlace *place in [[self managedObjectContext] updatedObjects]) {
+    for (PLCPlace *place in [[self.class managedObjectContext] updatedObjects]) {
         if ([place isKindOfClass:[PLCPlace class]] && CLLocationCoordinate2DIsValid(place.coordinate)) {
             [[Firebase placeClientForPlace:place] setValue:[place firebaseObject]];
         }
     }
-    for (PLCPlace *place in [[self managedObjectContext] deletedObjects]) {
+    for (PLCPlace *place in [[self.class managedObjectContext] deletedObjects]) {
         if ([place isKindOfClass:[PLCPlace class]]) {
             [[Firebase placeClientForPlace:place] removeValue];
         }
     }
-    if (![[self managedObjectContext] save:nil]) {
+    if (![[self.class managedObjectContext] save:nil]) {
         abort();
     }
 }
@@ -101,10 +97,9 @@
 - (NSFetchedResultsController *)fetchedResultsController {
     if (!_fetchedResultsController) {
         _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:[self fetchRequest]
-                                                                        managedObjectContext:[self managedObjectContext]
+                                                                        managedObjectContext:[self.class managedObjectContext]
                                                                           sectionNameKeyPath:nil
                                                                                    cacheName:nil];
-        _fetchedResultsController.delegate = self;
     }
     return _fetchedResultsController;
 }
@@ -128,7 +123,7 @@
                                                                                  modifier:NSDirectPredicateModifier
                                                                                      type:NSEqualToPredicateOperatorType
                                                                                   options:0];
-    NSString *keyPath = [NSString stringWithFormat:@"%@.%@", NSStringFromSelector(@selector(map)),NSStringFromSelector(@selector(selected))];
+    NSString *keyPath = [NSString stringWithFormat:@"%@.%@", NSStringFromSelector(@selector(map)), NSStringFromSelector(@selector(selected))];
     NSExpression *selectedExpression = [NSExpression expressionForKeyPath:keyPath];
     NSExpression *yesExpression = [NSExpression expressionForConstantValue:@YES];
     NSPredicate *mapPredicate = [NSComparisonPredicate predicateWithLeftExpression:selectedExpression

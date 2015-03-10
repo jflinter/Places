@@ -16,6 +16,7 @@
 #import "PLCMapStore.h"
 #import "PLCMap.h"
 #import <TUSafariActivity/TUSafariActivity.h>
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
 @interface PLCMapControlsViewController () <UIViewControllerTransitioningDelegate>
 @property (nonatomic, weak) PLCMapViewController *mapViewController;
@@ -43,6 +44,9 @@
                                         target:self
                                         action:@selector(showLocation:)],
     ];
+    [RACObserve([PLCMapStore sharedInstance], selectedMap) subscribeNext:^(PLCMap *map) {
+        self.title = map.name;
+    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

@@ -11,6 +11,7 @@
 #import "PLCCalloutViewController.h"
 #import "PLCPhotoStore.h"
 #import "PLCPlaceStore.h"
+#import "PLCMapStore.h"
 #import "PLCPlaceTextStorage.h"
 #import "PLCGoogleMapsActivity.h"
 #import <JTSImageViewController/JTSImageViewController.h>
@@ -78,22 +79,22 @@
     UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     activityIndicator.hidesWhenStopped = YES;
     self.activityIndicator = activityIndicator;
-    [button setImage:self.place.image forState:UIControlStateNormal];
-    if (!self.place.image && self.place.imageId) {
-        [self.activityIndicator startAnimating];
-        [[PLCPhotoStore new] fetchImageWithId:self.place.imageId
-                                   completion:^(UIImage *image) {
-                                       [self.activityIndicator stopAnimating];
-                                       if (image) {
-                                           [button setImage:image forState:UIControlStateNormal];
-                                           [self updateInsets];
-                                           self.imageButton.enabled = NO;
-                                           self.imageButton.enabled = YES;
-                                           self.activityIndicator.userInteractionEnabled = NO;
-                                       }
-                                   }];
-    }
-    [button addTarget:self action:@selector(imageTapped:) forControlEvents:UIControlEventTouchUpInside];
+    //    [button setImage:self.place.image forState:UIControlStateNormal];
+    //    if (!self.place.image && self.place.imageId) {
+    //        [self.activityIndicator startAnimating];
+    //        [[PLCPhotoStore new] fetchImageWithId:self.place.imageId
+    //                                   completion:^(UIImage *image) {
+    //                                       [self.activityIndicator stopAnimating];
+    //                                       if (image) {
+    //                                           [button setImage:image forState:UIControlStateNormal];
+    //                                           [self updateInsets];
+    //                                           self.imageButton.enabled = NO;
+    //                                           self.imageButton.enabled = YES;
+    //                                           self.activityIndicator.userInteractionEnabled = NO;
+    //                                       }
+    //                                   }];
+    //    }
+    //    [button addTarget:self action:@selector(imageTapped:) forControlEvents:UIControlEventTouchUpInside];
     self.originalInsets = self.captionTextView.contentInset;
     self.originalInsets = ({
         UIEdgeInsets insets = self.originalInsets;
@@ -143,7 +144,10 @@
         if (self.imageButton.hidden) {
             self.imageButton.alpha = 0;
             self.imageButton.hidden = NO;
-            [UIView animateWithDuration:0.2f animations:^{ self.imageButton.alpha = 1.0f; }];
+            [UIView animateWithDuration:0.2f
+                             animations:^{
+                               self.imageButton.alpha = 1.0f;
+                             }];
         }
     } else {
         self.imageButton.hidden = YES;
@@ -158,14 +162,23 @@
 - (void)editCaption {
     [self.captionTextView becomeFirstResponder];
     self.bottomToolbar.hidden = NO;
-    [UIView animateWithDuration:0.3 animations:^{ self.bottomToolbar.alpha = 1.0f; }];
+    [UIView animateWithDuration:0.3
+                     animations:^{
+                       self.bottomToolbar.alpha = 1.0f;
+                     }];
 }
 
 - (IBAction)doneEditing:(__unused id)sender {
     if ([self.captionTextView isFirstResponder]) {
         [self.captionTextView resignFirstResponder];
     }
-    [UIView animateWithDuration:0.3 animations:^{ self.bottomToolbar.alpha = 0; } completion:^(__unused BOOL finished) { self.bottomToolbar.hidden = YES; }];
+    [UIView animateWithDuration:0.3
+        animations:^{
+          self.bottomToolbar.alpha = 0;
+        }
+        completion:^(__unused BOOL finished) {
+          self.bottomToolbar.hidden = YES;
+        }];
 }
 
 // TODO: viewWillDisappear et. al. are not being called correctly; I think they should be used here instead.
@@ -179,7 +192,7 @@
 }
 
 - (IBAction)deletePlace:(__unused id)sender {
-    [[PLCPlaceStore sharedInstance] removePlace:self.place];
+    [[PLCMapStore sharedInstance].placeStore removePlace:self.place];
 }
 
 - (IBAction)sharePlace:(UIButton *)sender {
@@ -193,9 +206,9 @@
     if (!self.place.geocodedAddress) {
         [excludedTypes addObject:UIActivityTypeMessage];
     }
-    if (!self.place.image) {
-        [excludedTypes addObject:UIActivityTypeAssignToContact];
-    }
+    //    if (!self.place.image) {
+    [excludedTypes addObject:UIActivityTypeAssignToContact];
+    //    }
     activityViewController.excludedActivityTypes = [excludedTypes copy];
     if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
         activityViewController.popoverPresentationController.sourceView = sender;
@@ -224,89 +237,95 @@
     // Present the view controller.
     [imageViewer showFromViewController:self transition:JTSImageViewControllerTransition_FromOriginalPosition];
 }
-
-- (void)imageSelected:(UIImage *)image {
-    if (image) {
-        [[PLCPhotoStore new] addPhotoWithImage:image toPlace:self.place withUUID:[NSUUID UUID].UUIDString];
-    } else {
-        [[PLCPhotoStore new] removePhotoFromPlace:self.place];
-    }
-    [self.imageButton setImage:image forState:UIControlStateNormal];
-}
+//
+//- (void)imageSelected:(UIImage *)image {
+//    if (image) {
+//        [[PLCPhotoStore new] addPhotoWithImage:image toPlace:self.place withUUID:[NSUUID UUID].UUIDString];
+//    } else {
+//        [[PLCPhotoStore new] removePhotoFromPlace:self.place];
+//    }
+//    [self.imageButton setImage:image forState:UIControlStateNormal];
+//}
 
 #pragma mark -
 #pragma mark UIActionSheetDelegate
-
-- (IBAction)choosePhoto:(__unused id)sender {
-    [self.captionTextView resignFirstResponder];
-    UIAlertController *controller = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    if (self.place.imageId) {
-        [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Remove Photo", nil)
-                                                       style:UIAlertActionStyleDestructive
-                                                     handler:^(__unused UIAlertAction *action) {
-                                                         [self imageSelected:nil];
-                                                         [self updateInsets];
-                                                     }]];
-    }
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Take Photo", nil)
-                                                       style:UIAlertActionStyleDefault
-                                                     handler:^(__unused UIAlertAction *action) {
-                                                         UIImagePickerController *imagePicker = [UIImagePickerController new];
-                                                         imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
-                                                         imagePicker.cameraFlashMode = UIImagePickerControllerCameraFlashModeOff;
-                                                         imagePicker.delegate = self;
-                                                         imagePicker.allowsEditing = YES;
-                                                         [self.parentViewController presentViewController:imagePicker animated:YES completion:nil];
-                                                     }]];
-    }
-
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
-        [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Choose From Library", nil)
-                                                       style:UIAlertActionStyleDefault
-                                                     handler:^(__unused UIAlertAction *action) {
-                                                         UIImagePickerController *imagePicker = [UIImagePickerController new];
-                                                         imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-                                                         imagePicker.delegate = self;
-                                                         imagePicker.allowsEditing = YES;
-                                                         [self.parentViewController presentViewController:imagePicker animated:YES completion:nil];
-                                                     }]];
-    }
-    [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Image Search", nil)
-                                                   style:UIAlertActionStyleDefault
-                                                 handler:^(__unused UIAlertAction *action) {
-                                                     PLCFlickrSearchViewController *flickrController = [[PLCFlickrSearchViewController alloc]
-                                                         initWithQuery:self.place.title
-                                                                region:MKCoordinateRegionMakeWithDistance(self.place.coordinate, 500, 500)];
-                                                     flickrController.delegate = self;
-                                                     flickrController.modalPresentationStyle = UIModalPresentationCustom;
-                                                     flickrController.transitioningDelegate = self;
-                                                     [self.parentViewController presentViewController:flickrController animated:YES completion:nil];
-                                                 }]];
-
-    [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil]];
-
-    [self presentViewController:controller animated:YES completion:nil];
-}
+//
+//- (IBAction)choosePhoto:(__unused id)sender {
+//    [self.captionTextView resignFirstResponder];
+//    UIAlertController *controller = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+//    if (self.place.imageId) {
+//        [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Remove Photo", nil)
+//                                                       style:UIAlertActionStyleDestructive
+//                                                     handler:^(__unused UIAlertAction *action) {
+//                                                       [self imageSelected:nil];
+//                                                       [self updateInsets];
+//                                                     }]];
+//    }
+//    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+//        [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Take Photo", nil)
+//                                                       style:UIAlertActionStyleDefault
+//                                                     handler:^(__unused UIAlertAction *action) {
+//                                                       UIImagePickerController *imagePicker = [UIImagePickerController new];
+//                                                       imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+//                                                       imagePicker.cameraFlashMode = UIImagePickerControllerCameraFlashModeOff;
+//                                                       imagePicker.delegate = self;
+//                                                       imagePicker.allowsEditing = YES;
+//                                                       [self.parentViewController presentViewController:imagePicker animated:YES completion:nil];
+//                                                     }]];
+//    }
+//
+//    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+//        [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Choose From Library", nil)
+//                                                       style:UIAlertActionStyleDefault
+//                                                     handler:^(__unused UIAlertAction *action) {
+//                                                       UIImagePickerController *imagePicker = [UIImagePickerController new];
+//                                                       imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+//                                                       imagePicker.delegate = self;
+//                                                       imagePicker.allowsEditing = YES;
+//                                                       [self.parentViewController presentViewController:imagePicker animated:YES completion:nil];
+//                                                     }]];
+//    }
+//    [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Image Search", nil)
+//                                                   style:UIAlertActionStyleDefault
+//                                                 handler:^(__unused UIAlertAction *action) {
+//                                                   PLCFlickrSearchViewController *flickrController = [[PLCFlickrSearchViewController alloc]
+//                                                       initWithQuery:self.place.title
+//                                                              region:MKCoordinateRegionMakeWithDistance(self.place.coordinate, 500, 500)];
+//                                                   flickrController.delegate = self;
+//                                                   flickrController.modalPresentationStyle = UIModalPresentationCustom;
+//                                                   flickrController.transitioningDelegate = self;
+//                                                   [self.parentViewController presentViewController:flickrController animated:YES completion:nil];
+//                                                 }]];
+//
+//    [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil]];
+//
+//    [self presentViewController:controller animated:YES completion:nil];
+//}
 
 #pragma mark -
 #pragma mark UIImagePickerControllerDelegate
-
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    [picker.presentingViewController dismissViewControllerAnimated:YES completion:^{ [self editCaption]; }];
-}
-
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    UIImage *image = info[UIImagePickerControllerEditedImage];
-    [self imageSelected:image];
-    [picker.presentingViewController dismissViewControllerAnimated:YES completion:^{ [self editCaption]; }];
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
-    if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
-        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
-    }
-    [self updateInsets];
-}
-
+//
+//- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+//    [picker.presentingViewController dismissViewControllerAnimated:YES
+//                                                        completion:^{
+//                                                          [self editCaption];
+//                                                        }];
+//}
+//
+//- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+//    UIImage *image = info[UIImagePickerControllerEditedImage];
+//    [self imageSelected:image];
+//    [picker.presentingViewController dismissViewControllerAnimated:YES
+//                                                        completion:^{
+//                                                          [self editCaption];
+//                                                        }];
+//    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+//    if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
+//        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
+//    }
+//    [self updateInsets];
+//}
+//
 #pragma mark -
 #pragma mark UITextViewDelegate
 
@@ -321,12 +340,15 @@
 
 - (void)textViewDidBeginEditing:(__unused UITextView *)textView {
     self.bottomToolbar.hidden = NO;
-    [UIView animateWithDuration:0.3 animations:^{ self.bottomToolbar.alpha = 1.0f; }];
+    [UIView animateWithDuration:0.3
+                     animations:^{
+                       self.bottomToolbar.alpha = 1.0f;
+                     }];
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
     self.place.caption = [textView.text stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithRange:NSMakeRange(NSAttachmentCharacter, 1)]];
-    [[PLCPlaceStore sharedInstance] save];
+    [[PLCMapStore sharedInstance].placeStore save];
     [textView setContentOffset:CGPointZero animated:YES];
 }
 
@@ -340,14 +362,17 @@
 #pragma mark -
 #pragma mark - PLCFlickrSearchCollectionViewControllerDelegate
 
-- (void)controller:(PLCFlickrSearchViewController *)controller didFinishWithImage:(UIImage *)image {
-    if (image) {
-        [self imageSelected:image];
-    }
-    [controller.presentingViewController dismissViewControllerAnimated:YES completion:^{ [self editCaption]; }];
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
-    [self updateInsets];
-}
+//- (void)controller:(PLCFlickrSearchViewController *)controller didFinishWithImage:(UIImage *)image {
+//    if (image) {
+//        [self imageSelected:image];
+//    }
+//    [controller.presentingViewController dismissViewControllerAnimated:YES
+//                                                            completion:^{
+//                                                              [self editCaption];
+//                                                            }];
+//    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+//    [self updateInsets];
+//}
 
 - (UIPresentationController *)presentationControllerForPresentedViewController:(UIViewController *)presented
                                                       presentingViewController:(__unused UIViewController *)presenting

@@ -10,6 +10,7 @@
 #import <Foursquare-API-v2/Foursquare2.h>
 #import "PLCPlaceSearchResult.h"
 #import "PLCPlaceSearchResultTableViewCell.h"
+#import "PLCMapStore.h"
 #import "PLCPlaceStore.h"
 #import "PLCPlace.h"
 
@@ -74,7 +75,7 @@
     PLCPlaceSearchResult *result = self.searchResults[(NSUInteger)indexPath.row];
     [self.presentingViewController dismissViewControllerAnimated:YES
                                                       completion:^{
-                                                          PLCPlace *place = [[PLCPlaceStore sharedInstance] insertPlaceAtCoordinate:result.coordinate];
+                                                          PLCPlaceViewModel *place = [[PLCMapStore sharedInstance].placeStore insertPlaceAtCoordinate:result.coordinate];
                                                           place.caption = [result.title stringByAppendingString:@"\n"];
                                                       }];
 }

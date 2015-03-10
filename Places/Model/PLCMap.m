@@ -19,17 +19,13 @@
 }
 
 - (NSArray *)activePlaces {
-    NSExpression *nilExpression = [NSExpression expressionForConstantValue:[NSNull null]];
-    NSExpression *deletedAtExpression = [NSExpression expressionForKeyPath:PLCPlaceAttributes.deletedAt];
-    NSPredicate *notDeletedPredicate = [NSComparisonPredicate predicateWithLeftExpression:deletedAtExpression
-                                                                          rightExpression:nilExpression
-                                                                                 modifier:NSDirectPredicateModifier
-                                                                                     type:NSEqualToPredicateOperatorType
-                                                                                  options:0];
-    return [[[self.places filteredSetUsingPredicate:notDeletedPredicate]
-        filteredSetUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(PLCPlace *evaluatedObject, __unused NSDictionary *bindings) {
-                                      return CLLocationCoordinate2DIsValid(evaluatedObject.coordinate);
-                                  }]] allObjects];
+    return [[[self.places.rac_sequence filter:^BOOL(PLCPlace *place) {
+        return CLLocationCoordinate2DIsValid(place.coordinate);
+    }] filter:^BOOL(PLCPlace *place) {
+        return place.deletedAt == nil;
+    }] map:^id(PLCPlace *place) {
+        return [[PLCPlaceViewModel alloc] initWithPlace:place];
+    }].array;
 }
 
 - (NSDictionary *)firebaseObject {
@@ -39,6 +35,10 @@
 - (NSURL *)shareURL {
     NSString *string = [NSString stringWithFormat:@"http://shareplac.es/#!/%@", self.urlId];
     return [NSURL URLWithString:string];
+}
+
++ (NSSet *)keyPathsForValuesAffectingActivePlaces {
+    return [NSSet setWithObject:@"places"];
 }
 
 @end

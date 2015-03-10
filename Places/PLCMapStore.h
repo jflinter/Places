@@ -10,15 +10,13 @@
 
 static NSString *const PLCCurrentMapDidChangeNotification;
 
-@class PLCMap, PLCMapStore;
-
-@protocol PLCMapStoreDelegate<NSObject>
-- (void)mapStore:(PLCMapStore *)store didChangeMap:(PLCMap *)map;
-@end
+@class PLCMap, PLCMapStore, PLCPlaceStore;
 
 @interface PLCMapStore : NSObject
 
 + (instancetype)sharedInstance;
+
+@property(nonatomic, readonly)PLCPlaceStore *placeStore;
 
 @property (NS_NONATOMIC_IOSONLY, readonly) NSUInteger numberOfMaps;
 - (PLCMap *)mapAtIndex:(NSUInteger)index;
@@ -26,7 +24,6 @@ static NSString *const PLCCurrentMapDidChangeNotification;
 - (void)updateMap:(PLCMap *)map withName:(NSString *)name;
 - (void)deleteMapAtIndex:(NSUInteger)index;
 @property (nonatomic, strong) PLCMap *selectedMap;
-@property (nonatomic, weak) id<PLCMapStoreDelegate> delegate;
 - (void)registerDelegate:(id<NSFetchedResultsControllerDelegate>)delegate;
 - (void)unregisterDelegate:(id<NSFetchedResultsControllerDelegate>)delegate;
 - (void)save;
