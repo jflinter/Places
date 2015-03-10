@@ -16,4 +16,4 @@ pod "TMCache"
 pod 'HockeySDK', '~> 3.6.2'
 pod 'Reveal-iOS-SDK', :configurations => ['Debug']
 pod 'SimulatorStatusMagic', :configurations => ['Debug']
-pod 'QuadCurveMenu', :git => "https://github.com/jflinter/QuadCurveMenu.git"
+pod 'ReactiveCocoa'
