@@ -12,6 +12,7 @@
 
 @interface PLCSelectedMapCache : NSObject
 
++ (instancetype) sharedInstance;
 @property(nonatomic)PLCMap *selectedMap;
 
 @end

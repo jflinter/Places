@@ -9,4 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface PLCMapSelectionTableViewController : UITableViewController
+
+@property(nonatomic)NSArray *maps;
+
 @end

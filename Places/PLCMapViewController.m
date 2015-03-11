@@ -18,6 +18,7 @@
 #import "PLCMap.h"
 #import "PLCMapStore.h"
 #import "PLCDatabase.h"
+#import "PLCSelectedMapCache.h"
 #import <CoreLocation/CoreLocation.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
@@ -32,7 +33,6 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 @property (nonatomic, getter=isAnimatingToPlace) BOOL animatingToPlace;
 @property (nonatomic, getter=isSuspended) BOOL suspended;
 @property (nonatomic) CLLocationManager *locationManager;
-@property (nonatomic) PLCPlace *selectedPlace;
 @end
 
 @implementation PLCMapViewController
@@ -80,8 +80,7 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     [self.mapView addGestureRecognizer:[self addPlaceGestureRecognizer]];
     self.mapView.rotateEnabled = NO;
     self.mapView.showsPointsOfInterest = NO;
-    self.navigationItem.title = [PLCMapStore sharedInstance].selectedMap.name;
-    [RACObserve([PLCMapStore sharedInstance], selectedMap) subscribeNext:^(PLCMap *selectedMap) {
+    [RACObserve([PLCSelectedMapCache sharedInstance], selectedMap) subscribeNext:^(PLCMap *selectedMap) {
         [self.mapView removeAnnotations:self.mapView.annotations];
         if (selectedMap.activePlaces.count) {
             [self.mapView showAnnotations:selectedMap.activePlaces animated:YES];
@@ -93,47 +92,32 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
         }
     }];
     
-    [[[RACObserve([PLCMapStore sharedInstance], selectedMap)
+    [[[RACObserve([PLCSelectedMapCache sharedInstance], selectedMap)
        map:^(PLCMap *map) {
            return RACObserve(map, activePlaces);
        }]
       switchToLatest]
      subscribeNext:^(NSArray *places) {
-           NSSet *currentAnnotations = [NSMutableSet setWithArray:places];
-           NSMutableSet *toAdd = [currentAnnotations mutableCopy];
-           [toAdd minusSet:[NSMutableSet setWithArray:self.mapView.annotations]];
+         
+           NSSet *currentAnnotations = [NSMutableSet setWithArray:[self.mapView.annotations.rac_sequence filter:^BOOL(id value) {
+               return [value isKindOfClass:[PLCPlace class]];
+           }].array];
+             NSMutableSet *toAdd = [NSMutableSet setWithArray:places];
+           [toAdd minusSet:currentAnnotations];
      
            NSMutableSet *toRemove = [currentAnnotations mutableCopy];
            [toRemove minusSet:[NSSet setWithArray:places]];
            [self.mapView addAnnotations:toAdd.allObjects];
-
-//         if (places.count) {
-//             [self.mapView addAnnotations:places];
-//             [self.mapView showAnnotations:places animated:YES];
-//         } else if (CLLocationCoordinate2DIsValid(self.mapView.userLocation.coordinate)) {
-//             [UIView animateWithDuration:PLCMapPanAnimationDuration
-//                              animations:^{
-//                                  self.mapView.centerCoordinate = self.mapView.userLocation.coordinate;
-//                              }];
-//         }
-
+         if ([toRemove containsObject:self.selectedPlace]) {
+             [self dismissCalloutViewController:self.calloutViewControllers.firstObject completion:^{
+                 [self.mapView removeAnnotations:toRemove.allObjects];
+             }];
+         }
      }];
-//    [[PLCMapStore sharedInstance].placeStore.placesSignal subscribeNext:^(NSArray *places) {
-//      [[[RACObserve(self, calloutViewControllers) takeWhileBlock:^BOOL(NSArray *calloutViewControllers) {
-//          return calloutViewControllers.count == 0;
-//      }] take:1] subscribeNext:^(__unused id x) {
-//          [self.mapView removeAnnotations:toRemove.allObjects];
-//      }];
-//    }];
+
     [RACObserve(self, selectedPlace) subscribeNext:^(PLCPlace *place) {
     [self dismissAllCalloutViewControllers];
-      if (place) {
-            [[[RACObserve(self, calloutViewControllers) takeWhileBlock:^BOOL(NSArray *calloutViewControllers) {
-                return calloutViewControllers.count == 0;
-            }] take:1] subscribeNext:^(__unused id x) {
-              [self.mapView selectAnnotation:place animated:YES];
-            }];
-      }
+      [self.mapView selectAnnotation:place animated:YES];
     }];
     self.view = self.mapView;
 }
@@ -185,7 +169,7 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     didChangeDragState:(MKAnnotationViewDragState)newState
           fromOldState:(__unused MKAnnotationViewDragState)oldState {
     if (newState == MKAnnotationViewDragStateEnding) {
-        [PLCPlaceStore updatePlace:(PLCPlace *)view.annotation onMap:[PLCMapStore sharedInstance].selectedMap withCoordinate:[view.annotation coordinate]];
+        [PLCPlaceStore updatePlace:(PLCPlace *)view.annotation withCoordinate:[view.annotation coordinate]];
     }
 }
 
@@ -264,7 +248,7 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     if (sender.state == UIGestureRecognizerStateBegan) {
         CGPoint mapViewLocation = [sender locationInView:self.mapView];
         CLLocationCoordinate2D touchCoordinate = [self.mapView convertPoint:mapViewLocation toCoordinateFromView:self.mapView];
-        self.selectedPlace = [PLCPlaceStore insertPlaceOntoMap:[PLCMapStore sharedInstance].selectedMap atCoordinate:touchCoordinate];
+        self.selectedPlace = [PLCPlaceStore insertPlaceOntoMap:[PLCSelectedMapCache sharedInstance].selectedMap atCoordinate:touchCoordinate];
     }
 }
 
@@ -393,7 +377,8 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 
 - (IBAction)dropPin:(__unused id)sender {
     [self determineLocation:^{
-      PLCPlace *place = [PLCPlaceStore insertPlaceOntoMap:[PLCMapStore sharedInstance].selectedMap atCoordinate:self.mapView.userLocation.coordinate];
+      PLCPlace *place = [PLCPlaceStore insertPlaceOntoMap:[PLCSelectedMapCache sharedInstance].selectedMap atCoordinate:self.mapView.userLocation.coordinate];
+        self.selectedPlace = place;
       [[INTULocationManager sharedInstance] requestLocationWithDesiredAccuracy:INTULocationAccuracyHouse
                                                                        timeout:180
                                                                          block:^(CLLocation *currentLocation,
@@ -405,7 +390,7 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
                                                                            if (status == INTULocationStatusSuccess) {
                                                                                if (!fequal(place.coordinate.latitude, currentLocation.coordinate.latitude) ||
                                                                                    !fequal(place.coordinate.longitude, currentLocation.coordinate.longitude)) {
-                                                                                   [PLCPlaceStore updatePlace:place onMap:[PLCMapStore sharedInstance].selectedMap withCoordinate:currentLocation.coordinate];
+                                                                                   [PLCPlaceStore updatePlace:place withCoordinate:currentLocation.coordinate];
                                                                                }
                                                                            }
                                                                          }];

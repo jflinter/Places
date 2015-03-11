@@ -8,28 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-@class PLCMap, PLCMapStore, PLCPlaceStore;
+@class PLCMap;
 
 @interface PLCMapStore : NSObject
 
-+ (instancetype)sharedInstance;
-
-@property(nonatomic, readonly)NSArray *maps;
++ (NSArray *)allMaps;
 + (PLCMap *)createMapWithName:(NSString *)name;
 + (void)deleteMap:(PLCMap *)map;
 + (void)updateMap:(PLCMap *)map withName:(NSString *)name;
-
-
-
-
-
-
-// deprecated
-@property (NS_NONATOMIC_IOSONLY, readonly) NSUInteger numberOfMaps;
-- (PLCMap *)mapAtIndex:(NSUInteger)index;
-- (void)deleteMapAtIndex:(NSUInteger)index;
-@property (nonatomic, strong) PLCMap *selectedMap;
-- (void)registerDelegate:(id<NSFetchedResultsControllerDelegate>)delegate;
-- (void)unregisterDelegate:(id<NSFetchedResultsControllerDelegate>)delegate;
 
 @end

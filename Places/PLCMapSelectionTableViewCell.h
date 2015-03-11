@@ -8,7 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import <SWTableViewCell/SWTableViewCell.h>
+#import "PLCMapRowViewModel.h"
 
 @interface PLCMapSelectionTableViewCell : SWTableViewCell
 @property (weak, nonatomic) IBOutlet UITextField *editTitleTextField;
+
+- (void)configureWithViewModel:(PLCMapRowViewModel *)viewModel;
+
 @end

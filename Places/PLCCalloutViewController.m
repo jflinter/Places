@@ -192,7 +192,7 @@
 }
 
 - (IBAction)deletePlace:(__unused id)sender {
-    [PLCPlaceStore removePlace:self.place fromMap:self.place.map];
+    [PLCPlaceStore removePlace:self.place];
 }
 
 - (IBAction)sharePlace:(UIButton *)sender {
@@ -348,7 +348,7 @@
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
     NSString *caption = [textView.text stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithRange:NSMakeRange(NSAttachmentCharacter, 1)]];
-    [PLCPlaceStore updatePlace:self.place onMap:self.place.map withCaption:caption];
+    [PLCPlaceStore updatePlace:self.place withCaption:caption];
     [textView setContentOffset:CGPointZero animated:YES];
 }
 

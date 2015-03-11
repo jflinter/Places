@@ -42,7 +42,7 @@
             [expectation fulfill];
         }
     }];
-    [PLCPlaceStore removePlace:place fromMap:self.map];
+    [PLCPlaceStore removePlace:place];
     [self waitForExpectationsWithTimeout:5.0f handler:nil];
 }
 

@@ -15,6 +15,7 @@
 #import "PLCMapView.h"
 #import "PLCMapStore.h"
 #import "PLCMap.h"
+#import "PLCSelectedMapCache.h"
 #import <TUSafariActivity/TUSafariActivity.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
@@ -44,8 +45,11 @@
                                         target:self
                                         action:@selector(showLocation:)],
     ];
-    [RACObserve([PLCMapStore sharedInstance], selectedMap) subscribeNext:^(PLCMap *map) {
+    [RACObserve([PLCSelectedMapCache sharedInstance], selectedMap) subscribeNext:^(PLCMap *map) {
         self.title = map.name;
+    }];
+    [[RACObserve(mapViewController, selectedPlace) throttle:0.05] subscribeNext:^(id place) {
+        [self setChromeHidden:(place != nil) animated:YES];
     }];
 }
 
@@ -84,6 +88,8 @@
 
 - (IBAction)showMapSelection:(__unused id)sender {
     UINavigationController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"PLCMapSelectionNavigationController"];
+    PLCMapSelectionTableViewController *mapSelectionController = (PLCMapSelectionTableViewController *)controller.visibleViewController;
+    mapSelectionController.maps = [PLCMapStore allMaps];
     controller.modalPresentationStyle = UIModalPresentationCustom;
     controller.transitioningDelegate = self;
     [self presentViewController:controller animated:YES completion:nil];
@@ -148,7 +154,7 @@
 
 - (IBAction)shareMap:(UIBarButtonItem *)sender {
     UIActivityViewController *activityViewController =
-        [[UIActivityViewController alloc] initWithActivityItems:@[[[PLCMapStore sharedInstance].selectedMap shareURL]]
+        [[UIActivityViewController alloc] initWithActivityItems:@[[[PLCSelectedMapCache sharedInstance].selectedMap shareURL]]
                                           applicationActivities:@[[TUSafariActivity new]]];
     // exclude the airdrop action because it's incredibly fucking slow and noone uses it
     activityViewController.excludedActivityTypes = @[UIActivityTypePrint, UIActivityTypeAirDrop];

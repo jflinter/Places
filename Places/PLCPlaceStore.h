@@ -14,8 +14,8 @@
 @interface PLCPlaceStore : NSObject
 
 + (PLCPlace *)insertPlaceOntoMap:(PLCMap *)map atCoordinate:(CLLocationCoordinate2D)coordinate;
-+ (void)updatePlace:(PLCPlace *)place onMap:(PLCMap *)map withCoordinate:(CLLocationCoordinate2D)coordinate;
-+ (void)updatePlace:(PLCPlace *)place onMap:(PLCMap *)map withCaption:(NSString *)caption;
-+ (void)removePlace:(PLCPlace *)place fromMap:(PLCMap *)map;
++ (void)updatePlace:(PLCPlace *)place withCoordinate:(CLLocationCoordinate2D)coordinate;
++ (void)updatePlace:(PLCPlace *)place withCaption:(NSString *)caption;
++ (void)removePlace:(PLCPlace *)place;
 
 @end

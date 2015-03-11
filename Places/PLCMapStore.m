@@ -18,56 +18,9 @@
 #import "PLCPhotoStore.h"
 #import <TMCache/TMCache.h>
 
-static NSString *const PLCCurrentMapSaveKey = @"PLCCurrentMapSaveKey";
-static NSString *const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidChangeNotification";
-
-@interface PLCMapStore () <NSFetchedResultsControllerDelegate>
-@property (nonatomic) NSFetchedResultsController *fetchedResultsController;
-@property (nonatomic) NSMutableArray *delegates;
-@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSArray *allMaps;
-@property (nonatomic) PLCPlaceStore *placeStore;
-@end
-
 @implementation PLCMapStore
 
-+ (instancetype)sharedInstance {
-    static PLCMapStore *sharedInstance;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-      sharedInstance = [self new];
-    });
-    return sharedInstance;
-}
-
-- (instancetype)init {
-    self = [super init];
-    if (self) {
-        _delegates = [@[] mutableCopy];
-        self.selectedMap = [self selectedMap] ?: [self.class defaultMap];
-        _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:[self fetchRequest:NO]
-                                                                        managedObjectContext:[self.class managedObjectContext]
-                                                                          sectionNameKeyPath:nil
-                                                                                   cacheName:nil];
-        _fetchedResultsController.delegate = self;
-        [_fetchedResultsController performFetch:nil];
-    }
-    return self;
-}
-
-- (void)dealloc {
-    _fetchedResultsController.delegate = nil;
-}
-
-- (NSUInteger)numberOfMaps {
-    id<NSFetchedResultsSectionInfo> section = [[self.fetchedResultsController sections] firstObject];
-    return [section numberOfObjects];
-}
-
-- (NSArray *)notDeletedMaps {
-    return self.fetchedResultsController.fetchedObjects;
-}
-
-- (NSFetchRequest *)fetchRequest:(BOOL)allowDeleted {
++ (NSArray *)allMaps {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[PLCMap entityName]];
     fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:PLCMapAttributes.name ascending:YES]];
     NSExpression *nilExpression = [NSExpression expressionForConstantValue:[NSNull null]];
@@ -77,10 +30,8 @@ static NSString *const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidCh
                                                                                  modifier:NSDirectPredicateModifier
                                                                                      type:NSEqualToPredicateOperatorType
                                                                                   options:0];
-    if (!allowDeleted) {
-        fetchRequest.predicate = notDeletedPredicate;
-    }
-    return fetchRequest;
+    fetchRequest.predicate = notDeletedPredicate;
+    return [[self managedObjectContext] executeFetchRequest:fetchRequest error:nil];
 }
 
 + (PLCMap *)mapWithUUID:(NSString *)uuid {
@@ -94,14 +45,6 @@ static NSString *const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidCh
                                                                            type:NSEqualToPredicateOperatorType
                                                                         options:0];
     return [[[self managedObjectContext] executeFetchRequest:fetchRequest error:nil] firstObject];
-}
-
-+ (NSManagedObjectContext *)managedObjectContext {
-    return [PLCDatabase sharedDatabase].mainContext;
-}
-
-- (PLCMap *)mapAtIndex:(NSUInteger)index {
-    return [self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:(NSInteger)index inSection:0]];
 }
 
 + (PLCMap *)defaultMap {
@@ -147,45 +90,6 @@ static NSString *const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidCh
 //    [[self managedObjectContext] save:nil];
 }
 
-- (void)controller:(NSFetchedResultsController *)controller
-    didChangeObject:(id)anObject
-        atIndexPath:(NSIndexPath *)indexPath
-      forChangeType:(NSFetchedResultsChangeType)type
-       newIndexPath:(NSIndexPath *)newIndexPath {
-    for (id<NSFetchedResultsControllerDelegate> delegate in self.delegates) {
-        [delegate controller:controller didChangeObject:anObject atIndexPath:indexPath forChangeType:type newIndexPath:newIndexPath];
-    }
-}
-
-- (void)controller:(NSFetchedResultsController *)controller
-    didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo
-             atIndex:(NSUInteger)sectionIndex
-       forChangeType:(NSFetchedResultsChangeType)type {
-    for (id<NSFetchedResultsControllerDelegate> delegate in self.delegates) {
-        [delegate controller:controller didChangeSection:sectionInfo atIndex:sectionIndex forChangeType:type];
-    }
-}
-
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
-    for (id<NSFetchedResultsControllerDelegate> delegate in self.delegates) {
-        [delegate controllerWillChangeContent:controller];
-    }
-}
-
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-    for (id<NSFetchedResultsControllerDelegate> delegate in self.delegates) {
-        [delegate controllerDidChangeContent:controller];
-    }
-}
-
-- (void)registerDelegate:(id<NSFetchedResultsControllerDelegate>)delegate {
-    [self.delegates addObject:delegate];
-}
-
-- (void)unregisterDelegate:(id<NSFetchedResultsControllerDelegate>)delegate {
-    [self.delegates removeObject:delegate];
-}
-
 + (NSString *)slugForMap:(PLCMap *)map {
     static NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     NSMutableString *mapId = [@"" mutableCopy];
@@ -202,6 +106,10 @@ static NSString *const PLCCurrentMapDidChangeNotification = @"PLCCurrentMapDidCh
     urlId = [urlId stringByAppendingString:mapId];
     NSParameterAssert(urlId);
     return urlId;
+}
+
++ (NSManagedObjectContext *)managedObjectContext {
+    return [PLCDatabase sharedDatabase].mainContext;
 }
 
 @end
