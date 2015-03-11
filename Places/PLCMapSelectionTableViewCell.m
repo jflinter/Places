@@ -48,22 +48,23 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     if (textField.text.length != 0) {
-        self.viewModel.title = textField.text;
+        [self.cellDelegate tableViewCell:self textDidChange:textField.text];
         [textField resignFirstResponder];
     }
     return NO;
 }
 
 - (void)swipeableTableViewCell:(SWTableViewCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)index {
-    [cell hideUtilityButtonsAnimated:YES];
-    if (index == 0) {
-        self.editTitleTextField.hidden = NO;
-        [UIView animateWithDuration:0.3
-                         animations:^{ self.editTitleTextField.alpha = 1.0; }
-                         completion:^(__unused BOOL finished) { [self.editTitleTextField becomeFirstResponder]; }];
-        return;
-    }
-    [self.viewModel deleteMap];
+        [cell hideUtilityButtonsAnimated:YES];
+        if (index == 0) {
+            self.editTitleTextField.hidden = NO;
+            [UIView animateWithDuration:0.3
+                             animations:^{ self.editTitleTextField.alpha = 1.0; }
+                             completion:^(__unused BOOL finished) { [self.editTitleTextField becomeFirstResponder]; }];
+            return;
+        } else {
+            [self.cellDelegate tableViewCellDidDelete:self];
+        }
 }
 
 

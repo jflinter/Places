@@ -14,9 +14,7 @@
 
 - (instancetype)initWithMap:(PLCMap *)map;
 
-@property(nonatomic)NSString *title;
-@property(nonatomic)BOOL selected;
-
-- (void)deleteMap;
+@property(nonatomic, readonly)NSString *title;
+@property(nonatomic, readonly)BOOL selected;
 
 @end

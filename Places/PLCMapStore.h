@@ -12,6 +12,7 @@
 
 @interface PLCMapStore : NSObject
 
++ (void)createDefaultMapIfNecessary;
 + (NSArray *)allMaps;
 + (PLCMap *)createMapWithName:(NSString *)name;
 + (void)deleteMap:(PLCMap *)map;

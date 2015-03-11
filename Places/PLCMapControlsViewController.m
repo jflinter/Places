@@ -89,7 +89,7 @@
 - (IBAction)showMapSelection:(__unused id)sender {
     UINavigationController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"PLCMapSelectionNavigationController"];
     PLCMapSelectionTableViewController *mapSelectionController = (PLCMapSelectionTableViewController *)controller.visibleViewController;
-    mapSelectionController.maps = [PLCMapStore allMaps];
+    mapSelectionController.maps = [[PLCMapStore allMaps] mutableCopy];
     controller.modalPresentationStyle = UIModalPresentationCustom;
     controller.transitioningDelegate = self;
     [self presentViewController:controller animated:YES completion:nil];

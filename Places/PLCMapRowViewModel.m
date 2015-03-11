@@ -27,27 +27,4 @@
     return self;
 }
 
-- (void)setTitle:(NSString *)title {
-    _title = title;
-    [PLCMapStore updateMap:self.map withName:title];
-}
-
-- (void)setSelected:(BOOL)selected {
-    _selected = selected;
-    [PLCSelectedMapCache sharedInstance].selectedMap = self.map;
-}
-
-- (void)deleteMap {
-    if ([PLCMapStore allMaps].count == 1) {
-        [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Can't delete last map", nil)
-                                    message:NSLocalizedString(@"You have to have at least one map. To delete this map, make another map first.", nil)
-                                   delegate:nil
-                          cancelButtonTitle:nil
-                          otherButtonTitles:NSLocalizedString(@"OK", nil), nil] show];
-        return;
-    }
-    [PLCMapStore deleteMap:self.map];
-
-}
-
 @end

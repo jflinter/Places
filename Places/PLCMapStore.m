@@ -47,10 +47,6 @@
     return [[[self managedObjectContext] executeFetchRequest:fetchRequest error:nil] firstObject];
 }
 
-+ (PLCMap *)defaultMap {
-    return [self createMapWithName:NSLocalizedString(@"Places", nil)];
-}
-
 + (PLCMap *)createMapWithName:(NSString *)name {
     PLCMap *map = [PLCMap insertInManagedObjectContext:[self managedObjectContext]];
     [self updateMap:map withName:name];
@@ -69,25 +65,6 @@
 + (void)deleteMap:(PLCMap *)map {
     map.deletedAt = [NSDate date];
     [[self managedObjectContext] save:nil];
-}
-
-- (void)deleteMapAtIndex:(__unused NSUInteger)index {
-//    NSArray *maps = self.notDeletedMaps;
-//    PLCMap *map = maps[index];
-//    if (!map) {
-//        return;
-//    }
-//    map.deletedAt = [NSDate date];
-//    [[[Firebase mapClient] childByAppendingPath:map.uuid] setValue:[map firebaseObject] andPriority:[[PLCUserStore sharedInstance] currentUserId]];
-//    PLCMap *newMap;
-//    if (map.selectedValue) {
-//        map.selectedValue = NO;
-//        NSUInteger newIndex = (index == 0) ? 1 : index - 1;
-//        newMap = maps[newIndex];
-//        newMap.selectedValue = YES;
-//        self.selectedMap = newMap;
-//    }
-//    [[self managedObjectContext] save:nil];
 }
 
 + (NSString *)slugForMap:(PLCMap *)map {
@@ -110,6 +87,12 @@
 
 + (NSManagedObjectContext *)managedObjectContext {
     return [PLCDatabase sharedDatabase].mainContext;
+}
+
++ (void)createDefaultMapIfNecessary {
+    if ([self allMaps].count == 0) {
+        [self createMapWithName:NSLocalizedString(@"Places", nil)];
+    }
 }
 
 @end

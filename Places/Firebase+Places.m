@@ -14,6 +14,7 @@
 @implementation Firebase (Places)
 
 + (instancetype)placesFirebaseClient {
+    return nil; //TODO
     return [[self alloc] initWithUrl:@"https://shareplaces.firebaseio.com/"];
 }
 

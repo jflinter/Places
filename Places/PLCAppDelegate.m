@@ -7,6 +7,7 @@
 //
 
 #import "PLCAppDelegate.h"
+#import "PLCMapStore.h"
 #import "PLCMapViewController.h"
 #import "PLCUserStore.h"
 #import "PLCPersistentQueue.h"
@@ -53,6 +54,7 @@
 #if defined(DEBUG) && TARGET_IPHONE_SIMULATOR
     [[SDStatusBarManager sharedInstance] enableOverrides];
 #endif
+    [PLCMapStore createDefaultMapIfNecessary];
     return YES;
 }
 
