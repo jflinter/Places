@@ -74,7 +74,7 @@
                                                    handler:^(__unused UIAlertAction *action) {
                                                        NSString *mapTitle = [controller.textFields[0] text];
                                                        PLCMapStore *store = [PLCMapStore sharedInstance];
-                                                       store.selectedMap = [store insertMapWithName:mapTitle];
+                                                       store.selectedMap = [PLCMapStore createMapWithName:mapTitle];
                                                        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
                                                    }];
     createMapAction.enabled = NO;
@@ -204,7 +204,7 @@
         CGPoint point = [textField convertPoint:textField.center toView:self.tableView];
         NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:point];
         PLCMap *map = [[PLCMapStore sharedInstance] mapAtIndex:(NSUInteger)indexPath.row];
-        [[PLCMapStore sharedInstance] updateMap:map withName:textField.text];
+        [PLCMapStore updateMap:map withName:textField.text];
         [textField resignFirstResponder];
     }
     return NO;

@@ -75,7 +75,7 @@
     PLCPlaceSearchResult *result = self.searchResults[(NSUInteger)indexPath.row];
     [self.presentingViewController dismissViewControllerAnimated:YES
                                                       completion:^{
-                                                          PLCPlaceViewModel *place = [[PLCMapStore sharedInstance].placeStore insertPlaceAtCoordinate:result.coordinate];
+                                                          PLCPlace *place = [PLCPlaceStore insertPlaceOntoMap:[PLCMapStore sharedInstance].selectedMap atCoordinate:result.coordinate];
                                                           place.caption = [result.title stringByAppendingString:@"\n"];
                                                       }];
 }

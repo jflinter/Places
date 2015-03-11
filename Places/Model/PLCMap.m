@@ -8,6 +8,7 @@
 
 #import "PLCMap.h"
 #import "PLCPlace.h"
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
 @implementation PLCMap
 
@@ -19,12 +20,10 @@
 }
 
 - (NSArray *)activePlaces {
-    return [[[self.places.rac_sequence filter:^BOOL(PLCPlace *place) {
+    return [[self.places.rac_sequence filter:^BOOL(PLCPlace *place) {
         return CLLocationCoordinate2DIsValid(place.coordinate);
     }] filter:^BOOL(PLCPlace *place) {
         return place.deletedAt == nil;
-    }] map:^id(PLCPlace *place) {
-        return [[PLCPlaceViewModel alloc] initWithPlace:place];
     }].array;
 }
 

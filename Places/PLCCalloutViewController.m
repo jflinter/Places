@@ -22,7 +22,7 @@
 @interface PLCCalloutViewController () <UIImagePickerControllerDelegate,
                                         UINavigationControllerDelegate,
                                         UIActionSheetDelegate,
-                                        PLCFlickrSearchViewControllerDelegate,
+//                                        PLCFlickrSearchViewControllerDelegate,
                                         UIViewControllerTransitioningDelegate>
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *trashButton;
@@ -192,7 +192,7 @@
 }
 
 - (IBAction)deletePlace:(__unused id)sender {
-    [[PLCMapStore sharedInstance].placeStore removePlace:self.place];
+    [PLCPlaceStore removePlace:self.place fromMap:self.place.map];
 }
 
 - (IBAction)sharePlace:(UIButton *)sender {
@@ -347,8 +347,8 @@
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
-    self.place.caption = [textView.text stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithRange:NSMakeRange(NSAttachmentCharacter, 1)]];
-    [[PLCMapStore sharedInstance].placeStore save];
+    NSString *caption = [textView.text stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithRange:NSMakeRange(NSAttachmentCharacter, 1)]];
+    [PLCPlaceStore updatePlace:self.place onMap:self.place.map withCaption:caption];
     [textView setContentOffset:CGPointZero animated:YES];
 }
 

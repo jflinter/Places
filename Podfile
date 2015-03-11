@@ -1,5 +1,7 @@
 platform :ios, "8.0"
 
+link_with 'Places', 'PlacesTests'
+
 pod "BDDROneFingerZoomGestureRecognizer"
 pod "INTULocationManager"
 pod "Firebase"

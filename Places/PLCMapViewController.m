@@ -32,6 +32,7 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 @property (nonatomic, getter=isAnimatingToPlace) BOOL animatingToPlace;
 @property (nonatomic, getter=isSuspended) BOOL suspended;
 @property (nonatomic) CLLocationManager *locationManager;
+@property (nonatomic) PLCPlace *selectedPlace;
 @end
 
 @implementation PLCMapViewController
@@ -60,10 +61,6 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
                                                object:nil];
     _locationManager = [CLLocationManager new];
     _locationManager.delegate = self;
-}
-
-- (PLCPlaceStore *)placeStore {
-    return [PLCMapStore sharedInstance].placeStore;
 }
 
 - (void)loadView {
@@ -128,14 +125,14 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 //          [self.mapView removeAnnotations:toRemove.allObjects];
 //      }];
 //    }];
-    [RACObserve([PLCMapStore sharedInstance].placeStore, selectedPlace) subscribeNext:^(PLCPlaceViewModel *place) {
+    [RACObserve(self, selectedPlace) subscribeNext:^(PLCPlace *place) {
+    [self dismissAllCalloutViewControllers];
       if (place) {
-          [self.mapView selectAnnotation:place animated:YES];
-      } else {
-          PLCCalloutViewController *calloutViewController = self.calloutViewControllers.firstObject;
-          if (calloutViewController) {
-              [self dismissCalloutViewController:calloutViewController completion:nil];
-          }
+            [[[RACObserve(self, calloutViewControllers) takeWhileBlock:^BOOL(NSArray *calloutViewControllers) {
+                return calloutViewControllers.count == 0;
+            }] take:1] subscribeNext:^(__unused id x) {
+              [self.mapView selectAnnotation:place animated:YES];
+            }];
       }
     }];
     self.view = self.mapView;
@@ -184,11 +181,11 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 }
 
 - (void)mapView:(__unused MKMapView *)mapView
-        annotationView:(__unused MKAnnotationView *)view
+        annotationView:(MKAnnotationView *)view
     didChangeDragState:(MKAnnotationViewDragState)newState
           fromOldState:(__unused MKAnnotationViewDragState)oldState {
     if (newState == MKAnnotationViewDragStateEnding) {
-        [self.placeStore save];
+        [PLCPlaceStore updatePlace:(PLCPlace *)view.annotation onMap:[PLCMapStore sharedInstance].selectedMap withCoordinate:[view.annotation coordinate]];
     }
 }
 
@@ -196,7 +193,7 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     if (view.annotation == mapView.userLocation) {
         return;
     }
-    [self placeStore].selectedPlace = (PLCPlaceViewModel *)view.annotation;
+    self.selectedPlace = (PLCPlace *)view.annotation;
     [self dismissAllCalloutViewControllers];
     BOOL shouldEdit = self.isAddingPlace;
     void (^afterCallout)() = ^{
@@ -204,7 +201,7 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
       [self presentCalloutViewController:calloutViewController fromAnnotationView:view forceEditing:shouldEdit];
     };
 
-    BOOL const waitToShow = self.isAddingPlace;
+    BOOL const waitToShow = view.layer.animationKeys.count > 0;
     NSTimeInterval animationDuration = waitToShow ? [PLCPinAnnotationView pinDropAnimationDuration] : PLCMapPanAnimationDuration;
     self.animatingToPlace = YES;
 
@@ -231,7 +228,7 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 }
 
 - (void)mapView:(__unused PLCMapView *)mapView didDeselectAnnotationView:(__unused MKAnnotationView *)view {
-    [self placeStore].selectedPlace = nil;
+    self.selectedPlace = nil;
 }
 
 - (void)mapView:(PLCMapView *)mapView regionWillChangeAnimated:(__unused BOOL)animated {
@@ -267,7 +264,7 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     if (sender.state == UIGestureRecognizerStateBegan) {
         CGPoint mapViewLocation = [sender locationInView:self.mapView];
         CLLocationCoordinate2D touchCoordinate = [self.mapView convertPoint:mapViewLocation toCoordinateFromView:self.mapView];
-        self.placeStore.selectedPlace = [self.placeStore insertPlaceAtCoordinate:touchCoordinate];
+        self.selectedPlace = [PLCPlaceStore insertPlaceOntoMap:[PLCMapStore sharedInstance].selectedMap atCoordinate:touchCoordinate];
     }
 }
 
@@ -396,7 +393,7 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 
 - (IBAction)dropPin:(__unused id)sender {
     [self determineLocation:^{
-      PLCPlace *place = [self.placeStore insertPlaceAtCoordinate:self.mapView.userLocation.coordinate];
+      PLCPlace *place = [PLCPlaceStore insertPlaceOntoMap:[PLCMapStore sharedInstance].selectedMap atCoordinate:self.mapView.userLocation.coordinate];
       [[INTULocationManager sharedInstance] requestLocationWithDesiredAccuracy:INTULocationAccuracyHouse
                                                                        timeout:180
                                                                          block:^(CLLocation *currentLocation,
@@ -408,8 +405,7 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
                                                                            if (status == INTULocationStatusSuccess) {
                                                                                if (!fequal(place.coordinate.latitude, currentLocation.coordinate.latitude) ||
                                                                                    !fequal(place.coordinate.longitude, currentLocation.coordinate.longitude)) {
-                                                                                   place.coordinate = currentLocation.coordinate;
-                                                                                   [self.placeStore save];
+                                                                                   [PLCPlaceStore updatePlace:place onMap:[PLCMapStore sharedInstance].selectedMap withCoordinate:currentLocation.coordinate];
                                                                                }
                                                                            }
                                                                          }];
