@@ -118,9 +118,15 @@ FOUNDATION_EXPORT NSString * const kFoursquare2DidRemoveAccessTokenNotification;
 @interface Foursquare2 : NSObject
 
 /**
- Set the dispatch queue in which request callbacks are called (defaults to the main queue).
+ Sets the dispatch queue in which request callbacks are called (defaults to the main queue).
  */
 + (void)setCallbackQueue:(dispatch_queue_t)callbackQueue;
+
+/**
+ Sets timeout interval for all API requeusts, in seconds.
+ The default timeout interval is 60 sec.
+ */
++ (void)setTimeoutInterval:(NSTimeInterval)timeoutInterval;
 
 /**
  Returns the dispatch queue in which request callbacks are called.
@@ -307,6 +313,20 @@ FOUNDATION_EXPORT NSString * const kFoursquare2DidRemoveAccessTokenNotification;
                               before:(NSDate *)before
                           categoryID:(NSString *)categoryID
                             callback:(Foursquare2Callback)callback;
+
+/**
+ An array of users's lists.
+ @param userIDs Up to 5 valid user IDs to get lists for. Passing "self" as one of the userIDs should be valid
+ @returns The instance of NSOperation already inqueued in internal operation queue.
+ Callback block will not be called, if you send cancel message to the operation.
+ @discussion returns in callback "lists" field. If group is specified, contains a count and items of lists:
+ https://developer.foursquare.com/docs/responses/list https://developer.foursquare.com/docs/multi/multi
+ If FoursquareListGroupNone is specified, it contains a groups array containing elements.
+ */
+
++ (NSOperation *)multiUserGetLists:(NSArray *)userIDs
+                          callback:(Foursquare2Callback)callback;
+
 /**
  A User's Lists.
  @param userID Valid user ID to get lists for. Pass "self" to get lists of the acting user.
@@ -489,6 +509,17 @@ https://developer.foursquare.com/docs/lists/add
  */
 + (NSOperation *)listSuggestVenuesForListWithId:(NSString *)listID
                                        callback:(Foursquare2Callback)callback;
+
+/**
+ Adds the current user as a follower of this list
+ @discussion
+ @returns The instance of NSOperation already inqueued in internal operation queue.
+ Callback block will not be called, if you send cancel message to the operation.
+ https://developer.foursquare.com/docs/lists/suggestvenues
+ */
++ (NSOperation *)listFollowListWithId:(NSString *)listID
+                               follow:(BOOL)follow
+                             callback:(Foursquare2Callback)callback;
 
 #pragma mark ---------------------------- Venues -----------------------------------------------------------------------
 

@@ -22,6 +22,10 @@
 @interface PLCMapControlsViewController () <UIViewControllerTransitioningDelegate>
 @property (nonatomic, weak) PLCMapViewController *mapViewController;
 @property (nonatomic) BOOL chromeHidden;
+@property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *toolbarBottomConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *toolbarTopConstraint;
+@property (weak, nonatomic) IBOutlet UIView *placeListContainerView;
 @end
 
 @implementation PLCMapControlsViewController
@@ -34,6 +38,7 @@
     mapViewController.view.frame = self.view.bounds;
     [self.view addSubview:mapViewController.view];
     [mapViewController didMoveToParentViewController:self];
+    [self.view sendSubviewToBack:self.mapViewController.view];
 
     UIImage *plusImage = [UIImage imageNamed:@"709-plus-toolbar"];
     self.toolbarItems = @[
@@ -51,6 +56,7 @@
     [[RACObserve(mapViewController, selectedPlace) throttle:0.05] subscribeNext:^(id place) {
         [self setChromeHidden:(place != nil) animated:YES];
     }];
+    self.placeListContainerView.clipsToBounds = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -76,7 +82,10 @@
 - (void)setChromeHidden:(BOOL)chromeHidden animated:(BOOL)animated {
     if (_chromeHidden != chromeHidden) {
         _chromeHidden = chromeHidden;
-        [self.navigationController setToolbarHidden:chromeHidden animated:animated];
+        self.toolbarBottomConstraint.constant = chromeHidden ? -self.toolbar.frame.size.height : 0;
+        [UIView animateWithDuration:(animated * 0.3) delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+            [self.view layoutIfNeeded];
+        } completion:nil];
         if (animated) {
             [[UIApplication sharedApplication] setStatusBarHidden:chromeHidden withAnimation:UIStatusBarAnimationSlide];
         } else {
@@ -84,6 +93,21 @@
         }
         [self.navigationController setNavigationBarHidden:chromeHidden animated:animated];
     }
+}
+
+- (IBAction)showPlaceList:(__unused UIBarButtonItem *)sender {
+    UIView *view = [sender valueForKey:@"view"];
+    BOOL on = CGAffineTransformEqualToTransform(view.transform, CGAffineTransformIdentity);
+    self.toolbarBottomConstraint.constant = on ? self.placeListContainerView.frame.size.height : 0;
+    [UIView animateWithDuration:0.2 animations:^{
+        [self.view layoutIfNeeded];
+        if (on) {
+            view.transform = CGAffineTransformMakeRotation(M_PI*.999);
+        } else {
+            view.transform = CGAffineTransformIdentity;
+        }
+
+    }];
 }
 
 - (IBAction)showMapSelection:(__unused id)sender {

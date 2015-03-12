@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="beW-Pz-9Xk">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="beW-Pz-9Xk">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Your Maps-->
@@ -93,7 +94,7 @@
         <!--Navigation Controller-->
         <scene sceneID="Qb1-C7-ZrN">
             <objects>
-                <navigationController definesPresentationContext="YES" toolbarHidden="NO" id="beW-Pz-9Xk" sceneMemberID="viewController">
+                <navigationController definesPresentationContext="YES" id="beW-Pz-9Xk" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="5Kv-9G-255">
                         <autoresizingMask key="autoresizingMask"/>
                         <textAttributes key="titleTextAttributes">
@@ -121,20 +122,65 @@
                         <viewControllerLayoutGuide type="bottom" id="LaD-Hf-YxR"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="lNU-MC-GZc">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hYr-ba-okk">
+                                <rect key="frame" x="0.0" y="307" width="320" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="PVm-oR-oGT"/>
+                                </constraints>
+                                <items>
+                                    <barButtonItem image="763-arrow-up-toolbar" id="Koj-Pu-DqU">
+                                        <connections>
+                                            <action selector="showPlaceList:" destination="OId-a2-hAa" id="M1J-9i-HA3"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="37x-vm-QHz"/>
+                                    <barButtonItem image="709-plus-toolbar" id="5RP-sJ-mNE"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="v0F-Or-7y0"/>
+                                    <barButtonItem image="723-location-arrow-toolbar" id="VzM-jp-IJN">
+                                        <connections>
+                                            <action selector="showLocation:" destination="OId-a2-hAa" id="2n7-KE-751"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="translatesAutoresizingMaskIntoConstraints" value="NO"/>
+                                </userDefinedRuntimeAttributes>
+                            </toolbar>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Sh-Ky-Kw9" customClass="UIToolbar">
+                                <rect key="frame" x="0.0" y="351" width="320" height="217"/>
+                                <subviews>
+                                    <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="596-5E-9WH">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="217"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <segue destination="pRe-A8-fhl" kind="embed" id="7SG-Ur-9Ld"/>
+                                        </connections>
+                                    </containerView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="596-5E-9WH" firstAttribute="leading" secondItem="4Sh-Ky-Kw9" secondAttribute="leading" id="DFN-XR-9W6"/>
+                                    <constraint firstAttribute="height" constant="217" id="NgD-Ha-HdF"/>
+                                    <constraint firstAttribute="bottom" secondItem="596-5E-9WH" secondAttribute="bottom" id="S5k-f7-awC"/>
+                                    <constraint firstAttribute="trailing" secondItem="596-5E-9WH" secondAttribute="trailing" id="ZCq-9D-6st"/>
+                                    <constraint firstItem="596-5E-9WH" firstAttribute="top" secondItem="4Sh-Ky-Kw9" secondAttribute="top" id="bPs-ab-iQ0"/>
+                                </constraints>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="hYr-ba-okk" secondAttribute="trailing" constant="-16" id="960-4I-esY"/>
+                            <constraint firstItem="hYr-ba-okk" firstAttribute="leading" secondItem="lNU-MC-GZc" secondAttribute="leadingMargin" constant="-16" id="Hbm-lJ-gmO"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="4Sh-Ky-Kw9" secondAttribute="trailing" constant="-16" id="Xc9-8A-Aw0"/>
+                            <constraint firstItem="LaD-Hf-YxR" firstAttribute="top" secondItem="hYr-ba-okk" secondAttribute="bottom" constant="217" id="qrE-iw-4wK"/>
+                            <constraint firstItem="4Sh-Ky-Kw9" firstAttribute="top" secondItem="hYr-ba-okk" secondAttribute="bottom" id="uk2-Ca-ts8"/>
+                            <constraint firstItem="4Sh-Ky-Kw9" firstAttribute="leading" secondItem="lNU-MC-GZc" secondAttribute="leadingMargin" constant="-16" id="w8Z-eY-fvx"/>
+                        </constraints>
                     </view>
-                    <toolbarItems>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="37x-vm-QHz"/>
-                        <barButtonItem image="709-plus-toolbar" id="5RP-sJ-mNE"/>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="v0F-Or-7y0"/>
-                        <barButtonItem image="723-location-arrow-toolbar" id="VzM-jp-IJN">
-                            <connections>
-                                <action selector="showLocation:" destination="OId-a2-hAa" id="2n7-KE-751"/>
-                            </connections>
-                        </barButtonItem>
-                    </toolbarItems>
+                    <toolbarItems/>
                     <navigationItem key="navigationItem" id="njY-NJ-ckP">
                         <nil key="title"/>
                         <barButtonItem key="leftBarButtonItem" image="854-list-toolbar" id="CtE-Dj-rlY">
@@ -149,12 +195,44 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="placeListContainerView" destination="4Sh-Ky-Kw9" id="dZ6-j9-9RY"/>
+                        <outlet property="toolbar" destination="hYr-ba-okk" id="GoU-W4-P5u"/>
+                        <outlet property="toolbarBottomConstraint" destination="qrE-iw-4wK" id="DrE-FV-xBD"/>
                         <outlet property="view" destination="lNU-MC-GZc" id="vzn-G1-QQ7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jYb-yF-plj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-15" y="7"/>
+        </scene>
+        <!--Table View Controller-->
+        <scene sceneID="laM-Dv-JF9">
+            <objects>
+                <tableViewController id="pRe-A8-fhl" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="i55-h6-r8M">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="217"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="skj-4o-bzA">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="skj-4o-bzA" id="3NN-Cb-nB0">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="pRe-A8-fhl" id="LTt-ec-rX4"/>
+                            <outlet property="delegate" destination="pRe-A8-fhl" id="woX-p9-zvQ"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kCx-ig-Ke8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-17" y="665"/>
         </scene>
         <!--Callout View Controller-->
         <scene sceneID="vaZ-rl-Ee0">
@@ -276,6 +354,7 @@
         <image name="709-plus" width="28" height="28"/>
         <image name="709-plus-toolbar" width="22" height="22"/>
         <image name="723-location-arrow-toolbar" width="22" height="22"/>
+        <image name="763-arrow-up-toolbar" width="20" height="10"/>
         <image name="765-arrow-left" width="14" height="28"/>
         <image name="854-list-toolbar" width="20" height="16"/>
         <image name="888-checkmark" width="28" height="28"/>

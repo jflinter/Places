@@ -36,6 +36,9 @@ NSString * const kFoursquare2DidRemoveAccessTokenNotification = @"kFoursquare2Di
 @property (nonatomic, strong) NSOperationQueue *operationQueue;
 @property (nonatomic) dispatch_queue_t callbackQueue;
 
+/** The timeout interval for NSURLRequest. The default value is 60 sec. */
+@property(nonatomic,assign) NSTimeInterval timeoutInterval;
+
 + (NSOperation *)sendGetRequestWithPath:(NSString *)path
                              parameters:(NSDictionary *)parameters
                                callback:(Foursquare2Callback)callback;
@@ -59,6 +62,10 @@ static NSMutableDictionary *attributes;
 
 + (void)setCallbackQueue:(dispatch_queue_t)callbackQueue {
     [self sharedInstance].callbackQueue = callbackQueue;
+}
+
++ (void)setTimeoutInterval:(NSTimeInterval)timeoutInterval {
+    [self sharedInstance].timeoutInterval = timeoutInterval;
 }
 
 + (dispatch_queue_t)callbackQueue {
@@ -290,6 +297,16 @@ static NSMutableDictionary *attributes;
     return [self sendGetRequestWithPath:path parameters:parameters callback:callback];
 }
 
++ (NSOperation *)multiUserGetLists:(NSArray *)userIDs
+                          callback:(Foursquare2Callback)callback {
+    NSAssert([userIDs count] >= 5, @"Multi does not work with more than 5 methods at a time");
+    NSString *path = @"multi?requests=/users/";
+    NSString *multiParameters = [userIDs componentsJoinedByString:@"/lists,/users/"];
+    path = [[path stringByAppendingString:multiParameters] stringByAppendingString:@"/lists"];
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    return [self sendGetRequestWithPath:path parameters:parameters callback:callback];
+}
+
 + (NSOperation *)userGetLists:(NSString *)userID
                         group:(FoursquareListGroupType)groupType
                      latitude:(NSNumber *)latitude
@@ -466,7 +483,13 @@ static NSMutableDictionary *attributes;
     return [self sendGetRequestWithPath:path parameters:nil callback:callback];
 }
 
-
++ (NSOperation *)listFollowListWithId:(NSString *)listID
+                               follow:(BOOL)follow
+                             callback:(Foursquare2Callback)callback {
+    NSString *method = follow ? @"follow" : @"unfollow";
+    NSString *path = [NSString stringWithFormat:@"/lists/%@/%@", listID, method];
+    return [self sendPostRequestWithPath:path parameters:nil callback:callback];
+}
 
 #pragma mark -
 #pragma mark Venues
@@ -1375,6 +1398,7 @@ static NSMutableDictionary *attributes;
         _operationQueue = [[NSOperationQueue alloc] init];
         _operationQueue.maxConcurrentOperationCount = 7;
         _callbackQueue = dispatch_get_main_queue();
+        _timeoutInterval = 60.0;
     }
     return self;
 }
@@ -1385,6 +1409,7 @@ static NSMutableDictionary *attributes;
                             callback:(Foursquare2Callback)callback {
     NSURL *URL = [Foursquare2 constructURLWithPath:path parameters:parameters];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
+    request.timeoutInterval = self.timeoutInterval;
     request.HTTPMethod = HTTPMethod;
     Foursquare2Callback block = ^(BOOL success, id result) {
         if ([result isKindOfClass:[NSError class]]) {
@@ -1415,7 +1440,8 @@ static NSMutableDictionary *attributes;
                withImageData:(NSData *)imageData
                     callback:(Foursquare2Callback)callback {
     NSURL *URL = [Foursquare2 constructURLWithPath:methodName parameters:parameters];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:URL] ;
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:URL];
+    request.timeoutInterval = self.timeoutInterval;
     request.HTTPMethod = @"POST";
     
     NSString *boundary = @"0xKhTmLbOuNdArY";
