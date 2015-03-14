@@ -12,8 +12,10 @@
 #import "PLCMapSelectionTableViewCell.h"
 #import "PLCSelectedMapCache.h"
 #import <ReactiveCocoa/ReactiveCocoa.h>
+@import Dwifft;
 
 @interface PLCMapSelectionTableViewController () <PLCMapSelectionCellDelegate, UITextFieldDelegate>
+@property(nonatomic)TableViewDiffCalculator *calculator;
 @end
 
 @implementation PLCMapSelectionTableViewController
@@ -21,40 +23,42 @@
 #pragma mark - Table view data source
 
 - (void)viewDidLoad {
+    self.calculator = [[TableViewDiffCalculator alloc] initWithTableView:self.tableView];
+    RAC(self.calculator, rows) = RACObserve(self, maps);
     self.tableView.rowHeight = 44;
-    RACSignal* signal = [self rac_valuesAndChangesForKeyPath:@keypath(self, maps)
-                                                     options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld
-                                                    observer:self];
-    
-    [signal subscribeNext:^(RACTuple* tuple) {
-        // the changes dictionary is stored in the second propery of the RAC Tuple
-        NSDictionary* changes = tuple.second;
-        
-        NSArray* oldArray = changes[NSKeyValueChangeOldKey];
-        NSArray* newArray = changes[NSKeyValueChangeNewKey];
-        
-        [self.tableView beginUpdates];
-        
-        NSMutableArray* rowsToDelete = [NSMutableArray array];
-        NSMutableArray* rowsToInsert = [NSMutableArray array];
-        
-        [oldArray enumerateObjectsUsingBlock:^(id old, NSUInteger idx, __unused BOOL *stop) {
-            if (![newArray containsObject:old]) {
-                [rowsToDelete addObject: [NSIndexPath indexPathForRow:idx inSection:0]];
-            }
-        }];
-        
-        [newArray enumerateObjectsUsingBlock:^(id new, NSUInteger idx, __unused BOOL *stop) {
-            if (![oldArray containsObject:new]) {
-                [rowsToInsert addObject: [NSIndexPath indexPathForRow:idx inSection:0]];
-            }
-        }];
-        
-        [self.tableView deleteRowsAtIndexPaths:rowsToDelete withRowAnimation:UITableViewRowAnimationFade];
-        [self.tableView insertRowsAtIndexPaths:rowsToInsert withRowAnimation:UITableViewRowAnimationFade];
-        
-        [self.tableView endUpdates];
-    }];
+//    RACSignal* signal = [self rac_valuesAndChangesForKeyPath:@keypath(self, maps)
+//                                                     options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld
+//                                                    observer:self];
+//    
+//    [signal subscribeNext:^(RACTuple* tuple) {
+//        // the changes dictionary is stored in the second propery of the RAC Tuple
+//        NSDictionary* changes = tuple.second;
+//        
+//        NSArray* oldArray = changes[NSKeyValueChangeOldKey];
+//        NSArray* newArray = changes[NSKeyValueChangeNewKey];
+//        
+//        [self.tableView beginUpdates];
+//        
+//        NSMutableArray* rowsToDelete = [NSMutableArray array];
+//        NSMutableArray* rowsToInsert = [NSMutableArray array];
+//        
+//        [oldArray enumerateObjectsUsingBlock:^(id old, NSUInteger idx, __unused BOOL *stop) {
+//            if (![newArray containsObject:old]) {
+//                [rowsToDelete addObject: [NSIndexPath indexPathForRow:idx inSection:0]];
+//            }
+//        }];
+//        
+//        [newArray enumerateObjectsUsingBlock:^(id new, NSUInteger idx, __unused BOOL *stop) {
+//            if (![oldArray containsObject:new]) {
+//                [rowsToInsert addObject: [NSIndexPath indexPathForRow:idx inSection:0]];
+//            }
+//        }];
+//        
+//        [self.tableView deleteRowsAtIndexPaths:rowsToDelete withRowAnimation:UITableViewRowAnimationFade];
+//        [self.tableView insertRowsAtIndexPaths:rowsToInsert withRowAnimation:UITableViewRowAnimationFade];
+//        
+//        [self.tableView endUpdates];
+//    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -68,7 +72,7 @@
 }
 
 - (NSInteger)tableView:(__unused UITableView *)tableView numberOfRowsInSection:(__unused NSInteger)section {
-    return self.maps.count;
+    return self.calculator.rows.count;
 }
 
 - (IBAction)dismiss:(__unused id)sender {
@@ -138,13 +142,11 @@
 
 - (void)tableViewCell:(PLCMapSelectionTableViewCell *)cell textDidChange:(NSString *)text {
     NSIndexPath *changedIndexPath = [self.tableView indexPathForCell:cell];
-    NSMutableArray *newMaps = [self.maps mutableCopy];
     PLCMap *map = self.maps[changedIndexPath.row];
-    [newMaps removeObject:map];
-    self.maps = [newMaps copy];
     [PLCMapStore updateMap:map withName:text];
-    [newMaps insertObject:map atIndex:[self indexForMap:map]];
-    self.maps = [newMaps copy];
+    self.maps =[ self.maps sortedArrayUsingComparator:^NSComparisonResult(PLCMap *obj1, PLCMap *obj2) {
+        return [obj1.name caseInsensitiveCompare:obj2.name];
+    }];
 }
 
 - (void)tableViewCellDidDelete:(PLCMapSelectionTableViewCell *)cell {

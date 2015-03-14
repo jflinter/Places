@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0430BEC519CF8126001584BD /* PLCFlickrSearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 0430BEC419CF8126001584BD /* PLCFlickrSearchResult.m */; };
 		0430BEC819CFA113001584BD /* PLCFlickrResultCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0430BEC719CFA113001584BD /* PLCFlickrResultCollectionViewCell.m */; };
+		0455A0771AB4C56B00630E6B /* Dwifft.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0404F51E1AB4C4C000C5E4DF /* Dwifft.framework */; };
 		0477975819D282DB0022A00F /* PLCImageDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0477975719D282DB0022A00F /* PLCImageDownloader.m */; };
 		0478259F1A5A309000BA6A2B /* Glyphish.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0478259E1A5A309000BA6A2B /* Glyphish.xcassets */; };
 		047825A11A5A71BE00BA6A2B /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 047825A01A5A71BE00BA6A2B /* Launch Screen.xib */; };
@@ -72,6 +73,27 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		0404F51D1AB4C4C000C5E4DF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0404F5181AB4C4BF00C5E4DF /* Dwifft.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0404F4FC1AB4C4BF00C5E4DF;
+			remoteInfo = Dwifft;
+		};
+		0404F51F1AB4C4C000C5E4DF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0404F5181AB4C4BF00C5E4DF /* Dwifft.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0404F5071AB4C4BF00C5E4DF;
+			remoteInfo = DwifftTests;
+		};
+		0455A0781AB4C6F700630E6B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0404F5181AB4C4BF00C5E4DF /* Dwifft.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 0404F4FB1AB4C4BF00C5E4DF;
+			remoteInfo = Dwifft;
+		};
 		7E54FE7018FF9392002E2AFC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7E54FE4818FF9392002E2AFC /* Project object */;
@@ -82,6 +104,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0404F5181AB4C4BF00C5E4DF /* Dwifft.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Dwifft.xcodeproj; path = Dwifft/Dwifft.xcodeproj; sourceTree = "<group>"; };
 		0430BEC319CF8126001584BD /* PLCFlickrSearchResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCFlickrSearchResult.h; sourceTree = "<group>"; };
 		0430BEC419CF8126001584BD /* PLCFlickrSearchResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCFlickrSearchResult.m; sourceTree = "<group>"; };
 		0430BEC619CFA113001584BD /* PLCFlickrResultCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCFlickrResultCollectionViewCell.h; sourceTree = "<group>"; };
@@ -91,6 +114,7 @@
 		0477975719D282DB0022A00F /* PLCImageDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCImageDownloader.m; sourceTree = "<group>"; };
 		0478259E1A5A309000BA6A2B /* Glyphish.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Glyphish.xcassets; sourceTree = "<group>"; };
 		047825A01A5A71BE00BA6A2B /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
+		048AFBC61AB3DAFA00B980EA /* Places-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Places-Bridging-Header.h"; sourceTree = "<group>"; };
 		049F38591AAD89FA00713B55 /* PLCMapControlsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCMapControlsViewController.h; sourceTree = "<group>"; };
 		049F385A1AAD89FA00713B55 /* PLCMapControlsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCMapControlsViewController.m; sourceTree = "<group>"; };
 		04A935991A0F35120024BE15 /* PLCZoomAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCZoomAnimator.h; sourceTree = "<group>"; };
@@ -220,6 +244,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0455A0771AB4C56B00630E6B /* Dwifft.framework in Frameworks */,
 				04D044791A50D5B100CC66E3 /* CoreLocation.framework in Frameworks */,
 				7E54FEA818FFA3EE002E2AFC /* MapKit.framework in Frameworks */,
 				D0FE6C18C7A34A49A217A9F8 /* libPods.a in Frameworks */,
@@ -229,6 +254,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0404F5191AB4C4BF00C5E4DF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0404F51E1AB4C4C000C5E4DF /* Dwifft.framework */,
+				0404F5201AB4C4C000C5E4DF /* DwifftTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		04F6CBB01AB01B5F00845F91 /* Map Selection */ = {
 			isa = PBXGroup;
 			children = (
@@ -268,6 +302,7 @@
 		7E54FE4718FF9392002E2AFC = {
 			isa = PBXGroup;
 			children = (
+				0404F5181AB4C4BF00C5E4DF /* Dwifft.xcodeproj */,
 				7E54FE5918FF9392002E2AFC /* Places */,
 				7E54FE7218FF9392002E2AFC /* PlacesTests */,
 				7E54FEA918FFA403002E2AFC /* Frameworks */,
@@ -338,6 +373,7 @@
 		7E54FE8218FF93FE002E2AFC /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				048AFBC61AB3DAFA00B980EA /* Places-Bridging-Header.h */,
 				7E54FEAB18FFA94B002E2AFC /* PLCDatabase.h */,
 				7E54FEAC18FFA94B002E2AFC /* PLCDatabase.m */,
 				7E54FEAD18FFA94B002E2AFC /* PLCManagedObject.h */,
@@ -516,6 +552,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				0455A0791AB4C6F700630E6B /* PBXTargetDependency */,
 			);
 			name = Places;
 			productName = Places;
@@ -575,6 +612,12 @@
 			mainGroup = 7E54FE4718FF9392002E2AFC;
 			productRefGroup = 7E54FE5118FF9392002E2AFC /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 0404F5191AB4C4BF00C5E4DF /* Products */;
+					ProjectRef = 0404F5181AB4C4BF00C5E4DF /* Dwifft.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				7E54FE4F18FF9392002E2AFC /* Places */,
@@ -582,6 +625,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		0404F51E1AB4C4C000C5E4DF /* Dwifft.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Dwifft.framework;
+			remoteRef = 0404F51D1AB4C4C000C5E4DF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0404F5201AB4C4C000C5E4DF /* DwifftTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = DwifftTests.xctest;
+			remoteRef = 0404F51F1AB4C4C000C5E4DF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		7E54FE4E18FF9392002E2AFC /* Resources */ = {
@@ -765,6 +825,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		0455A0791AB4C6F700630E6B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Dwifft;
+			targetProxy = 0455A0781AB4C6F700630E6B /* PBXContainerItemProxy */;
+		};
 		7E54FE7118FF9392002E2AFC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 7E54FE4F18FF9392002E2AFC /* Places */;
@@ -889,11 +954,13 @@
 			baseConfigurationReference = 7A7EB8F5B3117E927930E81B /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = NO;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_ENTITLEMENTS = Places/Places.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEFINES_MODULE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Places/Places-Prefix.pch";
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
@@ -902,6 +969,7 @@
 				GCC_WARN_UNUSED_PARAMETER = YES;
 				INFOPLIST_FILE = "Places/Places-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-isystem",
@@ -945,6 +1013,8 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Places/Places-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -954,11 +1024,13 @@
 			baseConfigurationReference = BDF99872151969245E966840 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = NO;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_ENTITLEMENTS = Places/Places.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEFINES_MODULE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Places/Places-Prefix.pch";
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
@@ -967,6 +1039,7 @@
 				GCC_WARN_UNUSED_PARAMETER = YES;
 				INFOPLIST_FILE = "Places/Places-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-isystem",
@@ -1010,6 +1083,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Places/Places-Bridging-Header.h";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
