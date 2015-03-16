@@ -16,6 +16,9 @@
 #import "PLCMapStore.h"
 #import "PLCMap.h"
 #import "PLCSelectedMapCache.h"
+#import "PLCPlaceListTableViewController.h"
+#import "PLCSelectedMapViewModel.h"
+#import "PLCPinAnnotationView.h"
 #import <TUSafariActivity/TUSafariActivity.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
@@ -24,8 +27,9 @@
 @property (nonatomic) BOOL chromeHidden;
 @property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *toolbarBottomConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *toolbarTopConstraint;
 @property (weak, nonatomic) IBOutlet UIView *placeListContainerView;
+@property (weak, nonatomic) PLCPlaceListTableViewController *placeListController;
+@property (nonatomic) PLCSelectedMapViewModel *viewModel;
 @end
 
 @implementation PLCMapControlsViewController
@@ -50,12 +54,21 @@
                                         target:self
                                         action:@selector(showLocation:)],
     ];
+    
+    self.toolbarBottomConstraint.constant = 0;
+    
     [RACObserve([PLCSelectedMapCache sharedInstance], selectedMap) subscribeNext:^(PLCMap *map) {
         self.title = map.name;
+        self.viewModel = [[PLCSelectedMapViewModel alloc] initWithMap:map];
     }];
-    [[RACObserve(mapViewController, selectedPlace) throttle:0.05] subscribeNext:^(id place) {
+    
+    RAC(self.placeListController, viewModel) = RACObserve(self, viewModel);
+    RAC(self.mapViewController, viewModel) = RACObserve(self, viewModel);
+    
+    [[RACObserve(self.viewModel, selectedPlace) throttle:0.05] subscribeNext:^(id place) {
         [self setChromeHidden:(place != nil) animated:YES];
     }];
+    
     self.placeListContainerView.clipsToBounds = YES;
 }
 
@@ -79,19 +92,19 @@
     [self setChromeHidden:chromeHidden animated:NO];
 }
 
-- (void)setChromeHidden:(BOOL)chromeHidden animated:(BOOL)animated {
+- (void)setChromeHidden:(BOOL)chromeHidden animated:(__unused BOOL)animated {
     if (_chromeHidden != chromeHidden) {
         _chromeHidden = chromeHidden;
-        self.toolbarBottomConstraint.constant = chromeHidden ? -self.toolbar.frame.size.height : 0;
-        [UIView animateWithDuration:(animated * 0.3) delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-            [self.view layoutIfNeeded];
-        } completion:nil];
-        if (animated) {
-            [[UIApplication sharedApplication] setStatusBarHidden:chromeHidden withAnimation:UIStatusBarAnimationSlide];
-        } else {
-            [[UIApplication sharedApplication] setStatusBarHidden:chromeHidden];
-        }
-        [self.navigationController setNavigationBarHidden:chromeHidden animated:animated];
+//        self.toolbarBottomConstraint.constant = chromeHidden ? -self.toolbar.frame.size.height : 0;
+//        [UIView animateWithDuration:(animated * 0.3) delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+//            [self.view layoutIfNeeded];
+//        } completion:nil];
+//        if (animated) {
+//            [[UIApplication sharedApplication] setStatusBarHidden:chromeHidden withAnimation:UIStatusBarAnimationSlide];
+//        } else {
+//            [[UIApplication sharedApplication] setStatusBarHidden:chromeHidden];
+//        }
+//        [self.navigationController setNavigationBarHidden:chromeHidden animated:animated];
     }
 }
 
@@ -99,15 +112,14 @@
     UIView *view = [sender valueForKey:@"view"];
     BOOL on = CGAffineTransformEqualToTransform(view.transform, CGAffineTransformIdentity);
     self.toolbarBottomConstraint.constant = on ? self.placeListContainerView.frame.size.height : 0;
-    [UIView animateWithDuration:0.2 animations:^{
+    [UIView animateWithDuration:0.25 delay:0 usingSpringWithDamping:0.7 initialSpringVelocity:0 options:0 animations:^{
         [self.view layoutIfNeeded];
         if (on) {
             view.transform = CGAffineTransformMakeRotation(M_PI*.999);
         } else {
             view.transform = CGAffineTransformIdentity;
         }
-
-    }];
+    } completion:nil];
 }
 
 - (IBAction)showMapSelection:(__unused id)sender {
@@ -119,8 +131,9 @@
     [self presentViewController:controller animated:YES completion:nil];
 }
 
-- (IBAction)showLocation:(id)sender {
-    [self.mapViewController showLocation:sender];
+
+- (IBAction)showLocation:(__unused id)sender {
+    [self.mapViewController panToLocation:self.viewModel.currentLocation animated:YES];
 }
 
 - (void)beginSearch:(__unused id)sender {
@@ -158,7 +171,7 @@
     return controller;
 }
 
-- (void)addPlace:(__unused id)sender {
+- (IBAction)addPlace:(__unused id)sender {
     UIAlertController *controller = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Search Nearby Places", nil)
                                                    style:UIAlertActionStyleDefault
@@ -186,6 +199,12 @@
         activityViewController.popoverPresentationController.barButtonItem = sender;
     }
     [self presentViewController:activityViewController animated:YES completion:nil];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(__unused id)sender {
+    if ([segue.identifier isEqualToString:@"PLCMapControlsEmbedPlaceListSegue"]) {
+        self.placeListController = segue.destinationViewController;
+    }
 }
 
 @end

@@ -8,13 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@class PLCMapView, PLCPlace;
+@class PLCMapView, PLCPlace, PLCSelectedMapViewModel;
 @interface PLCMapViewController : UIViewController;
 @property (nonatomic, weak, readonly) PLCMapView *mapView;
 
-@property (nonatomic) PLCPlace *selectedPlace;
+@property (nonatomic) PLCSelectedMapViewModel *viewModel;
 
-- (void)showLocation:(id)sender;
 - (void)dropPin:(id)sender;
+- (void)panToLocation:(CLLocation *)location animated:(BOOL)animated;
 
 @end

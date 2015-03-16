@@ -15,6 +15,7 @@ pod "TUSafariActivity"
 pod "Mantle"
 pod "Parse"
 pod "TMCache"
+pod 'FormatterKit'
 pod 'HockeySDK', '~> 3.6.2'
 pod 'Reveal-iOS-SDK', :configurations => ['Debug']
 pod 'SimulatorStatusMagic', :configurations => ['Debug']

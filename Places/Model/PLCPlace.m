@@ -93,6 +93,10 @@
     return (PLCPlaceType)self.placeType.unsignedIntegerValue;
 }
 
+- (CLLocation *)location {
+    return [[CLLocation alloc] initWithLatitude:self.coordinate.latitude longitude:self.coordinate.longitude];
+}
+
 #pragma mark - PLCFirebaseCoding
 
 - (NSDictionary *)firebaseObject {

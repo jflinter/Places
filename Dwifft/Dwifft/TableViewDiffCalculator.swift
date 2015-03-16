@@ -9,7 +9,7 @@
 import UIKit
 
 public class TableViewDiffCalculator: NSObject {
-    let tableView: UITableView
+    weak var tableView: UITableView?
     @objc
     public init(tableView: UITableView) {
         self.tableView = tableView
@@ -18,18 +18,24 @@ public class TableViewDiffCalculator: NSObject {
         self.deletionAnimation = UITableViewRowAnimation.Automatic
     }
     public var insertionAnimation, deletionAnimation : UITableViewRowAnimation
-    public var rows : Array<NSObject> = [NSObject]() {
+    public var rows : Array<NSObject>? = [NSObject]() {
         didSet {
-            tableView.beginUpdates()
-            for change in LCS(x: oldValue, y: self.rows).diff() {
-                switch(change) {
-                case .Insert(let idx):
-                    tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: idx, inSection: 0)], withRowAnimation: insertionAnimation)
-                case .Delete(let idx):
-                    tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: idx, inSection: 0)], withRowAnimation: deletionAnimation)
+            let oldRows = oldValue? ?? []
+            let newRows = self.rows? ?? []
+            let changes = LCS(x: oldRows, y: newRows).diff()
+            if (changes.count > 0) {
+                tableView?.beginUpdates()
+                for change in changes {
+                    switch(change) {
+                    case .Insert(let idx):
+                        tableView?.insertRowsAtIndexPaths([NSIndexPath(forRow: idx, inSection: 0)], withRowAnimation: insertionAnimation)
+                    case .Delete(let idx):
+                        tableView?.deleteRowsAtIndexPaths([NSIndexPath(forRow: idx, inSection: 0)], withRowAnimation: deletionAnimation)
+                    }
                 }
+                tableView?.endUpdates()
+
             }
-            tableView.endUpdates()
         }
     }
     

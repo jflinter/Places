@@ -30,13 +30,11 @@
     self = [super init];
     if (self) {
         NSString *previousId = [self savedMapId];
-        if (previousId) {
-            _selectedMap = [[PLCMapStore allMaps].rac_sequence filter:^BOOL(PLCMap *map) {
-                return map.uuid = previousId;
-            }].array.firstObject;
-        } else {
-            _selectedMap = [PLCMapStore allMaps].firstObject;
-        }
+        NSArray *allMaps = [PLCMapStore allMaps];
+        NSArray *availableMaps = [allMaps.rac_sequence filter:^BOOL(PLCMap *map) {
+            return [map.uuid isEqualToString:previousId];
+        }].array;
+        _selectedMap = availableMaps.firstObject ?: allMaps.firstObject;
         [[[RACObserve(self, selectedMap) map:^id(PLCMap *map) {
             return RACObserve(map, deletedAt);
         }] switchToLatest] subscribeNext:^(NSDate *deletedAt) {

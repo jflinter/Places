@@ -11,6 +11,16 @@
 
 @implementation PLCPinAnnotationView
 
+- (instancetype)initWithAnnotation:(id<MKAnnotation>)annotation reuseIdentifier:(NSString *)reuseIdentifier {
+    self = [super initWithAnnotation:annotation reuseIdentifier:reuseIdentifier];
+    if (self) {
+        self.animatesDrop = YES;
+        self.draggable = YES;
+        self.canShowCallout = NO;
+    }
+    return self;
+}
+
 - (BOOL)pointInside:(CGPoint)point withEvent:(__unused UIEvent*)event
 {
     BOOL pointInside = CGRectContainsPoint(self.bounds, point);

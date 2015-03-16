@@ -17,6 +17,25 @@ PODS:
   - Bolts (1.1.4)
   - Firebase (2.2.0)
   - FlickrKit (1.0.4)
+  - FormatterKit (1.8.0):
+    - FormatterKit/AddressFormatter (= 1.8.0)
+    - FormatterKit/ArrayFormatter (= 1.8.0)
+    - FormatterKit/ColorFormatter (= 1.8.0)
+    - FormatterKit/LocationFormatter (= 1.8.0)
+    - FormatterKit/NameFormatter (= 1.8.0)
+    - FormatterKit/OrdinalNumberFormatter (= 1.8.0)
+    - FormatterKit/TimeIntervalFormatter (= 1.8.0)
+    - FormatterKit/UnitOfInformationFormatter (= 1.8.0)
+    - FormatterKit/URLRequestFormatter (= 1.8.0)
+  - FormatterKit/AddressFormatter (1.8.0)
+  - FormatterKit/ArrayFormatter (1.8.0)
+  - FormatterKit/ColorFormatter (1.8.0)
+  - FormatterKit/LocationFormatter (1.8.0)
+  - FormatterKit/NameFormatter (1.8.0)
+  - FormatterKit/OrdinalNumberFormatter (1.8.0)
+  - FormatterKit/TimeIntervalFormatter (1.8.0)
+  - FormatterKit/UnitOfInformationFormatter (1.8.0)
+  - FormatterKit/URLRequestFormatter (1.8.0)
   - Foursquare-API-v2 (1.4.8)
   - HockeySDK (3.6.2)
   - INTULocationManager (2.0.2)
@@ -45,6 +64,7 @@ DEPENDENCIES:
   - BDDROneFingerZoomGestureRecognizer
   - Firebase
   - FlickrKit
+  - FormatterKit
   - Foursquare-API-v2
   - HockeySDK (~> 3.6.2)
   - INTULocationManager
@@ -65,6 +85,7 @@ SPEC CHECKSUMS:
   Bolts: dd9fb8433d67f5acc3b6b4d1379bbc5513d716c1
   Firebase: e7a2ea2ffeff99f9c37028b354194dcc9718d36b
   FlickrKit: 1bbc5c91f065fa0d7ce4119c5d5c63a9241eea73
+  FormatterKit: 547a808c41172136a3f3acb424ac9361d38bb32f
   Foursquare-API-v2: 6be0e2d5b4f0adde6d39a3ebcb38311f54bf9694
   HockeySDK: bfd1f5ac75938b07499c4ac12932244b72a2e70b
   INTULocationManager: 83bec34472a706e178face50a4e5e21ca986b7d2

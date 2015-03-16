@@ -10,4 +10,6 @@
 
 @interface PLCMapControlsViewController : UIViewController
 
+- (IBAction)addPlace:(__unused id)sender;
+
 @end

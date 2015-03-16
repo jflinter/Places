@@ -10,6 +10,8 @@
 		0430BEC519CF8126001584BD /* PLCFlickrSearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 0430BEC419CF8126001584BD /* PLCFlickrSearchResult.m */; };
 		0430BEC819CFA113001584BD /* PLCFlickrResultCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0430BEC719CFA113001584BD /* PLCFlickrResultCollectionViewCell.m */; };
 		0455A0771AB4C56B00630E6B /* Dwifft.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0404F51E1AB4C4C000C5E4DF /* Dwifft.framework */; };
+		0455A07D1AB70B2C00630E6B /* PLCSelectedMapViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0455A07C1AB70B2C00630E6B /* PLCSelectedMapViewModel.m */; };
+		047659511AB72F9800EC231B /* Dwifft.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0404F51E1AB4C4C000C5E4DF /* Dwifft.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0477975819D282DB0022A00F /* PLCImageDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0477975719D282DB0022A00F /* PLCImageDownloader.m */; };
 		0478259F1A5A309000BA6A2B /* Glyphish.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0478259E1A5A309000BA6A2B /* Glyphish.xcassets */; };
 		047825A11A5A71BE00BA6A2B /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 047825A01A5A71BE00BA6A2B /* Launch Screen.xib */; };
@@ -94,6 +96,13 @@
 			remoteGlobalIDString = 0404F4FB1AB4C4BF00C5E4DF;
 			remoteInfo = Dwifft;
 		};
+		047659521AB72F9800EC231B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0404F5181AB4C4BF00C5E4DF /* Dwifft.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 0404F4FB1AB4C4BF00C5E4DF;
+			remoteInfo = Dwifft;
+		};
 		7E54FE7018FF9392002E2AFC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7E54FE4818FF9392002E2AFC /* Project object */;
@@ -103,6 +112,20 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		047659541AB72F9800EC231B /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				047659511AB72F9800EC231B /* Dwifft.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		0404F5181AB4C4BF00C5E4DF /* Dwifft.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Dwifft.xcodeproj; path = Dwifft/Dwifft.xcodeproj; sourceTree = "<group>"; };
 		0430BEC319CF8126001584BD /* PLCFlickrSearchResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCFlickrSearchResult.h; sourceTree = "<group>"; };
@@ -110,6 +133,8 @@
 		0430BEC619CFA113001584BD /* PLCFlickrResultCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCFlickrResultCollectionViewCell.h; sourceTree = "<group>"; };
 		0430BEC719CFA113001584BD /* PLCFlickrResultCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCFlickrResultCollectionViewCell.m; sourceTree = "<group>"; };
 		043817AB1A0E964400CE6A06 /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
+		0455A07B1AB70B2C00630E6B /* PLCSelectedMapViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCSelectedMapViewModel.h; sourceTree = "<group>"; };
+		0455A07C1AB70B2C00630E6B /* PLCSelectedMapViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCSelectedMapViewModel.m; sourceTree = "<group>"; };
 		0477975619D282DB0022A00F /* PLCImageDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCImageDownloader.h; sourceTree = "<group>"; };
 		0477975719D282DB0022A00F /* PLCImageDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCImageDownloader.m; sourceTree = "<group>"; };
 		0478259E1A5A309000BA6A2B /* Glyphish.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Glyphish.xcassets; sourceTree = "<group>"; };
@@ -263,6 +288,21 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		0455A07A1AB4D6CC00630E6B /* Main Map */ = {
+			isa = PBXGroup;
+			children = (
+				049F38591AAD89FA00713B55 /* PLCMapControlsViewController.h */,
+				049F385A1AAD89FA00713B55 /* PLCMapControlsViewController.m */,
+				7E54FE9918FF9BC8002E2AFC /* PLCMapViewController.h */,
+				7E54FE9A18FF9BC8002E2AFC /* PLCMapViewController.m */,
+				0455A07B1AB70B2C00630E6B /* PLCSelectedMapViewModel.h */,
+				0455A07C1AB70B2C00630E6B /* PLCSelectedMapViewModel.m */,
+				04F6CBB71AB20FD800845F91 /* PLCPlaceListTableViewController.h */,
+				04F6CBB81AB20FD800845F91 /* PLCPlaceListTableViewController.m */,
+			);
+			name = "Main Map";
+			sourceTree = "<group>";
+		};
 		04F6CBB01AB01B5F00845F91 /* Map Selection */ = {
 			isa = PBXGroup;
 			children = (
@@ -329,6 +369,7 @@
 				7E54FEAA18FFA914002E2AFC /* Model Support */,
 				7E54FE5A18FF9392002E2AFC /* Supporting Files */,
 				A062BA0F19123047002F0C2E /* Utilities */,
+				0455A07A1AB4D6CC00630E6B /* Main Map */,
 				04F6CBB01AB01B5F00845F91 /* Map Selection */,
 				04F6CBB61AB20F9B00845F91 /* Callout */,
 				7E54FE9818FF9BB9002E2AFC /* View Controllers */,
@@ -415,12 +456,6 @@
 		7E54FE9818FF9BB9002E2AFC /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				7E54FE9918FF9BC8002E2AFC /* PLCMapViewController.h */,
-				7E54FE9A18FF9BC8002E2AFC /* PLCMapViewController.m */,
-				049F38591AAD89FA00713B55 /* PLCMapControlsViewController.h */,
-				049F385A1AAD89FA00713B55 /* PLCMapControlsViewController.m */,
-				04F6CBB71AB20FD800845F91 /* PLCPlaceListTableViewController.h */,
-				04F6CBB81AB20FD800845F91 /* PLCPlaceListTableViewController.m */,
 				A06A0F2E1973936800ABD4A9 /* PLCPlaceSearchTableViewController.h */,
 				A06A0F2F1973936800ABD4A9 /* PLCPlaceSearchTableViewController.m */,
 				04DD4B2519CFBEFC00408002 /* PLCPlaceSearchTableViewController.xib */,
@@ -548,11 +583,13 @@
 				7E54FE4E18FF9392002E2AFC /* Resources */,
 				003BA13836254720A609605A /* Copy Pods Resources */,
 				041400DC1A59215800C5F366 /* ShellScript */,
+				047659541AB72F9800EC231B /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				0455A0791AB4C6F700630E6B /* PBXTargetDependency */,
+				047659531AB72F9800EC231B /* PBXTargetDependency */,
 			);
 			name = Places;
 			productName = Places;
@@ -797,6 +834,7 @@
 				049F385B1AAD89FA00713B55 /* PLCMapControlsViewController.m in Sources */,
 				7E54FE9B18FF9BC8002E2AFC /* PLCMapViewController.m in Sources */,
 				A0AEC2EB190CC4CE006D20DE /* PLCPhotoStore.m in Sources */,
+				0455A07D1AB70B2C00630E6B /* PLCSelectedMapViewModel.m in Sources */,
 				A0FAFD261901EEDC001A364D /* PLCPinAnnotationView.m in Sources */,
 				A0FAFD2D1902404D001A364D /* PLCCalloutView.m in Sources */,
 				A06A0F3419742DEA00ABD4A9 /* PLCPlaceSearchResult.m in Sources */,
@@ -829,6 +867,11 @@
 			isa = PBXTargetDependency;
 			name = Dwifft;
 			targetProxy = 0455A0781AB4C6F700630E6B /* PBXContainerItemProxy */;
+		};
+		047659531AB72F9800EC231B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Dwifft;
+			targetProxy = 047659521AB72F9800EC231B /* PBXContainerItemProxy */;
 		};
 		7E54FE7118FF9392002E2AFC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -961,6 +1004,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = NO;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Places/Places-Prefix.pch";
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
@@ -1031,6 +1075,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = NO;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Places/Places-Prefix.pch";
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;

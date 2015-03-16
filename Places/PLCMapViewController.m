@@ -19,6 +19,7 @@
 #import "PLCMapStore.h"
 #import "PLCDatabase.h"
 #import "PLCSelectedMapCache.h"
+#import "PLCSelectedMapViewModel.h"
 #import <CoreLocation/CoreLocation.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
@@ -80,6 +81,11 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     [self.mapView addGestureRecognizer:[self addPlaceGestureRecognizer]];
     self.mapView.rotateEnabled = NO;
     self.mapView.showsPointsOfInterest = NO;
+
+    [RACObserve(self.mapView, userLocation.location) subscribeNext:^(CLLocation *location) {
+        self.viewModel.currentLocation = location;
+    }];
+
     [RACObserve([PLCSelectedMapCache sharedInstance], selectedMap) subscribeNext:^(PLCMap *selectedMap) {
         [self.mapView removeAnnotations:self.mapView.annotations];
         if (selectedMap.activePlaces.count) {
@@ -108,16 +114,20 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
            NSMutableSet *toRemove = [currentAnnotations mutableCopy];
            [toRemove minusSet:[NSSet setWithArray:places]];
            [self.mapView addAnnotations:toAdd.allObjects];
-         if ([toRemove containsObject:self.selectedPlace]) {
+         if ([toRemove containsObject:self.viewModel.selectedPlace]) {
              [self dismissCalloutViewController:self.calloutViewControllers.firstObject completion:^{
                  [self.mapView removeAnnotations:toRemove.allObjects];
              }];
          }
      }];
-
-    [RACObserve(self, selectedPlace) subscribeNext:^(PLCPlace *place) {
-    [self dismissAllCalloutViewControllers];
-      [self.mapView selectAnnotation:place animated:YES];
+    
+    [[[RACObserve(self, viewModel)
+       map:^(PLCSelectedMapViewModel *viewModel) {
+           return [RACObserve(viewModel, selectedPlace) distinctUntilChanged];
+       }]
+      switchToLatest] subscribeNext:^(PLCPlace *place) {
+        [self dismissAllCalloutViewControllers];
+        [self.mapView selectAnnotation:place animated:YES];
     }];
     self.view = self.mapView;
 }
@@ -155,11 +165,7 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     }
     MKAnnotationView *annotationView = [mapView dequeueReusableAnnotationViewWithIdentifier:PLCMapPinReuseIdentifier];
     if (!annotationView) {
-        PLCPinAnnotationView *pinAnnotation = [[PLCPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:PLCMapPinReuseIdentifier];
-        pinAnnotation.animatesDrop = YES;
-        pinAnnotation.draggable = YES;
-        pinAnnotation.canShowCallout = NO;
-        annotationView = pinAnnotation;
+        annotationView = [[PLCPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:PLCMapPinReuseIdentifier];
     }
     return annotationView;
 }
@@ -177,7 +183,7 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     if (view.annotation == mapView.userLocation) {
         return;
     }
-    self.selectedPlace = (PLCPlace *)view.annotation;
+    self.viewModel.selectedPlace = (PLCPlace *)view.annotation;
     [self dismissAllCalloutViewControllers];
     BOOL shouldEdit = self.isAddingPlace;
     void (^afterCallout)() = ^{
@@ -212,7 +218,7 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 }
 
 - (void)mapView:(__unused PLCMapView *)mapView didDeselectAnnotationView:(__unused MKAnnotationView *)view {
-    self.selectedPlace = nil;
+    self.viewModel.selectedPlace = nil;
 }
 
 - (void)mapView:(PLCMapView *)mapView regionWillChangeAnimated:(__unused BOOL)animated {
@@ -248,7 +254,7 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     if (sender.state == UIGestureRecognizerStateBegan) {
         CGPoint mapViewLocation = [sender locationInView:self.mapView];
         CLLocationCoordinate2D touchCoordinate = [self.mapView convertPoint:mapViewLocation toCoordinateFromView:self.mapView];
-        self.selectedPlace = [PLCPlaceStore insertPlaceOntoMap:[PLCSelectedMapCache sharedInstance].selectedMap atCoordinate:touchCoordinate];
+        self.viewModel.selectedPlace = [PLCPlaceStore insertPlaceOntoMap:[PLCSelectedMapCache sharedInstance].selectedMap atCoordinate:touchCoordinate];
     }
 }
 
@@ -342,43 +348,10 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     }
 }
 
-- (IBAction)showLocation:(__unused id)sender {
-    if (CLLocationCoordinate2DIsValid(self.mapView.userLocation.coordinate)) {
-        [UIView animateWithDuration:PLCMapPanAnimationDuration
-                         animations:^{
-                           self.mapView.centerCoordinate = self.mapView.userLocation.coordinate;
-                         }];
-        return;
-    }
-    [self determineLocation:^{
-      [[INTULocationManager sharedInstance]
-          requestLocationWithDesiredAccuracy:INTULocationAccuracyBlock
-                                     timeout:2
-                                       block:^(CLLocation *currentLocation,
-                                               __unused INTULocationAccuracy achievedAccuracy,
-                                               __unused INTULocationStatus status) {
-                                         if (status == INTULocationStatusSuccess) {
-                                             [UIView animateWithDuration:PLCMapPanAnimationDuration
-                                                              animations:^{
-                                                                [self.mapView setCenterCoordinate:currentLocation.coordinate animated:NO];
-                                                              }];
-                                         } else {
-                                             NSString *title = NSLocalizedString(@"Couldn't determine location", nil);
-                                             NSString *message = NSLocalizedString(@"Try again when you have a better signal.", nil);
-                                             [[[UIAlertView alloc] initWithTitle:title
-                                                                         message:message
-                                                                        delegate:nil
-                                                               cancelButtonTitle:NSLocalizedString(@"OK", nil)
-                                                               otherButtonTitles:nil] show];
-                                         }
-                                       }];
-    }];
-}
-
 - (IBAction)dropPin:(__unused id)sender {
     [self determineLocation:^{
       PLCPlace *place = [PLCPlaceStore insertPlaceOntoMap:[PLCSelectedMapCache sharedInstance].selectedMap atCoordinate:self.mapView.userLocation.coordinate];
-        self.selectedPlace = place;
+        self.viewModel.selectedPlace = place;
       [[INTULocationManager sharedInstance] requestLocationWithDesiredAccuracy:INTULocationAccuracyHouse
                                                                        timeout:180
                                                                          block:^(CLLocation *currentLocation,
@@ -395,6 +368,13 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
                                                                            }
                                                                          }];
     }];
+}
+
+- (void)panToLocation:(CLLocation *)location animated:(BOOL)animated {
+    [UIView animateWithDuration:(PLCMapPanAnimationDuration * animated)
+                     animations:^{
+                         self.mapView.centerCoordinate = location.coordinate;
+                     }];
 }
 
 @end

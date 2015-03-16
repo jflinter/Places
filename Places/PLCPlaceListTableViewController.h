@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PLCSelectedMapViewModel.h"
 
 @interface PLCPlaceListTableViewController : UITableViewController
-
+@property(nonatomic)PLCSelectedMapViewModel *viewModel;
 @end

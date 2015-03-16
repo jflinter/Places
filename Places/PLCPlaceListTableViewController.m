@@ -7,87 +7,74 @@
 //
 
 #import "PLCPlaceListTableViewController.h"
+#import "PLCPlace.h"
+#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <FormatterKit/TTTLocationFormatter.h>
+@import Dwifft;
 
 @interface PLCPlaceListTableViewController ()
-
+@property(nonatomic)TableViewDiffCalculator *calculator;
+@property(nonatomic)NSArray *orderedPlaces;
+@property(nonatomic)TTTLocationFormatter *formatter;
 @end
 
 @implementation PLCPlaceListTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.formatter = [[TTTLocationFormatter alloc] init];
+    self.formatter.bearingStyle = TTTBearingAbbreviationWordStyle;
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
+    self.calculator = [[TableViewDiffCalculator alloc] initWithTableView:self.tableView];
+    RAC(self.calculator, rows) = RACObserve(self, orderedPlaces);
     
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    [[[RACObserve(self, viewModel) map:^id(PLCSelectedMapViewModel *viewModel) {
+        return RACObserve(viewModel, currentLocation);
+    }] switchToLatest] subscribeNext:^(__unused CLLocation *location) {
+        [self.tableView reloadRowsAtIndexPaths:[self.tableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationNone];
+    }];
+    
+    [[RACSignal combineLatest:@[
+                                [[RACObserve(self, viewModel) map:^id(PLCSelectedMapViewModel *viewModel) {
+                                    return RACObserve(viewModel, places);
+                                }] switchToLatest],
+                                [[RACObserve(self, viewModel) map:^id(PLCSelectedMapViewModel *viewModel) {
+                                    return RACObserve(viewModel, currentLocation);
+                                }] switchToLatest]
+                              ] reduce:^id(NSSet *places, CLLocation *location) {
+                                  return [places.allObjects sortedArrayUsingComparator:^NSComparisonResult(PLCPlace *obj1, PLCPlace *obj2) {
+                                      if ([obj1.location distanceFromLocation:location] > [obj2.location distanceFromLocation:location]) {
+                                          return NSOrderedDescending;
+                                      }
+                                      return NSOrderedAscending;
+                                  }];
+                              }] subscribeNext:^(NSArray *places) {
+                                  self.orderedPlaces = places;
+                              }];
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(__unused UITableView *)tableView numberOfRowsInSection:(__unused NSInteger)section {
-    // Return the number of rows in the section.
-    return 0;
+    return self.calculator.rows.count;
 }
 
-/*
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+- (UITableViewCell *)tableView:(UITableView *)tableView
+         cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PLCPlaceListCellIdentifier" forIndexPath:indexPath];
     
-    // Configure the cell...
+    PLCPlace *place = self.orderedPlaces[indexPath.row];
+    cell.textLabel.text = place.title;
+    if (self.viewModel.currentLocation)
+    cell.detailTextLabel.text = [self.formatter stringFromDistanceAndBearingFromLocation:self.viewModel.currentLocation toLocation:place.location];
     
     return cell;
 }
-*/
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    PLCPlace *place = self.orderedPlaces[indexPath.row];
+    self.viewModel.selectedPlace = place;
 }
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
