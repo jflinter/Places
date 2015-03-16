@@ -8,30 +8,34 @@
 
 #import "PLCPlaceListTableViewController.h"
 #import "PLCPlace.h"
+#import "PLCPlaceListTableViewCell.h"
 #import <ReactiveCocoa/ReactiveCocoa.h>
-#import <FormatterKit/TTTLocationFormatter.h>
 @import Dwifft;
 
 @interface PLCPlaceListTableViewController ()
 @property(nonatomic)TableViewDiffCalculator *calculator;
 @property(nonatomic)NSArray *orderedPlaces;
-@property(nonatomic)TTTLocationFormatter *formatter;
 @end
 
 @implementation PLCPlaceListTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.formatter = [[TTTLocationFormatter alloc] init];
-    self.formatter.bearingStyle = TTTBearingAbbreviationWordStyle;
+    self.tableView.rowHeight = 44.0f;
     
     self.calculator = [[TableViewDiffCalculator alloc] initWithTableView:self.tableView];
+    self.calculator.insertionAnimation = UITableViewRowAnimationFade;
+    self.calculator.deletionAnimation = UITableViewRowAnimationFade;
     RAC(self.calculator, rows) = RACObserve(self, orderedPlaces);
     
     [[[RACObserve(self, viewModel) map:^id(PLCSelectedMapViewModel *viewModel) {
-        return RACObserve(viewModel, currentLocation);
-    }] switchToLatest] subscribeNext:^(__unused CLLocation *location) {
-        [self.tableView reloadRowsAtIndexPaths:[self.tableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationNone];
+        return RACObserve(viewModel, selectedPlace);
+    }] switchToLatest] subscribeNext:^(PLCPlace *selectedPlace) {
+        NSInteger idx = [self.orderedPlaces indexOfObject:selectedPlace];
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:idx inSection:0];
+        [self.tableView beginUpdates];
+        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView endUpdates];
     }];
     
     [[RACSignal combineLatest:@[
@@ -61,13 +65,9 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PLCPlaceListCellIdentifier" forIndexPath:indexPath];
-    
+    PLCPlaceListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PLCPlaceListCellIdentifier" forIndexPath:indexPath];
     PLCPlace *place = self.orderedPlaces[indexPath.row];
-    cell.textLabel.text = place.title;
-    if (self.viewModel.currentLocation)
-    cell.detailTextLabel.text = [self.formatter stringFromDistanceAndBearingFromLocation:self.viewModel.currentLocation toLocation:place.location];
-    
+    [cell configureWithViewModel:self.viewModel place:place];
     return cell;
 }
 

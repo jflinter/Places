@@ -12,6 +12,7 @@
 @interface PLCSelectedMapViewModel()
 @property(nonatomic)PLCMap *map;
 @property(nonatomic)NSSet *places;
+@property(nonatomic)TTTLocationFormatter *formatter;
 @end
 
 @implementation PLCSelectedMapViewModel
@@ -21,6 +22,8 @@
     if (self) {
         _map = map;
         _places = [NSSet setWithArray:map.activePlaces];
+        _formatter = [[TTTLocationFormatter alloc] init];
+        _formatter.bearingStyle = TTTBearingAbbreviationWordStyle;
     }
     return self;
 }

@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <FormatterKit/TTTLocationFormatter.h>
 
 @class PLCPlace, PLCMap;
 
@@ -15,6 +16,7 @@
 @property(nonatomic, readonly)NSSet *places;
 @property(nonatomic)CLLocation *currentLocation;
 @property(nonatomic)PLCPlace *selectedPlace;
+@property(nonatomic, readonly)TTTLocationFormatter *formatter;
 
 - (instancetype)initWithMap:(PLCMap *)map;
 

@@ -19,6 +19,7 @@
 #import "PLCPlaceListTableViewController.h"
 #import "PLCSelectedMapViewModel.h"
 #import "PLCPinAnnotationView.h"
+#import "PLCCalloutViewController.h"
 #import <TUSafariActivity/TUSafariActivity.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
@@ -30,6 +31,7 @@
 @property (weak, nonatomic) IBOutlet UIView *placeListContainerView;
 @property (weak, nonatomic) PLCPlaceListTableViewController *placeListController;
 @property (nonatomic) PLCSelectedMapViewModel *viewModel;
+@property (nonatomic) BOOL placeListVisible;
 @end
 
 @implementation PLCMapControlsViewController
@@ -65,9 +67,17 @@
     RAC(self.placeListController, viewModel) = RACObserve(self, viewModel);
     RAC(self.mapViewController, viewModel) = RACObserve(self, viewModel);
     
-    [[RACObserve(self.viewModel, selectedPlace) throttle:0.05] subscribeNext:^(id place) {
-        [self setChromeHidden:(place != nil) animated:YES];
-    }];
+    [[[[NSNotificationCenter defaultCenter] rac_addObserverForName:UIKeyboardWillShowNotification object:nil]
+      takeUntil:[self rac_willDeallocSignal]]
+     subscribeNext:^(__unused id x) {
+         [self setChromeHidden:YES animated:YES];
+     }];
+    
+    [[[[NSNotificationCenter defaultCenter] rac_addObserverForName:UIKeyboardDidHideNotification object:nil]
+      takeUntil:[self rac_willDeallocSignal]]
+     subscribeNext:^(__unused id x) {
+        [self setChromeHidden:NO animated:YES];
+     }];
     
     self.placeListContainerView.clipsToBounds = YES;
 }
@@ -95,26 +105,32 @@
 - (void)setChromeHidden:(BOOL)chromeHidden animated:(__unused BOOL)animated {
     if (_chromeHidden != chromeHidden) {
         _chromeHidden = chromeHidden;
-//        self.toolbarBottomConstraint.constant = chromeHidden ? -self.toolbar.frame.size.height : 0;
-//        [UIView animateWithDuration:(animated * 0.3) delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-//            [self.view layoutIfNeeded];
-//        } completion:nil];
-//        if (animated) {
-//            [[UIApplication sharedApplication] setStatusBarHidden:chromeHidden withAnimation:UIStatusBarAnimationSlide];
-//        } else {
-//            [[UIApplication sharedApplication] setStatusBarHidden:chromeHidden];
-//        }
-//        [self.navigationController setNavigationBarHidden:chromeHidden animated:animated];
+        if (chromeHidden) {
+            self.toolbarBottomConstraint.constant = -self.toolbar.frame.size.height;
+        } else if (self.placeListVisible) {
+            self.toolbarBottomConstraint.constant = self.placeListContainerView.frame.size.height;
+        } else {
+            self.toolbarBottomConstraint.constant = 0;
+        }
+        [UIView animateWithDuration:(animated * 0.3) delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+            [self.view layoutIfNeeded];
+        } completion:nil];
+        if (animated) {
+            [[UIApplication sharedApplication] setStatusBarHidden:chromeHidden withAnimation:UIStatusBarAnimationSlide];
+        } else {
+            [[UIApplication sharedApplication] setStatusBarHidden:chromeHidden];
+        }
+        [self.navigationController setNavigationBarHidden:chromeHidden animated:animated];
     }
 }
 
 - (IBAction)showPlaceList:(__unused UIBarButtonItem *)sender {
     UIView *view = [sender valueForKey:@"view"];
-    BOOL on = CGAffineTransformEqualToTransform(view.transform, CGAffineTransformIdentity);
-    self.toolbarBottomConstraint.constant = on ? self.placeListContainerView.frame.size.height : 0;
+    self.placeListVisible = !self.placeListVisible;
+    self.toolbarBottomConstraint.constant = self.placeListVisible ? self.placeListContainerView.frame.size.height : 0;
     [UIView animateWithDuration:0.25 delay:0 usingSpringWithDamping:0.7 initialSpringVelocity:0 options:0 animations:^{
         [self.view layoutIfNeeded];
-        if (on) {
+        if (self.placeListVisible) {
             view.transform = CGAffineTransformMakeRotation(M_PI*.999);
         } else {
             view.transform = CGAffineTransformIdentity;
