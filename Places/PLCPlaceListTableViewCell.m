@@ -7,37 +7,28 @@
 //
 
 #import "PLCPlaceListTableViewCell.h"
-#import "PLCSelectedMapViewModel.h"
+#import "PLCPlaceListCellViewModel.h"
 #import "PLCPlace.h"
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
 @implementation PLCPlaceListTableViewCell
 
 - (void)awakeFromNib {
-    // Initialization code
-}
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
+    [[[RACObserve(self, viewModel) map:^id(PLCPlaceListCellViewModel *viewModel) {
+        return viewModel.selectedSignal;
+    }] switchToLatest] subscribeNext:^(NSNumber *selected) {
+        UIFont *font = selected.boolValue ? [UIFont fontWithName:@"AvenirNext-Medium" size:16.0f] : [UIFont fontWithName:@"AvenirNext-Regular" size:16.0f];
+        self.textLabel.font = font;
+    }];
+    
+    RAC(self.textLabel, text) = [[RACObserve(self, viewModel) map:^id(PLCPlaceListCellViewModel *viewModel) {
+        return viewModel.titleSignal;
+    }] switchToLatest];
+    RAC(self.detailTextLabel, text) = [[RACObserve(self, viewModel) map:^id(PLCPlaceListCellViewModel *viewModel) {
+        return viewModel.subtitleSignal;
+    }] switchToLatest];
 
-    // Configure the view for the selected state
-}
-
-- (void)configureWithViewModel:(PLCSelectedMapViewModel *)viewModel place:(PLCPlace *)place {
-    if (place.title && ![place.title isEqualToString:@""]) {
-        self.textLabel.text = place.title;
-    } else {
-        self.textLabel.text = NSLocalizedString(@"(Untitled)", nil);
-    }
-    if (place == viewModel.selectedPlace) {
-        self.textLabel.font = [UIFont fontWithName:@"AvenirNext-Medium" size:16.0f];
-    } else {
-        self.textLabel.font = [UIFont fontWithName:@"AvenirNext-Regular" size:16.0f];
-    }
-    if (viewModel.currentLocation && CLLocationCoordinate2DIsValid(viewModel.currentLocation.coordinate)) {
-        self.detailTextLabel.text = [viewModel.formatter stringFromDistanceAndBearingFromLocation:viewModel.currentLocation toLocation:place.location];
-    } else {
-        self.detailTextLabel.text = @"";
-    }
 }
 
 @end

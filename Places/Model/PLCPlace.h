@@ -20,4 +20,5 @@ typedef NS_ENUM(NSUInteger, PLCPlaceType) {
 @property(nonatomic, readonly)NSString *imageId;
 @property (NS_NONATOMIC_IOSONLY, readonly) PLCPlaceType type;
 @property(nonatomic, readonly)CLLocation *location;
+@property(nonatomic, readonly, copy)NSString *title;
 @end

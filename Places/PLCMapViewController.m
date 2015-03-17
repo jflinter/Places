@@ -20,6 +20,7 @@
 #import "PLCDatabase.h"
 #import "PLCSelectedMapCache.h"
 #import "PLCSelectedMapViewModel.h"
+#import "PLCPlaceCalloutViewModel.h"
 #import <CoreLocation/CoreLocation.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
@@ -254,7 +255,7 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
     if (sender.state == UIGestureRecognizerStateBegan) {
         CGPoint mapViewLocation = [sender locationInView:self.mapView];
         CLLocationCoordinate2D touchCoordinate = [self.mapView convertPoint:mapViewLocation toCoordinateFromView:self.mapView];
-        self.viewModel.selectedPlace = [PLCPlaceStore insertPlaceOntoMap:[PLCSelectedMapCache sharedInstance].selectedMap atCoordinate:touchCoordinate];
+        self.viewModel.selectedPlace = [self.viewModel addPlaceAtCoordinate:touchCoordinate];
     }
 }
 
@@ -269,7 +270,8 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 - (PLCCalloutViewController *)instantiateCalloutControllerForAnnotation:(id<MKAnnotation>)annotation {
     PLCCalloutViewController *calloutController = [[UIStoryboard storyboardWithName:@"Places_phone" bundle:nil]
         instantiateViewControllerWithIdentifier:NSStringFromClass([PLCCalloutViewController class])];
-    calloutController.place = (PLCPlace *)annotation;
+    PLCPlaceCalloutViewModel *viewModel = [[PLCPlaceCalloutViewModel alloc] initWithParentViewModel:self.viewModel place:(PLCPlace *)annotation];
+    calloutController.viewModel = viewModel;
     return calloutController;
 }
 
@@ -290,7 +292,7 @@ static CGFloat const PLCMapPanAnimationDuration = 0.3f;
 
     [animator animateTransition:transitionContext
                      completion:^{
-                       if ((!calloutViewController.place.caption || [calloutViewController.place.caption isEqualToString:@""]) || forceEditing) {
+                       if (![calloutViewController.viewModel hasCaption] || forceEditing) {
                            [calloutViewController editCaption];
                        }
                      }];

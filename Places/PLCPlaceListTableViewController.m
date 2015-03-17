@@ -10,12 +10,15 @@
 #import "PLCPlace.h"
 #import "PLCPlaceListTableViewCell.h"
 #import <ReactiveCocoa/ReactiveCocoa.h>
+#import "PLCPlaceListCellViewModel.h"
 @import Dwifft;
 
 @interface PLCPlaceListTableViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *emptyLabel;
 @property(nonatomic)TableViewDiffCalculator *calculator;
 @property(nonatomic)NSArray *orderedPlaces;
+@property(nonatomic)RACSignal *locationSignal;
+@property(nonatomic)RACSignal *selectedPlaceSignal;
 @end
 
 @implementation PLCPlaceListTableViewController
@@ -25,7 +28,11 @@
     self.tableView.rowHeight = 44.0f;
 
     RACSignal *placesSignal = [[RACObserve(self, viewModel) map:^id(PLCSelectedMapViewModel *viewModel) {
-        return RACObserve(viewModel, places);
+        return viewModel.placesSignal;
+    }] switchToLatest];
+    
+    self.locationSignal = [[RACObserve(self, viewModel) map:^id(PLCSelectedMapViewModel *viewModel) {
+        return RACObserve(viewModel, currentLocation);
     }] switchToLatest];
     
     [placesSignal subscribeNext:^(NSSet *places) {
@@ -38,21 +45,13 @@
     
     RAC(self.calculator, rows) = RACObserve(self, orderedPlaces);
     
-    [[[RACObserve(self, viewModel) map:^id(PLCSelectedMapViewModel *viewModel) {
+    self.selectedPlaceSignal = [[RACObserve(self, viewModel) map:^id(PLCSelectedMapViewModel *viewModel) {
         return RACObserve(viewModel, selectedPlace);
-    }] switchToLatest] subscribeNext:^(PLCPlace *selectedPlace) {
-        NSInteger idx = [self.orderedPlaces indexOfObject:selectedPlace];
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:idx inSection:0];
-        [self.tableView beginUpdates];
-        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-        [self.tableView endUpdates];
-    }];
+    }] switchToLatest];
     
     [[RACSignal combineLatest:@[
                                 placesSignal,
-                                [[RACObserve(self, viewModel) map:^id(PLCSelectedMapViewModel *viewModel) {
-                                    return RACObserve(viewModel, currentLocation);
-                                }] switchToLatest]
+                                self.locationSignal,
                               ] reduce:^id(NSSet *places, CLLocation *location) {
                                   return [places.allObjects sortedArrayUsingComparator:^NSComparisonResult(PLCPlace *obj1, PLCPlace *obj2) {
                                       if ([obj1.location distanceFromLocation:location] > [obj2.location distanceFromLocation:location]) {
@@ -86,7 +85,10 @@
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     PLCPlaceListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PLCPlaceListCellIdentifier" forIndexPath:indexPath];
     PLCPlace *place = self.orderedPlaces[indexPath.row];
-    [cell configureWithViewModel:self.viewModel place:place];
+    PLCPlaceListCellViewModel *cellViewModel = [[PLCPlaceListCellViewModel alloc] initWithPlace:place];
+    RAC(cellViewModel, currentLocation) = self.locationSignal;
+    RAC(cellViewModel, selectedPlace) = self.selectedPlaceSignal;
+    cell.viewModel = cellViewModel;
     return cell;
 }
 

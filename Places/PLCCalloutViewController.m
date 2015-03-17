@@ -10,13 +10,12 @@
 #import "PLCCalloutView.h"
 #import "PLCCalloutViewController.h"
 #import "PLCPhotoStore.h"
-#import "PLCPlaceStore.h"
-#import "PLCMapStore.h"
 #import "PLCPlaceTextStorage.h"
 #import "PLCGoogleMapsActivity.h"
 #import <JTSImageViewController/JTSImageViewController.h>
 #import "PLCFlickrSearchViewController.h"
 #import "PLCBlurredModalPresentationController.h"
+#import "PLCPlaceCalloutViewModel.h"
 #import "Firebase+Places.h"
 
 @interface PLCCalloutViewController () <UIImagePickerControllerDelegate,
@@ -69,7 +68,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.captionTextView.frame = self.captionTextView.superview.bounds;
-    self.captionTextView.text = self.place.caption;
+    self.captionTextView.text = self.viewModel.place.caption;
     UIButton *button =
         [[UIButton alloc] initWithFrame:CGRectMake((self.captionTextView.frame.size.width - self.imageSize) / 2, 0, self.imageSize, self.imageSize)];
     button.imageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -192,24 +191,12 @@
 }
 
 - (IBAction)deletePlace:(__unused id)sender {
-    [PLCPlaceStore removePlace:self.place];
+    [self.viewModel removePlace];
 }
 
 - (IBAction)sharePlace:(UIButton *)sender {
     [self doneEditing:sender];
-    MKPlacemark *placemark = [[MKPlacemark alloc] initWithCoordinate:self.place.coordinate addressDictionary:self.place.geocodedAddress];
-    MKMapItem *mapItem = [[MKMapItem alloc] initWithPlacemark:placemark];
-    UIActivityViewController *activityViewController =
-        [[UIActivityViewController alloc] initWithActivityItems:@[self.place, mapItem] applicationActivities:@[[PLCGoogleMapsActivity new]]];
-    // exclude the airdrop action because it's incredibly fucking slow and noone uses it
-    NSMutableArray *excludedTypes = [@[UIActivityTypePrint, UIActivityTypeAirDrop] mutableCopy];
-    if (!self.place.geocodedAddress) {
-        [excludedTypes addObject:UIActivityTypeMessage];
-    }
-    //    if (!self.place.image) {
-    [excludedTypes addObject:UIActivityTypeAssignToContact];
-    //    }
-    activityViewController.excludedActivityTypes = [excludedTypes copy];
+    UIActivityViewController *activityViewController = [self.viewModel activityViewControllerForSharingPlace];
     if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
         activityViewController.popoverPresentationController.sourceView = sender;
     }
@@ -348,7 +335,7 @@
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
     NSString *caption = [textView.text stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithRange:NSMakeRange(NSAttachmentCharacter, 1)]];
-    [PLCPlaceStore updatePlace:self.place withCaption:caption];
+    [self.viewModel renamePlaceWithTitle:caption];
     [textView setContentOffset:CGPointZero animated:YES];
 }
 

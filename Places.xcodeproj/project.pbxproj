@@ -26,6 +26,8 @@
 		04DEDD8619CFC5EB00A0D0BA /* PLCBlurredModalPresentationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DEDD8519CFC5EB00A0D0BA /* PLCBlurredModalPresentationController.m */; };
 		04DEDD8A19CFE0E200A0D0BA /* PLCFlickrSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DEDD8819CFE0E200A0D0BA /* PLCFlickrSearchViewController.m */; };
 		04DEDD8B19CFE0E200A0D0BA /* PLCFlickrSearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04DEDD8919CFE0E200A0D0BA /* PLCFlickrSearchViewController.xib */; };
+		04E99F441AB88CDD00FFBD99 /* PLCPlaceCalloutViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 04E99F431AB88CDD00FFBD99 /* PLCPlaceCalloutViewModel.m */; };
+		04E99F481AB8DD6A00FFBD99 /* PLCPlaceListCellViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 04E99F471AB8DD6A00FFBD99 /* PLCPlaceListCellViewModel.m */; };
 		04F6CBA11AAFD1F000845F91 /* PLCPlaceStoreTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 04F6CBA01AAFD1F000845F91 /* PLCPlaceStoreTests.m */; };
 		04F6CBA41AAFD73300845F91 /* PLCSelectedMapCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 04F6CBA31AAFD73300845F91 /* PLCSelectedMapCache.m */; };
 		04F6CBA71AAFD77300845F91 /* PLCDataImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = 04F6CBA61AAFD77300845F91 /* PLCDataImporter.m */; };
@@ -165,6 +167,10 @@
 		04DEDD8819CFE0E200A0D0BA /* PLCFlickrSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCFlickrSearchViewController.m; sourceTree = "<group>"; };
 		04DEDD8919CFE0E200A0D0BA /* PLCFlickrSearchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PLCFlickrSearchViewController.xib; sourceTree = "<group>"; };
 		04E681DB1A21E338008404F2 /* Places 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Places 5.xcdatamodel"; sourceTree = "<group>"; };
+		04E99F421AB88CDD00FFBD99 /* PLCPlaceCalloutViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCPlaceCalloutViewModel.h; sourceTree = "<group>"; };
+		04E99F431AB88CDD00FFBD99 /* PLCPlaceCalloutViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCPlaceCalloutViewModel.m; sourceTree = "<group>"; };
+		04E99F461AB8DD6A00FFBD99 /* PLCPlaceListCellViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCPlaceListCellViewModel.h; sourceTree = "<group>"; };
+		04E99F471AB8DD6A00FFBD99 /* PLCPlaceListCellViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCPlaceListCellViewModel.m; sourceTree = "<group>"; };
 		04F6CBA01AAFD1F000845F91 /* PLCPlaceStoreTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCPlaceStoreTests.m; sourceTree = "<group>"; };
 		04F6CBA21AAFD73300845F91 /* PLCSelectedMapCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLCSelectedMapCache.h; sourceTree = "<group>"; };
 		04F6CBA31AAFD73300845F91 /* PLCSelectedMapCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLCSelectedMapCache.m; sourceTree = "<group>"; };
@@ -304,6 +310,8 @@
 				04F6CBB81AB20FD800845F91 /* PLCPlaceListTableViewController.m */,
 				0495B6631AB78E1400ACACC9 /* PLCPlaceListTableViewCell.h */,
 				0495B6641AB78E1400ACACC9 /* PLCPlaceListTableViewCell.m */,
+				04E99F461AB8DD6A00FFBD99 /* PLCPlaceListCellViewModel.h */,
+				04E99F471AB8DD6A00FFBD99 /* PLCPlaceListCellViewModel.m */,
 			);
 			name = "Main Map";
 			sourceTree = "<group>";
@@ -324,6 +332,8 @@
 		04F6CBB61AB20F9B00845F91 /* Callout */ = {
 			isa = PBXGroup;
 			children = (
+				04E99F421AB88CDD00FFBD99 /* PLCPlaceCalloutViewModel.h */,
+				04E99F431AB88CDD00FFBD99 /* PLCPlaceCalloutViewModel.m */,
 				7E42B24A190C6A6C00F9A21E /* PLCCalloutTransitionAnimator.h */,
 				7E42B24B190C6A6C00F9A21E /* PLCCalloutTransitionAnimator.m */,
 				7EFFFB25190D64A900007FAF /* PLCCalloutTransitionContext.h */,
@@ -817,6 +827,7 @@
 				0495B6651AB78E1400ACACC9 /* PLCPlaceListTableViewCell.m in Sources */,
 				A03F5582192EF5060015C1D1 /* PLCMapStore.m in Sources */,
 				A06A0F371974527800ABD4A9 /* PLCPlaceSearchResultTableViewCell.m in Sources */,
+				04E99F481AB8DD6A00FFBD99 /* PLCPlaceListCellViewModel.m in Sources */,
 				04F6CBA71AAFD77300845F91 /* PLCDataImporter.m in Sources */,
 				7E54FEB018FFA94B002E2AFC /* PLCManagedObject.m in Sources */,
 				0430BEC819CFA113001584BD /* PLCFlickrResultCollectionViewCell.m in Sources */,
@@ -843,6 +854,7 @@
 				0455A07D1AB70B2C00630E6B /* PLCSelectedMapViewModel.m in Sources */,
 				A0FAFD261901EEDC001A364D /* PLCPinAnnotationView.m in Sources */,
 				A0FAFD2D1902404D001A364D /* PLCCalloutView.m in Sources */,
+				04E99F441AB88CDD00FFBD99 /* PLCPlaceCalloutViewModel.m in Sources */,
 				A06A0F3419742DEA00ABD4A9 /* PLCPlaceSearchResult.m in Sources */,
 				A03F559A192F1C330015C1D1 /* PLCMapSelectionTableViewController.m in Sources */,
 				A0C0421E19395DB70003630E /* Firebase+Places.m in Sources */,

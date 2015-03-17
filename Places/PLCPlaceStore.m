@@ -15,6 +15,8 @@
 #import "Firebase+Places.h"
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
+NSString * const PLCPlaceStoreWillAddPlaceNotification = @"PLCPlaceStoreWillAddPlaceNotification";
+
 @interface PLCPlaceStore ()
 @property (nonatomic) PLCMapStore *mapStore;
 @end
@@ -23,6 +25,7 @@
 
 + (PLCPlace *)insertPlaceOntoMap:(PLCMap *)map atCoordinate:(CLLocationCoordinate2D)coordinate {
     PLCPlace *place = [PLCPlace insertInManagedObjectContext:[self.class managedObjectContext]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:PLCPlaceStoreWillAddPlaceNotification object:place];
     place.coordinate = coordinate;
     [map addPlacesObject:place];
     place.map = map;

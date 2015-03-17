@@ -8,11 +8,12 @@
 
 #import "PLCSelectedMapViewModel.h"
 #import "PLCMap.h"
+#import "PLCPlaceStore.h"
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
 @interface PLCSelectedMapViewModel()
 @property(nonatomic)PLCMap *map;
-@property(nonatomic)NSSet *places;
-@property(nonatomic)TTTLocationFormatter *formatter;
+@property(nonatomic)RACSignal *placesSignal;
 @end
 
 @implementation PLCSelectedMapViewModel
@@ -21,11 +22,17 @@
     self = [super init];
     if (self) {
         _map = map;
-        _places = [NSSet setWithArray:map.activePlaces];
-        _formatter = [[TTTLocationFormatter alloc] init];
-        _formatter.bearingStyle = TTTBearingAbbreviationWordStyle;
+        _placesSignal = RACObserve(_map, activePlaces);
     }
     return self;
+}
+
+- (void)removePlace:(PLCPlace *)place {
+    [PLCPlaceStore removePlace:place];
+}
+
+- (PLCPlace *)addPlaceAtCoordinate:(CLLocationCoordinate2D)coordinate {
+    return [PLCPlaceStore insertPlaceOntoMap:self.map atCoordinate:coordinate];
 }
 
 @end

@@ -14,6 +14,7 @@
 #import "PLCZoomAnimator.h"
 #import "PLCMapView.h"
 #import "PLCMapStore.h"
+#import "PLCPlaceStore.h"
 #import "PLCMap.h"
 #import "PLCSelectedMapCache.h"
 #import "PLCPlaceListTableViewController.h"
@@ -66,6 +67,12 @@
     
     RAC(self.placeListController, viewModel) = RACObserve(self, viewModel);
     RAC(self.mapViewController, viewModel) = RACObserve(self, viewModel);
+    
+    [[[[NSNotificationCenter defaultCenter] rac_addObserverForName:PLCPlaceStoreWillAddPlaceNotification object:nil]
+      takeUntil:[self rac_willDeallocSignal]]
+     subscribeNext:^(__unused id x) {
+         [self setChromeHidden:YES animated:YES];
+     }];
     
     [[[[NSNotificationCenter defaultCenter] rac_addObserverForName:UIKeyboardWillShowNotification object:nil]
       takeUntil:[self rac_willDeallocSignal]]

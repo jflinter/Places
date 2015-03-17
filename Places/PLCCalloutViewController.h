@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class PLCPlace;
+@class PLCPlace, PLCPlaceCalloutViewModel;
 
 @interface PLCCalloutViewController : UIViewController<UITextViewDelegate>
 
@@ -17,7 +17,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet UITextView *captionTextView;
 @property (weak, nonatomic) IBOutlet UIToolbar *bottomToolbar;
-@property (nonatomic) PLCPlace *place;
+@property (nonatomic) PLCPlaceCalloutViewModel *viewModel;
 
 + (CGSize)calloutSize;
 

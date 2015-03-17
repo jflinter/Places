@@ -11,6 +11,8 @@
 
 @class PLCPlace, PLCPlaceStore;
 
+extern NSString * const PLCPlaceStoreWillAddPlaceNotification;
+
 @interface PLCPlaceStore : NSObject
 
 + (PLCPlace *)insertPlaceOntoMap:(PLCMap *)map atCoordinate:(CLLocationCoordinate2D)coordinate;

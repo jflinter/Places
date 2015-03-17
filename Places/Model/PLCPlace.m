@@ -52,6 +52,9 @@
     if ([key isEqualToString:@"coordinate"]) {
         [set addObjectsFromArray:@[PLCPlaceAttributes.latitude, PLCPlaceAttributes.longitude]];
     }
+    if ([key isEqualToString:@"title"]) {
+        [set addObject:PLCPlaceAttributes.caption];
+    }
     return [set copy];
 }
 

@@ -7,17 +7,18 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <FormatterKit/TTTLocationFormatter.h>
 
-@class PLCPlace, PLCMap;
+@class PLCPlace, PLCMap, RACSignal;
 
 @interface PLCSelectedMapViewModel : NSObject
 
-@property(nonatomic, readonly)NSSet *places;
+@property(nonatomic, readonly)RACSignal *placesSignal;
 @property(nonatomic)CLLocation *currentLocation;
 @property(nonatomic)PLCPlace *selectedPlace;
-@property(nonatomic, readonly)TTTLocationFormatter *formatter;
 
 - (instancetype)initWithMap:(PLCMap *)map;
+
+- (PLCPlace *)addPlaceAtCoordinate:(CLLocationCoordinate2D)coordinate;
+- (void)removePlace:(PLCPlace *)place;
 
 @end

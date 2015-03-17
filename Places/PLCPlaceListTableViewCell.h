@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@class PLCSelectedMapViewModel, PLCPlace;
+@class PLCPlaceListCellViewModel, PLCPlace;
 
 @interface PLCPlaceListTableViewCell : UITableViewCell
 
-- (void)configureWithViewModel:(PLCSelectedMapViewModel *)viewModel place:(PLCPlace *)place;
+@property(nonatomic)PLCPlaceListCellViewModel *viewModel;
 
 @end
