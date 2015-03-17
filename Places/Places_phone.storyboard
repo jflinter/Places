@@ -218,6 +218,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <label key="tableFooterView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To add a place, hit &quot;+&quot; or press and hold anywhere on the map." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="zcm-kL-efi">
+                            <rect key="frame" x="0.0" y="66" width="320" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="16"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PLCPlaceListCellIdentifier" textLabel="sX8-Gg-suR" detailTextLabel="2Zj-JY-jqw" style="IBUITableViewCellStyleValue1" id="skj-4o-bzA" customClass="PLCPlaceListTableViewCell">
                                 <autoresizingMask key="autoresizingMask"/>
@@ -247,10 +255,13 @@
                             <outlet property="delegate" destination="pRe-A8-fhl" id="woX-p9-zvQ"/>
                         </connections>
                     </tableView>
+                    <connections>
+                        <outlet property="emptyLabel" destination="zcm-kL-efi" id="aZs-cj-Ft7"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kCx-ig-Ke8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-17" y="665"/>
+            <point key="canvasLocation" x="-17" y="664.5"/>
         </scene>
         <!--Callout View Controller-->
         <scene sceneID="vaZ-rl-Ee0">
