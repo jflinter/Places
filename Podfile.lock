@@ -1,22 +1,6 @@
 PODS:
-  - AFNetworking/NSURLConnection (2.5.1):
-    - AFNetworking/Reachability
-    - AFNetworking/Security
-    - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.5.1):
-    - AFNetworking/Reachability
-    - AFNetworking/Security
-    - AFNetworking/Serialization
-  - AFNetworking/Reachability (2.5.1)
-  - AFNetworking/Security (2.5.1)
-  - AFNetworking/Serialization (2.5.1)
-  - AFNetworking/UIKit (2.5.1):
-    - AFNetworking/NSURLConnection
-    - AFNetworking/NSURLSession
   - BDDROneFingerZoomGestureRecognizer (1.0.2)
-  - Bolts (1.1.4)
   - Firebase (2.2.0)
-  - FlickrKit (1.0.4)
   - FormatterKit (1.8.0):
     - FormatterKit/AddressFormatter (= 1.8.0)
     - FormatterKit/ArrayFormatter (= 1.8.0)
@@ -40,11 +24,6 @@ PODS:
   - HockeySDK (3.6.2)
   - INTULocationManager (2.0.2)
   - JTSImageViewController (1.4)
-  - Mantle (1.5.4):
-    - Mantle/extobjc (= 1.5.4)
-  - Mantle/extobjc (1.5.4)
-  - Parse (1.6.4):
-    - Bolts (~> 1.1)
   - Reachability (3.2)
   - ReactiveCocoa (2.4.7):
     - ReactiveCocoa/UI (= 2.4.7)
@@ -60,17 +39,13 @@ PODS:
   - TUSafariActivity (1.0.3)
 
 DEPENDENCIES:
-  - AFNetworking/UIKit
   - BDDROneFingerZoomGestureRecognizer
   - Firebase
-  - FlickrKit
   - FormatterKit
   - Foursquare-API-v2
   - HockeySDK (~> 3.6.2)
   - INTULocationManager
   - JTSImageViewController
-  - Mantle
-  - Parse
   - Reachability
   - ReactiveCocoa
   - Reveal-iOS-SDK
@@ -80,18 +55,13 @@ DEPENDENCIES:
   - TUSafariActivity
 
 SPEC CHECKSUMS:
-  AFNetworking: 8bee59492a6ff15d69130efa4d0dc67e0094a52a
   BDDROneFingerZoomGestureRecognizer: 44f79476001ffaa189795f425345d6508134561d
-  Bolts: dd9fb8433d67f5acc3b6b4d1379bbc5513d716c1
   Firebase: e7a2ea2ffeff99f9c37028b354194dcc9718d36b
-  FlickrKit: 1bbc5c91f065fa0d7ce4119c5d5c63a9241eea73
   FormatterKit: 547a808c41172136a3f3acb424ac9361d38bb32f
   Foursquare-API-v2: 6be0e2d5b4f0adde6d39a3ebcb38311f54bf9694
   HockeySDK: bfd1f5ac75938b07499c4ac12932244b72a2e70b
   INTULocationManager: 83bec34472a706e178face50a4e5e21ca986b7d2
   JTSImageViewController: 9fe6402194b7679f0e28d0c1002d6164301fc34a
-  Mantle: d5fbaf30fbc58031223af13812c060e15934a1fe
-  Parse: c2610f7a12ad0defc974803b819c4efe7746e6db
   Reachability: 1ef8adf5c4e3d362f96515d4278f68dad3c26930
   ReactiveCocoa: 313fc53cc9aeb2bbbc3f5f13c7eac16478d9af8f
   Reveal-iOS-SDK: dcfeb671c7da222c85f18f866da2ce88de075524
