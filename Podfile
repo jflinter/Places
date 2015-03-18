@@ -9,8 +9,9 @@ pod "JTSImageViewController"
 pod "Foursquare-API-v2"
 pod "Reachability"
 pod "SWTableViewCell"
-#pod "FlickrKit"
-#pod "AFNetworking/UIKit"
+pod "FlickrKit"
+pod "AFNetworking/UIKit"
+pod 'Mantle'
 pod "TUSafariActivity"
 pod "TMCache"
 pod 'FormatterKit'
