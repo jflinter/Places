@@ -33,6 +33,7 @@
 @property (weak, nonatomic) PLCPlaceListTableViewController *placeListController;
 @property (nonatomic) PLCSelectedMapViewModel *viewModel;
 @property (nonatomic) BOOL placeListVisible;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *arrowItem;
 @end
 
 @implementation PLCMapControlsViewController
@@ -47,17 +48,6 @@
     [mapViewController didMoveToParentViewController:self];
     [self.view sendSubviewToBack:self.mapViewController.view];
 
-    UIImage *plusImage = [UIImage imageNamed:@"709-plus-toolbar"];
-    self.toolbarItems = @[
-        [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
-        [[UIBarButtonItem alloc] initWithImage:plusImage style:UIBarButtonItemStylePlain target:self action:@selector(addPlace:)],
-        [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
-        [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"723-location-arrow-toolbar"]
-                                         style:UIBarButtonItemStylePlain
-                                        target:self
-                                        action:@selector(showLocation:)],
-    ];
-    
     self.toolbarBottomConstraint.constant = 0;
     
     [RACObserve([PLCSelectedMapCache sharedInstance], selectedMap) subscribeNext:^(PLCMap *map) {
@@ -132,10 +122,18 @@
 }
 
 - (IBAction)showPlaceList:(__unused UIBarButtonItem *)sender {
-    UIView *view = [sender valueForKey:@"view"];
-    self.placeListVisible = !self.placeListVisible;
+    [self setPlaceListVisible:!self.placeListVisible animated:YES];
+}
+
+- (void)setPlaceListVisible:(BOOL)placeListVisible {
+    [self setPlaceListVisible:placeListVisible animated:NO];
+}
+
+- (void)setPlaceListVisible:(BOOL)placeListVisible animated:(BOOL)animated {
+    _placeListVisible = placeListVisible;
+    UIView *view = [self.arrowItem valueForKey:@"view"];
     self.toolbarBottomConstraint.constant = self.placeListVisible ? self.placeListContainerView.frame.size.height : 0;
-    [UIView animateWithDuration:0.25 delay:0 usingSpringWithDamping:0.7 initialSpringVelocity:0 options:0 animations:^{
+    [UIView animateWithDuration:(animated * 0.25) delay:0 usingSpringWithDamping:0.7 initialSpringVelocity:0 options:0 animations:^{
         [self.view layoutIfNeeded];
         if (self.placeListVisible) {
             view.transform = CGAffineTransformMakeRotation(M_PI*.999);
@@ -146,6 +144,9 @@
 }
 
 - (IBAction)showMapSelection:(__unused id)sender {
+    if (self.placeListVisible) {
+        [self setPlaceListVisible:NO animated:YES];
+    }
     UINavigationController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"PLCMapSelectionNavigationController"];
     PLCMapSelectionTableViewController *mapSelectionController = (PLCMapSelectionTableViewController *)controller.visibleViewController;
     mapSelectionController.maps = [[PLCMapStore allMaps] mutableCopy];
