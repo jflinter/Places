@@ -10,7 +10,6 @@
 #import "PLCPlace.h"
 #import <Firebase/Firebase.h>
 #import "Firebase+Places.h"
-#import <Parse/Parse.h>
 #import "PLCImageSavingWork.h"
 #import <TMCache/TMCache.h>
 
@@ -48,33 +47,33 @@
     }];
 }
 
-- (void)fetchImageWithId:(NSString *)imageId completion:(PLCImageFetchBlock)completion {
-    [[TMCache sharedCache] objectForKey:imageId
-                                  block:^(__unused TMCache *cache, __unused NSString *key, id cacheObject) {
-                                      if (cacheObject) {
-                                          completion(cacheObject);
-                                          return;
-                                      }
-                                      PFQuery *query = [PFQuery queryWithClassName:@"Photo"];
-                                      [query whereKey:@"imageId" equalTo:imageId];
-                                      [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-                                          if (!objects || !objects.count || error) {
-                                              completion(nil);
-                                          } else {
-                                              PFObject *object = objects.firstObject;
-                                              PFFile *imageFile = object[@"imageFile"];
-                                              [imageFile getDataInBackgroundWithBlock:^(NSData *data, __unused NSError *fetchError) {
-                                                  if (data && !fetchError) {
-                                                      UIImage *image = [[UIImage alloc] initWithData:data];
-                                                      [[TMCache sharedCache] setObject:image forKey:imageId];
-                                                      completion(image);
-                                                  } else {
-                                                      completion(nil);
-                                                  }
-                                              }];
-                                          }
-                                      }];
-                                  }];
+- (void)fetchImageWithId:(__unused NSString *)imageId completion:(__unused PLCImageFetchBlock)completion {
+//    [[TMCache sharedCache] objectForKey:imageId
+//                                  block:^(__unused TMCache *cache, __unused NSString *key, id cacheObject) {
+//                                      if (cacheObject) {
+//                                          completion(cacheObject);
+//                                          return;
+//                                      }
+//                                      PFQuery *query = [PFQuery queryWithClassName:@"Photo"];
+//                                      [query whereKey:@"imageId" equalTo:imageId];
+//                                      [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+//                                          if (!objects || !objects.count || error) {
+//                                              completion(nil);
+//                                          } else {
+//                                              PFObject *object = objects.firstObject;
+//                                              PFFile *imageFile = object[@"imageFile"];
+//                                              [imageFile getDataInBackgroundWithBlock:^(NSData *data, __unused NSError *fetchError) {
+//                                                  if (data && !fetchError) {
+//                                                      UIImage *image = [[UIImage alloc] initWithData:data];
+//                                                      [[TMCache sharedCache] setObject:image forKey:imageId];
+//                                                      completion(image);
+//                                                  } else {
+//                                                      completion(nil);
+//                                                  }
+//                                              }];
+//                                          }
+//                                      }];
+//                                  }];
 }
 
 @end

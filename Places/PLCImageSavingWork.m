@@ -7,7 +7,6 @@
 //
 
 #import "PLCImageSavingWork.h"
-#import <Parse/Parse.h>
 #import "PLCDatabase.h"
 #import "PLCPlace.h"
 #import "Firebase+Places.h"
@@ -34,30 +33,30 @@
     return self;
 }
 
-- (void)doWork:(PLCAsynchronousWorkCallback)completion {
-    PFFile *file = [PFFile fileWithName:self.imageId data:self.imageData];
-    [file saveInBackgroundWithBlock:^(__unused BOOL filesucceeded, NSError *fileerror) {
-        if (fileerror) {
-            completion(fileerror);
-        } else {
-            PFObject *photoObject = [PFObject objectWithClassName:@"Photo" dictionary:@{ @"imageId": self.imageId, @"imageFile": file }];
-            [photoObject saveInBackgroundWithBlock:^(__unused BOOL objsucceeded, NSError *objerror) {
-                if (objerror) {
-                    completion(objerror);
-                } else {
-                    PLCPlace *place = [self.class placeWithUUID:self.placeId];
-                    if (!place.imageId) {
-                        [place.managedObjectContext performBlock:^{
-                            place.imageIds = @[self.imageId];
-                            [place.managedObjectContext save:nil];
-                            [[Firebase placeClientForPlace:place] setValue:[place firebaseObject]];
-                        }];
-                    }
-                    completion(nil);
-                }
-            }];
-        }
-    }];
+- (void)doWork:(__unused PLCAsynchronousWorkCallback)completion {
+//    PFFile *file = [PFFile fileWithName:self.imageId data:self.imageData];
+//    [file saveInBackgroundWithBlock:^(__unused BOOL filesucceeded, NSError *fileerror) {
+//        if (fileerror) {
+//            completion(fileerror);
+//        } else {
+//            PFObject *photoObject = [PFObject objectWithClassName:@"Photo" dictionary:@{ @"imageId": self.imageId, @"imageFile": file }];
+//            [photoObject saveInBackgroundWithBlock:^(__unused BOOL objsucceeded, NSError *objerror) {
+//                if (objerror) {
+//                    completion(objerror);
+//                } else {
+//                    PLCPlace *place = [self.class placeWithUUID:self.placeId];
+//                    if (!place.imageId) {
+//                        [place.managedObjectContext performBlock:^{
+//                            place.imageIds = @[self.imageId];
+//                            [place.managedObjectContext save:nil];
+//                            [[Firebase placeClientForPlace:place] setValue:[place firebaseObject]];
+//                        }];
+//                    }
+//                    completion(nil);
+//                }
+//            }];
+//        }
+//    }];
 }
 
 + (PLCPlace *)placeWithUUID:(NSString *)uuid {
