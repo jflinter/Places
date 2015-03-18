@@ -311,11 +311,11 @@
                                             <constraint firstAttribute="height" constant="40" id="UEJ-pj-adI"/>
                                             <constraint firstAttribute="width" constant="64" id="czC-h3-eIA"/>
                                         </constraints>
-                                        <state key="normal" image="702-share">
+                                        <state key="normal" image="702-share-toolbar">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <state key="selected" image="702-share-selected"/>
-                                        <state key="highlighted" image="702-share-selected"/>
+                                        <state key="highlighted" image="702-share-toolbar-selected"/>
                                         <connections>
                                             <action selector="sharePlace:" destination="1NL-xg-0xe" eventType="touchUpInside" id="NkM-17-SSb"/>
                                         </connections>
@@ -379,8 +379,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="702-share" width="21" height="28"/>
         <image name="702-share-selected" width="21" height="28"/>
+        <image name="702-share-toolbar" width="16" height="22"/>
+        <image name="702-share-toolbar-selected" width="16" height="22"/>
         <image name="709-plus" width="28" height="28"/>
         <image name="709-plus-toolbar" width="22" height="22"/>
         <image name="723-location-arrow-toolbar" width="22" height="22"/>
