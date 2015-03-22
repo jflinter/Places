@@ -89,6 +89,7 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    self.navigationController.navigationBar.tintAdjustmentMode = UIViewTintAdjustmentModeNormal;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
       [self setChromeHidden:NO animated:YES];
@@ -112,24 +113,26 @@
         [UIView animateWithDuration:(animated * 0.3) delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
             [self.view layoutIfNeeded];
         } completion:nil];
-        if (animated) {
-            [[UIApplication sharedApplication] setStatusBarHidden:chromeHidden withAnimation:UIStatusBarAnimationSlide];
-        } else {
-            [[UIApplication sharedApplication] setStatusBarHidden:chromeHidden];
+        if (!self.presentedViewController) {
+            if (animated) {
+                [[UIApplication sharedApplication] setStatusBarHidden:chromeHidden withAnimation:UIStatusBarAnimationSlide];
+            } else {
+                [[UIApplication sharedApplication] setStatusBarHidden:chromeHidden];
+            }
         }
         [self.navigationController setNavigationBarHidden:chromeHidden animated:animated];
     }
 }
 
 - (IBAction)showPlaceList:(__unused UIBarButtonItem *)sender {
-    [self setPlaceListVisible:!self.placeListVisible animated:YES];
+    [self setPlaceListVisible:!self.placeListVisible animated:YES completion:nil];
 }
 
 - (void)setPlaceListVisible:(BOOL)placeListVisible {
-    [self setPlaceListVisible:placeListVisible animated:NO];
+    [self setPlaceListVisible:placeListVisible animated:NO completion:nil];
 }
 
-- (void)setPlaceListVisible:(BOOL)placeListVisible animated:(BOOL)animated {
+- (void)setPlaceListVisible:(BOOL)placeListVisible animated:(BOOL)animated completion:(void(^)(BOOL finished))completion{
     _placeListVisible = placeListVisible;
     UIView *view = [self.arrowItem valueForKey:@"view"];
     self.toolbarBottomConstraint.constant = self.placeListVisible ? self.placeListContainerView.frame.size.height : 0;
@@ -140,19 +143,19 @@
         } else {
             view.transform = CGAffineTransformIdentity;
         }
-    } completion:nil];
+    } completion:completion];
 }
 
-- (IBAction)showMapSelection:(__unused id)sender {
-    if (self.placeListVisible) {
-        [self setPlaceListVisible:NO animated:YES];
-    }
-    UINavigationController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"PLCMapSelectionNavigationController"];
-    PLCMapSelectionTableViewController *mapSelectionController = (PLCMapSelectionTableViewController *)controller.visibleViewController;
-    mapSelectionController.maps = [[PLCMapStore allMaps] mutableCopy];
-    controller.modalPresentationStyle = UIModalPresentationCustom;
-    controller.transitioningDelegate = self;
-    [self presentViewController:controller animated:YES completion:nil];
+- (IBAction)showMapSelection:(__unused id)sender {    
+    __weak PLCMapControlsViewController *weakself = self;
+    [self setPlaceListVisible:NO animated:self.placeListVisible completion:^(__unused BOOL finished) {
+        UINavigationController *controller = [weakself.storyboard instantiateViewControllerWithIdentifier:@"PLCMapSelectionNavigationController"];
+        PLCMapSelectionTableViewController *mapSelectionController = (PLCMapSelectionTableViewController *)controller.visibleViewController;
+        mapSelectionController.maps = [[PLCMapStore allMaps] mutableCopy];
+        controller.modalPresentationStyle = UIModalPresentationCustom;
+        controller.transitioningDelegate = weakself;
+        [weakself presentViewController:controller animated:YES completion:nil];
+    }];
 }
 
 
