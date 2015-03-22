@@ -36,7 +36,13 @@
     }] switchToLatest];
     
     [placesSignal subscribeNext:^(NSSet *places) {
-        self.emptyLabel.hidden = (places.count > 0);
+        BOOL anyPlaces = (places.count > 0);
+        self.emptyLabel.hidden = anyPlaces;
+        self.emptyLabel.frame = ({
+            CGRect rect = self.emptyLabel.frame;
+            rect.size.height = anyPlaces ? 0 : 44;
+            rect;
+        });
     }];
     
     self.calculator = [[TableViewDiffCalculator alloc] initWithTableView:self.tableView];

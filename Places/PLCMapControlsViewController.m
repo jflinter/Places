@@ -34,6 +34,7 @@
 @property (nonatomic) PLCSelectedMapViewModel *viewModel;
 @property (nonatomic) BOOL placeListVisible;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *arrowItem;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *placeListHeightConstraint;
 @end
 
 @implementation PLCMapControlsViewController
@@ -105,10 +106,13 @@
         _chromeHidden = chromeHidden;
         if (chromeHidden) {
             self.toolbarBottomConstraint.constant = -self.toolbar.frame.size.height;
+            self.placeListHeightConstraint.constant = 0;
         } else if (self.placeListVisible) {
-            self.toolbarBottomConstraint.constant = self.placeListContainerView.frame.size.height;
+            self.toolbarBottomConstraint.constant = 217;
+            self.placeListHeightConstraint.constant = 217;
         } else {
             self.toolbarBottomConstraint.constant = 0;
+            self.placeListHeightConstraint.constant = 0;
         }
         [UIView animateWithDuration:(animated * 0.3) delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
             [self.view layoutIfNeeded];
@@ -135,7 +139,8 @@
 - (void)setPlaceListVisible:(BOOL)placeListVisible animated:(BOOL)animated completion:(void(^)(BOOL finished))completion{
     _placeListVisible = placeListVisible;
     UIView *view = [self.arrowItem valueForKey:@"view"];
-    self.toolbarBottomConstraint.constant = self.placeListVisible ? self.placeListContainerView.frame.size.height : 0;
+    self.toolbarBottomConstraint.constant = self.placeListVisible ? 217 : 0;
+    self.placeListHeightConstraint.constant = self.placeListVisible ? 217 : 0;
     [UIView animateWithDuration:(animated * 0.25) delay:0 usingSpringWithDamping:0.7 initialSpringVelocity:0 options:0 animations:^{
         [self.view layoutIfNeeded];
         if (self.placeListVisible) {
@@ -146,7 +151,7 @@
     } completion:completion];
 }
 
-- (IBAction)showMapSelection:(__unused id)sender {    
+- (IBAction)showMapSelection:(__unused id)sender {
     __weak PLCMapControlsViewController *weakself = self;
     [self setPlaceListVisible:NO animated:self.placeListVisible completion:^(__unused BOOL finished) {
         UINavigationController *controller = [weakself.storyboard instantiateViewControllerWithIdentifier:@"PLCMapSelectionNavigationController"];

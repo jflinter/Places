@@ -31,4 +31,10 @@
 
 }
 
+- (void)layoutSubviews {
+    [UIView performWithoutAnimation:^{
+        [super layoutSubviews];
+    }];
+}
+
 @end

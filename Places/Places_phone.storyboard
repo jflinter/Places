@@ -180,7 +180,7 @@
                             <constraint firstItem="hYr-ba-okk" firstAttribute="leading" secondItem="lNU-MC-GZc" secondAttribute="leadingMargin" constant="-16" id="Hbm-lJ-gmO"/>
                             <constraint firstAttribute="trailingMargin" secondItem="4Sh-Ky-Kw9" secondAttribute="trailing" constant="-16" id="Xc9-8A-Aw0"/>
                             <constraint firstItem="LaD-Hf-YxR" firstAttribute="top" secondItem="hYr-ba-okk" secondAttribute="bottom" constant="217" id="qrE-iw-4wK"/>
-                            <constraint firstItem="4Sh-Ky-Kw9" firstAttribute="top" secondItem="hYr-ba-okk" secondAttribute="bottom" id="uk2-Ca-ts8"/>
+                            <constraint firstItem="LaD-Hf-YxR" firstAttribute="top" secondItem="4Sh-Ky-Kw9" secondAttribute="bottom" id="v1W-1d-A3J"/>
                             <constraint firstItem="4Sh-Ky-Kw9" firstAttribute="leading" secondItem="lNU-MC-GZc" secondAttribute="leadingMargin" constant="-16" id="w8Z-eY-fvx"/>
                         </constraints>
                     </view>
@@ -201,6 +201,7 @@
                     <connections>
                         <outlet property="arrowItem" destination="Koj-Pu-DqU" id="Gsd-tl-Fld"/>
                         <outlet property="placeListContainerView" destination="4Sh-Ky-Kw9" id="dZ6-j9-9RY"/>
+                        <outlet property="placeListHeightConstraint" destination="NgD-Ha-HdF" id="RNP-pE-nXs"/>
                         <outlet property="toolbar" destination="hYr-ba-okk" id="GoU-W4-P5u"/>
                         <outlet property="toolbarBottomConstraint" destination="qrE-iw-4wK" id="DrE-FV-xBD"/>
                         <outlet property="view" destination="lNU-MC-GZc" id="vzn-G1-QQ7"/>
