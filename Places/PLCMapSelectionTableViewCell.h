@@ -14,13 +14,11 @@
 
 @protocol PLCMapSelectionCellDelegate <NSObject>
 
-- (void)tableViewCell:(PLCMapSelectionTableViewCell *)cell textDidChange:(NSString *)text;
 - (void)tableViewCellDidDelete:(PLCMapSelectionTableViewCell *)cell;
 
 @end
 
-@interface PLCMapSelectionTableViewCell : SWTableViewCell
-@property (weak, nonatomic) IBOutlet UITextField *editTitleTextField;
+@interface PLCMapSelectionTableViewCell : UITableViewCell
 @property (weak, nonatomic) id<PLCMapSelectionCellDelegate> cellDelegate;
 
 - (void)configureWithViewModel:(PLCMapRowViewModel *)viewModel;

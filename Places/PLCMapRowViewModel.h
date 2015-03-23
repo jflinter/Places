@@ -16,5 +16,8 @@
 
 @property(nonatomic, readonly)NSString *title;
 @property(nonatomic, readonly)BOOL selected;
+@property(nonatomic)BOOL detailShown;
+
+- (CGFloat)rowHeight;
 
 @end

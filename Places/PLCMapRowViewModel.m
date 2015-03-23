@@ -10,9 +10,9 @@
 #import "PLCMapStore.h"
 #import "PLCSelectedMapCache.h"
 #import "PLCMap.h"
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
 @interface PLCMapRowViewModel()
-@property(nonatomic)PLCMap *map;
 @end
 
 @implementation PLCMapRowViewModel
@@ -20,11 +20,14 @@
 - (instancetype)initWithMap:(PLCMap *)map {
     self = [super init];
     if (self) {
-        _map = map;
-        _selected = ([PLCSelectedMapCache sharedInstance].selectedMap == self.map);
-        _title = map.name;
+        _selected = ([PLCSelectedMapCache sharedInstance].selectedMap == map);
+        RAC(self, title) = RACObserve(map, name);
     }
     return self;
+}
+
+- (CGFloat)rowHeight {
+    return self.detailShown ? 88 : 44;
 }
 
 @end

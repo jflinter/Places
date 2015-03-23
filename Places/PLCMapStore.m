@@ -31,7 +31,9 @@
                                                                                      type:NSEqualToPredicateOperatorType
                                                                                   options:0];
     fetchRequest.predicate = notDeletedPredicate;
-    return [[self managedObjectContext] executeFetchRequest:fetchRequest error:nil];
+    return [[[self managedObjectContext] executeFetchRequest:fetchRequest error:nil] sortedArrayUsingComparator:^NSComparisonResult(PLCMap *obj1, PLCMap *obj2) {
+        return [obj1.name caseInsensitiveCompare:obj2.name];
+    }];
 }
 
 + (PLCMap *)mapWithUUID:(NSString *)uuid {

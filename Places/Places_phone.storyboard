@@ -9,43 +9,107 @@
         <scene sceneID="b7B-FO-12E">
             <objects>
                 <tableViewController title="Your Maps" id="4pf-k5-Kzc" customClass="PLCMapSelectionTableViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="OXt-BQ-Lcf">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="OXt-BQ-Lcf">
                         <rect key="frame" x="0.0" y="64" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <color key="sectionIndexTrackingBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PLCMapSelectionTableCellReuseIdentifier" textLabel="ydO-yp-EA5" style="IBUITableViewCellStyleDefault" id="uJZ-EN-xBd" customClass="PLCMapSelectionTableViewCell">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PLCMapSelectionTableCellReuseIdentifier" rowHeight="88" id="uJZ-EN-xBd" customClass="PLCMapSelectionTableViewCell">
                                 <rect key="frame" x="0.0" y="66" width="290" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uJZ-EN-xBd" id="DVk-68-JdK">
                                     <rect key="frame" x="0.0" y="0.0" width="290" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ydO-yp-EA5">
-                                            <rect key="frame" x="15" y="0.0" width="260" height="43"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pcj-29-SQk">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="88"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8r9-Vq-UJc">
+                                            <rect key="frame" x="271" y="0.0" width="44" height="44"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="44" id="A19-aJ-rbc"/>
+                                            </constraints>
+                                            <inset key="contentEdgeInsets" minX="0.0" minY="11" maxX="0.0" maxY="11"/>
+                                            <state key="normal" image="727-more-toolbar">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <state key="selected" image="727-more-toolbar-selected"/>
+                                            <state key="highlighted" image="727-more-toolbar-selected"/>
+                                            <connections>
+                                                <action selector="toggleCellDetail:" destination="4pf-k5-Kzc" eventType="touchUpInside" id="sd8-ep-RpS"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fm3-gc-xKc">
+                                            <rect key="frame" x="200" y="44" width="80" height="44"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="44" id="GvO-Op-RcN"/>
+                                                <constraint firstAttribute="width" constant="80" id="qBK-mT-5at"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="16"/>
+                                            <state key="normal" title="Delete">
+                                                <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mPT-UE-JNn">
+                                            <rect key="frame" x="40" y="44" width="80" height="44"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="80" id="VIX-xf-z7U"/>
+                                                <constraint firstAttribute="height" constant="44" id="h1l-HL-44o"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="16"/>
+                                            <state key="normal" title="Edit">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="editMap:" destination="4pf-k5-Kzc" eventType="touchUpInside" id="Vlb-qb-O40"/>
+                                            </connections>
+                                        </button>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NYC Places To Try" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Yz-8i-0yh">
+                                            <rect key="frame" x="15" y="11" width="248" height="25"/>
                                             <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="18"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Test" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="thc-V7-cxW">
-                                            <rect key="frame" x="15" y="7" width="290" height="30"/>
-                                            <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="18"/>
-                                            <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
-                                        </textField>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cPd-O1-DPg">
+                                            <rect key="frame" x="15" y="87" width="305" height="1"/>
+                                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="0.5" id="Kop-5T-2Jh"/>
+                                            </constraints>
+                                        </view>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="thc-V7-cxW" firstAttribute="leading" secondItem="ydO-yp-EA5" secondAttribute="leading" id="Gdr-it-z4d"/>
-                                        <constraint firstItem="thc-V7-cxW" firstAttribute="trailing" secondItem="ydO-yp-EA5" secondAttribute="trailing" id="Yc4-v8-aEs"/>
-                                        <constraint firstItem="thc-V7-cxW" firstAttribute="top" secondItem="DVk-68-JdK" secondAttribute="top" constant="7" id="vQv-IK-8CV"/>
+                                        <constraint firstItem="pcj-29-SQk" firstAttribute="leading" secondItem="DVk-68-JdK" secondAttribute="leadingMargin" constant="-8" id="5RC-EJ-t70"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="pcj-29-SQk" secondAttribute="trailing" constant="-8" id="5tk-A7-qbi"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="cPd-O1-DPg" secondAttribute="bottom" constant="-8" id="6u5-PY-sWJ"/>
+                                        <constraint firstItem="mPT-UE-JNn" firstAttribute="leading" secondItem="DVk-68-JdK" secondAttribute="leadingMargin" constant="32" id="Cu8-e7-XjJ"/>
+                                        <constraint firstItem="8r9-Vq-UJc" firstAttribute="top" secondItem="DVk-68-JdK" secondAttribute="topMargin" constant="-8" id="PxS-1m-Pfj"/>
+                                        <constraint firstItem="pcj-29-SQk" firstAttribute="top" secondItem="DVk-68-JdK" secondAttribute="topMargin" constant="-8" id="Sb5-wP-8JS"/>
+                                        <constraint firstItem="0Yz-8i-0yh" firstAttribute="leading" secondItem="DVk-68-JdK" secondAttribute="leadingMargin" constant="7" id="YPk-sx-MjK"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="cPd-O1-DPg" secondAttribute="trailing" constant="-8" id="ceb-T3-PJo"/>
+                                        <constraint firstItem="Fm3-gc-xKc" firstAttribute="top" secondItem="DVk-68-JdK" secondAttribute="topMargin" constant="36" id="fXY-Dq-zVI"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="Fm3-gc-xKc" secondAttribute="trailing" constant="32" id="gxT-CM-deb"/>
+                                        <constraint firstAttribute="trailing" secondItem="8r9-Vq-UJc" secondAttribute="trailing" constant="5" id="hO3-RL-2NF"/>
+                                        <constraint firstItem="8r9-Vq-UJc" firstAttribute="leading" secondItem="0Yz-8i-0yh" secondAttribute="trailing" constant="8" id="jvX-Ve-IxE"/>
+                                        <constraint firstItem="cPd-O1-DPg" firstAttribute="leading" secondItem="DVk-68-JdK" secondAttribute="leadingMargin" constant="7" id="kPv-uj-tOB"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="pcj-29-SQk" secondAttribute="bottom" constant="-8" id="my7-aH-gkX"/>
+                                        <constraint firstItem="mPT-UE-JNn" firstAttribute="top" secondItem="DVk-68-JdK" secondAttribute="topMargin" constant="36" id="yKZ-jr-DqI"/>
+                                        <constraint firstItem="0Yz-8i-0yh" firstAttribute="top" secondItem="DVk-68-JdK" secondAttribute="topMargin" constant="3" id="ylZ-ZU-RMY"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <connections>
-                                    <outlet property="editTitleTextField" destination="thc-V7-cxW" id="HSl-YV-QP1"/>
+                                    <outlet property="deleteButton" destination="Fm3-gc-xKc" id="jQk-xG-6iD"/>
+                                    <outlet property="detailButton" destination="8r9-Vq-UJc" id="yZZ-g1-73i"/>
+                                    <outlet property="editButton" destination="mPT-UE-JNn" id="2UV-Nz-TEc"/>
+                                    <outlet property="highlightView" destination="pcj-29-SQk" id="Ero-Ua-kXK"/>
+                                    <outlet property="moreButton" destination="8r9-Vq-UJc" id="kt4-wc-HNR"/>
+                                    <outlet property="separatorView" destination="cPd-O1-DPg" id="J8C-Mz-aXg"/>
+                                    <outlet property="titleLabel" destination="0Yz-8i-0yh" id="2rM-c5-BDt"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -55,6 +119,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="PjA-kV-tJK">
+                        <barButtonItem key="backBarButtonItem" title="Maps" id="1Tw-h5-RdM"/>
                         <barButtonItem key="leftBarButtonItem" image="cancel" id="qGz-lv-40g">
                             <connections>
                                 <action selector="dismiss:" destination="4pf-k5-Kzc" id="Z7Z-pL-R2c"/>
@@ -387,6 +452,8 @@
         <image name="709-plus-toolbar" width="22" height="22"/>
         <image name="711-trash-toolbar" width="18" height="22"/>
         <image name="723-location-arrow-toolbar" width="22" height="22"/>
+        <image name="727-more-toolbar" width="22" height="6"/>
+        <image name="727-more-toolbar-selected" width="22" height="6"/>
         <image name="763-arrow-up-toolbar" width="20" height="10"/>
         <image name="765-arrow-left" width="14" height="28"/>
         <image name="854-list-toolbar" width="20" height="16"/>
